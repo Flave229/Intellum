@@ -19,6 +19,9 @@
     <Filter Include="Source Files\Application">
       <UniqueIdentifier>{65eb5dc2-be1d-440c-bb1c-321115653442}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{10a6ec52-8bf3-42b4-83be-1c1fa933d672}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -32,6 +35,9 @@
       <Filter>Source Files\Application</Filter>
     </ClCompile>
     <ClCompile Include="DirectX3D.cpp">
+      <Filter>Source Files\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="ColorShader.cpp">
       <Filter>Source Files\Application</Filter>
     </ClCompile>
   </ItemGroup>
@@ -48,5 +54,16 @@
     <ClInclude Include="DirectX3D.h">
       <Filter>Header Files\Application</Filter>
     </ClInclude>
+    <ClInclude Include="ColorShader.h">
+      <Filter>Header Files\Application</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="ColorVertexShader.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="ColorPixelShader.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
