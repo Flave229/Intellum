@@ -1,10 +1,10 @@
 #include "Graphics.h"
 
-Graphics::Graphics(): _direct3D(nullptr), _camera(nullptr), _model(nullptr), _colorShader(nullptr)
+Graphics::Graphics(): _direct3D(nullptr), _camera(nullptr), _model(nullptr), _shader(nullptr)
 {
 }
 
-Graphics::Graphics(const Graphics& other) : _direct3D(other._direct3D), _camera(other._camera), _model(other._model), _colorShader(other._colorShader)
+Graphics::Graphics(const Graphics& other) : _direct3D(other._direct3D), _camera(other._camera), _model(other._model), _shader(other._shader)
 {
 }
 
@@ -34,17 +34,17 @@ bool Graphics::Initialise(int screenWidth, int screenHeight, HWND hwnd)
 	_model = new Model;
 	if (!_model) return false;
 
-	result = _model->Initialise(_direct3D->GetDevice());
+	result = _model->Initialise(_direct3D->GetDevice(), _direct3D->GetDeviceContext(), "data/images/stone.tga");
 	if (!result)
 	{
 		MessageBox(hwnd, L"Could not initialise the model object", L"Error", MB_OK);
 		return false;
 	}
 
-	_colorShader = new ColorShader;
-	if (!_colorShader) return false;
+	_shader = new ShaderController;
+	if (!_shader) return false;
 
-	result = _colorShader->Initialise(_direct3D->GetDevice(), hwnd);
+	result = _shader->Initialise(_direct3D->GetDevice(), hwnd);
 	if (!result)
 	{
 		MessageBox(hwnd, L"Could not initialise the shader class", L"Error", MB_OK);
@@ -63,11 +63,11 @@ void Graphics::Shutdown()
 		_direct3D = nullptr;
 	}
 
-	if(_colorShader)
+	if(_shader)
 	{
-		_colorShader->Shutdown();
-		delete _colorShader;
-		_colorShader = nullptr;
+		_shader->Shutdown();
+		delete _shader;
+		_shader = nullptr;
 	}
 
 	if (_model)
@@ -106,7 +106,7 @@ bool Graphics::Render()
 
 	_model->Render(_direct3D->GetDeviceContext());
 
-	result = _colorShader->Render(_direct3D->GetDeviceContext(), _model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix);
+	result = _shader->Render(_direct3D->GetDeviceContext(), _model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, _model->GetTexture());
 	if (!result) return false;
 
 	_direct3D->EndScene();

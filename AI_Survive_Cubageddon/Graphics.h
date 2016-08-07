@@ -2,9 +2,11 @@
 #define _GRAPHICS_H_
 
 #include "directX3D.h"
+
 #include "Camera.h"
 #include "Model.h"
 #include "ColorShader.h"
+#include "ShaderController.h"
 
 const bool FULL_SCREEN = false;
 const bool VSYNC_ENABLED = true;
@@ -16,10 +18,11 @@ class Graphics
 // Member Level Variables
 private:
 	DirectX3D* _direct3D;
+	
 	Camera* _camera;
 	Model* _model;
-	ColorShader* _colorShader;
-
+	ShaderController* _shader;
+	
 // Function Declarations
 private:
 	bool Render();

@@ -22,6 +22,12 @@
     <Filter Include="Shaders">
       <UniqueIdentifier>{10a6ec52-8bf3-42b4-83be-1c1fa933d672}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ObjectData">
+      <UniqueIdentifier>{b52e0113-30df-4097-badb-4b0eec40c9e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ObjectData">
+      <UniqueIdentifier>{79e1c725-f126-4abb-86f8-8916a8b5d0b3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -46,6 +52,12 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files\Application</Filter>
     </ClCompile>
+    <ClCompile Include="ShaderController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Source Files\ObjectData</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Input.h">
@@ -69,12 +81,24 @@
     <ClInclude Include="Camera.h">
       <Filter>Header Files\Application</Filter>
     </ClInclude>
+    <ClInclude Include="ShaderController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Header Files\ObjectData</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="ColorVertexShader.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
     <FxCompile Include="ColorPixelShader.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="PixelShader.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="VertexShader.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
   </ItemGroup>
