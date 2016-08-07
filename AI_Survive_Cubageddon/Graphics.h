@@ -5,7 +5,6 @@
 
 #include "Camera.h"
 #include "Model.h"
-#include "ColorShader.h"
 #include "ShaderController.h"
 
 const bool FULL_SCREEN = false;
