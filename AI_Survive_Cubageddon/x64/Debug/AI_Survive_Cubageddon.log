@@ -1,11 +1,4 @@
-﻿  System.cpp
-  Model.cpp
-  main.cpp
-  Graphics.cpp
-  ColorShader.cpp
-  Generating Code...
-  Compiling...
-  DirectX3D.cpp
-e:\dropbox\personal\projects\directx11\ai_survive_cubageddon\ai_survive_cubageddon\directx3d.cpp(69): warning C4018: '<': signed/unsigned mismatch
+﻿  Graphics.cpp
+  Camera.cpp
   Generating Code...
   AI_Survive_Cubageddon.vcxproj -> E:\Dropbox\Personal\Projects\DirectX11\AI_Survive_Cubageddon\x64\Debug\AI_Survive_Cubageddon.exe

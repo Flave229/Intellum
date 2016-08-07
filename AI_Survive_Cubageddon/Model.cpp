@@ -126,7 +126,7 @@ void Model::ShutdownBuffers()
 
 void Model::RenderBuffers(ID3D11DeviceContext* deviceContext)
 {
-	unsigned int stride = sizeof(VertexType);;
+	unsigned int stride = sizeof(VertexType);
 	unsigned int offset = 0;
 
 	deviceContext->IASetVertexBuffers(0, 1, &_vertexBuffer, &stride, &offset);
