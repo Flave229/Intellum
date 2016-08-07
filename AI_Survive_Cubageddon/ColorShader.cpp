@@ -121,7 +121,7 @@ bool ColorShader::InitialiseShader(ID3D11Device* device, HWND hwnd, WCHAR* vsFil
 
 	// Constant Buffer description
 	matrixBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-	matrixBufferDesc.ByteWidth = sizeof(MatrixBufferType);
+	matrixBufferDesc.ByteWidth = sizeof(ConstantBuffer);
 	matrixBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	matrixBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	matrixBufferDesc.MiscFlags = 0;
@@ -189,7 +189,7 @@ bool ColorShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATR
 {
 	HRESULT result;
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	MatrixBufferType* dataPtr;
+	ConstantBuffer* dataPtr;
 	unsigned int bufferNumber;
 
 	worldMatrix = XMMatrixTranspose(worldMatrix);
@@ -199,7 +199,7 @@ bool ColorShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATR
 	result = deviceContext->Map(_matrixBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	if (FAILED(result)) return false;
 
-	dataPtr = (MatrixBufferType*)mappedResource.pData;
+	dataPtr = static_cast<ConstantBuffer*>(mappedResource.pData);
 
 	dataPtr->world = worldMatrix;
 	dataPtr->view = viewMatrix;
@@ -212,4 +212,14 @@ bool ColorShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATR
 	deviceContext->VSSetConstantBuffers(bufferNumber, 1, &_matrixBuffer);
 
 	return true;
+}
+
+void ColorShader::RenderShader(ID3D11DeviceContext* deviceContext, int indexCount)
+{
+	deviceContext->IASetInputLayout(_layout);
+
+	deviceContext->VSSetShader(_vertexShader, nullptr, 0);
+	deviceContext->PSSetShader(_pixelShader, nullptr, 0);
+
+	deviceContext->DrawIndexed(indexCount, 0, 0);
 }
