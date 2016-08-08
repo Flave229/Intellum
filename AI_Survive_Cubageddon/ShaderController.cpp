@@ -15,7 +15,7 @@ ShaderController::~ShaderController()
 
 bool ShaderController::Initialise(ID3D11Device* device, HWND hwnd)
 {
-	bool result = InitialiseShader(device, hwnd, L"VertexShader.hlsl", L"PixelShader.hlsl");
+	bool result = InitialiseShader(device, hwnd, L"shaders/VertexShader.hlsl", L"shaders/PixelShader.hlsl");
 	if (!result) return false;
 
 	return true;
