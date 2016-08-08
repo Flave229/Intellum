@@ -1,10 +1,10 @@
 #include "Graphics.h"
 
-Graphics::Graphics(): _direct3D(nullptr), _camera(nullptr), _model(nullptr), _shader(nullptr)
+Graphics::Graphics(): _direct3D(nullptr), _camera(nullptr), _model(nullptr), _shader(nullptr), _light(nullptr)
 {
 }
 
-Graphics::Graphics(const Graphics& other) : _direct3D(other._direct3D), _camera(other._camera), _model(other._model), _shader(other._shader)
+Graphics::Graphics(const Graphics& other) : _direct3D(other._direct3D), _camera(other._camera), _model(other._model), _shader(other._shader), _light(other._light)
 {
 }
 
@@ -34,7 +34,7 @@ bool Graphics::Initialise(int screenWidth, int screenHeight, HWND hwnd)
 	_model = new Model;
 	if (!_model) return false;
 
-	result = _model->Initialise(_direct3D->GetDevice(), _direct3D->GetDeviceContext(), "data/images/stone.tga");
+	result = _model->Initialise(_direct3D->GetDevice(), _direct3D->GetDeviceContext(), "data/images/stone.tga", "data/models/Cube.txt");
 	if (!result)
 	{
 		MessageBox(hwnd, L"Could not initialise the model object", L"Error", MB_OK);
@@ -50,6 +50,12 @@ bool Graphics::Initialise(int screenWidth, int screenHeight, HWND hwnd)
 		MessageBox(hwnd, L"Could not initialise the shader class", L"Error", MB_OK);
 		return false;
 	}
+
+	_light = new Light;
+	if (!_light) return false;
+
+	_light->SetDiffuseColor(1.0f, 1.0f, 1.0f, 1.0f);
+	_light->SetDirection(0.0f, 0.0f, 1.0f);
 
 	return true;
 }
@@ -82,14 +88,29 @@ void Graphics::Shutdown()
 		delete _camera;
 		_camera = nullptr;
 	}
+
+	if (_light)
+	{
+		delete _light;
+		_light = nullptr;
+	}
 }
 
 bool Graphics::Frame()
 {
-	return Render();
+	static float rotation = 0.0f;
+
+	rotation += static_cast<float>(XM_PI) * 0.01f;
+
+	if (rotation > 360.0f)
+	{
+		rotation -= 360.0f;
+	}
+
+	return Render(rotation);
 }
 
-bool Graphics::Render()
+bool Graphics::Render(float rotation)
 {
 	XMMATRIX worldMatrix;
 	XMMATRIX viewMatrix;
@@ -104,9 +125,11 @@ bool Graphics::Render()
 	_camera->GetViewMatrix(viewMatrix);
 	_direct3D->GetProjectionMatrix(projectionMatrix);
 
+	worldMatrix *= XMMatrixRotationY(rotation);
+
 	_model->Render(_direct3D->GetDeviceContext());
 
-	result = _shader->Render(_direct3D->GetDeviceContext(), _model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, _model->GetTexture());
+	result = _shader->Render(_direct3D->GetDeviceContext(), _model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, _model->GetTexture(), _light->GetDirection(), _light->GetDiffuseColor());
 	if (!result) return false;
 
 	_direct3D->EndScene();

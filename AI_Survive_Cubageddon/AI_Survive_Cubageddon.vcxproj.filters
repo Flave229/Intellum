@@ -28,6 +28,12 @@
     <Filter Include="Source Files\ObjectData">
       <UniqueIdentifier>{79e1c725-f126-4abb-86f8-8916a8b5d0b3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Data">
+      <UniqueIdentifier>{d85501cd-7000-40f6-97f8-dd6b24c9ccea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Data\Models">
+      <UniqueIdentifier>{8aae2deb-a18b-41e2-8e4e-2bd705109fdc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -53,6 +59,9 @@
       <Filter>Source Files\ObjectData</Filter>
     </ClCompile>
     <ClCompile Include="ShaderController.cpp">
+      <Filter>Source Files\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Light.cpp">
       <Filter>Source Files\Application</Filter>
     </ClCompile>
   </ItemGroup>
@@ -81,6 +90,9 @@
     <ClInclude Include="ShaderController.h">
       <Filter>Header Files\Application</Filter>
     </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>Header Files\Application</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="PixelShader.hlsl">
@@ -89,5 +101,10 @@
     <FxCompile Include="VertexShader.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="data\models\Cube.txt">
+      <Filter>Data\Models</Filter>
+    </Text>
   </ItemGroup>
 </Project>

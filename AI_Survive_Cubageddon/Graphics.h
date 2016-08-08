@@ -6,6 +6,7 @@
 #include "Camera.h"
 #include "Model.h"
 #include "ShaderController.h"
+#include "Light.h"
 
 const bool FULL_SCREEN = false;
 const bool VSYNC_ENABLED = true;
@@ -21,10 +22,11 @@ private:
 	Camera* _camera;
 	Model* _model;
 	ShaderController* _shader;
-	
+	Light* _light;
+
 // Function Declarations
 private:
-	bool Render();
+	bool Render(float);
 public:
 	Graphics();
 	Graphics(const Graphics&);

@@ -11,8 +11,7 @@ using namespace std;
 
 class ShaderController
 {
-// Member Level Variables
-private:
+// Structures
 	struct ConstantBuffer
 	{
 		XMMATRIX world;
@@ -20,11 +19,21 @@ private:
 		XMMATRIX projection;
 	};
 
+	struct LightBuffer
+	{
+		XMFLOAT4 diffuseColor;
+		XMFLOAT3 lightDirection;
+		float padding;
+	};
+
+// Member Level Variables
+private:
 	ID3D11VertexShader* _vertexShader;
 	ID3D11PixelShader* _pixelShader;
 	ID3D11InputLayout* _layout;
 	ID3D11Buffer* _matrixBuffer;
 	ID3D11SamplerState* _sampleState;
+	ID3D11Buffer* _lightBuffer;
 
 // Function Declarations
 private:
@@ -32,7 +41,7 @@ private:
 	void ShutdownShader();
 	void OutputShaderErrorMessage(ID3D10Blob*, HWND, WCHAR*);
 
-	bool SetShaderParameters(ID3D11DeviceContext*, XMMATRIX, XMMATRIX, XMMATRIX, ID3D11ShaderResourceView*);
+	bool SetShaderParameters(ID3D11DeviceContext*, XMMATRIX, XMMATRIX, XMMATRIX, ID3D11ShaderResourceView*, XMFLOAT3, XMFLOAT4);
 	void RenderShader(ID3D11DeviceContext*, int);
 public:
 	ShaderController();
@@ -41,7 +50,7 @@ public:
 
 	bool Initialise(ID3D11Device*, HWND);
 	void Shutdown();
-	bool Render(ID3D11DeviceContext*, int, XMMATRIX, XMMATRIX, XMMATRIX, ID3D11ShaderResourceView*);
+	bool Render(ID3D11DeviceContext*, int, XMMATRIX, XMMATRIX, XMMATRIX, ID3D11ShaderResourceView*, XMFLOAT3, XMFLOAT4);
 };
 
 #endif
