@@ -1,10 +1,10 @@
 #include "Model.h"
 
-Model::Model(): _vertexBuffer(nullptr), _indexBuffer(nullptr), _vertexCount(0), _indexCount(0), _texture(nullptr), _modelType(nullptr)
+Model::Model(): _geometry(new Geometry), _texture(nullptr), _modelType(nullptr)
 {
 }
 
-Model::Model(const Model& other) : _vertexBuffer(other._vertexBuffer), _indexBuffer(other._indexBuffer), _vertexCount(other._vertexCount), _indexCount(other._indexCount), _texture(other._texture), _modelType(other._modelType)
+Model::Model(const Model& other) : _geometry(other._geometry), _texture(other._texture), _modelType(other._modelType)
 {
 }
 
@@ -42,7 +42,7 @@ void Model::Render(ID3D11DeviceContext* deviceContext)
 
 int Model::GetIndexCount()
 {
-	return _indexCount;
+	return _geometry->IndexCount;
 }
 
 ID3D11ShaderResourceView* Model::GetTexture()
@@ -60,14 +60,14 @@ bool Model::InitialiseBuffers(ID3D11Device* device)
 	D3D11_SUBRESOURCE_DATA vertexData;
 	D3D11_SUBRESOURCE_DATA indexData;
 
-	vertices = new VertexType[_vertexCount];
+	vertices = new VertexType[_geometry->VertexCount];
 	if (!vertices) return false;
 
-	indices = new unsigned long[_indexCount];
+	indices = new unsigned long[_geometry->IndexCount];
 	if (!indices) return false;
 
 	// Load vertex and index array
-	for (int i = 0; i < _vertexCount; i++)
+	for (int i = 0; i < _geometry->VertexCount; i++)
 	{
 		vertices[i].position = XMFLOAT3(_modelType[i].x, _modelType[i].y, _modelType[i].z);
 		vertices[i].texture = XMFLOAT2(_modelType[i].tu, _modelType[i].tv);
@@ -78,7 +78,7 @@ bool Model::InitialiseBuffers(ID3D11Device* device)
 
 	// Setup description for the Vertex Buffer
 	vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	vertexBufferDesc.ByteWidth = sizeof(VertexType) * _vertexCount;
+	vertexBufferDesc.ByteWidth = sizeof(VertexType) * _geometry->VertexCount;
 	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	vertexBufferDesc.CPUAccessFlags = 0;
 	vertexBufferDesc.MiscFlags = 0;
@@ -88,12 +88,12 @@ bool Model::InitialiseBuffers(ID3D11Device* device)
 	vertexData.SysMemPitch = 0;
 	vertexData.SysMemSlicePitch = 0;
 
-	result = device->CreateBuffer(&vertexBufferDesc, &vertexData, &_vertexBuffer);
+	result = device->CreateBuffer(&vertexBufferDesc, &vertexData, &_geometry->VertexBuffer);
 	if (FAILED(result)) return false;
 
 	// Setup description for the Index Buffer
 	indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	indexBufferDesc.ByteWidth = sizeof(unsigned long) * _indexCount;
+	indexBufferDesc.ByteWidth = sizeof(unsigned long) * _geometry->IndexCount;
 	indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	indexBufferDesc.CPUAccessFlags = 0;
 	indexBufferDesc.MiscFlags = 0;
@@ -103,7 +103,7 @@ bool Model::InitialiseBuffers(ID3D11Device* device)
 	indexData.SysMemPitch = 0;
 	indexData.SysMemSlicePitch = 0;
 
-	result = device->CreateBuffer(&indexBufferDesc, &indexData, &_indexBuffer);
+	result = device->CreateBuffer(&indexBufferDesc, &indexData, &_geometry->IndexBuffer);
 	if (FAILED(result)) return false;
 
 	delete[] vertices;
@@ -117,16 +117,11 @@ bool Model::InitialiseBuffers(ID3D11Device* device)
 
 void Model::ShutdownBuffers()
 {
-	if(_indexBuffer)
+	if(_geometry)
 	{
-		_indexBuffer->Release();
-		_indexBuffer = nullptr;
-	}
-
-	if (_vertexBuffer)
-	{
-		_vertexBuffer->Release();
-		_vertexBuffer = nullptr;
+		_geometry->Shutdown();
+		delete _geometry;
+		_geometry = nullptr;
 	}
 }
 
@@ -135,8 +130,8 @@ void Model::RenderBuffers(ID3D11DeviceContext* deviceContext)
 	unsigned int stride = sizeof(VertexType);
 	unsigned int offset = 0;
 
-	deviceContext->IASetVertexBuffers(0, 1, &_vertexBuffer, &stride, &offset);
-	deviceContext->IASetIndexBuffer(_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
+	deviceContext->IASetVertexBuffers(0, 1, &_geometry->VertexBuffer, &stride, &offset);
+	deviceContext->IASetIndexBuffer(_geometry->IndexBuffer, DXGI_FORMAT_R32_UINT, 0);
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 
@@ -178,10 +173,10 @@ bool Model::LoadModel(char* fileName)
 		fin.get(input);
 	}
 
-	fin >> _vertexCount;
-	_indexCount = _vertexCount;
+	fin >> _geometry->VertexCount;
+	_geometry->IndexCount = _geometry->VertexCount;
 
-	_modelType = new ModelType[_vertexCount];
+	_modelType = new ModelType[_geometry->VertexCount];
 	if (!_modelType) return false;
 
 	fin.get(input);
@@ -194,7 +189,7 @@ bool Model::LoadModel(char* fileName)
 	fin.get(input);
 	fin.get(input);
 
-	for (int i = 0; i < _vertexCount; i++)
+	for (int i = 0; i < _geometry->VertexCount; i++)
 	{
 		fin >> _modelType[i].x >> _modelType[i].y >> _modelType[i].z;
 		fin >> _modelType[i].tu >> _modelType[i].tv;

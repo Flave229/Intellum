@@ -10,6 +10,8 @@
 #include <map>			//For fast searching when re-creating the index buffer
 #include <d3d11.h>
 
+#include "../Geometry.h"
+
 using namespace DirectX;
 
 struct SimpleVertex
@@ -22,20 +24,6 @@ struct SimpleVertex
 	{
 		return memcmp((void*)this, (void*)&other, sizeof(SimpleVertex)) > 0;
 	};
-};
-
-struct Geometry
-{
-	ID3D11Buffer * VertexBuffer;
-	ID3D11Buffer * IndexBuffer;
-
-	UINT VBStride;
-	UINT VBOffset;
-	UINT IndexCount;
-
-	float width;
-	float height;
-	float depth;
 };
 
 namespace OBJLoader

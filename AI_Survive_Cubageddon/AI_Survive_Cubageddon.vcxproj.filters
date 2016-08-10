@@ -37,6 +37,9 @@
     <Filter Include="Loaders">
       <UniqueIdentifier>{a01117b5-9711-41f7-be71-de050ec14a6a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{f8ef330d-183a-411e-9f0e-59d9108296d9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -101,6 +104,9 @@
     </ClInclude>
     <ClInclude Include="loaders\OBJLoader.h">
       <Filter>Loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry.h">
+      <Filter>Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

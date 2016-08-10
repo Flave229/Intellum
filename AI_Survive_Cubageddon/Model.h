@@ -7,6 +7,7 @@
 #include <fstream>
 
 #include "Texture.h"
+#include "Geometry.h"
 
 using namespace DirectX;
 using namespace std;
@@ -30,10 +31,7 @@ class Model
 
 // Member Level Variables
 private:
-	ID3D11Buffer* _vertexBuffer;
-	ID3D11Buffer* _indexBuffer;
-	int _vertexCount;
-	int _indexCount;
+	Geometry* _geometry;
 
 	Texture* _texture;
 	ModelType* _modelType;
