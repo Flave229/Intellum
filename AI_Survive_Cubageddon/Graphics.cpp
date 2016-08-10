@@ -54,8 +54,9 @@ bool Graphics::Initialise(int screenWidth, int screenHeight, HWND hwnd)
 	_light = new Light;
 	if (!_light) return false;
 
+	_light->SetAmbientColor(0.15f, 0.15f, 0.15f, 1.0f);
 	_light->SetDiffuseColor(1.0f, 1.0f, 1.0f, 1.0f);
-	_light->SetDirection(0.0f, 0.0f, 1.0f);
+	_light->SetDirection(0.8f, 0.0f, 0.2f);
 
 	return true;
 }
@@ -100,7 +101,7 @@ bool Graphics::Frame()
 {
 	static float rotation = 0.0f;
 
-	rotation += static_cast<float>(XM_PI) * 0.001f;
+	rotation += static_cast<float>(XM_PI) * 0.005f;
 
 	if (rotation > 360.0f)
 	{
@@ -129,7 +130,7 @@ bool Graphics::Render(float rotation)
 
 	_model->Render(_direct3D->GetDeviceContext());
 
-	result = _shader->Render(_direct3D->GetDeviceContext(), _model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, _model->GetTexture(), _light->GetDirection(), _light->GetDiffuseColor());
+	result = _shader->Render(_direct3D->GetDeviceContext(), _model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, _model->GetTexture(), _light->GetDirection(), _light->GetAmbientColor(), _light->GetDiffuseColor());
 	if (!result) return false;
 
 	_direct3D->EndScene();
