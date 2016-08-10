@@ -73,6 +73,9 @@
     <ClCompile Include="loaders\OBJLoader.cpp">
       <Filter>Loaders</Filter>
     </ClCompile>
+    <ClCompile Include="engine\GameTimer.cpp">
+      <Filter>Header Files\Application</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Input.h">
@@ -107,6 +110,9 @@
     </ClInclude>
     <ClInclude Include="Geometry.h">
       <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\GameTimer.h">
+      <Filter>Header Files\Application</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

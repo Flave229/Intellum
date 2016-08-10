@@ -57,6 +57,9 @@ void System::Run()
 	bool result;
 
 	ZeroMemory(&msg, sizeof(MSG));
+	GameTimer* timer = new GameTimer();
+
+	timer->Reset();
 
 	while(!done)
 	{
@@ -69,7 +72,9 @@ void System::Run()
 		// Handles application exit if Windows ends application
 		if (msg.message != WM_QUIT)
 		{
-			result = Frame();
+			timer->Tick();
+
+			result = Frame(timer->DeltaTime());
 			if (!result) done = true;
 		}
 		else
@@ -79,13 +84,13 @@ void System::Run()
 	}
 }
 
-bool System::Frame()
+bool System::Frame(float delta)
 {
 	bool result;
 
 	if (_input->IsKeyDown(VK_ESCAPE)) return false;
 
-	result = _graphics->Frame();
+	result = _graphics->Frame(delta);
 
 	if (!result) return false;
 

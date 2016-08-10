@@ -99,11 +99,11 @@ void Graphics::Shutdown()
 	}
 }
 
-bool Graphics::Frame()
+bool Graphics::Frame(float delta)
 {
 	static float rotation = 0.0f;
 
-	rotation += static_cast<float>(XM_PI) * 0.005f;
+	rotation += static_cast<float>(XM_PI) * 0.5f * delta;
 
 	if (rotation > 360.0f)
 	{

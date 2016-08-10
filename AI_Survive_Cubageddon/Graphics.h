@@ -34,7 +34,7 @@ public:
 
 	bool Initialise(int, int, HWND);
 	void Shutdown();
-	bool Frame();
+	bool Frame(float);
 };
 
 #endif

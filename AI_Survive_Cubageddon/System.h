@@ -5,6 +5,7 @@
 #include <windows.h>
 #include "Input.h"
 #include "Graphics.h"
+#include "engine/GameTimer.h"
 
 class System
 {
@@ -14,11 +15,13 @@ private:
 	HINSTANCE _hInstance;
 	HWND _hwnd;
 
+	GameTimer* _timer;
+
 	Input* _input;
 	Graphics* _graphics;
 // Function Declarations
 private:
-	bool Frame();
+	bool Frame(float delta);
 	void InitialiseWindows(int&, int&);
 	void ShutdownWindows();
 public:
