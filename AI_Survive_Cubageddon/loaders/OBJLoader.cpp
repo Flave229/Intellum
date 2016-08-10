@@ -252,25 +252,22 @@ Geometry OBJLoader::Load(char* filename, ID3D11Device* _pd3dDevice, bool invertT
 	else
 	{
 		Geometry meshData;
-		UINT numVertices;
-		UINT numIndices;
 
 		//Read in array sizes
-		binaryInFile.read(reinterpret_cast<char*>(&numVertices), sizeof(UINT));
-		binaryInFile.read(reinterpret_cast<char*>(&numIndices), sizeof(UINT));
+		binaryInFile.read(reinterpret_cast<char*>(&meshData.VertexCount), sizeof(meshData.VertexCount));
+		binaryInFile.read(reinterpret_cast<char*>(&meshData.IndexCount), sizeof(meshData.IndexCount));
 		
 		//Read in data from binary file
-		VertexType* finalVerts = new VertexType[numVertices];
-		unsigned long* indices = new unsigned long[numIndices];
-		binaryInFile.read(reinterpret_cast<char*>(finalVerts), sizeof(VertexType) * numVertices);
-		binaryInFile.read(reinterpret_cast<char*>(indices), sizeof(unsigned long) * numIndices);
+		VertexType* finalVerts = new VertexType[meshData.VertexCount];
+		unsigned long* indices = new unsigned long[meshData.IndexCount];
+		binaryInFile.read(reinterpret_cast<char*>(finalVerts), sizeof(VertexType) * meshData.VertexCount);
+		binaryInFile.read(reinterpret_cast<char*>(indices), sizeof(unsigned long) * meshData.IndexCount);
 
 		// Setup description for the Vertex Buffer
 		D3D11_BUFFER_DESC vertexBufferDesc;
 		D3D11_SUBRESOURCE_DATA vertexData;
-		ID3D11Buffer* vertexBuffer;
 		vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-		vertexBufferDesc.ByteWidth = sizeof(VertexType) * numVertices;
+		vertexBufferDesc.ByteWidth = sizeof(VertexType) * meshData.VertexCount;
 		vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 		vertexBufferDesc.CPUAccessFlags = 0;
 		vertexBufferDesc.MiscFlags = 0;
@@ -280,20 +277,17 @@ Geometry OBJLoader::Load(char* filename, ID3D11Device* _pd3dDevice, bool invertT
 		vertexData.SysMemPitch = 0;
 		vertexData.SysMemSlicePitch = 0;
 
-		_pd3dDevice->CreateBuffer(&vertexBufferDesc, &vertexData, &vertexBuffer);
+		_pd3dDevice->CreateBuffer(&vertexBufferDesc, &vertexData, &meshData.VertexBuffer);
 
-		meshData.VertexCount = numVertices;
-		meshData.VertexBuffer = vertexBuffer;
 		meshData.VBOffset = 0;
 		meshData.VBStride = sizeof(VertexType);
 
 		// Setup description for the Index Buffer
 		D3D11_BUFFER_DESC indexBufferDesc;
-		ID3D11Buffer* indexBuffer;
 		D3D11_SUBRESOURCE_DATA indexData;
 
 		indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-		indexBufferDesc.ByteWidth = sizeof(unsigned long) * numIndices;
+		indexBufferDesc.ByteWidth = sizeof(unsigned long) * meshData.IndexCount;
 		indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
 		indexBufferDesc.CPUAccessFlags = 0;
 		indexBufferDesc.MiscFlags = 0;
@@ -303,10 +297,7 @@ Geometry OBJLoader::Load(char* filename, ID3D11Device* _pd3dDevice, bool invertT
 		indexData.SysMemPitch = 0;
 		indexData.SysMemSlicePitch = 0;
 
-		_pd3dDevice->CreateBuffer(&indexBufferDesc, &indexData, &indexBuffer);
-
-		meshData.IndexCount = numIndices;
-		meshData.IndexBuffer = indexBuffer;
+		_pd3dDevice->CreateBuffer(&indexBufferDesc, &indexData, &meshData.IndexBuffer);
 
 		float lowestX = finalVerts[0].position.x;
 		float highestX = finalVerts[0].position.x;
@@ -315,7 +306,7 @@ Geometry OBJLoader::Load(char* filename, ID3D11Device* _pd3dDevice, bool invertT
 		float lowestZ = finalVerts[0].position.z;
 		float highestZ = finalVerts[0].position.z;
 
-		for (int i = 0; i < numVertices; i++) {
+		for (int i = 0; i < meshData.VertexCount; i++) {
 			if (finalVerts[i].position.x < lowestX) {
 				lowestX = finalVerts[i].position.x;
 			}
