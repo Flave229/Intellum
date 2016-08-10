@@ -34,6 +34,9 @@
     <Filter Include="Data\Models">
       <UniqueIdentifier>{8aae2deb-a18b-41e2-8e4e-2bd705109fdc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Loaders">
+      <UniqueIdentifier>{a01117b5-9711-41f7-be71-de050ec14a6a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -64,6 +67,9 @@
     <ClCompile Include="Light.cpp">
       <Filter>Source Files\Application</Filter>
     </ClCompile>
+    <ClCompile Include="loaders\OBJLoader.cpp">
+      <Filter>Loaders</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Input.h">
@@ -92,6 +98,9 @@
     </ClInclude>
     <ClInclude Include="Light.h">
       <Filter>Header Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="loaders\OBJLoader.h">
+      <Filter>Loaders</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
