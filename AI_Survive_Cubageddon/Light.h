@@ -11,7 +11,10 @@ class Light
 private:
 	XMFLOAT4 _ambientColor;
 	XMFLOAT4 _diffuseColor;
+	XMFLOAT4 _specularColor;
+
 	XMFLOAT3 _direction;
+	float _specularPower;
 
 // Function Declarations
 public:
@@ -21,11 +24,17 @@ public:
 
 	void SetAmbientColor(float, float, float, float);
 	void SetDiffuseColor(float, float, float, float);
+	void SetSpecularColor(float, float, float, float);
+
 	void SetDirection(float, float, float);
+	void SetSpecularPower(float);
 
 	XMFLOAT4 GetAmbientColor();
 	XMFLOAT4 GetDiffuseColor();
+	XMFLOAT4 GetSpecularColor();
+
 	XMFLOAT3 GetDirection();
+	float GetSpecularPower();
 };
 
 #endif

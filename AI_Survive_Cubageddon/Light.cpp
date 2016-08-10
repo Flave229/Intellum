@@ -22,9 +22,19 @@ void Light::SetDiffuseColor(float red, float green, float blue, float alpha)
 	_diffuseColor = XMFLOAT4(red, green, blue, alpha);
 }
 
+void Light::SetSpecularColor(float red, float green, float blue, float alpha)
+{
+	_specularColor = XMFLOAT4(red, green, blue, alpha);
+}	
+
 void Light::SetDirection(float x, float y, float z)
 {
 	_direction = XMFLOAT3(x, y, z);
+}
+
+void Light::SetSpecularPower(float power)
+{
+	_specularPower = power;
 }
 
 XMFLOAT4 Light::GetAmbientColor()
@@ -37,7 +47,17 @@ XMFLOAT4 Light::GetDiffuseColor()
 	return _diffuseColor;
 }
 
+XMFLOAT4 Light::GetSpecularColor()
+{
+	return _specularColor;
+}
+
 XMFLOAT3 Light::GetDirection()
 {
 	return _direction;
+}
+
+float Light::GetSpecularPower()
+{
+	return _specularPower;
 }

@@ -5,6 +5,12 @@ cbuffer MatrixBuffer
 	matrix projectionMatrix;
 };
 
+cbuffer CameraBuffer
+{
+	float3 cameraPosition;
+	float padding;
+};
+
 struct VertexInputType
 {
 	float4 position : POSITION;
@@ -17,6 +23,7 @@ struct VertexOutputType
 	float4 position : SV_POSITION;
 	float2 tex : TEXCOORD0;
 	float3 normal : NORMAL;
+	float3 viewDirection : TEXCOORD1;
 };
 
 VertexOutputType DefaultVertexShader(VertexInputType input)
@@ -32,8 +39,12 @@ VertexOutputType DefaultVertexShader(VertexInputType input)
 	output.tex = input.tex;
 
 	output.normal = mul(input.normal, (float3x3)worldMatrix);
-
 	output.normal = normalize(output.normal);
+
+	float4 worldPosition = mul(input.position, worldMatrix);
+
+	output.viewDirection = cameraPosition.xyz - worldPosition.xyz;
+	output.viewDirection = normalize(output.viewDirection);
 
 	return output;
 }
