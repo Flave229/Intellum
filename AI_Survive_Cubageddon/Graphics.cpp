@@ -34,7 +34,7 @@ bool Graphics::Initialise(int screenWidth, int screenHeight, HWND hwnd)
 	_model = new Model;
 	if (!_model) return false;
 
-	result = _model->Initialise(_direct3D->GetDevice(), _direct3D->GetDeviceContext(), "data/images/stone.tga", "data/models/Cube.txt");
+	result = _model->Initialise(_direct3D->GetDevice(), _direct3D->GetDeviceContext(), "data/images/stone.tga", "data/models/sphere.obj");
 	if (!result)
 	{
 		MessageBox(hwnd, L"Could not initialise the model object", L"Error", MB_OK);
@@ -100,7 +100,7 @@ bool Graphics::Frame()
 {
 	static float rotation = 0.0f;
 
-	rotation += static_cast<float>(XM_PI) * 0.01f;
+	rotation += static_cast<float>(XM_PI) * 0.001f;
 
 	if (rotation > 360.0f)
 	{

@@ -122,4 +122,9 @@
       <Filter>Shaders</Filter>
     </FxCompile>
   </ItemGroup>
+  <ItemGroup>
+    <Object Include="data\models\sphere.obj">
+      <Filter>Data\Models</Filter>
+    </Object>
+  </ItemGroup>
 </Project>

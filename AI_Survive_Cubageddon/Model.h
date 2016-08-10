@@ -15,26 +15,26 @@ using namespace std;
 class Model
 {
 // Structures
-	struct VertexType
-	{
-		XMFLOAT3 position;
-		XMFLOAT2 texture;
-		XMFLOAT3 normal;
-	};
+//	struct VertexType
+//	{
+//		XMFLOAT3 position;
+//		XMFLOAT2 texture;
+//		XMFLOAT3 normal;
+//	};
 
-	struct ModelType
-	{
-		float x, y, z;
-		float tu, tv;
-		float nx, ny, nz;
-	};
+//	struct ModelType
+//	{
+//		float x, y, z;
+//		float tu, tv;
+//		float nx, ny, nz;
+//	};
 
 // Member Level Variables
 private:
 	Geometry* _geometry;
-
 	Texture* _texture;
-	ModelType* _modelType;
+
+//	ModelType* _modelType;
 
 // Function Declarations
 private:
@@ -45,7 +45,7 @@ private:
 	bool LoadTexture(ID3D11Device*, ID3D11DeviceContext*, char*);
 	void ReleaseTexture();
 
-	bool LoadModel(char*);
+	bool LoadModel(ID3D11Device*, char*);
 	void ReleaseModel();
 public:
 	Model();

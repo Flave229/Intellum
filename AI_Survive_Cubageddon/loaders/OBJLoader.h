@@ -14,15 +14,27 @@
 
 using namespace DirectX;
 
-struct SimpleVertex
-{
-	XMFLOAT3 Pos;
-	XMFLOAT3 Normal;
-	XMFLOAT2 Tex2;
+//struct SimpleVertex
+//{
+//	XMFLOAT3 position;
+//	XMFLOAT2 texture;
+//	XMFLOAT3 normal;
+//
+//	bool operator<(const SimpleVertex other) const
+//	{
+//		return memcmp((void*)this, (void*)&other, sizeof(SimpleVertex)) > 0;
+//	};
+//};
 
-	bool operator<(const SimpleVertex other) const
+struct VertexType
+{
+	XMFLOAT3 position;
+	XMFLOAT2 texture;
+	XMFLOAT3 normal;
+
+	bool operator<(const VertexType other) const
 	{
-		return memcmp((void*)this, (void*)&other, sizeof(SimpleVertex)) > 0;
+		return memcmp((void*)this, (void*)&other, sizeof(VertexType)) > 0;
 	};
 };
 
@@ -33,7 +45,7 @@ namespace OBJLoader
 
 	//Helper methods for the above method
 	//Searhes to see if a similar vertex already exists in the buffer -- if true, we re-use that index
-	bool FindSimilarVertex(const SimpleVertex& vertex, std::map<SimpleVertex, unsigned short>& vertToIndexMap, unsigned short& index);
+	bool FindSimilarVertex(const VertexType& vertex, std::map<VertexType, unsigned short>& vertToIndexMap, unsigned short& index);
 
 	//Re-creates a single index buffer from the 3 given in the OBJ file
 	void CreateIndices(const std::vector<XMFLOAT3>& inVertices, const std::vector<XMFLOAT2>& inTexCoords, const std::vector<XMFLOAT3>& inNormals, std::vector<unsigned short>& outIndices, std::vector<XMFLOAT3>& outVertices, std::vector<XMFLOAT2>& outTexCoords, std::vector<XMFLOAT3>& outNormals);

@@ -1,7 +1,7 @@
 #include "OBJLoader.h"
 #include <string>
 
-bool OBJLoader::FindSimilarVertex(const SimpleVertex& vertex, std::map<SimpleVertex, unsigned short>& vertToIndexMap, unsigned short& index)
+bool OBJLoader::FindSimilarVertex(const VertexType& vertex, std::map<VertexType, unsigned short>& vertToIndexMap, unsigned short& index)
 {
 	auto it = vertToIndexMap.find(vertex);
 	if(it == vertToIndexMap.end())
@@ -17,15 +17,15 @@ bool OBJLoader::FindSimilarVertex(const SimpleVertex& vertex, std::map<SimpleVer
 
 void OBJLoader::CreateIndices(const std::vector<XMFLOAT3>& inVertices, const std::vector<XMFLOAT2>& inTexCoords, const std::vector<XMFLOAT3>& inNormals, std::vector<unsigned short>& outIndices, std::vector<XMFLOAT3>& outVertices, std::vector<XMFLOAT2>& outTexCoords, std::vector<XMFLOAT3>& outNormals)
 {
-	//Mapping from an already-existing SimpleVertex to its corresponding index
-	std::map<SimpleVertex, unsigned short> vertToIndexMap;
+	//Mapping from an already-existing VertexType to its corresponding index
+	std::map<VertexType, unsigned short> vertToIndexMap;
 
-	std::pair<SimpleVertex, unsigned short> pair;
+	std::pair<VertexType, unsigned short> pair;
 
 	int numVertices = inVertices.size();
 	for(int i = 0; i < numVertices; ++i) //For each vertex
 	{
-		SimpleVertex vertex = { inVertices[i], inNormals[i],  inTexCoords[i] }; 
+		VertexType vertex = { inVertices[i],  inTexCoords[i], inNormals[i] };
 
 		unsigned short index;
 		bool found = FindSimilarVertex(vertex, vertToIndexMap, index); //See if a vertex already exists in the buffer that has the same attributes as this one
@@ -35,9 +35,9 @@ void OBJLoader::CreateIndices(const std::vector<XMFLOAT3>& inVertices, const std
 		}
 		else //if not found, add it to the buffer
 		{
-			outVertices.push_back(vertex.Pos);
-			outTexCoords.push_back(vertex.Tex2);
-			outNormals.push_back(vertex.Normal);
+			outVertices.push_back(vertex.position);
+			outTexCoords.push_back(vertex.texture);
+			outNormals.push_back(vertex.normal);
 
 			unsigned short newIndex = (unsigned short)outVertices.size() - 1;
 			outIndices.push_back(newIndex);
@@ -182,13 +182,13 @@ Geometry OBJLoader::Load(char* filename, ID3D11Device* _pd3dDevice, bool invertT
 			Geometry meshData;
 
 			//Turn data from vector form to arrays
-			SimpleVertex* finalVerts = new SimpleVertex[meshVertices.size()];
+			VertexType* finalVerts = new VertexType[meshVertices.size()];
 			unsigned int numMeshVertices = meshVertices.size();
 			for(unsigned int i = 0; i < numMeshVertices; ++i)
 			{
-				finalVerts[i].Pos = meshVertices[i];
-				finalVerts[i].Normal = meshNormals[i];
-				finalVerts[i].Tex2 = meshTexCoords[i];
+				finalVerts[i].position = meshVertices[i];
+				finalVerts[i].normal = meshNormals[i];
+				finalVerts[i].texture = meshTexCoords[i];
 			}
 
 			//Put data into vertex and index buffers, then pass the relevant data to the MeshData object.
@@ -198,7 +198,7 @@ Geometry OBJLoader::Load(char* filename, ID3D11Device* _pd3dDevice, bool invertT
 			D3D11_BUFFER_DESC bd;
 			ZeroMemory(&bd, sizeof(bd));
 			bd.Usage = D3D11_USAGE_DEFAULT;
-			bd.ByteWidth = sizeof(SimpleVertex) * meshVertices.size();
+			bd.ByteWidth = sizeof(VertexType) * meshVertices.size();
 			bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 			bd.CPUAccessFlags = 0;
 
@@ -210,7 +210,7 @@ Geometry OBJLoader::Load(char* filename, ID3D11Device* _pd3dDevice, bool invertT
 
 			meshData.VertexBuffer = vertexBuffer;
 			meshData.VBOffset = 0;
-			meshData.VBStride = sizeof(SimpleVertex);
+			meshData.VBStride = sizeof(VertexType);
 
 			unsigned short* indicesArray = new unsigned short[meshIndices.size()];
 			unsigned int numMeshIndices = meshIndices.size();
@@ -223,7 +223,7 @@ Geometry OBJLoader::Load(char* filename, ID3D11Device* _pd3dDevice, bool invertT
 			std::ofstream outbin(binaryFilename.c_str(), std::ios::out | std::ios::binary);
 			outbin.write((char*)&numMeshVertices, sizeof(unsigned int));
 			outbin.write((char*)&numMeshIndices, sizeof(unsigned int));
-			outbin.write((char*)finalVerts, sizeof(SimpleVertex) * numMeshVertices);
+			outbin.write((char*)finalVerts, sizeof(VertexType) * numMeshVertices);
 			outbin.write((char*)indicesArray, sizeof(unsigned short) * numMeshIndices);
 			outbin.close();
 
@@ -252,82 +252,120 @@ Geometry OBJLoader::Load(char* filename, ID3D11Device* _pd3dDevice, bool invertT
 	else
 	{
 		Geometry meshData;
-		unsigned int numVertices;
-		unsigned int numIndices;
+		UINT numVertices;
+		UINT numIndices;
 
 		//Read in array sizes
-		binaryInFile.read((char*)&numVertices, sizeof(unsigned int));
-		binaryInFile.read((char*)&numIndices, sizeof(unsigned int));
+		binaryInFile.read((char*)&numVertices, sizeof(UINT));
+		binaryInFile.read((char*)&numIndices, sizeof(UINT));
 		
 		//Read in data from binary file
-		SimpleVertex* finalVerts = new SimpleVertex[numVertices];
-		unsigned short* indices = new unsigned short[numIndices];
-		binaryInFile.read((char*)finalVerts, sizeof(SimpleVertex) * numVertices);
-		binaryInFile.read((char*)indices, sizeof(unsigned short) * numIndices);
+		VertexType* finalVerts = new VertexType[numVertices];
+		unsigned long* indices = new unsigned long[numIndices];
+		binaryInFile.read((char*)finalVerts, sizeof(VertexType) * numVertices);
+		binaryInFile.read((char*)indices, sizeof(unsigned long) * numIndices);
 
-		//Put data into vertex and index buffers, then pass the relevant data to the MeshData object.
-		//The rest of the code will hopefully look familiar to you, as it's similar to whats in your InitVertexBuffer and InitIndexBuffer methods
+		// Setup description for the Vertex Buffer
+		D3D11_BUFFER_DESC vertexBufferDesc;
+		D3D11_SUBRESOURCE_DATA vertexData;
 		ID3D11Buffer* vertexBuffer;
+		vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+		vertexBufferDesc.ByteWidth = sizeof(VertexType) * numVertices;
+		vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+		vertexBufferDesc.CPUAccessFlags = 0;
+		vertexBufferDesc.MiscFlags = 0;
+		vertexBufferDesc.StructureByteStride = 0;
 
-		D3D11_BUFFER_DESC bd;
-		ZeroMemory(&bd, sizeof(bd));
-		bd.Usage = D3D11_USAGE_DEFAULT;
-		bd.ByteWidth = sizeof(SimpleVertex) * numVertices;
-		bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-		bd.CPUAccessFlags = 0;
+		vertexData.pSysMem = finalVerts;
+		vertexData.SysMemPitch = 0;
+		vertexData.SysMemSlicePitch = 0;
 
-		D3D11_SUBRESOURCE_DATA InitData;
-		ZeroMemory(&InitData, sizeof(InitData));
-		InitData.pSysMem = finalVerts;
+		_pd3dDevice->CreateBuffer(&vertexBufferDesc, &vertexData, &vertexBuffer);
 
-		_pd3dDevice->CreateBuffer(&bd, &InitData, &vertexBuffer);
+//		//Put data into vertex and index buffers, then pass the relevant data to the MeshData object.
+//		//The rest of the code will hopefully look familiar to you, as it's similar to whats in your InitVertexBuffer and InitIndexBuffer methods
+//		ID3D11Buffer* vertexBuffer;
+//
+//		D3D11_BUFFER_DESC bd;
+//		ZeroMemory(&bd, sizeof(bd));
+//		bd.Usage = D3D11_USAGE_DEFAULT;
+//		bd.ByteWidth = sizeof(VertexType) * numVertices;
+//		bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+//		bd.CPUAccessFlags = 0;
+//
+//		D3D11_SUBRESOURCE_DATA InitData;
+//		ZeroMemory(&InitData, sizeof(InitData));
+//		InitData.pSysMem = finalVerts;
+//
+//		_pd3dDevice->CreateBuffer(&bd, &InitData, &vertexBuffer);
 
+		meshData.VertexCount = numVertices;
 		meshData.VertexBuffer = vertexBuffer;
 		meshData.VBOffset = 0;
-		meshData.VBStride = sizeof(SimpleVertex);
+		meshData.VBStride = sizeof(VertexType);
 
+
+		// Setup description for the Index Buffer
+		D3D11_BUFFER_DESC indexBufferDesc;
 		ID3D11Buffer* indexBuffer;
+		D3D11_SUBRESOURCE_DATA indexData;
 
-		ZeroMemory(&bd, sizeof(bd));
-		bd.Usage = D3D11_USAGE_DEFAULT;
-		bd.ByteWidth = sizeof(WORD) * numIndices;     
-		bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
-		bd.CPUAccessFlags = 0;
+		indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+		indexBufferDesc.ByteWidth = sizeof(unsigned long) * numIndices;
+		indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+		indexBufferDesc.CPUAccessFlags = 0;
+		indexBufferDesc.MiscFlags = 0;
+		indexBufferDesc.StructureByteStride = 0;
 
-		ZeroMemory(&InitData, sizeof(InitData));
-		InitData.pSysMem = indices;
-		_pd3dDevice->CreateBuffer(&bd, &InitData, &indexBuffer);
+		indexData.pSysMem = indices;
+		indexData.SysMemPitch = 0;
+		indexData.SysMemSlicePitch = 0;
+
+		_pd3dDevice->CreateBuffer(&indexBufferDesc, &indexData, &indexBuffer);
+
+		//To Inspect
+//		ID3D11Buffer* indexBuffer;
+//
+//		ZeroMemory(&bd, sizeof(bd));
+//		bd.Usage = D3D11_USAGE_DEFAULT;
+//		bd.ByteWidth = sizeof(WORD) * numIndices;     
+//		bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
+//		bd.CPUAccessFlags = 0;
+//
+//		ZeroMemory(&InitData, sizeof(InitData));
+//		InitData.pSysMem = indices;
+//		_pd3dDevice->CreateBuffer(&bd, &InitData, &indexBuffer);
 
 		meshData.IndexCount = numIndices;
 		meshData.IndexBuffer = indexBuffer;
 
-		float lowestX = finalVerts[0].Pos.x;
-		float highestX = finalVerts[0].Pos.x;
-		float lowestY = finalVerts[0].Pos.y;
-		float highestY = finalVerts[0].Pos.y;
-		float lowestZ = finalVerts[0].Pos.z;
-		float highestZ = finalVerts[0].Pos.z;
+		float lowestX = finalVerts[0].position.x;
+		float highestX = finalVerts[0].position.x;
+		float lowestY = finalVerts[0].position.y;
+		float highestY = finalVerts[0].position.y;
+		float lowestZ = finalVerts[0].position.z;
+		float highestZ = finalVerts[0].position.z;
 
 		for (int i = 0; i < numVertices; i++) {
-			if (finalVerts[i].Pos.x < lowestX) {
-				lowestX = finalVerts[i].Pos.x;
+			if (finalVerts[i].position.x < lowestX) {
+				lowestX = finalVerts[i].position.x;
 			}
-			else if (finalVerts[i].Pos.x > highestX) {
-				highestX = finalVerts[i].Pos.x;
-			}
-
-			if (finalVerts[i].Pos.y < lowestY) {
-				lowestY = finalVerts[i].Pos.y;
-			}
-			else if (finalVerts[i].Pos.y > highestY) {
-				highestY = finalVerts[i].Pos.y;
+			else if (finalVerts[i].position.x > highestX) {
+				highestX = finalVerts[i].position.x;
 			}
 
-			if (finalVerts[i].Pos.z < lowestZ) {
-				lowestZ = finalVerts[i].Pos.z;
+			if (finalVerts[i].position.y < lowestY) {
+				lowestY = finalVerts[i].position.y;
 			}
-			else if (finalVerts[i].Pos.z > highestZ) {
-				highestZ = finalVerts[i].Pos.z;
+			else if (finalVerts[i].position.y > highestY) {
+				highestY = finalVerts[i].position.y;
+			}
+
+			if (finalVerts[i].position.z < lowestZ) {
+				lowestZ = finalVerts[i].position.z;
+			}
+			else if (finalVerts[i].position.z > highestZ) {
+				highestZ = finalVerts[i].position.z;
 			}
 		}
 
