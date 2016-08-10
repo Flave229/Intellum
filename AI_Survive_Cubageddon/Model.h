@@ -14,31 +14,13 @@ using namespace std;
 
 class Model
 {
-// Structures
-//	struct VertexType
-//	{
-//		XMFLOAT3 position;
-//		XMFLOAT2 texture;
-//		XMFLOAT3 normal;
-//	};
-
-//	struct ModelType
-//	{
-//		float x, y, z;
-//		float tu, tv;
-//		float nx, ny, nz;
-//	};
-
 // Member Level Variables
 private:
 	Geometry* _geometry;
 	Texture* _texture;
 
-//	ModelType* _modelType;
-
 // Function Declarations
 private:
-	bool InitialiseBuffers(ID3D11Device*);
 	void ShutdownBuffers();
 	void RenderBuffers(ID3D11DeviceContext*);
 
@@ -46,7 +28,6 @@ private:
 	void ReleaseTexture();
 
 	bool LoadModel(ID3D11Device*, char*);
-	void ReleaseModel();
 public:
 	Model();
 	Model(const Model&);
