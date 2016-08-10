@@ -39,7 +39,7 @@ void OBJLoader::CreateIndices(const std::vector<XMFLOAT3>& inVertices, const std
 			outTexCoords.push_back(vertex.texture);
 			outNormals.push_back(vertex.normal);
 
-			unsigned short newIndex = (unsigned short)outVertices.size() - 1;
+			unsigned short newIndex = static_cast<unsigned short>(outVertices.size()) - 1;
 			outIndices.push_back(newIndex);
 
 			//Add it to the map
@@ -139,9 +139,9 @@ Geometry OBJLoader::Load(char* filename, ID3D11Device* _pd3dDevice, bool invertT
 						afterSecondSlash = input.substr(secondSlash + 1); //The normal index
 
 						//Parse into int
-						vInd[i] = (unsigned short)atoi(beforeFirstSlash.c_str()); //atoi = "ASCII to int"
-						tInd[i] = (unsigned short)atoi(afterFirstSlash.c_str());
-						nInd[i] = (unsigned short)atoi(afterSecondSlash.c_str());
+						vInd[i] = static_cast<unsigned short>(atoi(beforeFirstSlash.c_str())); //atoi = "ASCII to int"
+						tInd[i] = static_cast<unsigned short>(atoi(afterFirstSlash.c_str()));
+						nInd[i] = static_cast<unsigned short>(atoi(afterSecondSlash.c_str()));
 					}
 
 					//Place into vectors
@@ -221,10 +221,10 @@ Geometry OBJLoader::Load(char* filename, ID3D11Device* _pd3dDevice, bool invertT
 
 			//Output data into binary file, the next time you run this function, the binary file will exist and will load that instead which is much quicker than parsing into vectors
 			std::ofstream outbin(binaryFilename.c_str(), std::ios::out | std::ios::binary);
-			outbin.write((char*)&numMeshVertices, sizeof(unsigned int));
-			outbin.write((char*)&numMeshIndices, sizeof(unsigned int));
-			outbin.write((char*)finalVerts, sizeof(VertexType) * numMeshVertices);
-			outbin.write((char*)indicesArray, sizeof(unsigned short) * numMeshIndices);
+			outbin.write(reinterpret_cast<char*>(&numMeshVertices), sizeof(unsigned int));
+			outbin.write(reinterpret_cast<char*>(&numMeshIndices), sizeof(unsigned int));
+			outbin.write(reinterpret_cast<char*>(finalVerts), sizeof(VertexType) * numMeshVertices);
+			outbin.write(reinterpret_cast<char*>(indicesArray), sizeof(unsigned short) * numMeshIndices);
 			outbin.close();
 
 			ID3D11Buffer* indexBuffer;
@@ -256,14 +256,14 @@ Geometry OBJLoader::Load(char* filename, ID3D11Device* _pd3dDevice, bool invertT
 		UINT numIndices;
 
 		//Read in array sizes
-		binaryInFile.read((char*)&numVertices, sizeof(UINT));
-		binaryInFile.read((char*)&numIndices, sizeof(UINT));
+		binaryInFile.read(reinterpret_cast<char*>(&numVertices), sizeof(UINT));
+		binaryInFile.read(reinterpret_cast<char*>(&numIndices), sizeof(UINT));
 		
 		//Read in data from binary file
 		VertexType* finalVerts = new VertexType[numVertices];
 		unsigned long* indices = new unsigned long[numIndices];
-		binaryInFile.read((char*)finalVerts, sizeof(VertexType) * numVertices);
-		binaryInFile.read((char*)indices, sizeof(unsigned long) * numIndices);
+		binaryInFile.read(reinterpret_cast<char*>(finalVerts), sizeof(VertexType) * numVertices);
+		binaryInFile.read(reinterpret_cast<char*>(indices), sizeof(unsigned long) * numIndices);
 
 		// Setup description for the Vertex Buffer
 		D3D11_BUFFER_DESC vertexBufferDesc;
@@ -282,28 +282,10 @@ Geometry OBJLoader::Load(char* filename, ID3D11Device* _pd3dDevice, bool invertT
 
 		_pd3dDevice->CreateBuffer(&vertexBufferDesc, &vertexData, &vertexBuffer);
 
-//		//Put data into vertex and index buffers, then pass the relevant data to the MeshData object.
-//		//The rest of the code will hopefully look familiar to you, as it's similar to whats in your InitVertexBuffer and InitIndexBuffer methods
-//		ID3D11Buffer* vertexBuffer;
-//
-//		D3D11_BUFFER_DESC bd;
-//		ZeroMemory(&bd, sizeof(bd));
-//		bd.Usage = D3D11_USAGE_DEFAULT;
-//		bd.ByteWidth = sizeof(VertexType) * numVertices;
-//		bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-//		bd.CPUAccessFlags = 0;
-//
-//		D3D11_SUBRESOURCE_DATA InitData;
-//		ZeroMemory(&InitData, sizeof(InitData));
-//		InitData.pSysMem = finalVerts;
-//
-//		_pd3dDevice->CreateBuffer(&bd, &InitData, &vertexBuffer);
-
 		meshData.VertexCount = numVertices;
 		meshData.VertexBuffer = vertexBuffer;
 		meshData.VBOffset = 0;
 		meshData.VBStride = sizeof(VertexType);
-
 
 		// Setup description for the Index Buffer
 		D3D11_BUFFER_DESC indexBufferDesc;
@@ -322,19 +304,6 @@ Geometry OBJLoader::Load(char* filename, ID3D11Device* _pd3dDevice, bool invertT
 		indexData.SysMemSlicePitch = 0;
 
 		_pd3dDevice->CreateBuffer(&indexBufferDesc, &indexData, &indexBuffer);
-
-		//To Inspect
-//		ID3D11Buffer* indexBuffer;
-//
-//		ZeroMemory(&bd, sizeof(bd));
-//		bd.Usage = D3D11_USAGE_DEFAULT;
-//		bd.ByteWidth = sizeof(WORD) * numIndices;     
-//		bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
-//		bd.CPUAccessFlags = 0;
-//
-//		ZeroMemory(&InitData, sizeof(InitData));
-//		InitData.pSysMem = indices;
-//		_pd3dDevice->CreateBuffer(&bd, &InitData, &indexBuffer);
 
 		meshData.IndexCount = numIndices;
 		meshData.IndexBuffer = indexBuffer;
@@ -373,7 +342,7 @@ Geometry OBJLoader::Load(char* filename, ID3D11Device* _pd3dDevice, bool invertT
 		meshData.height = highestY - lowestY;
 		meshData.depth = highestZ - lowestZ;
 
-		//This data has now been sent over to the GPU so we can delete this CPU-side stuff
+		// This data has now been sent over to the GPU so we can delete this CPU-side stuff
 		delete [] indices;
 		delete [] finalVerts;
 
