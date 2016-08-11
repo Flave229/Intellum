@@ -76,6 +76,9 @@
     <ClCompile Include="engine\GameTimer.cpp">
       <Filter>Header Files\Application</Filter>
     </ClCompile>
+    <ClCompile Include="Bitmap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Input.h">
@@ -113,6 +116,9 @@
     </ClInclude>
     <ClInclude Include="engine\GameTimer.h">
       <Filter>Header Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Bitmap.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
