@@ -12,7 +12,7 @@ DepthStencil::~DepthStencil()
 {
 }
 
-bool DepthStencil::Initialise(ID3D11Device* device, int screenWidth, int screenHeight)
+bool DepthStencil::Initialise(ID3D11Device* device, ID3D11DeviceContext* deviceContext, int screenWidth, int screenHeight)
 {
 	HRESULT result;
 	D3D11_TEXTURE2D_DESC depthBufferDesc;
@@ -54,6 +54,8 @@ bool DepthStencil::Initialise(ID3D11Device* device, int screenWidth, int screenH
 
 	result = device->CreateDepthStencilState(&depthStencilDesc, &_depthStencilState);
 	if (FAILED(result)) return false;
+
+	deviceContext->OMSetDepthStencilState(_depthStencilState, 1);
 
 	return true;
 }

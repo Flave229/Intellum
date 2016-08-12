@@ -22,7 +22,7 @@ public:
 	DepthStencil(const DepthStencil&);
 	~DepthStencil();
 
-	bool Initialise(ID3D11Device*, int, int);
+	bool Initialise(ID3D11Device*, ID3D11DeviceContext*, int, int);
 	void Shutdown();
 
 	void SetStencilType(ID3D11DeviceContext*, DepthStencilType) const;

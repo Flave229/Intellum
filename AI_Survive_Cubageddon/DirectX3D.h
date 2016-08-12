@@ -29,6 +29,7 @@ private:
 
 	HardwareDescription* _hardware;
 	DepthStencil* _depthStencil;
+
 // Function Declarations
 public:
 	DirectX3D();
