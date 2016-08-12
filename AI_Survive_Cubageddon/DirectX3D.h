@@ -8,6 +8,7 @@
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include "DepthStencil.h"
+#include "HardwareDescription.h"
 
 using namespace DirectX;
 
@@ -16,8 +17,6 @@ class DirectX3D
 // Member Level Variables
 private:
 	bool _vsync_enabled;
-	int _videoCardMemory;
-	char _videoCardDescription[128];
 	IDXGISwapChain* _swapChain;
 	ID3D11Device* _device;
 	ID3D11DeviceContext* _deviceContext;
@@ -28,6 +27,7 @@ private:
 	XMMATRIX _worldMatrix;
 	XMMATRIX _orthoMatrix;
 
+	HardwareDescription* _hardware;
 	DepthStencil* _depthStencil;
 // Function Declarations
 public:

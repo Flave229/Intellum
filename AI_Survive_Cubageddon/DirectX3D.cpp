@@ -1,15 +1,13 @@
 #include "DirectX3D.h"
 
-DirectX3D::DirectX3D(): _vsync_enabled(false), _videoCardMemory(0), _swapChain(nullptr), _device(nullptr), 
-						_deviceContext(nullptr), _renderTargetView(nullptr), _depthStencilView(nullptr), _rasterState(nullptr), 
-						_depthStencil(nullptr)
+DirectX3D::DirectX3D(): _vsync_enabled(false), _swapChain(nullptr), _device(nullptr), _deviceContext(nullptr),
+							_renderTargetView(nullptr), _depthStencilView(nullptr), _rasterState(nullptr), _depthStencil(nullptr)
 {
 
 }
 
-DirectX3D::DirectX3D(const DirectX3D& other) : _vsync_enabled(other._vsync_enabled), _videoCardMemory(other._videoCardMemory), _swapChain(other._swapChain), _device(other._device),
-												_deviceContext(other._deviceContext), _renderTargetView(other._renderTargetView), _depthStencilView(other._depthStencilView), _rasterState(other._rasterState),
-												_depthStencil(other._depthStencil)
+DirectX3D::DirectX3D(const DirectX3D& other) : _vsync_enabled(other._vsync_enabled), _swapChain(other._swapChain), _device(other._device), _deviceContext(other._deviceContext),
+												_renderTargetView(other._renderTargetView), _depthStencilView(other._depthStencilView), _rasterState(other._rasterState), _depthStencil(other._depthStencil)
 {
 }
 
@@ -20,14 +18,6 @@ DirectX3D::~DirectX3D()
 bool DirectX3D::Initialise(int screenWidth, int screenHeight, bool vsync, HWND hwnd, bool fullscreen, float screenDepth, float screenNear)
 {
 	HRESULT result;
-	IDXGIFactory* factory;
-	IDXGIAdapter* adapter;
-	IDXGIOutput* adapterOutput;
-	unsigned int numModes;
-	unsigned int numerator;
-	unsigned int denominator;
-	unsigned long long stringLength;
-	DXGI_ADAPTER_DESC adapterDesc;
 	DXGI_SWAP_CHAIN_DESC swapChainDesc;
 	ID3D11Texture2D* backBufferPtr;
 	D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
@@ -35,65 +25,9 @@ bool DirectX3D::Initialise(int screenWidth, int screenHeight, bool vsync, HWND h
 	D3D11_VIEWPORT viewPort;
 
 	_vsync_enabled = vsync;
-
-	// Creates the graphics interface factory for DirectX
-	result = CreateDXGIFactory(__uuidof(IDXGIFactory), reinterpret_cast<void**>(&factory));
-	if (FAILED(result)) return false;
-
-	// Creates an adapter for the users GPU (Graphical Processing Unit) from the factory
-	result = factory->EnumAdapters(0, &adapter);
-	if (FAILED(result)) return false;
-
-	// Enumerate primary adapter output
-	result = adapter->EnumOutputs(0, &adapterOutput);
-	if (FAILED(result)) return false;
-
-	// Get the number of modes that fit the DXGI_FORMAT_R8G8B8A8_UNORM display format for the adapter output.
-	result = adapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_INTERLACED, &numModes, nullptr);
-	if (FAILED(result)) return false;
-
-	// Creates a list of all possible combinations of monitor and GPU combinations
-	DXGI_MODE_DESC* displayModeList = new DXGI_MODE_DESC[numModes];
-	if (!displayModeList) return false;
-
-	// Fill out above list
-	result = adapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_INTERLACED, &numModes, displayModeList);
-	if (FAILED(result)) return false;
-
-	// Search all display modes for one that matches the set screen width and height
-	for (int i = 0; i < numModes; i++)
-	{
-		if (displayModeList[i].Width == static_cast<int>(screenWidth))
-		{
-			if(displayModeList[i].Height == static_cast<int>(screenHeight))
-			{
-				numerator = displayModeList[i].RefreshRate.Numerator;
-				denominator = displayModeList[i].RefreshRate.Denominator;
-			}
-		}
-	}
-
-	// Get the description for the GPU
-	result = adapter->GetDesc(&adapterDesc);
-	if (FAILED(result)) return false;
-
-	// Get the video card memory in megabytes
-	_videoCardMemory = static_cast<int>(adapterDesc.DedicatedVideoMemory / 1024 / 1024);
-
-	int error = wcstombs_s(&stringLength, _videoCardDescription, 128, adapterDesc.Description, 128);
-	if (error != 0) return false;
-
-	delete[] displayModeList;
-	displayModeList = nullptr;
-
-	adapterOutput->Release();
-	adapterOutput = nullptr;
-
-	adapter->Release();
-	adapter = nullptr;
-
-	factory->Release();
-	factory = nullptr;
+	
+	_hardware = new HardwareDescription;
+	_hardware->Initialise(screenWidth, screenHeight);
 
 	ZeroMemory(&swapChainDesc, sizeof(swapChainDesc));
 
@@ -104,8 +38,8 @@ bool DirectX3D::Initialise(int screenWidth, int screenHeight, bool vsync, HWND h
 
 	if (_vsync_enabled)
 	{
-		swapChainDesc.BufferDesc.RefreshRate.Numerator = numerator;
-		swapChainDesc.BufferDesc.RefreshRate.Denominator = denominator;
+		swapChainDesc.BufferDesc.RefreshRate.Numerator = _hardware->GetRefreshRateNumerator();
+		swapChainDesc.BufferDesc.RefreshRate.Denominator = _hardware->GetRefreshRateDenominator();
 	}
 	else
 	{
@@ -284,6 +218,6 @@ void DirectX3D::GetOrthoMatrix(XMMATRIX& orthoMatrix)
 
 void DirectX3D::GetVideoCardInfo(char* cardname, int& memory)
 {
-	strcpy_s(cardname, 128, _videoCardDescription);
-	memory = _videoCardMemory;
+	_hardware->GetVideoCardDescription(cardname);
+	_hardware->GetVideoCardMemory(memory);
 }

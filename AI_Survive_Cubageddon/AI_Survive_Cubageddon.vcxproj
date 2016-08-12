@@ -152,7 +152,7 @@
     <ClCompile Include="DirectX3D.cpp" />
     <ClCompile Include="engine\GameTimer.cpp" />
     <ClCompile Include="Graphics.cpp" />
-    <ClCompile Include="HardwareMiner.cpp" />
+    <ClCompile Include="HardwareDescription.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="loaders\OBJLoader.cpp" />
@@ -170,7 +170,7 @@
     <ClInclude Include="engine\GameTimer.h" />
     <ClInclude Include="Geometry.h" />
     <ClInclude Include="Graphics.h" />
-    <ClInclude Include="HardwareMiner.h" />
+    <ClInclude Include="HardwareDescription.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="loaders\OBJLoader.h" />
