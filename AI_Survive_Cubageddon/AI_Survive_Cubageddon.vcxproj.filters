@@ -88,6 +88,9 @@
     <ClCompile Include="DepthStencil.cpp">
       <Filter>Engine\DX11Components</Filter>
     </ClCompile>
+    <ClCompile Include="HardwareMiner.cpp">
+      <Filter>Engine\DX11Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Input.h">
@@ -130,6 +133,9 @@
       <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="DepthStencil.h">
+      <Filter>Engine\DX11Components</Filter>
+    </ClInclude>
+    <ClInclude Include="HardwareMiner.h">
       <Filter>Engine\DX11Components</Filter>
     </ClInclude>
   </ItemGroup>

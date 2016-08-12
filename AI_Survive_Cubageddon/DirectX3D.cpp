@@ -27,19 +27,12 @@ bool DirectX3D::Initialise(int screenWidth, int screenHeight, bool vsync, HWND h
 	unsigned int numerator;
 	unsigned int denominator;
 	unsigned long long stringLength;
-	DXGI_MODE_DESC* displayModeList;
 	DXGI_ADAPTER_DESC adapterDesc;
-	int error;
 	DXGI_SWAP_CHAIN_DESC swapChainDesc;
-	D3D_FEATURE_LEVEL featureLevel;
 	ID3D11Texture2D* backBufferPtr;
-	D3D11_TEXTURE2D_DESC depthBufferDesc;
-	D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
 	D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
 	D3D11_RASTERIZER_DESC rasterDesc;
 	D3D11_VIEWPORT viewPort;
-	float fieldOfView;
-	float screenAspect;
 
 	_vsync_enabled = vsync;
 
@@ -60,7 +53,7 @@ bool DirectX3D::Initialise(int screenWidth, int screenHeight, bool vsync, HWND h
 	if (FAILED(result)) return false;
 
 	// Creates a list of all possible combinations of monitor and GPU combinations
-	displayModeList = new DXGI_MODE_DESC[numModes];
+	DXGI_MODE_DESC* displayModeList = new DXGI_MODE_DESC[numModes];
 	if (!displayModeList) return false;
 
 	// Fill out above list
@@ -70,9 +63,9 @@ bool DirectX3D::Initialise(int screenWidth, int screenHeight, bool vsync, HWND h
 	// Search all display modes for one that matches the set screen width and height
 	for (int i = 0; i < numModes; i++)
 	{
-		if (displayModeList[i].Width == (int)screenWidth)
+		if (displayModeList[i].Width == static_cast<int>(screenWidth))
 		{
-			if(displayModeList[i].Height == (int)screenHeight)
+			if(displayModeList[i].Height == static_cast<int>(screenHeight))
 			{
 				numerator = displayModeList[i].RefreshRate.Numerator;
 				denominator = displayModeList[i].RefreshRate.Denominator;
@@ -87,11 +80,11 @@ bool DirectX3D::Initialise(int screenWidth, int screenHeight, bool vsync, HWND h
 	// Get the video card memory in megabytes
 	_videoCardMemory = static_cast<int>(adapterDesc.DedicatedVideoMemory / 1024 / 1024);
 
-	error = wcstombs_s(&stringLength, _videoCardDescription, 128, adapterDesc.Description, 128);
+	int error = wcstombs_s(&stringLength, _videoCardDescription, 128, adapterDesc.Description, 128);
 	if (error != 0) return false;
 
 	delete[] displayModeList;
-	displayModeList = 0;
+	displayModeList = nullptr;
 
 	adapterOutput->Release();
 	adapterOutput = nullptr;
@@ -130,7 +123,7 @@ bool DirectX3D::Initialise(int screenWidth, int screenHeight, bool vsync, HWND h
 	swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 	swapChainDesc.Flags = 0;
 
-	featureLevel = D3D_FEATURE_LEVEL_11_1;
+	D3D_FEATURE_LEVEL featureLevel = D3D_FEATURE_LEVEL_11_1;
 
 	result = D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, 0, &featureLevel, 1, D3D11_SDK_VERSION, &swapChainDesc, &_swapChain, &_device, nullptr, &_deviceContext);
 	if (FAILED(result)) return false;
@@ -143,9 +136,7 @@ bool DirectX3D::Initialise(int screenWidth, int screenHeight, bool vsync, HWND h
 
 	backBufferPtr->Release();
 	backBufferPtr = nullptr;
-
-	ZeroMemory(&depthBufferDesc, sizeof(depthBufferDesc));
-
+	
 	_depthStencil = new DepthStencil;
 	_depthStencil->Initialise(_device, screenWidth, screenHeight);
 	_depthStencil->SetStencilType(_deviceContext, STENCIL_STATE_DEFAULT);
@@ -186,13 +177,11 @@ bool DirectX3D::Initialise(int screenWidth, int screenHeight, bool vsync, HWND h
 
 	_deviceContext->RSSetViewports(1, &viewPort);
 
-	fieldOfView = 3.141592654f / 4.0f;
-	screenAspect = static_cast<float>(screenWidth) / static_cast<float>(screenHeight);
+	float fieldOfView = 3.141592654f / 4.0f;
+	float screenAspect = static_cast<float>(screenWidth) / static_cast<float>(screenHeight);
 
 	_projectionMatrix = XMMatrixPerspectiveFovLH(fieldOfView, screenAspect, screenNear, screenDepth);
-
 	_worldMatrix = XMMatrixIdentity();
-
 	_orthoMatrix = XMMatrixOrthographicLH(static_cast<float>(screenWidth), static_cast<float>(screenHeight), screenNear, screenDepth);
 
 	return true;
