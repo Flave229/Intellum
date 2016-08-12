@@ -23,6 +23,7 @@ private:
 	ID3D11RenderTargetView* _renderTargetView;
 	ID3D11Texture2D* _depthStencilBuffer;
 	ID3D11DepthStencilState* _depthStencilState;
+	ID3D11DepthStencilState* _depthDisabledStencilState;
 	ID3D11DepthStencilView* _depthStencilView;
 	ID3D11RasterizerState* _rasterState;
 	XMMATRIX _projectionMatrix;
@@ -49,6 +50,9 @@ public:
 	void GetOrthoMatrix(XMMATRIX&);
 
 	void GetVideoCardInfo(char*, int&);
+
+	void TurnZBufferOn();
+	void TurnZBufferOff();
 };
 
 #endif
