@@ -148,6 +148,7 @@
   <ItemGroup>
     <ClCompile Include="Bitmap.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="DepthStencil.cpp" />
     <ClCompile Include="DirectX3D.cpp" />
     <ClCompile Include="engine\GameTimer.cpp" />
     <ClCompile Include="Graphics.cpp" />
@@ -163,6 +164,7 @@
   <ItemGroup>
     <ClInclude Include="Bitmap.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="DepthStencil.h" />
     <ClInclude Include="DirectX3D.h" />
     <ClInclude Include="engine\GameTimer.h" />
     <ClInclude Include="Geometry.h" />

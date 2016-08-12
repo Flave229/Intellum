@@ -40,6 +40,12 @@
     <Filter Include="Common">
       <UniqueIdentifier>{f8ef330d-183a-411e-9f0e-59d9108296d9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{27f77afb-d8b1-473a-aa64-36bec4e48eb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\DX11Components">
+      <UniqueIdentifier>{86b542ca-758a-4204-bb54-c26d8e4cbcaf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -50,9 +56,6 @@
       <Filter>Source Files\Application</Filter>
     </ClCompile>
     <ClCompile Include="Graphics.cpp">
-      <Filter>Source Files\Application</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectX3D.cpp">
       <Filter>Source Files\Application</Filter>
     </ClCompile>
     <ClCompile Include="Model.cpp">
@@ -79,6 +82,12 @@
     <ClCompile Include="Bitmap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DirectX3D.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="DepthStencil.cpp">
+      <Filter>Engine\DX11Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Input.h">
@@ -88,9 +97,6 @@
       <Filter>Header Files\Application</Filter>
     </ClInclude>
     <ClInclude Include="Graphics.h">
-      <Filter>Header Files\Application</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectX3D.h">
       <Filter>Header Files\Application</Filter>
     </ClInclude>
     <ClInclude Include="Model.h">
@@ -119,6 +125,12 @@
     </ClInclude>
     <ClInclude Include="Bitmap.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX3D.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="DepthStencil.h">
+      <Filter>Engine\DX11Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

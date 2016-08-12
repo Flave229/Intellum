@@ -7,6 +7,7 @@
 
 #include <d3d11.h>
 #include <DirectXMath.h>
+#include "DepthStencil.h"
 
 using namespace DirectX;
 
@@ -21,15 +22,13 @@ private:
 	ID3D11Device* _device;
 	ID3D11DeviceContext* _deviceContext;
 	ID3D11RenderTargetView* _renderTargetView;
-	ID3D11Texture2D* _depthStencilBuffer;
-	ID3D11DepthStencilState* _depthStencilState;
-	ID3D11DepthStencilState* _depthDisabledStencilState;
 	ID3D11DepthStencilView* _depthStencilView;
 	ID3D11RasterizerState* _rasterState;
 	XMMATRIX _projectionMatrix;
 	XMMATRIX _worldMatrix;
 	XMMATRIX _orthoMatrix;
 
+	DepthStencil* _depthStencil;
 // Function Declarations
 public:
 	DirectX3D();
