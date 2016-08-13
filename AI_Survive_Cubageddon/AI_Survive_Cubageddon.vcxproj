@@ -165,10 +165,11 @@
   <ItemGroup>
     <ClInclude Include="Bitmap.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="common\Vertex.h" />
     <ClInclude Include="DepthStencil.h" />
     <ClInclude Include="DirectX3D.h" />
     <ClInclude Include="engine\GameTimer.h" />
-    <ClInclude Include="Geometry.h" />
+    <ClInclude Include="common\Geometry.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="HardwareDescription.h" />
     <ClInclude Include="Input.h" />

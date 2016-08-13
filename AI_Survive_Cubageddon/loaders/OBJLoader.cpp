@@ -1,7 +1,7 @@
 #include "OBJLoader.h"
 #include <string>
 
-bool OBJLoader::FindSimilarVertex(const VertexType& vertex, std::map<VertexType, unsigned short>& vertToIndexMap, unsigned short& index)
+bool OBJLoader::FindSimilarVertex(const Vertex& vertex, std::map<Vertex, unsigned short>& vertToIndexMap, unsigned short& index)
 {
 	auto it = vertToIndexMap.find(vertex);
 	if(it == vertToIndexMap.end())
@@ -17,15 +17,15 @@ bool OBJLoader::FindSimilarVertex(const VertexType& vertex, std::map<VertexType,
 
 void OBJLoader::CreateIndices(const std::vector<XMFLOAT3>& inVertices, const std::vector<XMFLOAT2>& inTexCoords, const std::vector<XMFLOAT3>& inNormals, std::vector<unsigned short>& outIndices, std::vector<XMFLOAT3>& outVertices, std::vector<XMFLOAT2>& outTexCoords, std::vector<XMFLOAT3>& outNormals)
 {
-	//Mapping from an already-existing VertexType to its corresponding index
-	std::map<VertexType, unsigned short> vertToIndexMap;
+	//Mapping from an already-existing Vertex to its corresponding index
+	std::map<Vertex, unsigned short> vertToIndexMap;
 
-	std::pair<VertexType, unsigned short> pair;
+	std::pair<Vertex, unsigned short> pair;
 
 	int numVertices = inVertices.size();
 	for(int i = 0; i < numVertices; ++i) //For each vertex
 	{
-		VertexType vertex = { inVertices[i],  inTexCoords[i], inNormals[i] };
+		Vertex vertex = { inVertices[i],  inTexCoords[i], inNormals[i] };
 
 		unsigned short index;
 		bool found = FindSimilarVertex(vertex, vertToIndexMap, index); //See if a vertex already exists in the buffer that has the same attributes as this one
@@ -182,7 +182,7 @@ Geometry OBJLoader::Load(char* filename, ID3D11Device* _pd3dDevice, bool invertT
 			Geometry meshData;
 
 			//Turn data from vector form to arrays
-			VertexType* finalVerts = new VertexType[meshVertices.size()];
+			Vertex* finalVerts = new Vertex[meshVertices.size()];
 			unsigned int numMeshVertices = meshVertices.size();
 			for(unsigned int i = 0; i < numMeshVertices; ++i)
 			{
@@ -198,7 +198,7 @@ Geometry OBJLoader::Load(char* filename, ID3D11Device* _pd3dDevice, bool invertT
 			D3D11_BUFFER_DESC bd;
 			ZeroMemory(&bd, sizeof(bd));
 			bd.Usage = D3D11_USAGE_DEFAULT;
-			bd.ByteWidth = sizeof(VertexType) * meshVertices.size();
+			bd.ByteWidth = sizeof(Vertex) * meshVertices.size();
 			bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 			bd.CPUAccessFlags = 0;
 
@@ -210,7 +210,7 @@ Geometry OBJLoader::Load(char* filename, ID3D11Device* _pd3dDevice, bool invertT
 
 			meshData.VertexBuffer = vertexBuffer;
 			meshData.VBOffset = 0;
-			meshData.VBStride = sizeof(VertexType);
+			meshData.VBStride = sizeof(Vertex);
 
 			unsigned short* indicesArray = new unsigned short[meshIndices.size()];
 			unsigned int numMeshIndices = meshIndices.size();
@@ -223,7 +223,7 @@ Geometry OBJLoader::Load(char* filename, ID3D11Device* _pd3dDevice, bool invertT
 			std::ofstream outbin(binaryFilename.c_str(), std::ios::out | std::ios::binary);
 			outbin.write(reinterpret_cast<char*>(&numMeshVertices), sizeof(unsigned int));
 			outbin.write(reinterpret_cast<char*>(&numMeshIndices), sizeof(unsigned int));
-			outbin.write(reinterpret_cast<char*>(finalVerts), sizeof(VertexType) * numMeshVertices);
+			outbin.write(reinterpret_cast<char*>(finalVerts), sizeof(Vertex) * numMeshVertices);
 			outbin.write(reinterpret_cast<char*>(indicesArray), sizeof(unsigned short) * numMeshIndices);
 			outbin.close();
 
@@ -258,16 +258,16 @@ Geometry OBJLoader::Load(char* filename, ID3D11Device* _pd3dDevice, bool invertT
 		binaryInFile.read(reinterpret_cast<char*>(&meshData.IndexCount), sizeof(meshData.IndexCount));
 		
 		//Read in data from binary file
-		VertexType* finalVerts = new VertexType[meshData.VertexCount];
+		Vertex* finalVerts = new Vertex[meshData.VertexCount];
 		unsigned long* indices = new unsigned long[meshData.IndexCount];
-		binaryInFile.read(reinterpret_cast<char*>(finalVerts), sizeof(VertexType) * meshData.VertexCount);
+		binaryInFile.read(reinterpret_cast<char*>(finalVerts), sizeof(Vertex) * meshData.VertexCount);
 		binaryInFile.read(reinterpret_cast<char*>(indices), sizeof(unsigned long) * meshData.IndexCount);
 
 		// Setup description for the Vertex Buffer
 		D3D11_BUFFER_DESC vertexBufferDesc;
 		D3D11_SUBRESOURCE_DATA vertexData;
 		vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-		vertexBufferDesc.ByteWidth = sizeof(VertexType) * meshData.VertexCount;
+		vertexBufferDesc.ByteWidth = sizeof(Vertex) * meshData.VertexCount;
 		vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 		vertexBufferDesc.CPUAccessFlags = 0;
 		vertexBufferDesc.MiscFlags = 0;
@@ -280,7 +280,7 @@ Geometry OBJLoader::Load(char* filename, ID3D11Device* _pd3dDevice, bool invertT
 		_pd3dDevice->CreateBuffer(&vertexBufferDesc, &vertexData, &meshData.VertexBuffer);
 
 		meshData.VBOffset = 0;
-		meshData.VBStride = sizeof(VertexType);
+		meshData.VBStride = sizeof(Vertex);
 
 		// Setup description for the Index Buffer
 		D3D11_BUFFER_DESC indexBufferDesc;

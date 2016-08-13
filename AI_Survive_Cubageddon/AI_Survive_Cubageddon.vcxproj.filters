@@ -120,9 +120,6 @@
     <ClInclude Include="loaders\OBJLoader.h">
       <Filter>Loaders</Filter>
     </ClInclude>
-    <ClInclude Include="Geometry.h">
-      <Filter>Common</Filter>
-    </ClInclude>
     <ClInclude Include="engine\GameTimer.h">
       <Filter>Header Files\Application</Filter>
     </ClInclude>
@@ -137,6 +134,12 @@
     </ClInclude>
     <ClInclude Include="HardwareDescription.h">
       <Filter>Engine\DX11Components</Filter>
+    </ClInclude>
+    <ClInclude Include="common\Geometry.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\Vertex.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
