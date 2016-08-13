@@ -7,7 +7,7 @@
 #include <fstream>
 
 #include "Texture.h"
-#include "Geometry.h"
+#include "common/Geometry.h"
 
 using namespace DirectX;
 using namespace std;
