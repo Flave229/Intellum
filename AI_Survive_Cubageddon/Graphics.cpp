@@ -1,10 +1,12 @@
 #include "Graphics.h"
 
-Graphics::Graphics(): _direct3D(nullptr), _camera(nullptr), _model(nullptr), _shader(nullptr), _light(nullptr)
+Graphics::Graphics(): _direct3D(nullptr), _camera(nullptr), _model(nullptr), _shader(nullptr), 
+						_light(nullptr), _bitmap(nullptr)
 {
 }
 
-Graphics::Graphics(const Graphics& other) : _direct3D(other._direct3D), _camera(other._camera), _model(other._model), _shader(other._shader), _light(other._light)
+Graphics::Graphics(const Graphics& other) : _direct3D(other._direct3D), _camera(other._camera), _model(other._model), _shader(other._shader), 
+												_light(other._light), _bitmap(other._bitmap)
 {
 }
 
@@ -48,6 +50,16 @@ bool Graphics::Initialise(int screenWidth, int screenHeight, HWND hwnd)
 	if (!result)
 	{
 		MessageBox(hwnd, L"Could not initialise the shader class", L"Error", MB_OK);
+		return false;
+	}
+
+	_bitmap = new Bitmap;
+	if (!_bitmap) return false;
+
+	result = _bitmap->Initialise(_direct3D->GetDevice(), _direct3D->GetDeviceContext(), screenWidth, screenHeight, 256, 256, "data/images/stone.tga");
+	if (!result)
+	{
+		MessageBox(hwnd, L"Could not initialise the bitmap object", L"Error", MB_OK);
 		return false;
 	}
 
@@ -97,6 +109,13 @@ void Graphics::Shutdown()
 		delete _light;
 		_light = nullptr;
 	}
+
+	if (_bitmap)
+	{
+		_bitmap->Shutdown();
+		delete _bitmap;
+		_bitmap = nullptr;
+	}
 }
 
 bool Graphics::Frame(float delta)
@@ -118,6 +137,7 @@ bool Graphics::Render(float rotation)
 	XMMATRIX worldMatrix;
 	XMMATRIX viewMatrix;
 	XMMATRIX projectionMatrix;
+	XMMATRIX orthoMatrix;
 	bool result;
 
 	_direct3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
@@ -127,14 +147,27 @@ bool Graphics::Render(float rotation)
 	_direct3D->GetWorldMatrix(worldMatrix);
 	_camera->GetViewMatrix(viewMatrix);
 	_direct3D->GetProjectionMatrix(projectionMatrix);
+	_direct3D->GetOrthoMatrix(orthoMatrix);
+
+	_direct3D->TurnZBufferOff();
+
+	result = _bitmap->Render(_direct3D->GetDeviceContext(), 100, 100);
+	if (!result) return false;
+
+	result = _shader->Render(_direct3D->GetDeviceContext(), _bitmap->GetIndexCount(), worldMatrix, viewMatrix,
+								orthoMatrix, _bitmap->GetTexture(), _light->GetDirection(), _camera->GetPosition(),
+								_light->GetAmbientColor(), _light->GetDiffuseColor(), _light->GetSpecularColor(), _light->GetSpecularPower());
+	if (!result) return false;
+
+	_direct3D->TurnZBufferOn();
 
 	worldMatrix *= XMMatrixRotationY(rotation);
 
 	_model->Render(_direct3D->GetDeviceContext());
 
 	result = _shader->Render(_direct3D->GetDeviceContext(), _model->GetIndexCount(), worldMatrix, viewMatrix,
-		projectionMatrix, _model->GetTexture(), _light->GetDirection(), _camera->GetPosition(),
-		_light->GetAmbientColor(), _light->GetDiffuseColor(), _light->GetSpecularColor(), _light->GetSpecularPower());
+								projectionMatrix, _model->GetTexture(), _light->GetDirection(), _camera->GetPosition(),
+								_light->GetAmbientColor(), _light->GetDiffuseColor(), _light->GetSpecularColor(), _light->GetSpecularPower());
 	if (!result) return false;
 
 	_direct3D->EndScene();

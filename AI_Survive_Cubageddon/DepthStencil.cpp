@@ -17,6 +17,7 @@ bool DepthStencil::Initialise(ID3D11Device* device, ID3D11DeviceContext* deviceC
 	HRESULT result;
 	D3D11_TEXTURE2D_DESC depthBufferDesc;
 	D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
+	D3D11_DEPTH_STENCIL_DESC depthDisabledStencilDesc;
 
 	ZeroMemory(&depthBufferDesc, sizeof(depthBufferDesc));
 
@@ -55,6 +56,26 @@ bool DepthStencil::Initialise(ID3D11Device* device, ID3D11DeviceContext* deviceC
 	result = device->CreateDepthStencilState(&depthStencilDesc, &_depthStencilState);
 	if (FAILED(result)) return false;
 
+	ZeroMemory(&depthDisabledStencilDesc, sizeof(depthDisabledStencilDesc));
+
+	depthDisabledStencilDesc.DepthEnable = false;
+	depthDisabledStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+	depthDisabledStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
+	depthDisabledStencilDesc.StencilEnable = true;
+	depthDisabledStencilDesc.StencilReadMask = 0xFF;
+	depthDisabledStencilDesc.StencilWriteMask = 0xFF;
+	depthDisabledStencilDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	depthDisabledStencilDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
+	depthDisabledStencilDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+	depthDisabledStencilDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+	depthDisabledStencilDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	depthDisabledStencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
+	depthDisabledStencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+	depthDisabledStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+	result = device->CreateDepthStencilState(&depthDisabledStencilDesc, &_depthDisabledStencilState);
+	if (FAILED(result)) return false;
+
 	deviceContext->OMSetDepthStencilState(_depthStencilState, 1);
 
 	return true;
@@ -87,10 +108,13 @@ void DepthStencil::SetStencilType(ID3D11DeviceContext* deviceContext, DepthStenc
 	{
 	case STENCIL_STATE_DEFAULT:
 		deviceContext->OMSetDepthStencilState(_depthStencilState, 1);
+		break;
 	case STENCIL_STATE_DISABLED:
 		deviceContext->OMSetDepthStencilState(_depthDisabledStencilState, 1);
+		break;
 	default:
 		deviceContext->OMSetDepthStencilState(_depthStencilState, 1);
+		break;
 	}
 }
 

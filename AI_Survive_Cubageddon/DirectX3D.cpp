@@ -227,3 +227,13 @@ void DirectX3D::GetVideoCardInfo(char* cardname, int& memory)
 	_hardware->GetVideoCardDescription(cardname);
 	_hardware->GetVideoCardMemory(memory);
 }
+
+void DirectX3D::TurnZBufferOn()
+{
+	_depthStencil->SetStencilType(_deviceContext, STENCIL_STATE_DEFAULT);
+}
+
+void DirectX3D::TurnZBufferOff()
+{
+	_depthStencil->SetStencilType(_deviceContext, STENCIL_STATE_DISABLED);
+}

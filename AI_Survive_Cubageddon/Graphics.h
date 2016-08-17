@@ -7,6 +7,7 @@
 #include "Model.h"
 #include "ShaderController.h"
 #include "Light.h"
+#include "Bitmap.h"
 
 const bool FULL_SCREEN = false;
 const bool VSYNC_ENABLED = true;
@@ -23,6 +24,7 @@ private:
 	Model* _model;
 	ShaderController* _shader;
 	Light* _light;
+	Bitmap* _bitmap;
 
 // Function Declarations
 private:

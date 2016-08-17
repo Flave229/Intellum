@@ -189,7 +189,7 @@ bool Bitmap::UpdateBuffers(ID3D11DeviceContext* deviceContext, int positionX, in
 
 	Vertex* verticesPtr = static_cast<Vertex*>(mappedResource.pData);
 
-	memcpy(verticesPtr, (void*)vertices, (sizeof(Vertex*) * _vertexCount));
+	memcpy(verticesPtr, (void*)vertices, (sizeof(Vertex) * _vertexCount));
 
 	deviceContext->Unmap(_vertexBuffer, 0);
 
