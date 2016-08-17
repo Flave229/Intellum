@@ -201,7 +201,7 @@ bool Bitmap::UpdateBuffers(ID3D11DeviceContext* deviceContext, int positionX, in
 
 void Bitmap::RenderBuffers(ID3D11DeviceContext* deviceContext)
 {
-	unsigned int stride = sizeof(Vertex*);
+	unsigned int stride = sizeof(Vertex);
 	unsigned int offset = 0;
 
 	deviceContext->IASetVertexBuffers(0, 1, &_vertexBuffer, &stride, &offset);

@@ -1,13 +1,15 @@
 #include "DirectX3D.h"
 
 DirectX3D::DirectX3D(): _vsync_enabled(false), _swapChain(nullptr), _device(nullptr), _deviceContext(nullptr),
-							_renderTargetView(nullptr), _depthStencilView(nullptr), _rasterState(nullptr), _depthStencil(nullptr)
+							_renderTargetView(nullptr), _depthStencilView(nullptr), _rasterState(nullptr), _hardware(nullptr), 
+							_depthStencil(nullptr)
 {
 
 }
 
 DirectX3D::DirectX3D(const DirectX3D& other) : _vsync_enabled(other._vsync_enabled), _swapChain(other._swapChain), _device(other._device), _deviceContext(other._deviceContext),
-												_renderTargetView(other._renderTargetView), _depthStencilView(other._depthStencilView), _rasterState(other._rasterState), _depthStencil(other._depthStencil)
+												_renderTargetView(other._renderTargetView), _depthStencilView(other._depthStencilView), _rasterState(other._rasterState), _hardware(nullptr), 
+												_depthStencil(other._depthStencil)
 {
 }
 
