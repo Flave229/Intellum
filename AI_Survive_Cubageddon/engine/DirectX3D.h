@@ -9,6 +9,7 @@
 #include <DirectXMath.h>
 #include "DXComponents/HardwareDescription.h"
 #include "DXComponents/DepthStencil.h"
+#include "DXComponents/Rasterizer.h"
 
 using namespace DirectX;
 
@@ -22,13 +23,13 @@ private:
 	ID3D11DeviceContext* _deviceContext;
 	ID3D11RenderTargetView* _renderTargetView;
 	ID3D11DepthStencilView* _depthStencilView;
-	ID3D11RasterizerState* _rasterState;
 	XMMATRIX _projectionMatrix;
 	XMMATRIX _worldMatrix;
 	XMMATRIX _orthoMatrix;
 
 	HardwareDescription* _hardware;
 	DepthStencil* _depthStencil;
+	Rasterizer* _rasterizer;
 
 // Function Declarations
 public:

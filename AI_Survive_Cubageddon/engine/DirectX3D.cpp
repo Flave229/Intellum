@@ -1,15 +1,15 @@
 #include "DirectX3D.h"
 
 DirectX3D::DirectX3D(): _vsync_enabled(false), _swapChain(nullptr), _device(nullptr), _deviceContext(nullptr),
-							_renderTargetView(nullptr), _depthStencilView(nullptr), _rasterState(nullptr), _hardware(nullptr), 
-							_depthStencil(nullptr)
+							_renderTargetView(nullptr), _depthStencilView(nullptr), _hardware(nullptr), _depthStencil(nullptr), 
+							_rasterizer(nullptr)
 {
 
 }
 
 DirectX3D::DirectX3D(const DirectX3D& other) : _vsync_enabled(other._vsync_enabled), _swapChain(other._swapChain), _device(other._device), _deviceContext(other._deviceContext),
-												_renderTargetView(other._renderTargetView), _depthStencilView(other._depthStencilView), _rasterState(other._rasterState), _hardware(nullptr), 
-												_depthStencil(other._depthStencil)
+												_renderTargetView(other._renderTargetView), _depthStencilView(other._depthStencilView), _hardware(nullptr), _depthStencil(other._depthStencil),
+												_rasterizer(other._rasterizer)
 {
 }
 
@@ -23,7 +23,6 @@ bool DirectX3D::Initialise(int screenWidth, int screenHeight, bool vsync, HWND h
 	DXGI_SWAP_CHAIN_DESC swapChainDesc;
 	ID3D11Texture2D* backBufferPtr;
 	D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
-	D3D11_RASTERIZER_DESC rasterDesc;
 	D3D11_VIEWPORT viewPort;
 
 	_vsync_enabled = vsync;
@@ -85,23 +84,11 @@ bool DirectX3D::Initialise(int screenWidth, int screenHeight, bool vsync, HWND h
 	result = _device->CreateDepthStencilView(_depthStencil->GetDepthStencilBuffer(), &depthStencilViewDesc, &_depthStencilView);
 	if (FAILED(result)) return false;
 
+	// Here
+	_rasterizer = new Rasterizer;
+	_rasterizer->Initialise(_device, _deviceContext);
+
 	_deviceContext->OMSetRenderTargets(1, &_renderTargetView, _depthStencilView);
-
-	rasterDesc.AntialiasedLineEnable = false;
-	rasterDesc.CullMode = D3D11_CULL_BACK;
-	rasterDesc.DepthBias = 0;
-	rasterDesc.DepthBiasClamp = 0.0f;
-	rasterDesc.DepthClipEnable = true;
-	rasterDesc.FillMode = D3D11_FILL_SOLID;
-	rasterDesc.FrontCounterClockwise = false;
-	rasterDesc.MultisampleEnable = false;
-	rasterDesc.ScissorEnable = false;
-	rasterDesc.SlopeScaledDepthBias = 0.0f;
-
-	result = _device->CreateRasterizerState(&rasterDesc, &_rasterState);
-	if (FAILED(result)) return false;
-
-	_deviceContext->RSSetState(_rasterState);
 
 	viewPort.Width = static_cast<float>(screenWidth);
 	viewPort.Height = static_cast<float>(screenHeight);
@@ -128,12 +115,6 @@ void DirectX3D::Shutdown()
 	if(_swapChain)
 	{
 		_swapChain->SetFullscreenState(false, nullptr);
-	}
-
-	if(_rasterState)
-	{
-		_rasterState->Release();
-		_rasterState = nullptr;
 	}
 
 	if (_depthStencilView)
