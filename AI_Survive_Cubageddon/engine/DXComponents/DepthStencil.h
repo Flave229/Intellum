@@ -1,7 +1,6 @@
 #pragma once
 
 #include <d3d11.h>
-#include <DirectXMath.h>
 
 enum DepthStencilType
 {
@@ -17,6 +16,8 @@ private:
 	
 	ID3D11DepthStencilState* _depthStencilState;
 	ID3D11DepthStencilState* _depthDisabledStencilState;
+
+// Function Declarations
 public:
 	DepthStencil();
 	DepthStencil(const DepthStencil&);
