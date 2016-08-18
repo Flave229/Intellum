@@ -4,14 +4,16 @@
 
 enum RasterizerStateType
 {
-	RASTERIZER_STATE_DEFAULT
+	RASTERIZER_STATE_DEFAULT,
+	RASTERIZER_STATE_WIREFRAME,
 };
 
 class Rasterizer
 {
 // Member Level Variables
 private:
-	ID3D11RasterizerState* _rasterState;
+	ID3D11RasterizerState* _defaultState;
+	ID3D11RasterizerState* _wireframeState;
 
 // Function Declarations
 public:

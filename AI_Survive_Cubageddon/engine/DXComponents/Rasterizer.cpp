@@ -2,10 +2,12 @@
 
 
 
-Rasterizer::Rasterizer(): _rasterState(nullptr) {
+Rasterizer::Rasterizer(): _defaultState(nullptr), _wireframeState(nullptr)
+{
 }
 
-Rasterizer::Rasterizer(const Rasterizer& other): _rasterState(other._rasterState) {
+Rasterizer::Rasterizer(const Rasterizer& other): _defaultState(other._defaultState), _wireframeState(other._wireframeState)
+{
 }
 
 Rasterizer::~Rasterizer()
@@ -15,33 +17,53 @@ Rasterizer::~Rasterizer()
 bool Rasterizer::Initialise(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
 {
 	HRESULT result;
-	D3D11_RASTERIZER_DESC rasterDesc;
+	D3D11_RASTERIZER_DESC defaultDesc;
+	D3D11_RASTERIZER_DESC wireframeDesc;
 
-	rasterDesc.AntialiasedLineEnable = false;
-	rasterDesc.CullMode = D3D11_CULL_BACK;
-	rasterDesc.DepthBias = 0;
-	rasterDesc.DepthBiasClamp = 0.0f;
-	rasterDesc.DepthClipEnable = true;
-	rasterDesc.FillMode = D3D11_FILL_SOLID;
-	rasterDesc.FrontCounterClockwise = false;
-	rasterDesc.MultisampleEnable = false;
-	rasterDesc.ScissorEnable = false;
-	rasterDesc.SlopeScaledDepthBias = 0.0f;
+	defaultDesc.AntialiasedLineEnable = false;
+	defaultDesc.CullMode = D3D11_CULL_BACK;
+	defaultDesc.DepthBias = 0;
+	defaultDesc.DepthBiasClamp = 0.0f;
+	defaultDesc.DepthClipEnable = true;
+	defaultDesc.FillMode = D3D11_FILL_SOLID;
+	defaultDesc.FrontCounterClockwise = false;
+	defaultDesc.MultisampleEnable = false;
+	defaultDesc.ScissorEnable = false;
+	defaultDesc.SlopeScaledDepthBias = 0.0f;
 
-	result = device->CreateRasterizerState(&rasterDesc, &_rasterState);
+	result = device->CreateRasterizerState(&defaultDesc, &_defaultState);
 	if (FAILED(result)) return false;
 
-	deviceContext->RSSetState(_rasterState);
+	wireframeDesc.AntialiasedLineEnable = false;
+	wireframeDesc.CullMode = D3D11_CULL_BACK;
+	wireframeDesc.DepthBias = 0;
+	wireframeDesc.DepthBiasClamp = 0.0f;
+	wireframeDesc.DepthClipEnable = true;
+	wireframeDesc.FillMode = D3D11_FILL_WIREFRAME;
+	wireframeDesc.FrontCounterClockwise = false;
+	wireframeDesc.MultisampleEnable = false;
+	wireframeDesc.ScissorEnable = false;
+	wireframeDesc.SlopeScaledDepthBias = 0.0f;
+
+	result = device->CreateRasterizerState(&wireframeDesc, &_wireframeState);
+	if (FAILED(result)) return false;
+
+	deviceContext->RSSetState(_wireframeState);
 
 	return true;
 }
 
 void Rasterizer::Shutdown()
 {
-	if (_rasterState)
+	if (_defaultState)
 	{
-		_rasterState->Release();
-		_rasterState = nullptr;
+		_defaultState->Release();
+		_defaultState = nullptr;
+	}
+	if (_wireframeState)
+	{
+		_wireframeState->Release();
+		_wireframeState = nullptr;
 	}
 }
 
@@ -50,10 +72,12 @@ void Rasterizer::SetStencilType(ID3D11DeviceContext* deviceContext, RasterizerSt
 	switch (rasterizerState)
 	{
 	case RASTERIZER_STATE_DEFAULT:
-		deviceContext->RSSetState(_rasterState);
+		deviceContext->RSSetState(_defaultState);
 		break;
+	case RASTERIZER_STATE_WIREFRAME:
+		deviceContext->RSSetState(_wireframeState);
 	default:
-		deviceContext->RSSetState(_rasterState);
+		deviceContext->RSSetState(_defaultState);
 		break;
 	}
 }
