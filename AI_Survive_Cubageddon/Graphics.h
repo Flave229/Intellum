@@ -1,13 +1,12 @@
 #ifndef _GRAPHICS_H_
 #define _GRAPHICS_H_
 
-#include "directX3D.h"
-
 #include "Camera.h"
 #include "Model.h"
 #include "ShaderController.h"
 #include "Light.h"
 #include "Bitmap.h"
+#include "engine/DirectX3D.h"
 
 const bool FULL_SCREEN = false;
 const bool VSYNC_ENABLED = true;

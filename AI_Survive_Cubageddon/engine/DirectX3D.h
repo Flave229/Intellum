@@ -7,8 +7,8 @@
 
 #include <d3d11.h>
 #include <DirectXMath.h>
-#include "DepthStencil.h"
-#include "HardwareDescription.h"
+#include "DXComponents/HardwareDescription.h"
+#include "DXComponents/DepthStencil.h"
 
 using namespace DirectX;
 
