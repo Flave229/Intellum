@@ -1,4 +1,5 @@
 #include "System.h"
+#include "error_handling/Exception.h"
 
 System::System(): _applicationName(nullptr), _hInstance(nullptr), _hwnd(nullptr), _input(nullptr), _graphics(nullptr)
 {
@@ -86,15 +87,25 @@ void System::Run()
 
 bool System::Frame(float delta)
 {
-	bool result;
+	try
+	{
+		bool result;
 
-	if (_input->IsKeyDown(VK_ESCAPE)) return false;
+		if (_input->IsKeyDown(VK_ESCAPE)) return false;
 
-	result = _graphics->Frame(delta);
+		result = _graphics->Frame(delta);
 
-	if (!result) return false;
+		if (!result) return false;
 
-	return true;
+		return true;
+	}
+	catch(Exception& exception)
+	{
+		string exceptionMessage = exception.PrintFullMessage();
+		MessageBox(_hwnd, wstring(exceptionMessage.begin(), exceptionMessage.end()).c_str(), L"Error", MB_OK);
+
+		exception.Shutdown();
+	}
 }
 
 LRESULT System::MessageHandler(HWND hwnd, UINT umsg, WPARAM wparam, LPARAM lparam)

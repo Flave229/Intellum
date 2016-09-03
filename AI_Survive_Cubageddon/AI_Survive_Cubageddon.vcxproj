@@ -151,6 +151,7 @@
     <ClCompile Include="engine\DXComponents\DepthStencil.cpp" />
     <ClCompile Include="engine\DirectX3D.cpp" />
     <ClCompile Include="engine\GameTimer.cpp" />
+    <ClCompile Include="error_handling\Exception.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="engine\DXComponents\HardwareDescription.cpp" />
     <ClCompile Include="Input.cpp" />
@@ -171,6 +172,7 @@
     <ClInclude Include="engine\DirectX3D.h" />
     <ClInclude Include="engine\GameTimer.h" />
     <ClInclude Include="common\Geometry.h" />
+    <ClInclude Include="error_handling\Exception.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="engine\DXComponents\HardwareDescription.h" />
     <ClInclude Include="Input.h" />

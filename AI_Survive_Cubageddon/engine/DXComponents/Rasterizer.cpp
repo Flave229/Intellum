@@ -1,7 +1,5 @@
 #include "Rasterizer.h"
 
-
-
 Rasterizer::Rasterizer(): _defaultState(nullptr), _wireframeState(nullptr)
 {
 }
@@ -48,7 +46,7 @@ bool Rasterizer::Initialise(ID3D11Device* device, ID3D11DeviceContext* deviceCon
 	result = device->CreateRasterizerState(&wireframeDesc, &_wireframeState);
 	if (FAILED(result)) return false;
 
-	deviceContext->RSSetState(_wireframeState);
+	deviceContext->RSSetState(_defaultState);
 
 	return true;
 }

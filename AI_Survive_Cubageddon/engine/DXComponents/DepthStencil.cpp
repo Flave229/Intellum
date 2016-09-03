@@ -1,4 +1,6 @@
 #include "DepthStencil.h"
+#include "../../error_handling/Exception.h"
+#include <map>
 
 DepthStencil::DepthStencil(): _depthStencilBuffer(nullptr), _depthStencilState(nullptr), _depthDisabledStencilState(nullptr)
 {
@@ -104,17 +106,35 @@ void DepthStencil::Shutdown()
 
 void DepthStencil::SetStencilType(ID3D11DeviceContext* deviceContext, DepthStencilType stencilType) const
 {
-	switch (stencilType)
+	try
 	{
-	case STENCIL_STATE_DEFAULT:
-		deviceContext->OMSetDepthStencilState(_depthStencilState, 1);
-		break;
-	case STENCIL_STATE_DISABLED:
-		deviceContext->OMSetDepthStencilState(_depthDisabledStencilState, 1);
-		break;
-	default:
-		deviceContext->OMSetDepthStencilState(_depthStencilState, 1);
-		break;
+		if (!deviceContext)
+			throw Exception("The Depth Stencil has no reference to the device context.");
+
+		switch (stencilType)
+		{
+		case STENCIL_STATE_DEFAULT:
+			deviceContext->OMSetDepthStencilState(_depthStencilState, 1);
+			break;
+		case STENCIL_STATE_DISABLED:
+			deviceContext->OMSetDepthStencilState(_depthDisabledStencilState, 1);
+			break;
+		default:
+			deviceContext->OMSetDepthStencilState(_depthStencilState, 1);
+			break;
+		}
+	}
+	catch(Exception& exception)
+	{
+		throw Exception("Failed to set the Stencil Type.", exception);
+	}
+	catch(exception& exception)
+	{
+		throw Exception(string("An error occured when setting the Stencil Type. Exception returned the following message: ").append(exception.what()));
+	}
+	catch(...)
+	{
+		throw Exception(string("An error occured when setting the Stencil Type."));
 	}
 }
 

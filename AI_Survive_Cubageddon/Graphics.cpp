@@ -1,4 +1,5 @@
 #include "Graphics.h"
+#include "error_handling/Exception.h"
 
 Graphics::Graphics(): _direct3D(nullptr), _camera(nullptr), _model(nullptr), _shader(nullptr), 
 						_light(nullptr), _bitmap(nullptr)
@@ -120,57 +121,79 @@ void Graphics::Shutdown()
 
 bool Graphics::Frame(float delta)
 {
-	static float rotation = 0.0f;
-
-	rotation += static_cast<float>(XM_PI) * 0.5f * delta;
-
-	if (rotation > 360.0f)
+	try
 	{
-		rotation -= 360.0f;
-	}
+		static float rotation = 0.0f;
 
-	return Render(rotation);
+		rotation += static_cast<float>(XM_PI) * 0.5f * delta;
+
+		if (rotation > 360.0f)
+		{
+			rotation -= 360.0f;
+		}
+
+		return Render(rotation);
+	}
+	catch (Exception& exception)
+	{
+		throw Exception("Frame failed to render.", exception);
+	}
+	catch(...)
+	{
+		throw Exception("An unexpected error occured while rendering the frame");
+	}
 }
 
 bool Graphics::Render(float rotation)
 {
-	XMMATRIX worldMatrix;
-	XMMATRIX viewMatrix;
-	XMMATRIX projectionMatrix;
-	XMMATRIX orthoMatrix;
-	bool result;
+	try
+	{
+		XMMATRIX worldMatrix;
+		XMMATRIX viewMatrix;
+		XMMATRIX projectionMatrix;
+		XMMATRIX orthoMatrix;
+		bool result;
 
-	_direct3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
+		_direct3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
 
-	_camera->Render();
+		_camera->Render();
 
-	_direct3D->GetWorldMatrix(worldMatrix);
-	_camera->GetViewMatrix(viewMatrix);
-	_direct3D->GetProjectionMatrix(projectionMatrix);
-	_direct3D->GetOrthoMatrix(orthoMatrix);
+		_direct3D->GetWorldMatrix(worldMatrix);
+		_camera->GetViewMatrix(viewMatrix);
+		_direct3D->GetProjectionMatrix(projectionMatrix);
+		_direct3D->GetOrthoMatrix(orthoMatrix);
 
-	_direct3D->TurnZBufferOff();
+		_direct3D->TurnZBufferOff();
 
-	result = _bitmap->Render(_direct3D->GetDeviceContext(), 100, 100);
-	if (!result) return false;
+		result = _bitmap->Render(_direct3D->GetDeviceContext(), 100, 100);
+		if (!result) return false;
 
-	result = _shader->Render(_direct3D->GetDeviceContext(), _bitmap->GetIndexCount(), worldMatrix, viewMatrix,
-								orthoMatrix, _bitmap->GetTexture(), _light->GetDirection(), _camera->GetPosition(),
-								_light->GetAmbientColor(), _light->GetDiffuseColor(), _light->GetSpecularColor(), _light->GetSpecularPower());
-	if (!result) return false;
+		result = _shader->Render(_direct3D->GetDeviceContext(), _bitmap->GetIndexCount(), worldMatrix, viewMatrix,
+			orthoMatrix, _bitmap->GetTexture(), _light->GetDirection(), _camera->GetPosition(),
+			_light->GetAmbientColor(), _light->GetDiffuseColor(), _light->GetSpecularColor(), _light->GetSpecularPower());
+		if (!result) return false;
 
-	_direct3D->TurnZBufferOn();
+		_direct3D->TurnZBufferOn();
 
-	worldMatrix *= XMMatrixRotationY(rotation);
+		worldMatrix *= XMMatrixRotationY(rotation);
 
-	_model->Render(_direct3D->GetDeviceContext());
+		_model->Render(_direct3D->GetDeviceContext());
 
-	result = _shader->Render(_direct3D->GetDeviceContext(), _model->GetIndexCount(), worldMatrix, viewMatrix,
-								projectionMatrix, _model->GetTexture(), _light->GetDirection(), _camera->GetPosition(),
-								_light->GetAmbientColor(), _light->GetDiffuseColor(), _light->GetSpecularColor(), _light->GetSpecularPower());
-	if (!result) return false;
+		result = _shader->Render(_direct3D->GetDeviceContext(), _model->GetIndexCount(), worldMatrix, viewMatrix,
+			projectionMatrix, _model->GetTexture(), _light->GetDirection(), _camera->GetPosition(),
+			_light->GetAmbientColor(), _light->GetDiffuseColor(), _light->GetSpecularColor(), _light->GetSpecularPower());
+		if (!result) return false;
 
-	_direct3D->EndScene();
+		_direct3D->EndScene();
 
-	return true;
+		return true;
+	}
+	catch(Exception& exception)
+	{
+		throw exception;
+	}
+	catch(...)
+	{
+		throw new Exception("An unexpected error occured while rendering the frame");
+	}
 }

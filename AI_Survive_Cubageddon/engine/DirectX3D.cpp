@@ -1,4 +1,5 @@
 #include "DirectX3D.h"
+#include "../error_handling/Exception.h"
 
 DirectX3D::DirectX3D(): _vsync_enabled(false), _swapChain(nullptr), _device(nullptr), _deviceContext(nullptr),
 							_renderTargetView(nullptr), _depthStencilView(nullptr), _hardware(nullptr), _depthStencil(nullptr), 
@@ -84,7 +85,6 @@ bool DirectX3D::Initialise(int screenWidth, int screenHeight, bool vsync, HWND h
 	result = _device->CreateDepthStencilView(_depthStencil->GetDepthStencilBuffer(), &depthStencilViewDesc, &_depthStencilView);
 	if (FAILED(result)) return false;
 
-	// Here
 	_rasterizer = new Rasterizer;
 	_rasterizer->Initialise(_device, _deviceContext);
 
@@ -211,10 +211,24 @@ void DirectX3D::GetVideoCardInfo(char* cardname, int& memory)
 
 void DirectX3D::TurnZBufferOn()
 {
-	_depthStencil->SetStencilType(_deviceContext, STENCIL_STATE_DEFAULT);
+	try
+	{
+		_depthStencil->SetStencilType(_deviceContext, STENCIL_STATE_DEFAULT);
+	}
+	catch(Exception& exception)
+	{
+		throw exception;
+	}
 }
 
 void DirectX3D::TurnZBufferOff()
 {
-	_depthStencil->SetStencilType(_deviceContext, STENCIL_STATE_DISABLED);
+	try
+	{
+		_depthStencil->SetStencilType(_deviceContext, STENCIL_STATE_DISABLED);
+	}
+	catch (Exception exception)
+	{
+		throw exception;
+	}
 }
