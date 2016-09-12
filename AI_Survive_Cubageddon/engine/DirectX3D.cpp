@@ -20,93 +20,104 @@ DirectX3D::~DirectX3D()
 
 bool DirectX3D::Initialise(int screenWidth, int screenHeight, bool vsync, HWND hwnd, bool fullscreen, float screenDepth, float screenNear)
 {
-	HRESULT result;
-	DXGI_SWAP_CHAIN_DESC swapChainDesc;
-	ID3D11Texture2D* backBufferPtr;
-	D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
-	D3D11_VIEWPORT viewPort;
-
-	_vsync_enabled = vsync;
-	
-	_hardware = new HardwareDescription;
-	_hardware->Initialise(screenWidth, screenHeight);
-
-	ZeroMemory(&swapChainDesc, sizeof(swapChainDesc));
-
-	swapChainDesc.BufferCount = 1;
-	swapChainDesc.BufferDesc.Width = screenWidth;
-	swapChainDesc.BufferDesc.Height = screenHeight;
-	swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-
-	if (_vsync_enabled)
+	try
 	{
-		swapChainDesc.BufferDesc.RefreshRate.Numerator = _hardware->GetRefreshRateNumerator();
-		swapChainDesc.BufferDesc.RefreshRate.Denominator = _hardware->GetRefreshRateDenominator();
+		HRESULT result;
+		DXGI_SWAP_CHAIN_DESC swapChainDesc;
+		ID3D11Texture2D* backBufferPtr;
+		D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
+		D3D11_VIEWPORT viewPort;
+
+		_vsync_enabled = vsync;
+
+		_hardware = new HardwareDescription;
+		_hardware->Initialise(screenWidth, screenHeight);
+
+		ZeroMemory(&swapChainDesc, sizeof(swapChainDesc));
+
+		swapChainDesc.BufferCount = 1;
+		swapChainDesc.BufferDesc.Width = screenWidth;
+		swapChainDesc.BufferDesc.Height = screenHeight;
+		swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+
+		if (_vsync_enabled)
+		{
+			swapChainDesc.BufferDesc.RefreshRate.Numerator = _hardware->GetRefreshRateNumerator();
+			swapChainDesc.BufferDesc.RefreshRate.Denominator = _hardware->GetRefreshRateDenominator();
+		}
+		else
+		{
+			swapChainDesc.BufferDesc.RefreshRate.Numerator = 0;
+			swapChainDesc.BufferDesc.RefreshRate.Denominator = 1;
+		}
+
+		swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+		swapChainDesc.OutputWindow = hwnd;
+		swapChainDesc.SampleDesc.Count = 1;
+		swapChainDesc.SampleDesc.Quality = 0;
+		swapChainDesc.Windowed = !fullscreen;
+		swapChainDesc.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
+		swapChainDesc.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
+		swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
+		swapChainDesc.Flags = 0;
+
+		D3D_FEATURE_LEVEL featureLevel = D3D_FEATURE_LEVEL_11_1;
+
+		result = D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, 0, &featureLevel, 1, D3D11_SDK_VERSION, &swapChainDesc, &_swapChain, &_device, nullptr, &_deviceContext);
+		if (FAILED(result)) throw Exception("Failed to create the device and swap chain.");
+
+		result = _swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<LPVOID*>(&backBufferPtr));
+		if (FAILED(result)) throw Exception("Failed to get the buffer from the swap chain.");
+
+		result = _device->CreateRenderTargetView(backBufferPtr, nullptr, &_renderTargetView);
+		if (FAILED(result)) throw Exception("Failed to create the render target.");
+
+		backBufferPtr->Release();
+		backBufferPtr = nullptr;
+
+		_depthStencil = new DepthStencil;
+		_depthStencil->Initialise(_device, _deviceContext, screenWidth, screenHeight);
+
+		ZeroMemory(&depthStencilViewDesc, sizeof(depthStencilViewDesc));
+
+		depthStencilViewDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+		depthStencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+		depthStencilViewDesc.Texture2D.MipSlice = 0;
+
+		result = _device->CreateDepthStencilView(_depthStencil->GetDepthStencilBuffer(), &depthStencilViewDesc, &_depthStencilView);
+		if (FAILED(result)) throw Exception("Failed to create the Depth Stencil View.");
+
+		_rasterizer = new Rasterizer;
+		_rasterizer->Initialise(_device, _deviceContext);
+
+		_deviceContext->OMSetRenderTargets(1, &_renderTargetView, _depthStencilView);
+
+		viewPort.Width = static_cast<float>(screenWidth);
+		viewPort.Height = static_cast<float>(screenHeight);
+		viewPort.MinDepth = 0.0f;
+		viewPort.MaxDepth = 1.0f;
+		viewPort.TopLeftX = 0.0f;
+		viewPort.TopLeftY = 0.0f;
+
+		_deviceContext->RSSetViewports(1, &viewPort);
+
+		float fieldOfView = 3.141592654f / 4.0f;
+		float screenAspect = static_cast<float>(screenWidth) / static_cast<float>(screenHeight);
+
+		_projectionMatrix = XMMatrixPerspectiveFovLH(fieldOfView, screenAspect, screenNear, screenDepth);
+		_worldMatrix = XMMatrixIdentity();
+		_orthoMatrix = XMMatrixOrthographicLH(static_cast<float>(screenWidth), static_cast<float>(screenHeight), screenNear, screenDepth);
+
+		return true;
 	}
-	else
+	catch(Exception exception)
 	{
-		swapChainDesc.BufferDesc.RefreshRate.Numerator = 0;
-		swapChainDesc.BufferDesc.RefreshRate.Denominator = 1;
+		throw Exception("Failed to Initialise DirectX.", exception);
 	}
-
-	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-	swapChainDesc.OutputWindow = hwnd;
-	swapChainDesc.SampleDesc.Count = 1;
-	swapChainDesc.SampleDesc.Quality = 0;
-	swapChainDesc.Windowed = !fullscreen;
-	swapChainDesc.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
-	swapChainDesc.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
-	swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
-	swapChainDesc.Flags = 0;
-
-	D3D_FEATURE_LEVEL featureLevel = D3D_FEATURE_LEVEL_11_1;
-
-	result = D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, 0, &featureLevel, 1, D3D11_SDK_VERSION, &swapChainDesc, &_swapChain, &_device, nullptr, &_deviceContext);
-	if (FAILED(result)) return false;
-
-	result = _swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<LPVOID*>(&backBufferPtr));
-	if (FAILED(result)) return false;
-
-	result = _device->CreateRenderTargetView(backBufferPtr, nullptr, &_renderTargetView);
-	if (FAILED(result)) return false;
-
-	backBufferPtr->Release();
-	backBufferPtr = nullptr;
-	
-	_depthStencil = new DepthStencil;
-	_depthStencil->Initialise(_device, _deviceContext, screenWidth, screenHeight);
-
-	ZeroMemory(&depthStencilViewDesc, sizeof(depthStencilViewDesc));
-
-	depthStencilViewDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-	depthStencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
-	depthStencilViewDesc.Texture2D.MipSlice = 0;
-
-	result = _device->CreateDepthStencilView(_depthStencil->GetDepthStencilBuffer(), &depthStencilViewDesc, &_depthStencilView);
-	if (FAILED(result)) return false;
-
-	_rasterizer = new Rasterizer;
-	_rasterizer->Initialise(_device, _deviceContext);
-
-	_deviceContext->OMSetRenderTargets(1, &_renderTargetView, _depthStencilView);
-
-	viewPort.Width = static_cast<float>(screenWidth);
-	viewPort.Height = static_cast<float>(screenHeight);
-	viewPort.MinDepth = 0.0f;
-	viewPort.MaxDepth = 1.0f;
-	viewPort.TopLeftX = 0.0f;
-	viewPort.TopLeftY = 0.0f;
-
-	_deviceContext->RSSetViewports(1, &viewPort);
-
-	float fieldOfView = 3.141592654f / 4.0f;
-	float screenAspect = static_cast<float>(screenWidth) / static_cast<float>(screenHeight);
-
-	_projectionMatrix = XMMatrixPerspectiveFovLH(fieldOfView, screenAspect, screenNear, screenDepth);
-	_worldMatrix = XMMatrixIdentity();
-	_orthoMatrix = XMMatrixOrthographicLH(static_cast<float>(screenWidth), static_cast<float>(screenHeight), screenNear, screenDepth);
-
-	return true;
+	catch(...)
+	{
+		throw Exception("Failed to Initialise DirectX.");
+	}
 }
 
 void DirectX3D::Shutdown()

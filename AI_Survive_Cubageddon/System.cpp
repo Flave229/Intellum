@@ -16,19 +16,40 @@ System::~System()
 bool System::Initialise()
 {
 	bool result;
-	auto screenWidth = 1280;
-	auto screenHeight = 720;
 
-	InitialiseWindows(screenWidth, screenHeight);
+	try
+	{
+		auto screenWidth = 1280;
+		auto screenHeight = 720;
 
-	_input = new Input();
-	if (!_input) return false;
-	_input->Initialise();
+		InitialiseWindows(screenWidth, screenHeight);
 
-	_graphics = new Graphics();
-	if (!_graphics) return false;
-	result = _graphics->Initialise(screenWidth, screenHeight, _hwnd);
-	if (!result) return false;
+		_input = new Input();
+		if (!_input) return false;
+		_input->Initialise();
+
+		_graphics = new Graphics();
+		if (!_graphics) return false;
+		result = _graphics->Initialise(screenWidth, screenHeight, _hwnd);
+		if (!result) return false;
+	}
+	catch(Exception& exception)
+	{
+		string exceptionMessage = exception.PrintFullMessage();
+		exceptionMessage.append("\n\nStack Trace:\n").append(exception.PrintStackTrace());
+
+		MessageBox(_hwnd, wstring(exceptionMessage.begin(), exceptionMessage.end()).c_str(), L"Error", MB_OK);
+
+		exception.Shutdown();
+
+		return false;
+	}
+	catch(...)
+	{
+		MessageBox(_hwnd, L"An unknown error occured while initialising the system.", L"Error", MB_OK);
+
+		return false;
+	}
 
 	return true;
 }
@@ -87,25 +108,28 @@ void System::Run()
 
 bool System::Frame(float delta)
 {
+	bool result;
 	try
 	{
-		bool result;
-
 		if (_input->IsKeyDown(VK_ESCAPE)) return false;
 
 		result = _graphics->Frame(delta);
 
 		if (!result) return false;
-
-		return true;
 	}
 	catch(Exception& exception)
 	{
 		string exceptionMessage = exception.PrintFullMessage();
+		exceptionMessage.append("\n\nStack Trace:\n").append(exception.PrintStackTrace());
+
 		MessageBox(_hwnd, wstring(exceptionMessage.begin(), exceptionMessage.end()).c_str(), L"Error", MB_OK);
 
 		exception.Shutdown();
+
+		return false;
 	}
+
+	return true;
 }
 
 LRESULT System::MessageHandler(HWND hwnd, UINT umsg, WPARAM wparam, LPARAM lparam)

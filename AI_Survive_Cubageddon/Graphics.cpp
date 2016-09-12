@@ -19,59 +19,54 @@ bool Graphics::Initialise(int screenWidth, int screenHeight, HWND hwnd)
 {
 	bool result;
 
-	_direct3D = new DirectX3D;
-	if (!_direct3D) return false;
-
-	result = _direct3D->Initialise(screenWidth, screenHeight, VSYNC_ENABLED, hwnd, FULL_SCREEN, SCREEN_DEPTH, SCREEN_NEAR);
-	if (!result)
+	try
 	{
-		MessageBox(hwnd, L"Could not initialise Direct3D", L"Error", MB_OK);
-		return false;
+		_direct3D = new DirectX3D;
+		if (!_direct3D) throw Exception("Failed to create a DirectX3D object.");
+
+		result = _direct3D->Initialise(screenWidth, screenHeight, VSYNC_ENABLED, hwnd, FULL_SCREEN, SCREEN_DEPTH, SCREEN_NEAR);
+		if (!result) throw Exception("Could not initialise Direct3D.");
+
+		_camera = new Camera;
+		if (!_camera) throw Exception("Failed to create a camera object.");
+
+		_camera->SetPosition(0.0f, 0.0f, -5.0f);
+
+		_model = new Model;
+		if (!_model) throw Exception("Failed to create a Model object.");
+
+		result = _model->Initialise(_direct3D->GetDevice(), _direct3D->GetDeviceContext(), "data/images/stone.tga", "data/models/sphere.obj");
+		if (!result) throw Exception("Could not initialise the model object.");
+
+		_shader = new ShaderController;
+		if (!_shader) throw Exception("Failed to create the shader controller.");
+
+		result = _shader->Initialise(_direct3D->GetDevice(), hwnd);
+		if (!result) throw Exception("Could not initialise the shader controller.");
+
+		_bitmap = new Bitmap;
+		if (!_bitmap) throw Exception("Failed to create the bitmap.");
+
+		result = _bitmap->Initialise(_direct3D->GetDevice(), _direct3D->GetDeviceContext(), screenWidth, screenHeight, 256, 256, "data/images/stone.tga");
+		if (!result) throw Exception("Could not initialise the bitmap.");
+
+		_light = new Light;
+		if (!_light) throw Exception("Failed to create the light object.");
+
+		_light->SetAmbientColor(0.15f, 0.15f, 0.15f, 1.0f);
+		_light->SetDiffuseColor(1.0f, 1.0f, 1.0f, 1.0f);
+		_light->SetSpecularColor(1.0f, 1.0f, 1.0f, 1.0f);
+		_light->SetDirection(0.8f, -1.0f, 0.2f);
+		_light->SetSpecularPower(32.0f);
 	}
-
-	_camera = new Camera;
-	if (!_camera) return false;
-
-	_camera->SetPosition(0.0f, 0.0f, -5.0f);
-
-	_model = new Model;
-	if (!_model) return false;
-
-	result = _model->Initialise(_direct3D->GetDevice(), _direct3D->GetDeviceContext(), "data/images/stone.tga", "data/models/sphere.obj");
-	if (!result)
+	catch(Exception& exception)
 	{
-		MessageBox(hwnd, L"Could not initialise the model object", L"Error", MB_OK);
-		return false;
+		throw Exception("Failed to initialise the graphics class.", exception);
 	}
-
-	_shader = new ShaderController;
-	if (!_shader) return false;
-
-	result = _shader->Initialise(_direct3D->GetDevice(), hwnd);
-	if (!result)
+	catch(...)
 	{
-		MessageBox(hwnd, L"Could not initialise the shader class", L"Error", MB_OK);
-		return false;
+		throw Exception("Failed to initialise the graphics class.");
 	}
-
-	_bitmap = new Bitmap;
-	if (!_bitmap) return false;
-
-	result = _bitmap->Initialise(_direct3D->GetDevice(), _direct3D->GetDeviceContext(), screenWidth, screenHeight, 256, 256, "data/images/stone.tga");
-	if (!result)
-	{
-		MessageBox(hwnd, L"Could not initialise the bitmap object", L"Error", MB_OK);
-		return false;
-	}
-
-	_light = new Light;
-	if (!_light) return false;
-
-	_light->SetAmbientColor(0.15f, 0.15f, 0.15f, 1.0f);
-	_light->SetDiffuseColor(1.0f, 1.0f, 1.0f, 1.0f);
-	_light->SetSpecularColor(1.0f, 1.0f, 1.0f, 1.0f);
-	_light->SetDirection(0.8f, -1.0f, 0.2f);
-	_light->SetSpecularPower(32.0f);
 
 	return true;
 }
