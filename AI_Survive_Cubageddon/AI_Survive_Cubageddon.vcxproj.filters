@@ -52,9 +52,6 @@
     <ClCompile Include="Input.cpp">
       <Filter>Source Files\Application</Filter>
     </ClCompile>
-    <ClCompile Include="System.cpp">
-      <Filter>Source Files\Application</Filter>
-    </ClCompile>
     <ClCompile Include="Graphics.cpp">
       <Filter>Source Files\Application</Filter>
     </ClCompile>
@@ -82,27 +79,33 @@
     <ClCompile Include="Bitmap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="engine\DXComponents\DepthStencil.cpp">
-      <Filter>Engine\DX11Components</Filter>
-    </ClCompile>
-    <ClCompile Include="engine\DXComponents\HardwareDescription.cpp">
-      <Filter>Engine\DX11Components</Filter>
-    </ClCompile>
     <ClCompile Include="engine\DirectX3D.cpp">
       <Filter>Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="engine\DXComponents\Rasterizer.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="error_handling\Exception.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FontEngine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\font_engine\Font.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\dx_components\DepthStencil.cpp">
+      <Filter>Engine\DX11Components</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\dx_components\HardwareDescription.cpp">
+      <Filter>Engine\DX11Components</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\dx_components\Rasterizer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DXSystem.cpp">
+      <Filter>Source Files\Application</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Input.h">
-      <Filter>Header Files\Application</Filter>
-    </ClInclude>
-    <ClInclude Include="System.h">
       <Filter>Header Files\Application</Filter>
     </ClInclude>
     <ClInclude Include="Graphics.h">
@@ -138,20 +141,29 @@
     <ClInclude Include="common\Vertex.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="engine\DXComponents\DepthStencil.h">
-      <Filter>Engine\DX11Components</Filter>
-    </ClInclude>
-    <ClInclude Include="engine\DXComponents\HardwareDescription.h">
-      <Filter>Engine\DX11Components</Filter>
-    </ClInclude>
     <ClInclude Include="engine\DirectX3D.h">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="engine\DXComponents\Rasterizer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="error_handling\Exception.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FontEngine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\font_engine\Font.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\dx_components\DepthStencil.h">
+      <Filter>Engine\DX11Components</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\dx_components\HardwareDescription.h">
+      <Filter>Engine\DX11Components</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\dx_components\Rasterizer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DXSystem.h">
+      <Filter>Header Files\Application</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

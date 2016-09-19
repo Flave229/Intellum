@@ -1,5 +1,6 @@
 #include "Graphics.h"
 #include "error_handling/Exception.h"
+#include "FontEngine.h"
 
 Graphics::Graphics(): _direct3D(nullptr), _camera(nullptr), _model(nullptr), _shader(nullptr), 
 						_light(nullptr), _bitmap(nullptr)
@@ -21,6 +22,9 @@ bool Graphics::Initialise(int screenWidth, int screenHeight, HWND hwnd)
 
 	try
 	{
+		FontEngine* fontEngine = new FontEngine();
+		fontEngine->SearchForAvaliableFonts();
+
 		_direct3D = new DirectX3D;
 		if (!_direct3D) throw Exception("Failed to create a DirectX3D object.");
 

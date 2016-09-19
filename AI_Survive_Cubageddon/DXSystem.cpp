@@ -1,19 +1,19 @@
-#include "System.h"
+#include "DXSystem.h"
 #include "error_handling/Exception.h"
 
-System::System(): _applicationName(nullptr), _hInstance(nullptr), _hwnd(nullptr), _input(nullptr), _graphics(nullptr)
+DXSystem::DXSystem(): _applicationName(nullptr), _hInstance(nullptr), _hwnd(nullptr), _input(nullptr), _graphics(nullptr)
 {
 }
 
-System::System(const System& other): _applicationName(nullptr), _hInstance(nullptr), _hwnd(nullptr), _input(nullptr), _graphics(nullptr) 
+DXSystem::DXSystem(const DXSystem& other): _applicationName(nullptr), _hInstance(nullptr), _hwnd(nullptr), _input(nullptr), _graphics(nullptr)
 {
 }
 
-System::~System()
+DXSystem::~DXSystem()
 {
 }
 
-bool System::Initialise()
+bool DXSystem::Initialise()
 {
 	bool result;
 
@@ -54,7 +54,7 @@ bool System::Initialise()
 	return true;
 }
 
-void System::Shutdown()
+void DXSystem::Shutdown()
 {
 	if(_graphics)
 	{
@@ -72,7 +72,7 @@ void System::Shutdown()
 	ShutdownWindows();
 }
 
-void System::Run()
+void DXSystem::Run()
 {
 	MSG msg;
 	auto done = false;
@@ -106,7 +106,7 @@ void System::Run()
 	}
 }
 
-bool System::Frame(float delta)
+bool DXSystem::Frame(float delta)
 {
 	bool result;
 	try
@@ -132,7 +132,7 @@ bool System::Frame(float delta)
 	return true;
 }
 
-LRESULT System::MessageHandler(HWND hwnd, UINT umsg, WPARAM wparam, LPARAM lparam)
+LRESULT DXSystem::MessageHandler(HWND hwnd, UINT umsg, WPARAM wparam, LPARAM lparam)
 {
 	switch(umsg)
 	{
@@ -174,7 +174,7 @@ LRESULT __stdcall WndProc(HWND hwnd, UINT umessage, WPARAM wparam, LPARAM lparam
 	}
 }
 
-void System::InitialiseWindows(int&, int&)
+void DXSystem::InitialiseWindows(int&, int&)
 {
 	WNDCLASSEX wc;
 	DEVMODE dmScreenSettings;
@@ -238,7 +238,7 @@ void System::InitialiseWindows(int&, int&)
 	ShowCursor(false);
 }
 
-void System::ShutdownWindows()
+void DXSystem::ShutdownWindows()
 {
 	ShowCursor(true);
 

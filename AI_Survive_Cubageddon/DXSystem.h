@@ -7,7 +7,7 @@
 #include "Graphics.h"
 #include "engine/GameTimer.h"
 
-class System
+class DXSystem
 {
 // Member-Level Variables
 private:
@@ -25,9 +25,9 @@ private:
 	void InitialiseWindows(int&, int&);
 	void ShutdownWindows();
 public:
-	System();
-	System(const System&);
-	~System();
+	DXSystem();
+	DXSystem(const DXSystem&);
+	~DXSystem();
 
 	bool Initialise();
 	void Shutdown();
@@ -37,6 +37,6 @@ public:
 };
 
 static LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
-static System* ApplicationHandle = nullptr;
+static DXSystem* ApplicationHandle = nullptr;
 
 #endif

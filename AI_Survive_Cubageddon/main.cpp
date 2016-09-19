@@ -1,12 +1,12 @@
 #include <windows.system.h>
-#include "System.h"
+#include "DXSystem.h"
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmdshow)
 {
-	System* system;
+	DXSystem* system;
 	bool result;
 
-	system = new System;
+	system = new DXSystem;
 
 	if (!system) return 0;
 
