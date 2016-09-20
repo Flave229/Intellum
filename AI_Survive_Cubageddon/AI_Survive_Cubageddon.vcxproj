@@ -154,7 +154,9 @@
     <ClCompile Include="engine\DirectX3D.cpp" />
     <ClCompile Include="engine\GameTimer.cpp" />
     <ClCompile Include="error_handling\Exception.cpp" />
-    <ClCompile Include="FontEngine.cpp" />
+    <ClCompile Include="engine\font_engine\FontEngine.cpp">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</CompileAsManaged>
+    </ClCompile>
     <ClCompile Include="engine\font_engine\Font.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="engine\dx_components\HardwareDescription.cpp" />
@@ -177,7 +179,7 @@
     <ClInclude Include="engine\GameTimer.h" />
     <ClInclude Include="common\Geometry.h" />
     <ClInclude Include="error_handling\Exception.h" />
-    <ClInclude Include="FontEngine.h" />
+    <ClInclude Include="engine\font_engine\FontEngine.h" />
     <ClInclude Include="engine\font_engine\Font.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="engine\dx_components\HardwareDescription.h" />

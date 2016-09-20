@@ -1,6 +1,6 @@
 #include "Graphics.h"
 #include "error_handling/Exception.h"
-#include "FontEngine.h"
+#include "engine/font_engine/FontEngine.h"
 
 Graphics::Graphics(): _direct3D(nullptr), _camera(nullptr), _model(nullptr), _shader(nullptr), 
 						_light(nullptr), _bitmap(nullptr)

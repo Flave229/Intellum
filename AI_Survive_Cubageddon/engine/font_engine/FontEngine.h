@@ -3,7 +3,7 @@
 #include <Windows.h>
 #include <dirent.h>
 
-#include "engine/font_engine/Font.h"
+#include "Font.h"
 
 using namespace std;
 
@@ -14,7 +14,9 @@ private:
 	vector<Font> _avaliableFonts;
 private:
 	bool FindFontsFolder();
-	bool PopulateAvaliableFonts();
+	vector<string> GetPotentialFonts();
+	vector<string> ValidatePotentialFonts(vector<string> potentialFonts);
+	bool CreateFonts(vector<string> fontFiles);
 public:
 	FontEngine();
 	~FontEngine();

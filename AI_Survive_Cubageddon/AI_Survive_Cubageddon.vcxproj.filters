@@ -85,9 +85,6 @@
     <ClCompile Include="error_handling\Exception.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FontEngine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="engine\font_engine\Font.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -102,6 +99,9 @@
     </ClCompile>
     <ClCompile Include="DXSystem.cpp">
       <Filter>Source Files\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\font_engine\FontEngine.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -147,9 +147,6 @@
     <ClInclude Include="error_handling\Exception.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FontEngine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="engine\font_engine\Font.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -164,6 +161,9 @@
     </ClInclude>
     <ClInclude Include="DXSystem.h">
       <Filter>Header Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\font_engine\FontEngine.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
