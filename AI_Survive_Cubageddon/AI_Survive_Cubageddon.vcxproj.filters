@@ -103,6 +103,9 @@
     <ClCompile Include="engine\font_engine\FontEngine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Character.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Input.h">
@@ -163,6 +166,9 @@
       <Filter>Header Files\Application</Filter>
     </ClInclude>
     <ClInclude Include="engine\font_engine\FontEngine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Character.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
