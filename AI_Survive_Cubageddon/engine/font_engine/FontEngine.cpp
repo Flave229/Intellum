@@ -92,10 +92,12 @@ vector<string> FontEngine::ValidatePotentialFonts(vector<string> potentialFonts)
 		DIR* directory = opendir(filePath.c_str());
 
 		struct dirent* entry = readdir(directory);
+		bool upperAlphabetFound[26];
 		bool lowerAlphabetFound[26];
 
 		for (int i2 = 0; i2 < 26; i2++)
 		{
+			upperAlphabetFound[i2] = false;
 			lowerAlphabetFound[i2] = false;
 		}
 
@@ -103,9 +105,118 @@ vector<string> FontEngine::ValidatePotentialFonts(vector<string> potentialFonts)
 		{
 			string subDirectory = (string)entry->d_name;
 
+			#pragma region CheckAllUpperCaseAlphabetCharactersExist
+
+			if (subDirectory.find("0041") != string::npos)
+			{
+				upperAlphabetFound[0] = true;
+			}
+			else if (subDirectory.find("0042") != string::npos)
+			{
+				upperAlphabetFound[1] = true;
+			}
+			else if (subDirectory.find("0043") != string::npos)
+			{
+				upperAlphabetFound[2] = true;
+			}
+			else if (subDirectory.find("0044") != string::npos)
+			{
+				upperAlphabetFound[3] = true;
+			}
+			else if (subDirectory.find("0045") != string::npos)
+			{
+				upperAlphabetFound[4] = true;
+			}
+			else if (subDirectory.find("0046") != string::npos)
+			{
+				upperAlphabetFound[5] = true;
+			}
+			else if (subDirectory.find("0047") != string::npos)
+			{
+				upperAlphabetFound[6] = true;
+			}
+			else if (subDirectory.find("0048") != string::npos)
+			{
+				upperAlphabetFound[7] = true;
+			}
+			else if (subDirectory.find("0049") != string::npos)
+			{
+				upperAlphabetFound[8] = true;
+			}
+			else if (subDirectory.find("004A") != string::npos)
+			{
+				upperAlphabetFound[9] = true;
+			}
+			else if (subDirectory.find("004B") != string::npos)
+			{
+				upperAlphabetFound[10] = true;
+			}
+			else if (subDirectory.find("004C") != string::npos)
+			{
+				upperAlphabetFound[11] = true;
+			}
+			else if (subDirectory.find("004D") != string::npos)
+			{
+				upperAlphabetFound[12] = true;
+			}
+			else if (subDirectory.find("004E") != string::npos)
+			{
+				upperAlphabetFound[13] = true;
+			}
+			else if (subDirectory.find("004F") != string::npos)
+			{
+				upperAlphabetFound[14] = true;
+			}
+			else if (subDirectory.find("0050") != string::npos)
+			{
+				upperAlphabetFound[15] = true;
+			}
+			else if (subDirectory.find("0051") != string::npos)
+			{
+				upperAlphabetFound[16] = true;
+			}
+			else if (subDirectory.find("0052") != string::npos)
+			{
+				upperAlphabetFound[17] = true;
+			}
+			else if (subDirectory.find("0053") != string::npos)
+			{
+				upperAlphabetFound[18] = true;
+			}
+			else if (subDirectory.find("0054") != string::npos)
+			{
+				upperAlphabetFound[19] = true;
+			}
+			else if (subDirectory.find("0055") != string::npos)
+			{
+				upperAlphabetFound[20] = true;
+			}
+			else if (subDirectory.find("0056") != string::npos)
+			{
+				upperAlphabetFound[21] = true;
+			}
+			else if (subDirectory.find("0057") != string::npos)
+			{
+				upperAlphabetFound[22] = true;
+			}
+			else if (subDirectory.find("0058") != string::npos)
+			{
+				upperAlphabetFound[23] = true;
+			}
+			else if (subDirectory.find("0059") != string::npos)
+			{
+				upperAlphabetFound[24] = true;
+			}
+			else if (subDirectory.find("005A") != string::npos)
+			{
+				upperAlphabetFound[25] = true;
+			}
+
+			#pragma endregion
+
 			#pragma region CheckAllLowerCaseAlphabetCharactersExist
 
-			if (subDirectory.find("0061") != string::npos)
+			else if (subDirectory.find("0061") != string::npos)
 			{
 				lowerAlphabetFound[0] = true;
 			}
@@ -219,7 +330,7 @@ vector<string> FontEngine::ValidatePotentialFonts(vector<string> potentialFonts)
 
 		for (int i2 = 0; i2 < 26; i2++)
 		{
-			if (!lowerAlphabetFound[i2])
+			if (!lowerAlphabetFound[i2] || !upperAlphabetFound[i2])
 			{
 				closedir(directory);
 				allTrue = false;
