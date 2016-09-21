@@ -4,6 +4,7 @@
 #include <dirent.h>
 
 #include "Font.h"
+#include "Character.h"
 
 using namespace std;
 
@@ -17,6 +18,7 @@ private:
 	vector<string> GetPotentialFonts();
 	vector<string> ValidatePotentialFonts(vector<string> potentialFonts);
 	bool CreateFonts(vector<string> fontFiles);
+	vector<Character*> GetLowerCaseCharactersFromFontFolder(string filePath);
 public:
 	FontEngine();
 	~FontEngine();

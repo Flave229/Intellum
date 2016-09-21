@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 
-#include "Bitmap.h"
+#include "../../Bitmap.h"
 
 using namespace std;
 
@@ -16,4 +16,3 @@ public:
 	Character(string name, string unicode, Bitmap* texture);
 	~Character();
 };
-
