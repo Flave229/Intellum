@@ -1,6 +1,4 @@
 #include "Graphics.h"
-#include "error_handling/Exception.h"
-#include "engine/font_engine/FontEngine.h"
 
 Graphics::Graphics(): _direct3D(nullptr), _camera(nullptr), _model(nullptr), _shader(nullptr), 
 						_light(nullptr), _bitmap(nullptr)
@@ -26,10 +24,7 @@ bool Graphics::Initialise(int screenWidth, int screenHeight, HWND hwnd)
 		if (!_direct3D) throw Exception("Failed to create a DirectX3D object.");
 
 		result = _direct3D->Initialise(screenWidth, screenHeight, VSYNC_ENABLED, hwnd, FULL_SCREEN, SCREEN_DEPTH, SCREEN_NEAR);
-		if (!result) throw Exception("Could not initialise Direct3D.");
-
-		FontEngine* fontEngine = new FontEngine();
-		fontEngine->SearchForAvaliableFonts(_direct3D->GetDevice(), _direct3D->GetDeviceContext(), screenWidth, screenHeight);
+		if (!result) throw Exception("Could not initialise Direct3D.");;
 
 		_camera = new Camera;
 		if (!_camera) throw Exception("Failed to create a camera object.");
@@ -62,6 +57,12 @@ bool Graphics::Initialise(int screenWidth, int screenHeight, HWND hwnd)
 		_light->SetSpecularColor(1.0f, 1.0f, 1.0f, 1.0f);
 		_light->SetDirection(0.8f, -1.0f, 0.2f);
 		_light->SetSpecularPower(32.0f);
+
+		_fontEngine = new FontEngine(_shader);
+		if (!_fontEngine) throw Exception("Failed to create the Font Engine.");
+
+		result = _fontEngine->SearchForAvaliableFonts(_direct3D->GetDevice(), _direct3D->GetDeviceContext(), screenWidth, screenHeight);
+		if (!result) throw Exception("Could not initialise Font Engine.");
 	}
 	catch(Exception& exception)
 	{
@@ -170,6 +171,11 @@ bool Graphics::Render(float rotation)
 		result = _shader->Render(_direct3D->GetDeviceContext(), _bitmap->GetIndexCount(), worldMatrix, viewMatrix,
 			orthoMatrix, _bitmap->GetTexture(), _light->GetDirection(), _camera->GetPosition(),
 			_light->GetAmbientColor(), _light->GetDiffuseColor(), _light->GetSpecularColor(), _light->GetSpecularPower());
+		if (!result) return false;
+
+		result = _fontEngine->Render(_direct3D->GetDeviceContext(), worldMatrix, viewMatrix, orthoMatrix,
+			_light->GetDirection(), _camera->GetPosition(), _light->GetAmbientColor(), _light->GetDiffuseColor(),
+			_light->GetSpecularColor(), _light->GetSpecularPower(), 200, 50, "impact", "Hello World");
 		if (!result) return false;
 
 		_direct3D->TurnZBufferOn();

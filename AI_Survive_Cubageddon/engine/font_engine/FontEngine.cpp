@@ -1,6 +1,6 @@
 #include "FontEngine.h"
 
-FontEngine::FontEngine()
+FontEngine::FontEngine(ShaderController* shader) : _shader(shader)
 {
 }
 
@@ -33,6 +33,64 @@ bool FontEngine::SearchForAvaliableFonts(ID3D11Device* device, ID3D11DeviceConte
 	{
 		throw exception;
 	}
+}
+
+bool FontEngine::Render(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX orthoMatrix,
+	XMFLOAT3 lightDirection, XMFLOAT3 cameraPosition, XMFLOAT4 lightAmbient, XMFLOAT4 lightDiffuse, XMFLOAT4 lightSpecular,
+	float lightSpecularPower, int positionX, int positionY, string font, string input)
+{
+	try
+	{
+		bool result = CheckFontExists(font);
+		if (!result) return false;
+
+		vector<Character*> stringAsTexture = StringToCharacterTextureList(font, input);
+
+		for (int i = 0; i < stringAsTexture.size(); i++)
+		{
+			result = stringAsTexture.at(i)->_texture->Render(deviceContext, positionX + (64 * i), positionY);
+			if (!result) return false;
+
+			result = _shader->Render(deviceContext, stringAsTexture.at(i)->_texture->GetIndexCount(), worldMatrix, viewMatrix,
+				orthoMatrix, stringAsTexture.at(i)->_texture->GetTexture(), lightDirection, cameraPosition,
+				lightAmbient, lightDiffuse, lightSpecular, lightSpecularPower);
+			if (!result) return false;
+		}
+
+		return true;
+	}
+	catch (Exception& exception)
+	{
+		throw Exception("The Font Engine failed to render the requested text: \"" + input + "\"", exception);
+	}
+	catch (...)
+	{
+		throw Exception("The Font Engine failed to render the requested text: \"" + input + "\"");
+	}
+}
+
+Font* FontEngine::GetFont(string font)
+{
+	for (int i = 0; i < _avaliableFonts.size(); i++)
+	{
+		if (_avaliableFonts.at(i)->_fontName == font)
+			return _avaliableFonts.at(i);
+	}
+
+	throw Exception("Could not find the font " + font);
+}
+
+bool FontEngine::CheckFontExists(string font)
+{
+	for (int i = 0; i < _avaliableFonts.size(); i++)
+	{
+		if (_avaliableFonts.at(i)->_fontName != font)
+			continue;
+
+		return true;
+	}
+
+	return false;
 }
 
 bool FontEngine::FindFontsFolder()
@@ -363,6 +421,7 @@ bool FontEngine::CreateFonts(ID3D11Device* device, ID3D11DeviceContext* deviceCo
 		for (int i = 0; i < fontFiles.size(); i++)
 		{
 			Font* font = new Font();
+			font->_fontName = fontFiles.at(i);
 
 			vector<Character*> lowerCase = GetCharactersFromFontFolder(device, deviceContext, "fonts/" + fontFiles.at(i), screenWidth, screenHeight);
 
@@ -379,12 +438,13 @@ bool FontEngine::CreateFonts(ID3D11Device* device, ID3D11DeviceContext* deviceCo
 	}
 }
 
-
 vector<Character*> FontEngine::GetCharactersFromFontFolder(ID3D11Device* device, ID3D11DeviceContext* deviceContext, string filePath, int screenWidth, int screenHeight)
 {
 	try
 	{
 		vector<Character*> characters = vector<Character*>();
+
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, " ", "0020", screenWidth, screenHeight));
 
 		#pragma region UpperCaseCharacterCreation
 		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "A", "0041", screenWidth, screenHeight));
@@ -461,4 +521,30 @@ Character* FontEngine::CreateCharacterFromFontFolder(ID3D11Device* device, ID3D1
 	if (!result) throw Exception("Failed to initialise the texture for letter " + name + " for the character located at: " + filePath + "/" + unicode + ".tga");
 
 	Character* character = new Character(name, unicode, texture);
+
+	return character;
+}
+
+vector<Character*> FontEngine::StringToCharacterTextureList(string font, string input)
+{
+	try
+	{
+		Font* chosenFont = GetFont(font);
+		vector<Character*> characterList;
+
+		for (int i = 0; i < input.size(); i++)
+		{
+			characterList.push_back(chosenFont->GetCharacterByName(string(1, input.at(i))));
+		}
+
+		return characterList;
+	}
+	catch(Exception& exception)
+	{
+		throw Exception("The string \"" + input + "\" could not be converted into a texture for the font \"" + font + "\"", exception);
+	}
+	catch (...)
+	{
+		throw Exception("The string \"" + input + "\" could not be converted into a texture for the font \"" + font + "\"");
+	}
 }

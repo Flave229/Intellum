@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 
+#include "../../error_handling/Exception.h"
 #include "Character.h"
 
 using namespace std;
@@ -14,4 +15,7 @@ public:
 public:
 	Font();
 	~Font();
+
+	Character* GetCharacterByName(string name);
+	Character* GetCharacterByUnicode(string unicode);
 };

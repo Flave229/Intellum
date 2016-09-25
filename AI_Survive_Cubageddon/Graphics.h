@@ -6,7 +6,9 @@
 #include "ShaderController.h"
 #include "Light.h"
 #include "Bitmap.h"
+#include "error_handling/Exception.h"
 #include "engine/DirectX3D.h"
+#include "engine/font_engine/FontEngine.h"
 
 const bool FULL_SCREEN = false;
 const bool VSYNC_ENABLED = true;
@@ -18,6 +20,8 @@ class Graphics
 // Member Level Variables
 private:
 	DirectX3D* _direct3D;
+
+	FontEngine* _fontEngine;
 	
 	Camera* _camera;
 	Model* _model;

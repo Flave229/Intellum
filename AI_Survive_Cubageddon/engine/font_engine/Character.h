@@ -7,7 +7,7 @@ using namespace std;
 
 class Character
 {
-private:
+public:
 	string _name;
 	string _unicode;
 	Bitmap* _texture;
