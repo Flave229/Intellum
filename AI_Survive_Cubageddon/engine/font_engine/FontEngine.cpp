@@ -364,7 +364,7 @@ bool FontEngine::CreateFonts(ID3D11Device* device, ID3D11DeviceContext* deviceCo
 		{
 			Font* font = new Font();
 
-			vector<Character*> lowerCase = GetLowerCaseCharactersFromFontFolder(device, deviceContext, "fonts/" + fontFiles.at(i), screenWidth, screenHeight);
+			vector<Character*> lowerCase = GetCharactersFromFontFolder(device, deviceContext, "fonts/" + fontFiles.at(i), screenWidth, screenHeight);
 
 			font->_characters = lowerCase;
 
@@ -380,40 +380,71 @@ bool FontEngine::CreateFonts(ID3D11Device* device, ID3D11DeviceContext* deviceCo
 }
 
 
-vector<Character*> FontEngine::GetLowerCaseCharactersFromFontFolder(ID3D11Device* device, ID3D11DeviceContext* deviceContext, string filePath, int screenWidth, int screenHeight)
+vector<Character*> FontEngine::GetCharactersFromFontFolder(ID3D11Device* device, ID3D11DeviceContext* deviceContext, string filePath, int screenWidth, int screenHeight)
 {
 	try
 	{
-		vector<Character*> lowerCaseFonts = vector<Character*>();
+		vector<Character*> characters = vector<Character*>();
 
-		lowerCaseFonts.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "a", "0061", screenWidth, screenHeight));
-		lowerCaseFonts.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "b", "0062", screenWidth, screenHeight));
-		lowerCaseFonts.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "c", "0063", screenWidth, screenHeight));
-		lowerCaseFonts.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "d", "0064", screenWidth, screenHeight));
-		lowerCaseFonts.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "e", "0065", screenWidth, screenHeight));
-		lowerCaseFonts.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "f", "0066", screenWidth, screenHeight));
-		lowerCaseFonts.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "g", "0067", screenWidth, screenHeight));
-		lowerCaseFonts.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "h", "0068", screenWidth, screenHeight));
-		lowerCaseFonts.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "i", "0069", screenWidth, screenHeight));
-		lowerCaseFonts.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "j", "006A", screenWidth, screenHeight));
-		lowerCaseFonts.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "k", "006B", screenWidth, screenHeight));
-		lowerCaseFonts.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "l", "006C", screenWidth, screenHeight));
-		lowerCaseFonts.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "m", "006D", screenWidth, screenHeight));
-		lowerCaseFonts.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "n", "006E", screenWidth, screenHeight));
-		lowerCaseFonts.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "o", "006F", screenWidth, screenHeight));
-		lowerCaseFonts.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "p", "0070", screenWidth, screenHeight));
-		lowerCaseFonts.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "q", "0071", screenWidth, screenHeight));
-		lowerCaseFonts.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "r", "0072", screenWidth, screenHeight));
-		lowerCaseFonts.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "s", "0073", screenWidth, screenHeight));
-		lowerCaseFonts.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "t", "0074", screenWidth, screenHeight));
-		lowerCaseFonts.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "u", "0075", screenWidth, screenHeight));
-		lowerCaseFonts.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "v", "0076", screenWidth, screenHeight));
-		lowerCaseFonts.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "w", "0077", screenWidth, screenHeight));
-		lowerCaseFonts.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "y", "0078", screenWidth, screenHeight));
-		lowerCaseFonts.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "x", "0079", screenWidth, screenHeight));
-		lowerCaseFonts.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "z", "007A", screenWidth, screenHeight));
+		#pragma region UpperCaseCharacterCreation
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "A", "0041", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "B", "0042", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "C", "0043", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "D", "0044", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "E", "0045", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "F", "0046", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "G", "0047", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "H", "0048", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "I", "0049", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "J", "004A", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "K", "004B", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "L", "004C", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "M", "004D", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "N", "004E", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "O", "004F", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "P", "0050", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "Q", "0051", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "R", "0052", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "S", "0053", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "T", "0054", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "U", "0055", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "V", "0056", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "W", "0057", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "Y", "0058", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "X", "0059", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "Z", "005A", screenWidth, screenHeight));
+		#pragma endregion
 
-		return lowerCaseFonts;
+		#pragma region LowerCaseCharacterCreation
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "a", "0061", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "b", "0062", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "c", "0063", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "d", "0064", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "e", "0065", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "f", "0066", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "g", "0067", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "h", "0068", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "i", "0069", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "j", "006A", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "k", "006B", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "l", "006C", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "m", "006D", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "n", "006E", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "o", "006F", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "p", "0070", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "q", "0071", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "r", "0072", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "s", "0073", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "t", "0074", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "u", "0075", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "v", "0076", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "w", "0077", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "y", "0078", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "x", "0079", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "z", "007A", screenWidth, screenHeight));
+		#pragma endregion
+
+		return characters;
 	}
 	catch (Exception& exception)
 	{

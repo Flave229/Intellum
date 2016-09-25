@@ -19,7 +19,7 @@ private:
 	vector<string> GetPotentialFonts();
 	vector<string> ValidatePotentialFonts(vector<string> potentialFonts);
 	bool CreateFonts(ID3D11Device* device, ID3D11DeviceContext* deviceContext, vector<string> fontFiles, int screenWidth, int screenHeight);
-	vector<Character*> GetLowerCaseCharactersFromFontFolder(ID3D11Device* device, ID3D11DeviceContext* deviceContext, string filePath, int screenWidth, int screenHeight);
+	vector<Character*> GetCharactersFromFontFolder(ID3D11Device* device, ID3D11DeviceContext* deviceContext, string filePath, int screenWidth, int screenHeight);
 	Character* CreateCharacterFromFontFolder(ID3D11Device* device, ID3D11DeviceContext* deviceContext, string filePath, string name, string unicode, int screenWidth, int screenHeight);
 public:
 	FontEngine();
