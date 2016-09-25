@@ -8,7 +8,7 @@ using namespace std;
 
 class Font
 {
-private:
+public:
 	string _fontName;
 	vector<Character*> _characters;
 public:

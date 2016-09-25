@@ -23,6 +23,7 @@ bool Texture::Initialise(ID3D11Device* device, ID3D11DeviceContext* deviceContex
 	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
 
 	result = LoadTarga(filename, height, width);
+	if (!result) return false;
 
 	// Setup Texture Description
 	textureDesc.Height = height;

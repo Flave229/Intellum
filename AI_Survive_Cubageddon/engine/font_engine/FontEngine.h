@@ -3,6 +3,7 @@
 #include <Windows.h>
 #include <dirent.h>
 
+#include "../../error_handling/Exception.h"
 #include "Font.h"
 #include "Character.h"
 
@@ -12,17 +13,18 @@ class FontEngine
 {
 private:
 	char* _defaultSearchPath = "../../fonts/";
-	vector<Font> _avaliableFonts;
+	vector<Font*> _avaliableFonts;
 private:
 	bool FindFontsFolder();
 	vector<string> GetPotentialFonts();
 	vector<string> ValidatePotentialFonts(vector<string> potentialFonts);
-	bool CreateFonts(vector<string> fontFiles);
-	vector<Character*> GetLowerCaseCharactersFromFontFolder(string filePath);
+	bool CreateFonts(ID3D11Device* device, ID3D11DeviceContext* deviceContext, vector<string> fontFiles, int screenWidth, int screenHeight);
+	vector<Character*> GetLowerCaseCharactersFromFontFolder(ID3D11Device* device, ID3D11DeviceContext* deviceContext, string filePath, int screenWidth, int screenHeight);
+	Character* CreateCharacterFromFontFolder(ID3D11Device* device, ID3D11DeviceContext* deviceContext, string filePath, string name, string unicode, int screenWidth, int screenHeight);
 public:
 	FontEngine();
 	~FontEngine();
 
-	bool SearchForAvaliableFonts();
+	bool SearchForAvaliableFonts(ID3D11Device* device, ID3D11DeviceContext* deviceContext, int screenWidth, int screenHeight);
 };
 

@@ -22,14 +22,14 @@ bool Graphics::Initialise(int screenWidth, int screenHeight, HWND hwnd)
 
 	try
 	{
-		FontEngine* fontEngine = new FontEngine();
-		fontEngine->SearchForAvaliableFonts();
-
 		_direct3D = new DirectX3D;
 		if (!_direct3D) throw Exception("Failed to create a DirectX3D object.");
 
 		result = _direct3D->Initialise(screenWidth, screenHeight, VSYNC_ENABLED, hwnd, FULL_SCREEN, SCREEN_DEPTH, SCREEN_NEAR);
 		if (!result) throw Exception("Could not initialise Direct3D.");
+
+		FontEngine* fontEngine = new FontEngine();
+		fontEngine->SearchForAvaliableFonts(_direct3D->GetDevice(), _direct3D->GetDeviceContext(), screenWidth, screenHeight);
 
 		_camera = new Camera;
 		if (!_camera) throw Exception("Failed to create a camera object.");
