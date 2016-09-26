@@ -175,7 +175,7 @@ bool Graphics::Render(float rotation)
 
 		result = _fontEngine->Render(_direct3D->GetDeviceContext(), worldMatrix, viewMatrix, orthoMatrix,
 			_light->GetDirection(), _camera->GetPosition(), _light->GetAmbientColor(), _light->GetDiffuseColor(),
-			_light->GetSpecularColor(), _light->GetSpecularPower(), 200, 50, "impact", "Hello World");
+			_light->GetSpecularColor(), _light->GetSpecularPower(), 200, 50, "impact", "Joshukitten loves catnip");
 		if (!result) return false;
 
 		_direct3D->TurnZBufferOn();
