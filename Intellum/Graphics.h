@@ -3,7 +3,8 @@
 
 #include "Camera.h"
 #include "Model.h"
-#include "ShaderController.h"
+#include "engine\shader_engine\IShaderType.h"
+#include "engine\shader_engine\DefaultShader.h"
 #include "Light.h"
 #include "Bitmap.h"
 #include "error_handling/Exception.h"
@@ -25,7 +26,7 @@ private:
 	
 	Camera* _camera;
 	Model* _model;
-	ShaderController* _shader;
+	IShaderType* _shader;
 	Light* _light;
 	Bitmap* _bitmap;
 

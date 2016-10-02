@@ -6,14 +6,14 @@
 #include "../../error_handling/Exception.h"
 #include "Font.h"
 #include "Character.h"
-#include "../../ShaderController.h"
+#include "../shader_engine/IShaderType.h"
 
 using namespace std;
 
 class FontEngine
 {
 private:
-	ShaderController* _shader;
+	IShaderType* _shader;
 
 	char* _defaultSearchPath = "../../fonts/";
 	vector<Font*> _avaliableFonts;
@@ -28,7 +28,7 @@ private:
 
 	vector<Character*> StringToCharacterTextureList(string font, string input);
 public:
-	FontEngine(ShaderController* shader);
+	FontEngine(IShaderType* shader);
 	~FontEngine();
 
 	bool SearchForAvaliableFonts(ID3D11Device* device, ID3D11DeviceContext* deviceContext, int screenWidth, int screenHeight);

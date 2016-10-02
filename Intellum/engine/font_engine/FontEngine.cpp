@@ -1,6 +1,6 @@
 #include "FontEngine.h"
 
-FontEngine::FontEngine(ShaderController* shader) : _shader(shader)
+FontEngine::FontEngine(IShaderType* shader) : _shader(shader)
 {
 }
 

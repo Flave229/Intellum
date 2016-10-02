@@ -151,7 +151,7 @@ bool DefaultShader::InitialiseShader(ID3D11Device* device, HWND hwnd, WCHAR* vsF
 	return true;
 }
 
-void DefaultShader::ShutdownShader()
+void DefaultShader::Shutdown()
 {
 	if (_matrixBuffer)
 	{
