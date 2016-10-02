@@ -150,6 +150,7 @@
   <ItemGroup>
     <ClCompile Include="Bitmap.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="engine\shader_engine\DefaultShader.cpp" />
     <ClCompile Include="engine\dx_components\DepthStencil.cpp" />
     <ClCompile Include="engine\DirectX3D.cpp" />
     <ClCompile Include="engine\GameTimer.cpp" />
@@ -175,6 +176,7 @@
     <ClInclude Include="Bitmap.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="common\Vertex.h" />
+    <ClInclude Include="engine\shader_engine\DefaultShader.h" />
     <ClInclude Include="engine\dx_components\DepthStencil.h" />
     <ClInclude Include="engine\DirectX3D.h" />
     <ClInclude Include="engine\GameTimer.h" />
@@ -186,6 +188,7 @@
     <ClInclude Include="engine\dx_components\HardwareDescription.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="engine\font_engine\Character.h" />
+    <ClInclude Include="engine\shader_engine\IShaderType.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="loaders\OBJLoader.h" />
     <ClInclude Include="Model.h" />
