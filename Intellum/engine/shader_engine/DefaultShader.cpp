@@ -1,11 +1,19 @@
 #include "DefaultShader.h"
 
-DefaultShader::DefaultShader(string vertexShader, string pixelShader) : _vertexShaderFile(vertexShader), _pixelShaderFile(pixelShader)
+DefaultShader::DefaultShader()
 {
 }
 
 DefaultShader::~DefaultShader()
 {
+}
+
+bool DefaultShader::Initialise(ID3D11Device* device, HWND hwnd)
+{
+	bool result = InitialiseShader(device, hwnd, L"shaders/VertexShader.hlsl", L"shaders/PixelShader.hlsl");
+	if (!result) return false;
+
+	return true;
 }
 
 bool DefaultShader::InitialiseShader(ID3D11Device* device, HWND hwnd, WCHAR* vsFilename, WCHAR* psFilename)

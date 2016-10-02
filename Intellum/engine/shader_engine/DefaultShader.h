@@ -29,9 +29,6 @@ class DefaultShader : public IShaderType
 	};
 
 private:
-	string _vertexShaderFile;
-	string _pixelShaderFile;
-
 	ID3D11VertexShader* _vertexShader;
 	ID3D11PixelShader* _pixelShader;
 	ID3D11InputLayout* _layout;
@@ -41,9 +38,10 @@ private:
 	ID3D11Buffer* _cameraBuffer;
 	ID3D11Buffer* _lightBuffer;
 public:
-	DefaultShader(string vertexShader, string pixelShader);
+	DefaultShader();
 	~DefaultShader();
 
+	virtual bool Initialise(ID3D11Device* device, HWND hwnd);
 	virtual bool InitialiseShader(ID3D11Device* device, HWND hwnd, WCHAR* vsFilename, WCHAR* psFilename);
 	virtual void Shutdown();
 

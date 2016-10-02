@@ -16,6 +16,7 @@ public class IShaderType
 public:
 	virtual ~IShaderType() {};
 
+	virtual bool Initialise(ID3D11Device* device, HWND hwnd) = 0;
 	virtual bool InitialiseShader(ID3D11Device* device, HWND hwnd, WCHAR* vsFilename, WCHAR* psFilename) = 0;
 	virtual void Shutdown() = 0;
 

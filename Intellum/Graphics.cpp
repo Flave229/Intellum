@@ -37,10 +37,10 @@ bool Graphics::Initialise(int screenWidth, int screenHeight, HWND hwnd)
 		result = _model->Initialise(_direct3D->GetDevice(), _direct3D->GetDeviceContext(), "data/images/stone.tga", "data/models/sphere.obj");
 		if (!result) throw Exception("Could not initialise the model object.");
 
-		_shader = new DefaultShader("", "");
+		_shader = new DefaultShader();
 		if (!_shader) throw Exception("Failed to create the shader controller.");
 
-		result = _shader->InitialiseShader(_direct3D->GetDevice(), hwnd, L"shaders/VertexShader.hlsl", L"shaders/PixelShader.hlsl");
+		result = _shader->Initialise(_direct3D->GetDevice(), hwnd);
 		if (!result) throw Exception("Could not initialise the shader controller.");
 
 		_bitmap = new Bitmap;
