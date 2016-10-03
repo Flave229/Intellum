@@ -269,8 +269,7 @@ bool FontShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATRI
 	}
 
 	colorDataPtr->padding = XMFLOAT3(0.0f, 0.0f, 0.0f);
-
-
+	
 	deviceContext->Unmap(_colorBuffer, 0);
 
 	bufferNumber = 0;

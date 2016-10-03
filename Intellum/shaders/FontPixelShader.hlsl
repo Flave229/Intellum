@@ -26,6 +26,10 @@ float4 FontPixelShader(PixelInputType input) : SV_TARGET
         {
             return colorOverload;
         }
+        else
+        {
+            clip(-1.0f);
+        }
 
         return float4(0.0, 0.0, 0.0, 0.0);
     }
