@@ -19,6 +19,13 @@ class FontShader : public IShaderType
 		float padding;
 	};
 
+	struct ColorBuffer
+	{
+		float colorOverloadEnabled;
+		XMFLOAT3 padding;
+		XMFLOAT4 colorOverload;
+	};
+
 private:
 	ID3D11VertexShader* _vertexShader;
 	ID3D11PixelShader* _pixelShader;
@@ -27,7 +34,9 @@ private:
 
 	ID3D11Buffer* _matrixBuffer;
 	ID3D11Buffer* _cameraBuffer;
-	ID3D11Buffer* _lightBuffer;
+	ID3D11Buffer* _colorBuffer;
+
+	bool _colorOverloadEnabled;
 public:
 	FontShader();
 	~FontShader();
@@ -45,4 +54,6 @@ public:
 	virtual void RenderShader(ID3D11DeviceContext* deviceContext, int indexCount);
 
 	virtual void OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, WCHAR* shaderFileName);
+
+	void SetColorOverload(bool state);
 };

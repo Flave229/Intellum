@@ -7,6 +7,7 @@
 #include "Font.h"
 #include "Character.h"
 #include "../shader_engine/IShaderType.h"
+#include "../shader_engine/FontShader.h"
 
 using namespace std;
 

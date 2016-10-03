@@ -41,6 +41,7 @@ bool FontEngine::Render(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix
 {
 	try
 	{
+		((FontShader*)_shader)->SetColorOverload(true);
 		bool result = CheckFontExists(font);
 		if (!result) return false;
 
@@ -54,6 +55,7 @@ bool FontEngine::Render(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix
 			if (!result) return false;
 		}
 
+		((FontShader*)_shader)->SetColorOverload(false);
 		return true;
 	}
 	catch (Exception& exception)

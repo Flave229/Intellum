@@ -26,7 +26,7 @@ bool FontShader::InitialiseShader(ID3D11Device* device, HWND hwnd, WCHAR* vsFile
 	unsigned int numElements;
 	D3D11_BUFFER_DESC matrixBufferDesc;
 	D3D11_BUFFER_DESC cameraBufferDesc;
-	D3D11_BUFFER_DESC lightBufferDesc;
+	D3D11_BUFFER_DESC colorBufferDesc;
 	D3D11_SAMPLER_DESC samplerDesc;
 
 	result = D3DCompileFromFile(vsFilename, nullptr, nullptr, "FontVertexShader", "vs_5_0", D3D10_SHADER_ENABLE_STRICTNESS, 0, &vertexShaderBuffer, &errorMessage);
@@ -119,6 +119,17 @@ bool FontShader::InitialiseShader(ID3D11Device* device, HWND hwnd, WCHAR* vsFile
 	result = device->CreateBuffer(&cameraBufferDesc, nullptr, &_cameraBuffer);
 	if (FAILED(result)) return false;
 
+	// Camera Buffer Description
+	colorBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	colorBufferDesc.ByteWidth = sizeof(ColorBuffer);
+	colorBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	colorBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	colorBufferDesc.MiscFlags = 0;
+	colorBufferDesc.StructureByteStride = 0;
+
+	result = device->CreateBuffer(&colorBufferDesc, nullptr, &_colorBuffer);
+	if (FAILED(result)) return false;
+
 	// Sampler State Description
 	samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
 	samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
@@ -154,10 +165,10 @@ void FontShader::Shutdown()
 		_cameraBuffer = nullptr;
 	}
 
-	if (_lightBuffer)
+	if (_colorBuffer)
 	{
-		_lightBuffer->Release();
-		_lightBuffer = nullptr;
+		_colorBuffer->Release();
+		_colorBuffer = nullptr;
 	}
 
 	if (_layout)
@@ -203,6 +214,7 @@ bool FontShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATRI
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
 	ConstantBuffer* matrixDataPtr;
 	CameraBuffer* cameraDataPtr;
+	ColorBuffer* colorDataPtr;
 	unsigned int bufferNumber;
 
 	worldMatrix = XMMatrixTranspose(worldMatrix);
@@ -239,6 +251,28 @@ bool FontShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATRI
 	deviceContext->VSSetConstantBuffers(bufferNumber, 1, &_cameraBuffer);
 
 	deviceContext->PSSetShaderResources(0, 1, &texture);
+	
+	result = deviceContext->Map(_colorBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	if (FAILED(result)) return false;
+
+	colorDataPtr = static_cast<ColorBuffer*>(mappedResource.pData);
+
+	if (_colorOverloadEnabled)
+	{
+		colorDataPtr->colorOverloadEnabled = 1.0f;
+	}
+	else
+	{
+		colorDataPtr->colorOverloadEnabled = 0.0f;
+	}
+	colorDataPtr->padding = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	colorDataPtr->colorOverload = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
+
+	deviceContext->Unmap(_colorBuffer, 0);
+
+	bufferNumber = 0;
+
+	deviceContext->PSSetConstantBuffers(bufferNumber, 1, &_colorBuffer);
 
 	return true;
 }
@@ -278,4 +312,9 @@ void FontShader::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, W
 	errorMessage = nullptr;
 
 	MessageBox(hwnd, L"Error compiling shader. Check shader-error.txt for message.", shaderFileName, MB_OK);
+}
+
+void FontShader::SetColorOverload(bool state)
+{
+	_colorOverloadEnabled = state;
 }
