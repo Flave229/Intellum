@@ -20,7 +20,13 @@ bool ShaderController::Initialise(ID3D11Device* device, HWND hwnd)
 	bool result = _defaultShader->Initialise(device, hwnd);
 	if (!result) throw Exception("Could not initialise the default shader.");
 
-	return true;
+	_fontShader = new FontShader();
+	if (!_fontShader) throw Exception("Failed to create the default shader.");
+
+	result = _fontShader->Initialise(device, hwnd);
+	if (!result) throw Exception("Could not initialise the default shader.");
+
+		return true;
 }
 
 void ShaderController::Shutdown()

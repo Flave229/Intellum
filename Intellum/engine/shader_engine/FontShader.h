@@ -4,7 +4,7 @@
 
 using namespace std;
 
-class DefaultShader : public IShaderType
+class FontShader : public IShaderType
 {
 	struct ConstantBuffer
 	{
@@ -19,15 +19,6 @@ class DefaultShader : public IShaderType
 		float padding;
 	};
 
-	struct LightBuffer
-	{
-		XMFLOAT4 ambientColor;
-		XMFLOAT4 diffuseColor;
-		XMFLOAT3 lightDirection;
-		float specularPower;
-		XMFLOAT4 specularColor;
-	};
-
 private:
 	ID3D11VertexShader* _vertexShader;
 	ID3D11PixelShader* _pixelShader;
@@ -38,8 +29,8 @@ private:
 	ID3D11Buffer* _cameraBuffer;
 	ID3D11Buffer* _lightBuffer;
 public:
-	DefaultShader();
-	~DefaultShader();
+	FontShader();
+	~FontShader();
 
 	virtual bool Initialise(ID3D11Device* device, HWND hwnd);
 	virtual bool InitialiseShader(ID3D11Device* device, HWND hwnd, WCHAR* vsFilename, WCHAR* psFilename);

@@ -159,6 +159,7 @@
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</CompileAsManaged>
     </ClCompile>
     <ClCompile Include="engine\font_engine\Font.cpp" />
+    <ClCompile Include="engine\shader_engine\FontShader.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="engine\dx_components\HardwareDescription.cpp" />
     <ClCompile Include="Input.cpp" />
@@ -184,6 +185,7 @@
     <ClInclude Include="error_handling\Exception.h" />
     <ClInclude Include="engine\font_engine\FontEngine.h" />
     <ClInclude Include="engine\font_engine\Font.h" />
+    <ClInclude Include="engine\shader_engine\FontShader.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="engine\dx_components\HardwareDescription.h" />
     <ClInclude Include="Input.h" />

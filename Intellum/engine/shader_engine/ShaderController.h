@@ -8,6 +8,7 @@
 
 #include "../../error_handling/Exception.h"
 #include "DefaultShader.h"
+#include "FontShader.h"
 #include "IShaderType.h"
 
 using namespace DirectX;

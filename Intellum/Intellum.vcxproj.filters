@@ -109,6 +109,9 @@
     <ClCompile Include="engine\shader_engine\ShaderController.cpp">
       <Filter>Source Files\Application</Filter>
     </ClCompile>
+    <ClCompile Include="engine\shader_engine\FontShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Input.h">
@@ -179,6 +182,9 @@
     </ClInclude>
     <ClInclude Include="engine\shader_engine\ShaderController.h">
       <Filter>Header Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\shader_engine\FontShader.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

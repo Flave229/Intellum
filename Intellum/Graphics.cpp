@@ -43,7 +43,7 @@ bool Graphics::Initialise(int screenWidth, int screenHeight, HWND hwnd)
 		result = _model->Initialise(_direct3D->GetDevice(), _direct3D->GetDeviceContext(), "data/images/stone.tga", "data/models/sphere.obj");
 		if (!result) throw Exception("Could not initialise the model object.");
 
-		_bitmap = new Bitmap(_shaderController->GetShader(SHADER_DEFAULT));
+		_bitmap = new Bitmap(_shaderController->GetShader(SHADER_FONT));
 		if (!_bitmap) throw Exception("Failed to create the bitmap.");
 
 		result = _bitmap->Initialise(_direct3D->GetDevice(), _direct3D->GetDeviceContext(), screenWidth, screenHeight, 256, 256, "data/images/stone.tga");
@@ -58,7 +58,7 @@ bool Graphics::Initialise(int screenWidth, int screenHeight, HWND hwnd)
 		_light->SetDirection(0.8f, -1.0f, 0.2f);
 		_light->SetSpecularPower(32.0f);
 
-		_fontEngine = new FontEngine(_shaderController->GetShader(SHADER_DEFAULT));
+		_fontEngine = new FontEngine(_shaderController->GetShader(SHADER_FONT));
 		if (!_fontEngine) throw Exception("Failed to create the Font Engine.");
 
 		result = _fontEngine->SearchForAvaliableFonts(_direct3D->GetDevice(), _direct3D->GetDeviceContext(), screenWidth, screenHeight);
