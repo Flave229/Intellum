@@ -172,7 +172,7 @@ bool Graphics::Render(float rotation)
 
 		result = _fontEngine->Render(_direct3D->GetDeviceContext(), worldMatrix, viewMatrix, orthoMatrix,
 			_camera->GetPosition(), _light, 200, 50,
-			"impact", "Joshukitten loves catnip");
+			"impact", "Joshukitten loves catnip", XMFLOAT4(0.6f, 0.3f, 0.2f, 1.0f));
 		if (!result) return false;
 
 		_direct3D->TurnZBufferOn();

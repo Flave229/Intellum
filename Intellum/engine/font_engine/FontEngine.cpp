@@ -37,11 +37,11 @@ bool FontEngine::SearchForAvaliableFonts(ID3D11Device* device, ID3D11DeviceConte
 
 bool FontEngine::Render(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX orthoMatrix,
 	XMFLOAT3 cameraPosition, Light* light, int positionX, int positionY,
-	string font, string input)
+	string font, string input, XMFLOAT4 textColor)
 {
 	try
 	{
-		((FontShader*)_shader)->SetColorOverload(true);
+		((FontShader*)_shader)->SetColorOverload(true, textColor);
 		bool result = CheckFontExists(font);
 		if (!result) return false;
 

@@ -37,6 +37,7 @@ private:
 	ID3D11Buffer* _colorBuffer;
 
 	bool _colorOverloadEnabled;
+	XMFLOAT4 _fontColor;
 public:
 	FontShader();
 	~FontShader();
@@ -55,5 +56,5 @@ public:
 
 	virtual void OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, WCHAR* shaderFileName);
 
-	void SetColorOverload(bool state);
+	void SetColorOverload(bool state, XMFLOAT4 color = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
 };

@@ -260,13 +260,16 @@ bool FontShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATRI
 	if (_colorOverloadEnabled)
 	{
 		colorDataPtr->colorOverloadEnabled = 1.0f;
+		colorDataPtr->colorOverload = _fontColor;
 	}
 	else
 	{
 		colorDataPtr->colorOverloadEnabled = 0.0f;
+		colorDataPtr->colorOverload = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
 	}
+
 	colorDataPtr->padding = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	colorDataPtr->colorOverload = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
+
 
 	deviceContext->Unmap(_colorBuffer, 0);
 
@@ -314,7 +317,8 @@ void FontShader::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, W
 	MessageBox(hwnd, L"Error compiling shader. Check shader-error.txt for message.", shaderFileName, MB_OK);
 }
 
-void FontShader::SetColorOverload(bool state)
+void FontShader::SetColorOverload(bool state, XMFLOAT4 color)
 {
 	_colorOverloadEnabled = state;
+	_fontColor = color;
 }

@@ -24,7 +24,7 @@ float4 FontPixelShader(PixelInputType input) : SV_TARGET
         //Need to cull all pixels that are not white
         if (textureColor.r >= 0.9 && textureColor.g >= 0.9 && textureColor.b >= 0.9)
         {
-            return textureColor;
+            return colorOverload;
         }
 
         return float4(0.0, 0.0, 0.0, 0.0);
