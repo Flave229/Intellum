@@ -8,6 +8,7 @@
 #include <d3dcompiler.h>
 #include <DirectXMath.h>
 #include <fstream>
+#include "../../Light.h"
 
 using namespace DirectX;
 
@@ -21,12 +22,10 @@ public:
 	virtual void Shutdown() = 0;
 
 	virtual bool SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix,
-		ID3D11ShaderResourceView* texture, XMFLOAT3 lightDirection, XMFLOAT3 cameraPosition, XMFLOAT4 ambientColor,
-		XMFLOAT4 diffuseColor, XMFLOAT4 specularColor, float specularPower) = 0;
+		ID3D11ShaderResourceView* texture, XMFLOAT3 cameraPosition, Light* light) = 0;
 
 	virtual bool Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
-		XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, XMFLOAT3 lightDirection, XMFLOAT3 cameraPosition,
-		XMFLOAT4 ambientColor, XMFLOAT4 diffuseColor, XMFLOAT4 specularColor, float specularPower) = 0;
+		XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, XMFLOAT3 cameraPosition, Light* light) = 0;
 
 	virtual void RenderShader(ID3D11DeviceContext* deviceContext, int indexCount) = 0;
 	

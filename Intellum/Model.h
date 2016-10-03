@@ -40,8 +40,7 @@ public:
 	bool Initialise(ID3D11Device*, ID3D11DeviceContext*, char*, char*);
 	void Shutdown();
 	void Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
-		XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, XMFLOAT3 lightDirection, XMFLOAT3 cameraPosition,
-		XMFLOAT4 ambientColor, XMFLOAT4 diffuseColor, XMFLOAT4 specularColor, float specularPower);
+		XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, XMFLOAT3 cameraPosition, Light* light);
 
 	int GetIndexCount();
 

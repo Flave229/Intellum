@@ -6,6 +6,7 @@
 #include "engine\shader_engine\IShaderType.h"
 #include "engine\shader_engine\DefaultShader.h"
 #include "Texture.h"
+#include "Light.h"
 
 using namespace DirectX;
 
@@ -54,8 +55,7 @@ public:
 	bool Initialise(ID3D11Device*, ID3D11DeviceContext*, int, int, int, int, char*);
 	void Shutdown();
 	bool Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
-		XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, XMFLOAT3 lightDirection, XMFLOAT3 cameraPosition,
-		XMFLOAT4 ambientColor, XMFLOAT4 diffuseColor, XMFLOAT4 specularColor, float specularPower,
+		XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, XMFLOAT3 cameraPosition, Light* light,
 		int positionX, int positionY);
 
 	int GetIndexCount();

@@ -33,8 +33,8 @@ public:
 
 	bool SearchForAvaliableFonts(ID3D11Device* device, ID3D11DeviceContext* deviceContext, int screenWidth, int screenHeight);
 	bool Render(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX orthoMatrix,
-		XMFLOAT3 lightDirection, XMFLOAT3 cameraPosition, XMFLOAT4 lightAmbient, XMFLOAT4 lightDiffuse, XMFLOAT4 lightSpecular,
-		float lightSpecularPower, int positionX, int positionY, string font, string input);
+		XMFLOAT3 cameraPosition, Light* light, int positionX, int positionY,
+		string font, string input);
 
 	Font* GetFont(string font);
 	bool CheckFontExists(string font);

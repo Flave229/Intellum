@@ -205,10 +205,9 @@ void DefaultShader::Shutdown()
 }
 
 bool DefaultShader::Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
-	XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, XMFLOAT3 lightDirection, XMFLOAT3 cameraPosition,
-	XMFLOAT4 ambientColor, XMFLOAT4 diffuseColor, XMFLOAT4 specularColor, float specularPower)
+	XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, XMFLOAT3 cameraPosition, Light* light)
 {
-	bool result = SetShaderParameters(deviceContext, worldMatrix, viewMatrix, projectionMatrix, texture, lightDirection, cameraPosition, ambientColor, diffuseColor, specularColor, specularPower);
+	bool result = SetShaderParameters(deviceContext, worldMatrix, viewMatrix, projectionMatrix, texture, cameraPosition, light);
 	if (!result) return false;
 
 	RenderShader(deviceContext, indexCount);
@@ -217,8 +216,7 @@ bool DefaultShader::Render(ID3D11DeviceContext* deviceContext, int indexCount, X
 }
 
 bool DefaultShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix,
-	ID3D11ShaderResourceView* texture, XMFLOAT3 lightDirection, XMFLOAT3 cameraPosition, XMFLOAT4 ambientColor,
-	XMFLOAT4 diffuseColor, XMFLOAT4 specularColor, float specularPower)
+	ID3D11ShaderResourceView* texture, XMFLOAT3 cameraPosition, Light* light)
 {
 	HRESULT result;
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
@@ -267,11 +265,11 @@ bool DefaultShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMA
 
 	lightDataPtr = static_cast<LightBuffer*>(mappedResource.pData);
 
-	lightDataPtr->ambientColor = ambientColor;
-	lightDataPtr->diffuseColor = diffuseColor;
-	lightDataPtr->lightDirection = lightDirection;
-	lightDataPtr->specularColor = specularColor;
-	lightDataPtr->specularPower = specularPower;
+	lightDataPtr->ambientColor = light->GetAmbientColor();
+	lightDataPtr->diffuseColor = light->GetDiffuseColor();
+	lightDataPtr->lightDirection = light->GetDirection();
+	lightDataPtr->specularColor = light->GetSpecularColor();
+	lightDataPtr->specularPower = light->GetSpecularPower();
 
 	deviceContext->Unmap(_lightBuffer, 0);
 

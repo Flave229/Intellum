@@ -36,8 +36,8 @@ bool FontEngine::SearchForAvaliableFonts(ID3D11Device* device, ID3D11DeviceConte
 }
 
 bool FontEngine::Render(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX orthoMatrix,
-	XMFLOAT3 lightDirection, XMFLOAT3 cameraPosition, XMFLOAT4 lightAmbient, XMFLOAT4 lightDiffuse, XMFLOAT4 lightSpecular,
-	float lightSpecularPower, int positionX, int positionY, string font, string input)
+	XMFLOAT3 cameraPosition, Light* light, int positionX, int positionY,
+	string font, string input)
 {
 	try
 	{
@@ -49,8 +49,8 @@ bool FontEngine::Render(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix
 		for (int i = 0; i < stringAsTexture.size(); i++)
 		{
 			result = stringAsTexture.at(i)->_texture->Render(deviceContext, stringAsTexture.at(i)->_texture->GetIndexCount(), worldMatrix, viewMatrix,
-				orthoMatrix, stringAsTexture.at(i)->_texture->GetTexture(), lightDirection, cameraPosition,
-				lightAmbient, lightDiffuse, lightSpecular, lightSpecularPower, positionX + (64 * i), positionY);
+				orthoMatrix, stringAsTexture.at(i)->_texture->GetTexture(), cameraPosition, light,
+				positionX + (64 * i), positionY);
 			if (!result) return false;
 		}
 

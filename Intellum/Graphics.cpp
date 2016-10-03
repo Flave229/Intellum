@@ -166,14 +166,13 @@ bool Graphics::Render(float rotation)
 		_direct3D->TurnZBufferOff();
 
 		result = _bitmap->Render(_direct3D->GetDeviceContext(), _bitmap->GetIndexCount(), worldMatrix, viewMatrix,
-			orthoMatrix, _bitmap->GetTexture(), _light->GetDirection(), _camera->GetPosition(),
-			_light->GetAmbientColor(), _light->GetDiffuseColor(), _light->GetSpecularColor(), _light->GetSpecularPower(),
+			orthoMatrix, _bitmap->GetTexture(), _camera->GetPosition(), _light,
 			100, 100);
 		if (!result) return false;
 
 		result = _fontEngine->Render(_direct3D->GetDeviceContext(), worldMatrix, viewMatrix, orthoMatrix,
-			_light->GetDirection(), _camera->GetPosition(), _light->GetAmbientColor(), _light->GetDiffuseColor(),
-			_light->GetSpecularColor(), _light->GetSpecularPower(), 200, 50, "impact", "Joshukitten loves catnip");
+			_camera->GetPosition(), _light, 200, 50,
+			"impact", "Joshukitten loves catnip");
 		if (!result) return false;
 
 		_direct3D->TurnZBufferOn();
@@ -181,8 +180,7 @@ bool Graphics::Render(float rotation)
 		worldMatrix *= XMMatrixRotationY(rotation);
 
 		_model->Render(_direct3D->GetDeviceContext(), _model->GetIndexCount(), worldMatrix, viewMatrix,
-			projectionMatrix, _model->GetTexture(), _light->GetDirection(), _camera->GetPosition(),
-			_light->GetAmbientColor(), _light->GetDiffuseColor(), _light->GetSpecularColor(), _light->GetSpecularPower());
+			projectionMatrix, _model->GetTexture(), _camera->GetPosition(), _light);
 
 		_direct3D->EndScene();
 
