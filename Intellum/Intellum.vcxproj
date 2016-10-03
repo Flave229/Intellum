@@ -168,7 +168,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="engine\dx_components\Rasterizer.cpp" />
-    <ClCompile Include="ShaderController.cpp" />
+    <ClCompile Include="engine\shader_engine\ShaderController.cpp" />
     <ClCompile Include="DXSystem.cpp" />
     <ClCompile Include="Texture.cpp" />
   </ItemGroup>
@@ -193,7 +193,7 @@
     <ClInclude Include="loaders\OBJLoader.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="engine\dx_components\Rasterizer.h" />
-    <ClInclude Include="ShaderController.h" />
+    <ClInclude Include="engine\shader_engine\ShaderController.h" />
     <ClInclude Include="DXSystem.h" />
     <ClInclude Include="Texture.h" />
   </ItemGroup>

@@ -1,11 +1,11 @@
 #include "Graphics.h"
 
-Graphics::Graphics(): _direct3D(nullptr), _camera(nullptr), _model(nullptr), _shader(nullptr), 
+Graphics::Graphics(): _direct3D(nullptr), _camera(nullptr), _model(nullptr), _shaderController(nullptr),
 						_light(nullptr), _bitmap(nullptr)
 {
 }
 
-Graphics::Graphics(const Graphics& other) : _direct3D(other._direct3D), _camera(other._camera), _model(other._model), _shader(other._shader), 
+Graphics::Graphics(const Graphics& other) : _direct3D(other._direct3D), _camera(other._camera), _model(other._model), _shaderController(other._shaderController),
 												_light(other._light), _bitmap(other._bitmap)
 {
 }
@@ -31,19 +31,19 @@ bool Graphics::Initialise(int screenWidth, int screenHeight, HWND hwnd)
 
 		_camera->SetPosition(0.0f, 0.0f, -5.0f);
 
-		_model = new Model;
+		_shaderController = new ShaderController();
+		if (!_shaderController) throw Exception("Failed to create the shader controller.");
+
+		result = _shaderController->Initialise(_direct3D->GetDevice(), hwnd);
+		if (!_shaderController) throw Exception("Failed to create the shader controller.");
+
+		_model = new Model(_shaderController->GetShader(SHADER_DEFAULT));
 		if (!_model) throw Exception("Failed to create a Model object.");
 
 		result = _model->Initialise(_direct3D->GetDevice(), _direct3D->GetDeviceContext(), "data/images/stone.tga", "data/models/sphere.obj");
 		if (!result) throw Exception("Could not initialise the model object.");
 
-		_shader = new DefaultShader();
-		if (!_shader) throw Exception("Failed to create the shader controller.");
-
-		result = _shader->Initialise(_direct3D->GetDevice(), hwnd);
-		if (!result) throw Exception("Could not initialise the shader controller.");
-
-		_bitmap = new Bitmap;
+		_bitmap = new Bitmap(_shaderController->GetShader(SHADER_DEFAULT));
 		if (!_bitmap) throw Exception("Failed to create the bitmap.");
 
 		result = _bitmap->Initialise(_direct3D->GetDevice(), _direct3D->GetDeviceContext(), screenWidth, screenHeight, 256, 256, "data/images/stone.tga");
@@ -58,7 +58,7 @@ bool Graphics::Initialise(int screenWidth, int screenHeight, HWND hwnd)
 		_light->SetDirection(0.8f, -1.0f, 0.2f);
 		_light->SetSpecularPower(32.0f);
 
-		_fontEngine = new FontEngine(_shader);
+		_fontEngine = new FontEngine(_shaderController->GetShader(SHADER_DEFAULT));
 		if (!_fontEngine) throw Exception("Failed to create the Font Engine.");
 
 		result = _fontEngine->SearchForAvaliableFonts(_direct3D->GetDevice(), _direct3D->GetDeviceContext(), screenWidth, screenHeight);
@@ -85,11 +85,11 @@ void Graphics::Shutdown()
 		_direct3D = nullptr;
 	}
 
-	if(_shader)
+	if(_shaderController)
 	{
-		_shader->Shutdown();
-		delete _shader;
-		_shader = nullptr;
+		_shaderController->Shutdown();
+		delete _shaderController;
+		_shaderController = nullptr;
 	}
 
 	if (_model)
@@ -165,12 +165,10 @@ bool Graphics::Render(float rotation)
 
 		_direct3D->TurnZBufferOff();
 
-		result = _bitmap->Render(_direct3D->GetDeviceContext(), 100, 100);
-		if (!result) return false;
-
-		result = _shader->Render(_direct3D->GetDeviceContext(), _bitmap->GetIndexCount(), worldMatrix, viewMatrix,
+		result = _bitmap->Render(_direct3D->GetDeviceContext(), _bitmap->GetIndexCount(), worldMatrix, viewMatrix,
 			orthoMatrix, _bitmap->GetTexture(), _light->GetDirection(), _camera->GetPosition(),
-			_light->GetAmbientColor(), _light->GetDiffuseColor(), _light->GetSpecularColor(), _light->GetSpecularPower());
+			_light->GetAmbientColor(), _light->GetDiffuseColor(), _light->GetSpecularColor(), _light->GetSpecularPower(),
+			100, 100);
 		if (!result) return false;
 
 		result = _fontEngine->Render(_direct3D->GetDeviceContext(), worldMatrix, viewMatrix, orthoMatrix,
@@ -182,12 +180,9 @@ bool Graphics::Render(float rotation)
 
 		worldMatrix *= XMMatrixRotationY(rotation);
 
-		_model->Render(_direct3D->GetDeviceContext());
-
-		result = _shader->Render(_direct3D->GetDeviceContext(), _model->GetIndexCount(), worldMatrix, viewMatrix,
+		_model->Render(_direct3D->GetDeviceContext(), _model->GetIndexCount(), worldMatrix, viewMatrix,
 			projectionMatrix, _model->GetTexture(), _light->GetDirection(), _camera->GetPosition(),
 			_light->GetAmbientColor(), _light->GetDiffuseColor(), _light->GetSpecularColor(), _light->GetSpecularPower());
-		if (!result) return false;
 
 		_direct3D->EndScene();
 

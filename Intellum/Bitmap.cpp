@@ -2,13 +2,20 @@
 
 Bitmap::Bitmap(): _vertexBuffer(nullptr), _indexBuffer(nullptr), _vertexCount(0), _indexCount(0),
 					_screenWidth(0), _screenHeight(0), _bitmapWidth(0), _bitmapHeight(0), 
-					_previousPosX(0), _previousPosY(0), _texture(nullptr)
+					_previousPosX(0), _previousPosY(0), _texture(nullptr), _shader(new DefaultShader)
 {
+}
+
+Bitmap::Bitmap(IShaderType* shader) : _vertexBuffer(nullptr), _indexBuffer(nullptr), _vertexCount(0), _indexCount(0),
+										_screenWidth(0), _screenHeight(0), _bitmapWidth(0), _bitmapHeight(0),
+										_previousPosX(0), _previousPosY(0), _texture(nullptr), _shader(shader)
+{
+	
 }
 
 Bitmap::Bitmap(const Bitmap& other): _vertexBuffer(other._vertexBuffer), _indexBuffer(other._indexBuffer), _vertexCount(other._vertexCount), _indexCount(other._indexCount),
 										_screenWidth(other._screenWidth), _screenHeight(other._screenHeight), _bitmapWidth(other._bitmapWidth), _bitmapHeight(other._bitmapHeight),
-										_previousPosX(other._previousPosX), _previousPosY(other._previousPosY), _texture(other._texture)
+										_previousPosX(other._previousPosX), _previousPosY(other._previousPosY), _texture(other._texture), _shader(other._shader)
 {
 }
 
@@ -44,12 +51,20 @@ void Bitmap::Shutdown()
 	ShutdownBuffers();
 }
 
-bool Bitmap::Render(ID3D11DeviceContext* deviceContext, int positionX, int positionY)
+bool Bitmap::Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
+	XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, XMFLOAT3 lightDirection, XMFLOAT3 cameraPosition,
+	XMFLOAT4 ambientColor, XMFLOAT4 diffuseColor, XMFLOAT4 specularColor, float specularPower,
+	int positionX, int positionY)
 {
 	bool result = UpdateBuffers(deviceContext, positionX, positionY);
 	if (!result) return false;
 
 	RenderBuffers(deviceContext);
+
+	result = _shader->Render(deviceContext, indexCount, worldMatrix, viewMatrix,
+		projectionMatrix, texture, lightDirection, cameraPosition,
+		ambientColor, diffuseColor, specularColor, specularPower);
+	if (!result) return false;
 
 	return true;
 }

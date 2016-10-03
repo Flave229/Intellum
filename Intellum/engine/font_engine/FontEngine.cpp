@@ -48,12 +48,9 @@ bool FontEngine::Render(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix
 
 		for (int i = 0; i < stringAsTexture.size(); i++)
 		{
-			result = stringAsTexture.at(i)->_texture->Render(deviceContext, positionX + (64 * i), positionY);
-			if (!result) return false;
-
-			result = _shader->Render(deviceContext, stringAsTexture.at(i)->_texture->GetIndexCount(), worldMatrix, viewMatrix,
+			result = stringAsTexture.at(i)->_texture->Render(deviceContext, stringAsTexture.at(i)->_texture->GetIndexCount(), worldMatrix, viewMatrix,
 				orthoMatrix, stringAsTexture.at(i)->_texture->GetTexture(), lightDirection, cameraPosition,
-				lightAmbient, lightDiffuse, lightSpecular, lightSpecularPower);
+				lightAmbient, lightDiffuse, lightSpecular, lightSpecularPower, positionX + (64 * i), positionY);
 			if (!result) return false;
 		}
 
@@ -514,7 +511,7 @@ vector<Character*> FontEngine::GetCharactersFromFontFolder(ID3D11Device* device,
 
 Character* FontEngine::CreateCharacterFromFontFolder(ID3D11Device* device, ID3D11DeviceContext* deviceContext, string filePath, string name, string unicode, int screenWidth, int screenHeight)
 {
-	Bitmap* texture = new Bitmap;
+	Bitmap* texture = new Bitmap(_shader);
 	if (!texture) throw Exception("Failed to create the letter " + name + " for the font located at: " + filePath + ".");
 
 	bool result = texture->Initialise(device, deviceContext, screenWidth, screenHeight, 64, 128, &(filePath + "/" + unicode + ".tga")[0u]);

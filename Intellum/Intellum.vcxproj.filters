@@ -64,9 +64,6 @@
     <ClCompile Include="Texture.cpp">
       <Filter>Source Files\ObjectData</Filter>
     </ClCompile>
-    <ClCompile Include="ShaderController.cpp">
-      <Filter>Source Files\Application</Filter>
-    </ClCompile>
     <ClCompile Include="Light.cpp">
       <Filter>Source Files\Application</Filter>
     </ClCompile>
@@ -109,6 +106,9 @@
     <ClCompile Include="engine\shader_engine\DefaultShader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="engine\shader_engine\ShaderController.cpp">
+      <Filter>Source Files\Application</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Input.h">
@@ -125,9 +125,6 @@
     </ClInclude>
     <ClInclude Include="Texture.h">
       <Filter>Header Files\ObjectData</Filter>
-    </ClInclude>
-    <ClInclude Include="ShaderController.h">
-      <Filter>Header Files\Application</Filter>
     </ClInclude>
     <ClInclude Include="Light.h">
       <Filter>Header Files\Application</Filter>
@@ -179,6 +176,9 @@
     </ClInclude>
     <ClInclude Include="engine\shader_engine\DefaultShader.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\shader_engine\ShaderController.h">
+      <Filter>Header Files\Application</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

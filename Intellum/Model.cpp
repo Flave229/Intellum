@@ -1,11 +1,16 @@
 #include "Model.h"
 #include "loaders/OBJLoader.h"
 
-Model::Model(): _geometry(new Geometry), _texture(nullptr)//, _modelType(nullptr)
+Model::Model(): _geometry(new Geometry), _texture(nullptr), _shader(new DefaultShader)
 {
 }
 
-Model::Model(const Model& other) : _geometry(other._geometry), _texture(other._texture)//, _modelType(other._modelType)
+Model::Model(IShaderType* shader) : _geometry(new Geometry), _texture(nullptr), _shader(shader)
+{
+	
+}
+
+Model::Model(const Model& other) : _geometry(other._geometry), _texture(other._texture), _shader(other._shader)
 {
 }
 
@@ -32,9 +37,15 @@ void Model::Shutdown()
 	ShutdownBuffers();
 }
 
-void Model::Render(ID3D11DeviceContext* deviceContext)
+void Model::Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
+	XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, XMFLOAT3 lightDirection, XMFLOAT3 cameraPosition,
+	XMFLOAT4 ambientColor, XMFLOAT4 diffuseColor, XMFLOAT4 specularColor, float specularPower)
 {
 	RenderBuffers(deviceContext);
+
+	_shader->Render(deviceContext, indexCount, worldMatrix, viewMatrix,
+		projectionMatrix, texture, lightDirection, cameraPosition,
+		ambientColor, diffuseColor, specularColor, specularPower);
 }
 
 int Model::GetIndexCount()
