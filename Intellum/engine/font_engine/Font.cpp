@@ -1,4 +1,4 @@
-#include "Font.h"
+﻿#include "Font.h"
 
 
 
@@ -21,7 +21,7 @@ Character* Font::GetCharacterByName(string name)
 		return _characters.at(i);
 	}
 
-	throw Exception("Could not find the character \"" + name + "\"");
+	return GetCharacterByUnicode("0000");
 }
 
 Character* Font::GetCharacterByUnicode(string unicode)

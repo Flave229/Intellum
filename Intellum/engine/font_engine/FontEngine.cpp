@@ -1,4 +1,4 @@
-#include "FontEngine.h"
+﻿#include "FontEngine.h"
 
 FontEngine::FontEngine(IShaderType* shader) : _shader(shader)
 {
@@ -198,6 +198,9 @@ vector<Character*> FontEngine::GetCharactersFromFontFolder(ID3D11Device* device,
 				characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, unicodeDictionary.GetCharacterForUnicode(unicodes.at(i)), unicodes.at(i), screenWidth, screenHeight));
 		}
 
+		// Always reserve unicode 0000 in EVERY font to display the default error character in fonts/default
+		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, "fonts/default", unicodeDictionary.GetCharacterForUnicode("0000"), "0000", screenWidth, screenHeight));
+
 		return characters;
 	}
 	catch (Exception& exception)
@@ -234,6 +237,7 @@ vector<Character*> FontEngine::StringToCharacterTextureList(string font, string 
 {
 	try
 	{
+		Font* defaultFont = GetFont("default");
 		Font* chosenFont = GetFont(font);
 		vector<Character*> characterList;
 
