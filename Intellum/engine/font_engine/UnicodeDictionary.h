@@ -15,4 +15,7 @@ public:
 public:
 	UnicodeDictionary();
 	~UnicodeDictionary();
+
+	vector<string> GetSupportedUnicodeList();
+	string GetCharacterForUnicode(string unicode);
 };

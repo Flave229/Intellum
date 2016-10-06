@@ -244,10 +244,43 @@ UnicodeDictionary::UnicodeDictionary()
 		{ "00ED", "í" },
 		{ "00EE", "î" },
 		{ "00EF", "ï" },
+		{ "00F0", "ð" },
+		{ "00F1", "ñ" },
+		{ "00F2", "ò" },
+		{ "00F3", "ó" },
+		{ "00F4", "ô" },
+		{ "00F5", "õ" },
+		{ "00F6", "ö" },
+		{ "00F7", "÷" },
+		{ "00F8", "ø" },
+		{ "00F9", "ù" },
+		{ "00FA", "ú" },
+		{ "00FB", "û" },
+		{ "00FC", "ü" },
+		{ "00FD", "ý" },
+		{ "00FE", "þ" },
+		{ "00FF", "ÿ" },
 	};
 }
 
 
 UnicodeDictionary::~UnicodeDictionary()
 {
+}
+
+vector<string> UnicodeDictionary::GetSupportedUnicodeList()
+{
+	vector<string> unicodeList;
+
+	for(map<string,string>::iterator i = _unicodeToLetter.begin(); i != _unicodeToLetter.end(); i++)
+	{
+		unicodeList.push_back(i->first);
+	}
+
+	return unicodeList;
+}
+
+string UnicodeDictionary::GetCharacterForUnicode(string unicode)
+{
+	return _unicodeToLetter.find(unicode)->second;
 }

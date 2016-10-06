@@ -4,6 +4,7 @@
 
 #include "../../error_handling/Exception.h"
 #include "Character.h"
+#include "UnicodeDictionary.h"
 
 using namespace std;
 
