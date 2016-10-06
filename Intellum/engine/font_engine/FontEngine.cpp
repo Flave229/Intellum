@@ -422,9 +422,12 @@ bool FontEngine::CreateFonts(ID3D11Device* device, ID3D11DeviceContext* deviceCo
 			Font* font = new Font();
 			font->_fontName = fontFiles.at(i);
 
-			vector<Character*> lowerCase = GetCharactersFromFontFolder(device, deviceContext, "fonts/" + fontFiles.at(i), screenWidth, screenHeight);
+			vector<Character*> characters = GetBaseCharactersFromFontFolder(device, deviceContext, "fonts/" + fontFiles.at(i), screenWidth, screenHeight);
+			vector<Character*> additionalCharacters = GetAdditionalCharactersFromFontFolder(device, deviceContext, "fonts/" + fontFiles.at(i), screenWidth, screenHeight);
 
-			font->_characters = lowerCase;
+			characters.insert(characters.end(), additionalCharacters.begin(), additionalCharacters.end());
+
+			font->_characters = characters;
 
 			_avaliableFonts.push_back(font);
 		}
@@ -437,7 +440,7 @@ bool FontEngine::CreateFonts(ID3D11Device* device, ID3D11DeviceContext* deviceCo
 	}
 }
 
-vector<Character*> FontEngine::GetCharactersFromFontFolder(ID3D11Device* device, ID3D11DeviceContext* deviceContext, string filePath, int screenWidth, int screenHeight)
+vector<Character*> FontEngine::GetBaseCharactersFromFontFolder(ID3D11Device* device, ID3D11DeviceContext* deviceContext, string filePath, int screenWidth, int screenHeight)
 {
 	try
 	{
@@ -509,6 +512,46 @@ vector<Character*> FontEngine::GetCharactersFromFontFolder(ID3D11Device* device,
 	{
 		throw Exception("Failed to create base characters for font.", exception);
 	}
+}
+
+vector<Character*> FontEngine::GetAdditionalCharactersFromFontFolder(ID3D11Device* device, ID3D11DeviceContext* deviceContext, string filePath, int screenWidth, int screenHeight)
+{
+	try
+	{
+		vector<Character*> characters = vector<Character*>();
+
+		if (CheckCharacterExists(filePath + "/0021.tga"))
+			characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "!", "0021", screenWidth, screenHeight));
+		if (CheckCharacterExists(filePath + "/0022.tga"))
+			characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "\"", "0022", screenWidth, screenHeight));
+		if (CheckCharacterExists(filePath + "/0023.tga"))
+			characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "#", "0023", screenWidth, screenHeight));
+		if (CheckCharacterExists(filePath + "/0024.tga"))
+			characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "$", "0024", screenWidth, screenHeight));
+		if (CheckCharacterExists(filePath + "/0025.tga"))
+			characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "%", "0025", screenWidth, screenHeight));
+		if (CheckCharacterExists(filePath + "/0026.tga"))
+			characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, "'", "0026", screenWidth, screenHeight));
+
+		return characters;
+	}
+	catch (Exception& exception)
+	{
+		return vector<Character*>();
+	}
+}
+
+bool FontEngine::CheckCharacterExists(string filePath)
+{
+	FILE* file;
+
+	if (fopen_s(&file, filePath.c_str(), "r") && file != nullptr)
+	{
+		fclose(file);
+		return true;
+	}
+	
+	return false;
 }
 
 Character* FontEngine::CreateCharacterFromFontFolder(ID3D11Device* device, ID3D11DeviceContext* deviceContext, string filePath, string name, string unicode, int screenWidth, int screenHeight)

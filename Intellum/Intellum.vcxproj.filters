@@ -112,6 +112,9 @@
     <ClCompile Include="engine\shader_engine\FontShader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="engine\font_engine\UnicodeDictionary.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Input.h">
@@ -184,6 +187,9 @@
       <Filter>Header Files\Application</Filter>
     </ClInclude>
     <ClInclude Include="engine\shader_engine\FontShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\font_engine\UnicodeDictionary.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

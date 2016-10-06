@@ -172,6 +172,7 @@
     <ClCompile Include="engine\shader_engine\ShaderController.cpp" />
     <ClCompile Include="DXSystem.cpp" />
     <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="engine\font_engine\UnicodeDictionary.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bitmap.h" />
@@ -198,6 +199,7 @@
     <ClInclude Include="engine\shader_engine\ShaderController.h" />
     <ClInclude Include="DXSystem.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="engine\font_engine\UnicodeDictionary.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="data\models\Cube.txt">
