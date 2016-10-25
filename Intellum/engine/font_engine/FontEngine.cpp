@@ -1,15 +1,14 @@
 ﻿#include "FontEngine.h"
 
-FontEngine::FontEngine(IShaderType* shader) : _shader(shader)
+FontEngine::FontEngine(ID3D11Device* device, ID3D11DeviceContext* deviceContext, IShaderType* shader) : _device(device), _deviceContext(deviceContext), _shader(shader)
 {
 }
-
 
 FontEngine::~FontEngine()
 {
 }
 
-bool FontEngine::SearchForAvaliableFonts(ID3D11Device* device, ID3D11DeviceContext* deviceContext, int screenWidth, int screenHeight)
+bool FontEngine::SearchForAvaliableFonts(int screenWidth, int screenHeight)
 {
 	try
 	{
@@ -24,7 +23,7 @@ bool FontEngine::SearchForAvaliableFonts(ID3D11Device* device, ID3D11DeviceConte
 		vector<string> fonts = ValidatePotentialFonts(potentialFonts);
 		if (fonts.size() <= 0) return false;
 
-		result = CreateFonts(device, deviceContext, fonts, screenWidth, screenHeight);
+		result = CreateFonts(fonts, screenWidth, screenHeight);
 		if (!result) return false;
 
 		return true;
@@ -35,7 +34,7 @@ bool FontEngine::SearchForAvaliableFonts(ID3D11Device* device, ID3D11DeviceConte
 	}
 }
 
-bool FontEngine::Render(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX orthoMatrix,
+bool FontEngine::Render(XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX orthoMatrix,
 	XMFLOAT3 cameraPosition, Light* light, int positionX, int positionY,
 	string font, string input, XMFLOAT4 textColor)
 {
@@ -49,7 +48,7 @@ bool FontEngine::Render(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix
 
 		for (int i = 0; i < stringAsTexture.size(); i++)
 		{
-			result = stringAsTexture.at(i)->_texture->Render(deviceContext, stringAsTexture.at(i)->_texture->GetIndexCount(), worldMatrix, viewMatrix,
+			result = stringAsTexture.at(i)->_texture->Render(_deviceContext, stringAsTexture.at(i)->_texture->GetIndexCount(), worldMatrix, viewMatrix,
 				orthoMatrix, stringAsTexture.at(i)->_texture->GetTexture(), cameraPosition, light,
 				positionX + (64 * i), positionY);
 			if (!result) return false;
@@ -159,7 +158,7 @@ vector<string> FontEngine::ValidatePotentialFonts(vector<string> potentialFonts)
 	return validatedFonts;
 }
 
-bool FontEngine::CreateFonts(ID3D11Device* device, ID3D11DeviceContext* deviceContext, vector<string> fontFiles, int screenWidth, int screenHeight)
+bool FontEngine::CreateFonts(vector<string> fontFiles, int screenWidth, int screenHeight)
 {
 	try
 	{
@@ -168,7 +167,7 @@ bool FontEngine::CreateFonts(ID3D11Device* device, ID3D11DeviceContext* deviceCo
 			Font* font = new Font();
 			font->_fontName = fontFiles.at(i);
 
-			vector<Character*> characters = GetCharactersFromFontFolder(device, deviceContext, "fonts/" + fontFiles.at(i), screenWidth, screenHeight);
+			vector<Character*> characters = GetCharactersFromFontFolder("fonts/" + fontFiles.at(i), screenWidth, screenHeight);
 
 			font->_characters = characters;
 
@@ -183,7 +182,7 @@ bool FontEngine::CreateFonts(ID3D11Device* device, ID3D11DeviceContext* deviceCo
 	}
 }
 
-vector<Character*> FontEngine::GetCharactersFromFontFolder(ID3D11Device* device, ID3D11DeviceContext* deviceContext, string filePath, int screenWidth, int screenHeight)
+vector<Character*> FontEngine::GetCharactersFromFontFolder(string filePath, int screenWidth, int screenHeight)
 {
 	try
 	{
@@ -195,11 +194,11 @@ vector<Character*> FontEngine::GetCharactersFromFontFolder(ID3D11Device* device,
 		for(int i = 0; i < unicodes.size(); i++)
 		{
 			if (CheckCharacterExists(filePath + "/" + unicodes.at(i) + ".tga"))
-				characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, filePath, unicodeDictionary.GetCharacterForUnicode(unicodes.at(i)), unicodes.at(i), screenWidth, screenHeight));
+				characters.push_back(CreateCharacterFromFontFolder(filePath, unicodeDictionary.GetCharacterForUnicode(unicodes.at(i)), unicodes.at(i), screenWidth, screenHeight));
 		}
 
 		// Always reserve unicode 0000 in EVERY font to display the default error character in fonts/default
-		characters.push_back(CreateCharacterFromFontFolder(device, deviceContext, "fonts/default", unicodeDictionary.GetCharacterForUnicode("0000"), "0000", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder("fonts/default", unicodeDictionary.GetCharacterForUnicode("0000"), "0000", screenWidth, screenHeight));
 
 		return characters;
 	}
@@ -220,12 +219,12 @@ bool FontEngine::CheckCharacterExists(string filePath)
 	return true;
 }
 
-Character* FontEngine::CreateCharacterFromFontFolder(ID3D11Device* device, ID3D11DeviceContext* deviceContext, string filePath, string name, string unicode, int screenWidth, int screenHeight)
+Character* FontEngine::CreateCharacterFromFontFolder(string filePath, string name, string unicode, int screenWidth, int screenHeight)
 {
 	Bitmap* texture = new Bitmap(_shader);
 	if (!texture) throw Exception("Failed to create the letter " + name + " for the font located at: " + filePath + ".");
 
-	bool result = texture->Initialise(device, deviceContext, screenWidth, screenHeight, 64, 128, &(filePath + "/" + unicode + ".tga")[0u]);
+	bool result = texture->Initialise(_device, _deviceContext, screenWidth, screenHeight, 64, 128, &(filePath + "/" + unicode + ".tga")[0u]);
 	if (!result) throw Exception("Failed to initialise the texture for letter " + name + " for the character located at: " + filePath + "/" + unicode + ".tga");
 
 	Character* character = new Character(name, unicode, texture);

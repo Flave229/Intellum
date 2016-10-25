@@ -58,10 +58,10 @@ bool Graphics::Initialise(int screenWidth, int screenHeight, HWND hwnd)
 		_light->SetDirection(0.8f, -1.0f, 0.2f);
 		_light->SetSpecularPower(32.0f);
 
-		_fontEngine = new FontEngine(_shaderController->GetShader(SHADER_FONT));
+		_fontEngine = new FontEngine(_direct3D->GetDevice(), _direct3D->GetDeviceContext(), _shaderController->GetShader(SHADER_FONT));
 		if (!_fontEngine) throw Exception("Failed to create the Font Engine.");
 
-		result = _fontEngine->SearchForAvaliableFonts(_direct3D->GetDevice(), _direct3D->GetDeviceContext(), screenWidth, screenHeight);
+		result = _fontEngine->SearchForAvaliableFonts(screenWidth, screenHeight);
 		if (!result) throw Exception("Could not initialise Font Engine.");
 	}
 	catch(Exception& exception)
@@ -170,7 +170,7 @@ bool Graphics::Render(float rotation)
 			100, 100);
 		if (!result) return false;
 
-		result = _fontEngine->Render(_direct3D->GetDeviceContext(), worldMatrix, viewMatrix, orthoMatrix,
+		result = _fontEngine->Render(worldMatrix, viewMatrix, orthoMatrix,
 			_camera->GetPosition(), _light, 200, 50,
 			"impact", "&Joshukitten loves catnip", XMFLOAT4(0.6f, 0.3f, 0.2f, 1.0f));
 		if (!result) return false;
