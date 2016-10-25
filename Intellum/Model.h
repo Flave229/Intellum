@@ -18,6 +18,9 @@ class Model
 {
 // Member Level Variables
 private:
+	ID3D11Device* _device;
+	ID3D11DeviceContext* _deviceContext;
+
 	Geometry* _geometry;
 	Texture* _texture;
 	IShaderType* _shader;
@@ -25,22 +28,21 @@ private:
 // Function Declarations
 private:
 	void ShutdownBuffers();
-	void RenderBuffers(ID3D11DeviceContext*);
+	void RenderBuffers();
 
-	bool LoadTexture(ID3D11Device*, ID3D11DeviceContext*, char*);
+	bool LoadTexture(char*);
 	void ReleaseTexture();
 
-	bool LoadModel(ID3D11Device*, char*);
+	bool LoadModel(char*);
 public:
-	Model();
-	Model(IShaderType* shader);
+	Model(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
+	Model(ID3D11Device* device, ID3D11DeviceContext* deviceContext, IShaderType* shader);
 	Model(const Model&);
 	~Model();
 
-	bool Initialise(ID3D11Device*, ID3D11DeviceContext*, char*, char*);
+	bool Initialise(char*, char*);
 	void Shutdown();
-	void Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
-		XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, XMFLOAT3 cameraPosition, Light* light);
+	void Render(int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, XMFLOAT3 cameraPosition, Light* light);
 
 	int GetIndexCount();
 

@@ -1,16 +1,16 @@
 #include "Model.h"
 #include "loaders/OBJLoader.h"
 
-Model::Model(): _geometry(new Geometry), _texture(nullptr), _shader(new DefaultShader)
+Model::Model(ID3D11Device* device, ID3D11DeviceContext* deviceContext): _device(device), _deviceContext(deviceContext), _geometry(new Geometry), _texture(nullptr), _shader(new DefaultShader)
 {
 }
 
-Model::Model(IShaderType* shader) : _geometry(new Geometry), _texture(nullptr), _shader(shader)
+Model::Model(ID3D11Device* device, ID3D11DeviceContext* deviceContext, IShaderType* shader) : _device(device), _deviceContext(deviceContext), _geometry(new Geometry), _texture(nullptr), _shader(shader)
 {
 	
 }
 
-Model::Model(const Model& other) : _geometry(other._geometry), _texture(other._texture), _shader(other._shader)
+Model::Model(const Model& other) : _device(other._device), _deviceContext(other._deviceContext), _geometry(other._geometry), _texture(other._texture), _shader(other._shader)
 {
 }
 
@@ -18,14 +18,14 @@ Model::~Model()
 {
 }
 
-bool Model::Initialise(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* textureFilename, char* modelFilename)
+bool Model::Initialise(char* textureFilename, char* modelFilename)
 {
 	bool result;
 
-	result = LoadModel(device, modelFilename);
+	result = LoadModel(modelFilename);
 	if (!result) return false;
 
-	result = LoadTexture(device, deviceContext, textureFilename);
+	result = LoadTexture(textureFilename);
 	if (!result) return false;
 
 	return true;
@@ -37,12 +37,11 @@ void Model::Shutdown()
 	ShutdownBuffers();
 }
 
-void Model::Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
-	XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, XMFLOAT3 cameraPosition, Light* light)
+void Model::Render(int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, XMFLOAT3 cameraPosition, Light* light)
 {
-	RenderBuffers(deviceContext);
+	RenderBuffers();
 
-	_shader->Render(deviceContext, indexCount, worldMatrix, viewMatrix,
+	_shader->Render(_deviceContext, indexCount, worldMatrix, viewMatrix,
 		projectionMatrix, texture, cameraPosition, light);
 }
 
@@ -66,21 +65,21 @@ void Model::ShutdownBuffers()
 	}
 }
 
-void Model::RenderBuffers(ID3D11DeviceContext* deviceContext)
+void Model::RenderBuffers()
 {
-	deviceContext->IASetVertexBuffers(0, 1, &_geometry->VertexBuffer, &_geometry->VBStride, &_geometry->VBOffset);
-	deviceContext->IASetIndexBuffer(_geometry->IndexBuffer, DXGI_FORMAT_R16_UINT, 0);
-	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	_deviceContext->IASetVertexBuffers(0, 1, &_geometry->VertexBuffer, &_geometry->VBStride, &_geometry->VBOffset);
+	_deviceContext->IASetIndexBuffer(_geometry->IndexBuffer, DXGI_FORMAT_R16_UINT, 0);
+	_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 
-bool Model::LoadTexture(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* filename)
+bool Model::LoadTexture(char* filename)
 {
 	bool result;
 
 	_texture = new Texture;
 	if (!_texture) return false;
 
-	result = _texture->Initialise(device, deviceContext, filename);
+	result = _texture->Initialise(_device, _deviceContext, filename);
 	if (!result) return false;
 
 	return true;
@@ -96,9 +95,9 @@ void Model::ReleaseTexture()
 	}
 }
 
-bool Model::LoadModel(ID3D11Device* device, char* fileName)
+bool Model::LoadModel(char* fileName)
 {
-	*_geometry = OBJLoader::Load(fileName, device);
+	*_geometry = OBJLoader::Load(fileName, _device);
 	if (!_geometry) return false;
 
 	return true;

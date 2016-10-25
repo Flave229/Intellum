@@ -37,10 +37,10 @@ bool Graphics::Initialise(int screenWidth, int screenHeight, HWND hwnd)
 		result = _shaderController->Initialise(_direct3D->GetDevice(), hwnd);
 		if (!_shaderController) throw Exception("Failed to create the shader controller.");
 
-		_model = new Model(_shaderController->GetShader(SHADER_DEFAULT));
+		_model = new Model(_direct3D->GetDevice(), _direct3D->GetDeviceContext(), _shaderController->GetShader(SHADER_DEFAULT));
 		if (!_model) throw Exception("Failed to create a Model object.");
 
-		result = _model->Initialise(_direct3D->GetDevice(), _direct3D->GetDeviceContext(), "data/images/stone.tga", "data/models/sphere.obj");
+		result = _model->Initialise("data/images/stone.tga", "data/models/sphere.obj");
 		if (!result) throw Exception("Could not initialise the model object.");
 
 		_bitmap = new Bitmap(_direct3D->GetDevice(), _direct3D->GetDeviceContext(), _shaderController->GetShader(SHADER_FONT));
@@ -177,8 +177,7 @@ bool Graphics::Render(float rotation)
 
 		worldMatrix *= XMMatrixRotationY(rotation);
 
-		_model->Render(_direct3D->GetDeviceContext(), _model->GetIndexCount(), worldMatrix, viewMatrix,
-			projectionMatrix, _model->GetTexture(), _camera->GetPosition(), _light);
+		_model->Render(_model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, _model->GetTexture(), _camera->GetPosition(), _light);
 
 		_direct3D->EndScene();
 
