@@ -43,10 +43,10 @@ bool Graphics::Initialise(int screenWidth, int screenHeight, HWND hwnd)
 		result = _model->Initialise(_direct3D->GetDevice(), _direct3D->GetDeviceContext(), "data/images/stone.tga", "data/models/sphere.obj");
 		if (!result) throw Exception("Could not initialise the model object.");
 
-		_bitmap = new Bitmap(_shaderController->GetShader(SHADER_FONT));
+		_bitmap = new Bitmap(_direct3D->GetDevice(), _direct3D->GetDeviceContext(), _shaderController->GetShader(SHADER_FONT));
 		if (!_bitmap) throw Exception("Failed to create the bitmap.");
 
-		result = _bitmap->Initialise(_direct3D->GetDevice(), _direct3D->GetDeviceContext(), screenWidth, screenHeight, 256, 256, "data/images/stone.tga");
+		result = _bitmap->Initialise(screenWidth, screenHeight, 256, 256, "data/images/stone.tga");
 		if (!result) throw Exception("Could not initialise the bitmap.");
 
 		_light = new Light;
@@ -165,9 +165,7 @@ bool Graphics::Render(float rotation)
 
 		_direct3D->TurnZBufferOff();
 
-		result = _bitmap->Render(_direct3D->GetDeviceContext(), _bitmap->GetIndexCount(), worldMatrix, viewMatrix,
-			orthoMatrix, _bitmap->GetTexture(), _camera->GetPosition(), _light,
-			100, 100);
+		result = _bitmap->Render(_bitmap->GetIndexCount(), worldMatrix, viewMatrix, orthoMatrix, _bitmap->GetTexture(), _camera->GetPosition(), _light, 100, 100);
 		if (!result) return false;
 
 		result = _fontEngine->Render(worldMatrix, viewMatrix, orthoMatrix,

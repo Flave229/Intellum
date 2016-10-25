@@ -1,21 +1,24 @@
 #include "Bitmap.h"
 
-Bitmap::Bitmap(): _vertexBuffer(nullptr), _indexBuffer(nullptr), _vertexCount(0), _indexCount(0),
+Bitmap::Bitmap(ID3D11Device* device, ID3D11DeviceContext* deviceContext): _vertexBuffer(nullptr), _indexBuffer(nullptr), _vertexCount(0), _indexCount(0),
 					_screenWidth(0), _screenHeight(0), _bitmapWidth(0), _bitmapHeight(0), 
-					_previousPosX(0), _previousPosY(0), _texture(nullptr), _shader(new DefaultShader)
+					_previousPosX(0), _previousPosY(0), _texture(nullptr), _shader(new DefaultShader),
+					_device(device), _deviceContext(deviceContext)
 {
 }
 
-Bitmap::Bitmap(IShaderType* shader) : _vertexBuffer(nullptr), _indexBuffer(nullptr), _vertexCount(0), _indexCount(0),
+Bitmap::Bitmap(ID3D11Device* device, ID3D11DeviceContext* deviceContext, IShaderType* shader) : _vertexBuffer(nullptr), _indexBuffer(nullptr), _vertexCount(0), _indexCount(0),
 										_screenWidth(0), _screenHeight(0), _bitmapWidth(0), _bitmapHeight(0),
-										_previousPosX(0), _previousPosY(0), _texture(nullptr), _shader(shader)
+										_previousPosX(0), _previousPosY(0), _texture(nullptr), _shader(shader),
+										_device(device), _deviceContext(deviceContext)
 {
 	
 }
 
 Bitmap::Bitmap(const Bitmap& other): _vertexBuffer(other._vertexBuffer), _indexBuffer(other._indexBuffer), _vertexCount(other._vertexCount), _indexCount(other._indexCount),
 										_screenWidth(other._screenWidth), _screenHeight(other._screenHeight), _bitmapWidth(other._bitmapWidth), _bitmapHeight(other._bitmapHeight),
-										_previousPosX(other._previousPosX), _previousPosY(other._previousPosY), _texture(other._texture), _shader(other._shader)
+										_previousPosX(other._previousPosX), _previousPosY(other._previousPosY), _texture(other._texture), _shader(other._shader),
+										_device(other._device), _deviceContext(other._deviceContext)
 {
 }
 
@@ -24,7 +27,7 @@ Bitmap::~Bitmap()
 {
 }
 
-bool Bitmap::Initialise(ID3D11Device* device, ID3D11DeviceContext* deviceContext, int screenWidth, int screenHeight, int bitmapWidth, int bitmapHeight, char* textureFilename)
+bool Bitmap::Initialise(int screenWidth, int screenHeight, int bitmapWidth, int bitmapHeight, char* textureFilename)
 {
 	bool result;
 
@@ -36,10 +39,10 @@ bool Bitmap::Initialise(ID3D11Device* device, ID3D11DeviceContext* deviceContext
 	_previousPosX = -1;
 	_previousPosY = -1;
 
-	result = InitialiseBuffers(device);
+	result = InitialiseBuffers();
 	if (!result) return false;
 
-	result = LoadTexture(device, deviceContext, textureFilename);
+	result = LoadTexture(_device, _deviceContext, textureFilename);
 	if (!result) return false;
 
 	return true;
@@ -51,16 +54,16 @@ void Bitmap::Shutdown()
 	ShutdownBuffers();
 }
 
-bool Bitmap::Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
+bool Bitmap::Render(int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
 	XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, XMFLOAT3 cameraPosition, Light* light,
 	int positionX, int positionY)
 {
-	bool result = UpdateBuffers(deviceContext, positionX, positionY);
+	bool result = UpdateBuffers(positionX, positionY);
 	if (!result) return false;
 
-	RenderBuffers(deviceContext);
+	RenderBuffers();
 
-	result = _shader->Render(deviceContext, indexCount, worldMatrix, viewMatrix,
+	result = _shader->Render(_deviceContext, indexCount, worldMatrix, viewMatrix,
 		projectionMatrix, texture, cameraPosition, light);
 	if (!result) return false;
 
@@ -77,7 +80,7 @@ ID3D11ShaderResourceView* Bitmap::GetTexture()
 	return _texture->GetTexture();
 }
 
-bool Bitmap::InitialiseBuffers(ID3D11Device* device)
+bool Bitmap::InitialiseBuffers()
 {
 	Vertex* vertices;
 	unsigned long* indices;
@@ -115,7 +118,7 @@ bool Bitmap::InitialiseBuffers(ID3D11Device* device)
 	vertexData.SysMemPitch = 0;
 	vertexData.SysMemSlicePitch = 0;
 
-	result = device->CreateBuffer(&vertexBufferDesc, &vertexData, &_vertexBuffer);
+	result = _device->CreateBuffer(&vertexBufferDesc, &vertexData, &_vertexBuffer);
 	if (FAILED(result)) return false;
 
 	// Setup Index Buffer Description
@@ -130,7 +133,7 @@ bool Bitmap::InitialiseBuffers(ID3D11Device* device)
 	indexData.SysMemPitch = 0;
 	indexData.SysMemSlicePitch = 0;
 
-	result = device->CreateBuffer(&indexBufferDesc, &indexData, &_indexBuffer);
+	result = _device->CreateBuffer(&indexBufferDesc, &indexData, &_indexBuffer);
 	if (FAILED(result)) return false;
 
 	delete[] vertices;
@@ -157,7 +160,7 @@ void Bitmap::ShutdownBuffers()
 	}
 }
 
-bool Bitmap::UpdateBuffers(ID3D11DeviceContext* deviceContext, int positionX, int positionY)
+bool Bitmap::UpdateBuffers(int positionX, int positionY)
 {
 	HRESULT result;
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
@@ -197,14 +200,14 @@ bool Bitmap::UpdateBuffers(ID3D11DeviceContext* deviceContext, int positionX, in
 	vertices[5].position = XMFLOAT3(right, bottom, 0.0f);
 	vertices[5].texture = XMFLOAT2(1.0f, 1.0f);
 
-	result = deviceContext->Map(_vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	result = _deviceContext->Map(_vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	if (FAILED(result)) return false;
 
 	Vertex* verticesPtr = static_cast<Vertex*>(mappedResource.pData);
 
 	memcpy(verticesPtr, static_cast<void*>(vertices), (sizeof(Vertex) * _vertexCount));
 
-	deviceContext->Unmap(_vertexBuffer, 0);
+	_deviceContext->Unmap(_vertexBuffer, 0);
 
 	delete[] vertices;
 	vertices = nullptr;
@@ -212,14 +215,14 @@ bool Bitmap::UpdateBuffers(ID3D11DeviceContext* deviceContext, int positionX, in
 	return true;
 }
 
-void Bitmap::RenderBuffers(ID3D11DeviceContext* deviceContext)
+void Bitmap::RenderBuffers()
 {
 	unsigned int stride = sizeof(Vertex);
 	unsigned int offset = 0;
 
-	deviceContext->IASetVertexBuffers(0, 1, &_vertexBuffer, &stride, &offset);
-	deviceContext->IASetIndexBuffer(_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
-	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	_deviceContext->IASetVertexBuffers(0, 1, &_vertexBuffer, &stride, &offset);
+	_deviceContext->IASetIndexBuffer(_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
+	_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 
 bool Bitmap::LoadTexture(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* filename)

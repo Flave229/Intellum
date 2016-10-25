@@ -48,9 +48,7 @@ bool FontEngine::Render(XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX orth
 
 		for (int i = 0; i < stringAsTexture.size(); i++)
 		{
-			result = stringAsTexture.at(i)->_texture->Render(_deviceContext, stringAsTexture.at(i)->_texture->GetIndexCount(), worldMatrix, viewMatrix,
-				orthoMatrix, stringAsTexture.at(i)->_texture->GetTexture(), cameraPosition, light,
-				positionX + (64 * i), positionY);
+			result = stringAsTexture.at(i)->_texture->Render(stringAsTexture.at(i)->_texture->GetIndexCount(), worldMatrix, viewMatrix, orthoMatrix, stringAsTexture.at(i)->_texture->GetTexture(), cameraPosition, light, positionX + (64 * i), positionY);
 			if (!result) return false;
 		}
 
@@ -221,10 +219,10 @@ bool FontEngine::CheckCharacterExists(string filePath)
 
 Character* FontEngine::CreateCharacterFromFontFolder(string filePath, string name, string unicode, int screenWidth, int screenHeight)
 {
-	Bitmap* texture = new Bitmap(_shader);
+	Bitmap* texture = new Bitmap(_device, _deviceContext, _shader);
 	if (!texture) throw Exception("Failed to create the letter " + name + " for the font located at: " + filePath + ".");
 
-	bool result = texture->Initialise(_device, _deviceContext, screenWidth, screenHeight, 64, 128, &(filePath + "/" + unicode + ".tga")[0u]);
+	bool result = texture->Initialise(screenWidth, screenHeight, 64, 128, &(filePath + "/" + unicode + ".tga")[0u]);
 	if (!result) throw Exception("Failed to initialise the texture for letter " + name + " for the character located at: " + filePath + "/" + unicode + ".tga");
 
 	Character* character = new Character(name, unicode, texture);
