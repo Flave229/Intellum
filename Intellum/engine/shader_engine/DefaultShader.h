@@ -28,21 +28,23 @@ class DefaultShader : public IShaderType
 		XMFLOAT4 specularColor;
 	};
 
+private:
+	ID3D11Device* _device;
+	ID3D11DeviceContext* _deviceContext;
+
 public:
-	DefaultShader();
+	DefaultShader(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 	~DefaultShader();
 
-	virtual bool Initialise(ID3D11Device* device, HWND hwnd);
-	virtual bool InitialiseShader(ID3D11Device* device, HWND hwnd, WCHAR* vsFilename, WCHAR* psFilename);
+	virtual bool Initialise(HWND hwnd);
+	virtual bool InitialiseShader(HWND hwnd, WCHAR* vsFilename, WCHAR* psFilename);
 	virtual void Shutdown();
 
-	virtual bool SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix,
-		ID3D11ShaderResourceView* texture, XMFLOAT3 cameraPosition, Light* light);
+	virtual bool SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, XMFLOAT3 cameraPosition, Light* light);
 
-	virtual bool Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
-		XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, XMFLOAT3 cameraPosition, Light* light);
+	virtual bool Render(int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, XMFLOAT3 cameraPosition, Light* light);
 
-	virtual void RenderShader(ID3D11DeviceContext* deviceContext, int indexCount);
+	virtual void RenderShader(int indexCount);
 
 	virtual void OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, WCHAR* shaderFileName);
 };

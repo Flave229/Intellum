@@ -1,6 +1,6 @@
 #include "FontShader.h"
 
-FontShader::FontShader()
+FontShader::FontShader(ID3D11Device* device, ID3D11DeviceContext* deviceContext) : _device(device), _deviceContext(deviceContext)
 {
 }
 
@@ -8,15 +8,15 @@ FontShader::~FontShader()
 {
 }
 
-bool FontShader::Initialise(ID3D11Device* device, HWND hwnd)
+bool FontShader::Initialise(HWND hwnd)
 {
-	bool result = InitialiseShader(device, hwnd, L"shaders/FontVertexShader.hlsl", L"shaders/FontPixelShader.hlsl");
+	bool result = InitialiseShader(hwnd, L"shaders/FontVertexShader.hlsl", L"shaders/FontPixelShader.hlsl");
 	if (!result) return false;
 
 	return true;
 }
 
-bool FontShader::InitialiseShader(ID3D11Device* device, HWND hwnd, WCHAR* vsFilename, WCHAR* psFilename)
+bool FontShader::InitialiseShader(HWND hwnd, WCHAR* vsFilename, WCHAR* psFilename)
 {
 	HRESULT result;
 	ID3D10Blob* errorMessage = nullptr;
@@ -61,11 +61,11 @@ bool FontShader::InitialiseShader(ID3D11Device* device, HWND hwnd, WCHAR* vsFile
 	}
 
 	// Create Vertex Shader from the buffer
-	result = device->CreateVertexShader(vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), nullptr, &_vertexShader);
+	result = _device->CreateVertexShader(vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), nullptr, &_vertexShader);
 	if (FAILED(result)) return false;
 
 	// Create Pixel Shader from the buffer
-	result = device->CreatePixelShader(pixelShaderBuffer->GetBufferPointer(), pixelShaderBuffer->GetBufferSize(), nullptr, &_pixelShader);
+	result = _device->CreatePixelShader(pixelShaderBuffer->GetBufferPointer(), pixelShaderBuffer->GetBufferSize(), nullptr, &_pixelShader);
 	if (FAILED(result)) return false;
 
 	// Vertex Shader layout description
@@ -88,7 +88,7 @@ bool FontShader::InitialiseShader(ID3D11Device* device, HWND hwnd, WCHAR* vsFile
 
 	numElements = sizeof(polygonLayout) / sizeof(polygonLayout[0]);
 
-	result = device->CreateInputLayout(polygonLayout, numElements, vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), &_layout);
+	result = _device->CreateInputLayout(polygonLayout, numElements, vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), &_layout);
 	if (FAILED(result)) return false;
 
 	vertexShaderBuffer->Release();
@@ -105,7 +105,7 @@ bool FontShader::InitialiseShader(ID3D11Device* device, HWND hwnd, WCHAR* vsFile
 	matrixBufferDesc.MiscFlags = 0;
 	matrixBufferDesc.StructureByteStride = 0;
 
-	result = device->CreateBuffer(&matrixBufferDesc, nullptr, &_matrixBuffer);
+	result = _device->CreateBuffer(&matrixBufferDesc, nullptr, &_matrixBuffer);
 	if (FAILED(result)) return false;
 
 	// Camera Buffer Description
@@ -116,7 +116,7 @@ bool FontShader::InitialiseShader(ID3D11Device* device, HWND hwnd, WCHAR* vsFile
 	cameraBufferDesc.MiscFlags = 0;
 	cameraBufferDesc.StructureByteStride = 0;
 
-	result = device->CreateBuffer(&cameraBufferDesc, nullptr, &_cameraBuffer);
+	result = _device->CreateBuffer(&cameraBufferDesc, nullptr, &_cameraBuffer);
 	if (FAILED(result)) return false;
 
 	// Camera Buffer Description
@@ -127,7 +127,7 @@ bool FontShader::InitialiseShader(ID3D11Device* device, HWND hwnd, WCHAR* vsFile
 	colorBufferDesc.MiscFlags = 0;
 	colorBufferDesc.StructureByteStride = 0;
 
-	result = device->CreateBuffer(&colorBufferDesc, nullptr, &_colorBuffer);
+	result = _device->CreateBuffer(&colorBufferDesc, nullptr, &_colorBuffer);
 	if (FAILED(result)) return false;
 
 	// Sampler State Description
@@ -145,7 +145,7 @@ bool FontShader::InitialiseShader(ID3D11Device* device, HWND hwnd, WCHAR* vsFile
 	samplerDesc.MinLOD = 0;
 	samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
 
-	result = device->CreateSamplerState(&samplerDesc, &_sampleState);
+	result = _device->CreateSamplerState(&samplerDesc, &_sampleState);
 	if (FAILED(result)) return false;
 
 	return true;
@@ -196,18 +196,18 @@ void FontShader::Shutdown()
 	}
 }
 
-bool FontShader::Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
+bool FontShader::Render(int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
 	XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, XMFLOAT3 cameraPosition, Light* light)
 {
-	bool result = SetShaderParameters(deviceContext, worldMatrix, viewMatrix, projectionMatrix, texture, cameraPosition, light);
+	bool result = SetShaderParameters(worldMatrix, viewMatrix, projectionMatrix, texture, cameraPosition, light);
 	if (!result) return false;
 
-	RenderShader(deviceContext, indexCount);
+	RenderShader(indexCount);
 
 	return true;
 }
 
-bool FontShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix,
+bool FontShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix,
 	ID3D11ShaderResourceView* texture, XMFLOAT3 cameraPosition, Light* light)
 {
 	HRESULT result;
@@ -221,7 +221,7 @@ bool FontShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATRI
 	viewMatrix = XMMatrixTranspose(viewMatrix);
 	projectionMatrix = XMMatrixTranspose(projectionMatrix);
 
-	result = deviceContext->Map(_matrixBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	result = _deviceContext->Map(_matrixBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	if (FAILED(result)) return false;
 
 	matrixDataPtr = static_cast<ConstantBuffer*>(mappedResource.pData);
@@ -230,13 +230,13 @@ bool FontShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATRI
 	matrixDataPtr->view = viewMatrix;
 	matrixDataPtr->projection = projectionMatrix;
 
-	deviceContext->Unmap(_matrixBuffer, 0);
+	_deviceContext->Unmap(_matrixBuffer, 0);
 
 	bufferNumber = 0;
 
-	deviceContext->VSSetConstantBuffers(bufferNumber, 1, &_matrixBuffer);
+	_deviceContext->VSSetConstantBuffers(bufferNumber, 1, &_matrixBuffer);
 
-	result = deviceContext->Map(_cameraBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	result = _deviceContext->Map(_cameraBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	if (FAILED(result)) return false;
 
 	cameraDataPtr = static_cast<CameraBuffer*>(mappedResource.pData);
@@ -244,15 +244,15 @@ bool FontShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATRI
 	cameraDataPtr->cameraPosition = cameraPosition;
 	cameraDataPtr->padding = 0.0f;
 
-	deviceContext->Unmap(_cameraBuffer, 0);
+	_deviceContext->Unmap(_cameraBuffer, 0);
 
 	bufferNumber = 1;
 
-	deviceContext->VSSetConstantBuffers(bufferNumber, 1, &_cameraBuffer);
+	_deviceContext->VSSetConstantBuffers(bufferNumber, 1, &_cameraBuffer);
 
-	deviceContext->PSSetShaderResources(0, 1, &texture);
+	_deviceContext->PSSetShaderResources(0, 1, &texture);
 	
-	result = deviceContext->Map(_colorBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	result = _deviceContext->Map(_colorBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	if (FAILED(result)) return false;
 
 	colorDataPtr = static_cast<ColorBuffer*>(mappedResource.pData);
@@ -270,24 +270,24 @@ bool FontShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATRI
 
 	colorDataPtr->padding = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	
-	deviceContext->Unmap(_colorBuffer, 0);
+	_deviceContext->Unmap(_colorBuffer, 0);
 
 	bufferNumber = 0;
 
-	deviceContext->PSSetConstantBuffers(bufferNumber, 1, &_colorBuffer);
+	_deviceContext->PSSetConstantBuffers(bufferNumber, 1, &_colorBuffer);
 
 	return true;
 }
 
-void FontShader::RenderShader(ID3D11DeviceContext* deviceContext, int indexCount)
+void FontShader::RenderShader(int indexCount)
 {
-	deviceContext->IASetInputLayout(_layout);
+	_deviceContext->IASetInputLayout(_layout);
 
-	deviceContext->VSSetShader(_vertexShader, nullptr, 0);
-	deviceContext->PSSetShader(_pixelShader, nullptr, 0);
+	_deviceContext->VSSetShader(_vertexShader, nullptr, 0);
+	_deviceContext->PSSetShader(_pixelShader, nullptr, 0);
 
-	deviceContext->PSSetSamplers(0, 1, &_sampleState);
-	deviceContext->DrawIndexed(indexCount, 0, 0);
+	_deviceContext->PSSetSamplers(0, 1, &_sampleState);
+	_deviceContext->DrawIndexed(indexCount, 0, 0);
 }
 
 

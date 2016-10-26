@@ -1,7 +1,7 @@
 #include "Model.h"
 #include "loaders/OBJLoader.h"
 
-Model::Model(ID3D11Device* device, ID3D11DeviceContext* deviceContext): _device(device), _deviceContext(deviceContext), _geometry(new Geometry), _texture(nullptr), _shader(new DefaultShader)
+Model::Model(ID3D11Device* device, ID3D11DeviceContext* deviceContext): _device(device), _deviceContext(deviceContext), _geometry(new Geometry), _texture(nullptr), _shader(new DefaultShader(device, deviceContext))
 {
 }
 
@@ -41,8 +41,7 @@ void Model::Render(int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XM
 {
 	RenderBuffers();
 
-	_shader->Render(_deviceContext, indexCount, worldMatrix, viewMatrix,
-		projectionMatrix, texture, cameraPosition, light);
+	_shader->Render(indexCount, worldMatrix, viewMatrix, projectionMatrix, texture, cameraPosition, light);
 }
 
 int Model::GetIndexCount()

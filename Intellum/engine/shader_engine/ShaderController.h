@@ -24,12 +24,13 @@ class ShaderController
 {
 private:
 	ID3D11Device* _device;
+	ID3D11DeviceContext* _deviceContext;
 
 	IShaderType* _defaultShader;
 	IShaderType* _fontShader;
 
 public:
-	ShaderController(ID3D11Device* device);
+	ShaderController(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 	ShaderController(const ShaderController&);
 	~ShaderController();
 

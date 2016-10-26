@@ -1,10 +1,10 @@
 #include "ShaderController.h"
 
-ShaderController::ShaderController(ID3D11Device* device) : _device(device), _defaultShader(nullptr), _fontShader(nullptr)
+ShaderController::ShaderController(ID3D11Device* device, ID3D11DeviceContext* deviceContext) : _device(device), _deviceContext(deviceContext), _defaultShader(nullptr), _fontShader(nullptr)
 {
 }
 
-ShaderController::ShaderController(const ShaderController& other) : _defaultShader(other._defaultShader), _fontShader(other._fontShader)
+ShaderController::ShaderController(const ShaderController& other) : _device(other._device), _deviceContext(other._deviceContext), _defaultShader(other._defaultShader), _fontShader(other._fontShader)
 {
 }
 
@@ -14,16 +14,16 @@ ShaderController::~ShaderController()
 
 bool ShaderController::Initialise(HWND hwnd)
 {
-	_defaultShader = new DefaultShader();
+	_defaultShader = new DefaultShader(_device, _deviceContext);
 	if (!_defaultShader) throw Exception("Failed to create the default shader.");
 
-	bool result = _defaultShader->Initialise(_device, hwnd);
+	bool result = _defaultShader->Initialise(hwnd);
 	if (!result) throw Exception("Could not initialise the default shader.");
 
-	_fontShader = new FontShader();
+	_fontShader = new FontShader(_device, _deviceContext);
 	if (!_fontShader) throw Exception("Failed to create the default shader.");
 
-	result = _fontShader->Initialise(_device, hwnd);
+	result = _fontShader->Initialise(hwnd);
 	if (!result) throw Exception("Could not initialise the default shader.");
 
 	return true;
