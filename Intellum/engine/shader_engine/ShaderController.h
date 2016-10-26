@@ -23,15 +23,17 @@ enum ShaderType
 class ShaderController
 {
 private:
+	ID3D11Device* _device;
+
 	IShaderType* _defaultShader;
 	IShaderType* _fontShader;
 
 public:
-	ShaderController();
+	ShaderController(ID3D11Device* device);
 	ShaderController(const ShaderController&);
 	~ShaderController();
 
-	bool Initialise(ID3D11Device*, HWND);
+	bool Initialise(HWND);
 	void Shutdown();
 
 	IShaderType* GetShader(ShaderType type);
