@@ -27,13 +27,6 @@ class FontShader : public IShaderType
 	};
 
 private:
-	ID3D11VertexShader* _vertexShader;
-	ID3D11PixelShader* _pixelShader;
-	ID3D11InputLayout* _layout;
-	ID3D11SamplerState* _sampleState;
-
-	ID3D11Buffer* _matrixBuffer;
-	ID3D11Buffer* _cameraBuffer;
 	ID3D11Buffer* _colorBuffer;
 
 	bool _colorOverloadEnabled;
