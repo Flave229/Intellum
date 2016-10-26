@@ -42,7 +42,7 @@ bool Bitmap::Initialise(int screenWidth, int screenHeight, int bitmapWidth, int 
 	result = InitialiseBuffers();
 	if (!result) return false;
 
-	result = LoadTexture(_device, _deviceContext, textureFilename);
+	result = LoadTexture(textureFilename);
 	if (!result) return false;
 
 	return true;
@@ -225,11 +225,11 @@ void Bitmap::RenderBuffers()
 	_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 
-bool Bitmap::LoadTexture(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* filename)
+bool Bitmap::LoadTexture(char* filename)
 {
 	bool result;
 
-	_texture = new Texture(device, deviceContext);
+	_texture = new Texture(_device, _deviceContext);
 	if (!_texture) return false;
 
 	result = _texture->Initialise(filename);

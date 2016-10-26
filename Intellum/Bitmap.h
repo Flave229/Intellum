@@ -47,7 +47,7 @@ private:
 	bool UpdateBuffers(int, int);
 	void RenderBuffers();
 
-	bool LoadTexture(ID3D11Device*, ID3D11DeviceContext*, char*);
+	bool LoadTexture(char*);
 	void ReleaseTexture();
 public:
 	Bitmap(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
