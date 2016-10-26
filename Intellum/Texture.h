@@ -18,6 +18,9 @@ class Texture
 
 // Member Level Variables
 private:
+	ID3D11Device* _device;
+	ID3D11DeviceContext* _deviceContext;
+
 	unsigned char* _targaData;
 	ID3D11Texture2D* _texture;
 	ID3D11ShaderResourceView* _textureView;
@@ -26,11 +29,11 @@ private:
 private:
 	bool LoadTarga(char*, int&, int&);
 public:
-	Texture();
+	Texture(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 	Texture(const Texture&);
 	~Texture();
 
-	bool Initialise(ID3D11Device*, ID3D11DeviceContext*, char*);
+	bool Initialise(char*);
 	void Shutdown();
 
 	ID3D11ShaderResourceView* GetTexture();

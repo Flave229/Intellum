@@ -229,10 +229,10 @@ bool Bitmap::LoadTexture(ID3D11Device* device, ID3D11DeviceContext* deviceContex
 {
 	bool result;
 
-	_texture = new Texture;
+	_texture = new Texture(device, deviceContext);
 	if (!_texture) return false;
 
-	result = _texture->Initialise(device, deviceContext, filename);
+	result = _texture->Initialise(filename);
 	if (!result) return false;
 
 	return true;

@@ -1,10 +1,10 @@
 #include "Texture.h"
 
-Texture::Texture(): _targaData(nullptr), _texture(nullptr), _textureView(nullptr)
+Texture::Texture(ID3D11Device* device, ID3D11DeviceContext* deviceContext): _device(device), _deviceContext(deviceContext), _targaData(nullptr), _texture(nullptr), _textureView(nullptr)
 {
 }
 
-Texture::Texture(const Texture& other) : _targaData(other._targaData), _texture(other._texture), _textureView(other._textureView)
+Texture::Texture(const Texture& other) : _device(other._device), _deviceContext(other._deviceContext), _targaData(other._targaData), _texture(other._texture), _textureView(other._textureView)
 {
 }
 
@@ -12,7 +12,7 @@ Texture::~Texture()
 {
 }
 
-bool Texture::Initialise(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* filename)
+bool Texture::Initialise(char* filename)
 {
 	bool result;
 	int height;
@@ -38,12 +38,12 @@ bool Texture::Initialise(ID3D11Device* device, ID3D11DeviceContext* deviceContex
 	textureDesc.CPUAccessFlags = 0;
 	textureDesc.MiscFlags = D3D11_RESOURCE_MISC_GENERATE_MIPS;
 
-	hResult = device->CreateTexture2D(&textureDesc, nullptr, &_texture);
+	hResult = _device->CreateTexture2D(&textureDesc, nullptr, &_texture);
 	if (FAILED(hResult)) return false;
 
 	rowPitch = (width * 4) * sizeof(unsigned char);
 
-	deviceContext->UpdateSubresource(_texture, 0, nullptr, _targaData, rowPitch, 0);
+	_deviceContext->UpdateSubresource(_texture, 0, nullptr, _targaData, rowPitch, 0);
 
 	// Setup Sahder Resource View Description
 	srvDesc.Format = textureDesc.Format;
@@ -51,10 +51,10 @@ bool Texture::Initialise(ID3D11Device* device, ID3D11DeviceContext* deviceContex
 	srvDesc.Texture2D.MostDetailedMip = 0;
 	srvDesc.Texture2D.MipLevels = -1;
 
-	hResult = device->CreateShaderResourceView(_texture, &srvDesc, &_textureView);
+	hResult = _device->CreateShaderResourceView(_texture, &srvDesc, &_textureView);
 	if (FAILED(hResult)) return false;
 
-	deviceContext->GenerateMips(_textureView);
+	_deviceContext->GenerateMips(_textureView);
 
 	delete _targaData;
 	_targaData = nullptr;

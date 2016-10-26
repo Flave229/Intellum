@@ -76,10 +76,10 @@ bool Model::LoadTexture(char* filename)
 {
 	bool result;
 
-	_texture = new Texture;
+	_texture = new Texture(_device, _deviceContext);
 	if (!_texture) return false;
 
-	result = _texture->Initialise(_device, _deviceContext, filename);
+	result = _texture->Initialise(filename);
 	if (!result) return false;
 
 	return true;
