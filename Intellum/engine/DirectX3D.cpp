@@ -75,8 +75,8 @@ bool DirectX3D::Initialise(int screenWidth, int screenHeight, bool vsync, HWND h
 		backBufferPtr->Release();
 		backBufferPtr = nullptr;
 
-		_depthStencil = new DepthStencil;
-		_depthStencil->Initialise(_device, _deviceContext, screenWidth, screenHeight);
+		_depthStencil = new DepthStencil(_device, _deviceContext);
+		_depthStencil->Initialise(screenWidth, screenHeight);
 
 		ZeroMemory(&depthStencilViewDesc, sizeof(depthStencilViewDesc));
 
@@ -224,7 +224,7 @@ void DirectX3D::TurnZBufferOn()
 {
 	try
 	{
-		_depthStencil->SetStencilType(_deviceContext, STENCIL_STATE_DEFAULT);
+		_depthStencil->SetStencilType(STENCIL_STATE_DEFAULT);
 	}
 	catch(Exception& exception)
 	{
@@ -236,7 +236,7 @@ void DirectX3D::TurnZBufferOff()
 {
 	try
 	{
-		_depthStencil->SetStencilType(_deviceContext, STENCIL_STATE_DISABLED);
+		_depthStencil->SetStencilType(STENCIL_STATE_DISABLED);
 	}
 	catch (Exception exception)
 	{

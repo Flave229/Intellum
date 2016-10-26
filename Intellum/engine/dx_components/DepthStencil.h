@@ -12,6 +12,9 @@ class DepthStencil
 {
 // Member Level Variables
 private:
+	ID3D11Device* _device;
+	ID3D11DeviceContext* _deviceContext;
+
 	ID3D11Texture2D* _depthStencilBuffer;
 	
 	ID3D11DepthStencilState* _depthStencilState;
@@ -19,14 +22,14 @@ private:
 
 // Function Declarations
 public:
-	DepthStencil();
+	DepthStencil(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 	DepthStencil(const DepthStencil&);
 	~DepthStencil();
 
-	bool Initialise(ID3D11Device*, ID3D11DeviceContext*, int, int);
+	bool Initialise(int, int);
 	void Shutdown();
 
-	void SetStencilType(ID3D11DeviceContext*, DepthStencilType) const;
+	void SetStencilType(DepthStencilType) const;
 
 	ID3D11Texture2D* GetDepthStencilBuffer() const;
 };

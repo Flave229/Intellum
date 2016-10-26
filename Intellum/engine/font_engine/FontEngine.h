@@ -37,9 +37,7 @@ public:
 	~FontEngine();
 
 	bool SearchForAvaliableFonts(int screenWidth, int screenHeight);
-	bool Render(XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX orthoMatrix,
-		XMFLOAT3 cameraPosition, Light* light, int positionX, int positionY,
-		string font, string input, XMFLOAT4 textColor);
+	bool Render(XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX orthoMatrix, XMFLOAT3 cameraPosition, Light* light, int positionX, int positionY, string font, string input, XMFLOAT4 textColor);
 
 	Font* GetFont(string font);
 	bool CheckFontExists(string font);
