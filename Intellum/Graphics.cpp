@@ -165,7 +165,7 @@ bool Graphics::Render(float rotation)
 
 		_direct3D->TurnZBufferOff();
 
-		result = _bitmap->Render(_bitmap->GetIndexCount(), worldMatrix, viewMatrix, orthoMatrix, _bitmap->GetTexture(), _camera->GetPosition(), _light, 100, 100);
+		result = _bitmap->Render(worldMatrix, viewMatrix, orthoMatrix, _camera->GetPosition(), _light, 100, 100);
 		if (!result) return false;
 
 		result = _fontEngine->Render(worldMatrix, viewMatrix, orthoMatrix,

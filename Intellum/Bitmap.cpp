@@ -45,16 +45,14 @@ void Bitmap::Shutdown()
 	ShutdownBuffers();
 }
 
-bool Bitmap::Render(int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
-	XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, XMFLOAT3 cameraPosition, Light* light,
-	int positionX, int positionY)
+bool Bitmap::Render(XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, XMFLOAT3 cameraPosition, Light* light, int positionX, int positionY)
 {
 	bool result = UpdateBuffers(positionX, positionY);
 	if (!result) return false;
 
 	RenderBuffers();
 
-	result = _shader->Render(indexCount, worldMatrix, viewMatrix, projectionMatrix, texture, cameraPosition, light);
+	result = _shader->Render(GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, GetTexture(), cameraPosition, light);
 	if (!result) return false;
 
 	return true;
@@ -217,15 +215,10 @@ void Bitmap::RenderBuffers()
 
 bool Bitmap::LoadTexture(char* filename)
 {
-	bool result;
-
 	_texture = new Texture(_device, _deviceContext);
 	if (!_texture) return false;
 
-	result = _texture->Initialise(filename);
-	if (!result) return false;
-
-	return true;
+	return _texture->Initialise(filename);
 }
 
 void Bitmap::ReleaseTexture()
