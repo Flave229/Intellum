@@ -7,6 +7,7 @@
 #include <fstream>
 
 #include "../../error_handling/Exception.h"
+#include "../DirectX3D.h"
 #include "DefaultShader.h"
 #include "FontShader.h"
 #include "IShaderType.h"
@@ -23,6 +24,8 @@ enum ShaderType
 class ShaderController
 {
 private:
+	DirectX3D* _direct3D;
+
 	ID3D11Device* _device;
 	ID3D11DeviceContext* _deviceContext;
 
@@ -30,7 +33,7 @@ private:
 	IShaderType* _fontShader;
 
 public:
-	ShaderController(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
+	ShaderController(DirectX3D* direct3D, ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 	ShaderController(const ShaderController&);
 	~ShaderController();
 

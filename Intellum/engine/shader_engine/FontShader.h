@@ -35,7 +35,7 @@ private:
 	bool _colorOverloadEnabled;
 	XMFLOAT4 _fontColor;
 public:
-	FontShader(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
+	FontShader(DirectX3D* _direct3D, ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 	~FontShader();
 
 	virtual bool Initialise(HWND hwnd);

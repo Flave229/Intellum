@@ -31,7 +31,7 @@ bool Graphics::Initialise(int screenWidth, int screenHeight, HWND hwnd)
 
 		_camera->SetPosition(0.0f, 0.0f, -5.0f);
 
-		_shaderController = new ShaderController(_direct3D->GetDevice(), _direct3D->GetDeviceContext());
+		_shaderController = new ShaderController(_direct3D, _direct3D->GetDevice(), _direct3D->GetDeviceContext());
 		if (!_shaderController) throw Exception("Failed to create the shader controller.");
 
 		result = _shaderController->Initialise(hwnd);
@@ -168,9 +168,7 @@ bool Graphics::Render(float rotation)
 		result = _bitmap->Render(worldMatrix, viewMatrix, orthoMatrix, _camera->GetPosition(), _light, 100, 100);
 		if (!result) return false;
 
-		result = _fontEngine->Render(worldMatrix, viewMatrix, orthoMatrix,
-			_camera->GetPosition(), _light, 200, 50,
-			"impact", "&Joshukitten loves catnip", XMFLOAT4(0.6f, 0.3f, 0.2f, 1.0f));
+		result = _fontEngine->Render(worldMatrix, viewMatrix, orthoMatrix, _camera->GetPosition(), _light, 200, 50, "impact", "&Joshukitten loves catnip", XMFLOAT4(0.6f, 0.3f, 0.2f, 1.0f));
 		if (!result) return false;
 
 		_direct3D->TurnZBufferOn();

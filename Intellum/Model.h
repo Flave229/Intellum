@@ -10,6 +10,7 @@
 #include "common/Geometry.h"
 #include "engine\shader_engine\IShaderType.h"
 #include "engine\shader_engine\DefaultShader.h"
+#include "engine\DirectX3D.h"
 
 using namespace DirectX;
 using namespace std;
@@ -35,7 +36,7 @@ private:
 
 	bool LoadModel(char*);
 public:
-	Model(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
+	Model(ID3D11Device* device, ID3D11DeviceContext* deviceContext, DirectX3D* direct3D);
 	Model(ID3D11Device* device, ID3D11DeviceContext* deviceContext, IShaderType* shader);
 	Model(const Model&);
 	~Model();

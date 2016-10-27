@@ -9,12 +9,15 @@
 #include <DirectXMath.h>
 #include <fstream>
 #include "../../Light.h"
+#include "../DirectX3D.h"
 
 using namespace DirectX;
 
 public class IShaderType
 {
 protected:
+	DirectX3D* _direct3D;
+
 	ID3D11VertexShader* _vertexShader;
 	ID3D11PixelShader* _pixelShader;
 	ID3D11InputLayout* _layout;
@@ -25,6 +28,7 @@ protected:
 	ID3D11Buffer* _lightBuffer;
 
 public:
+	IShaderType(DirectX3D* direct3D) : _direct3D(direct3D) {};
 	virtual ~IShaderType() {};
 
 	virtual bool Initialise(HWND hwnd) = 0;

@@ -33,7 +33,7 @@ private:
 	ID3D11DeviceContext* _deviceContext;
 
 public:
-	DefaultShader(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
+	DefaultShader(DirectX3D* _direct3D, ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 	~DefaultShader();
 
 	virtual bool Initialise(HWND hwnd);

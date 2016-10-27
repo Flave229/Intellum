@@ -1,7 +1,7 @@
 #include "Model.h"
 #include "loaders/OBJLoader.h"
 
-Model::Model(ID3D11Device* device, ID3D11DeviceContext* deviceContext): _device(device), _deviceContext(deviceContext), _geometry(new Geometry), _texture(nullptr), _shader(new DefaultShader(device, deviceContext))
+Model::Model(ID3D11Device* device, ID3D11DeviceContext* deviceContext, DirectX3D* direct3D): _device(device), _deviceContext(deviceContext), _geometry(new Geometry), _texture(nullptr), _shader(new DefaultShader(direct3D, device, deviceContext))
 {
 }
 

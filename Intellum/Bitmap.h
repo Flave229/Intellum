@@ -5,6 +5,7 @@
 
 #include "engine\shader_engine\IShaderType.h"
 #include "engine\shader_engine\DefaultShader.h"
+#include "engine\DirectX3D.h"
 #include "Texture.h"
 #include "Light.h"
 
@@ -50,7 +51,7 @@ private:
 	bool LoadTexture(char*);
 	void ReleaseTexture();
 public:
-	Bitmap(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
+	Bitmap(ID3D11Device* device, ID3D11DeviceContext* deviceContext, DirectX3D* direct3D);
 	Bitmap(ID3D11Device* device, ID3D11DeviceContext* deviceContext, IShaderType* shader);
 	Bitmap(const Bitmap&);
 	~Bitmap();

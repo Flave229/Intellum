@@ -1,6 +1,6 @@
 #include "FontShader.h"
 
-FontShader::FontShader(ID3D11Device* device, ID3D11DeviceContext* deviceContext) : _device(device), _deviceContext(deviceContext)
+FontShader::FontShader(DirectX3D* direct3D, ID3D11Device* device, ID3D11DeviceContext* deviceContext) : IShaderType(direct3D), _device(device), _deviceContext(deviceContext)
 {
 }
 

@@ -1,6 +1,6 @@
 #include "ShaderController.h"
 
-ShaderController::ShaderController(ID3D11Device* device, ID3D11DeviceContext* deviceContext) : _device(device), _deviceContext(deviceContext), _defaultShader(nullptr), _fontShader(nullptr)
+ShaderController::ShaderController(DirectX3D* direct3D, ID3D11Device* device, ID3D11DeviceContext* deviceContext) : _direct3D(direct3D), _device(device), _deviceContext(deviceContext), _defaultShader(nullptr), _fontShader(nullptr)
 {
 }
 
@@ -14,13 +14,13 @@ ShaderController::~ShaderController()
 
 bool ShaderController::Initialise(HWND hwnd)
 {
-	_defaultShader = new DefaultShader(_device, _deviceContext);
+	_defaultShader = new DefaultShader(_direct3D, _device, _deviceContext);
 	if (!_defaultShader) throw Exception("Failed to create the default shader.");
 
 	bool result = _defaultShader->Initialise(hwnd);
 	if (!result) throw Exception("Could not initialise the default shader.");
 
-	_fontShader = new FontShader(_device, _deviceContext);
+	_fontShader = new FontShader(_direct3D, _device, _deviceContext);
 	if (!_fontShader) throw Exception("Failed to create the default shader.");
 
 	result = _fontShader->Initialise(hwnd);

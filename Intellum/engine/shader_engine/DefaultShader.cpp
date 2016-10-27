@@ -1,6 +1,6 @@
 #include "DefaultShader.h"
 
-DefaultShader::DefaultShader(ID3D11Device* device, ID3D11DeviceContext* deviceContext) : _device(device), _deviceContext(deviceContext)
+DefaultShader::DefaultShader(DirectX3D* direct3D, ID3D11Device* device, ID3D11DeviceContext* deviceContext) : IShaderType(direct3D), _device(device), _deviceContext(deviceContext)
 {
 }
 
