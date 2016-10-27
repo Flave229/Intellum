@@ -139,20 +139,14 @@ bool Graphics::Render(float delta)
 {
 	try
 	{
-		XMMATRIX worldMatrix;
 		XMMATRIX viewMatrix;
-		XMMATRIX projectionMatrix;
-		XMMATRIX orthoMatrix;
 		bool result;
 
 		_direct3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
 
 		_camera->Render();
 
-		_direct3D->GetWorldMatrix(worldMatrix);
 		_camera->GetViewMatrix(viewMatrix);
-		_direct3D->GetProjectionMatrix(projectionMatrix);
-		_direct3D->GetOrthoMatrix(orthoMatrix);
 
 		_direct3D->TurnZBufferOff();
 
@@ -163,8 +157,6 @@ bool Graphics::Render(float delta)
 		if (!result) return false;
 
 		_direct3D->TurnZBufferOn();
-
-		worldMatrix = XMMatrixTranspose(worldMatrix);
 
 		_model->Render(delta, _model->GetIndexCount(), viewMatrix, _model->GetTexture(), _camera->GetPosition(), _light);
 
