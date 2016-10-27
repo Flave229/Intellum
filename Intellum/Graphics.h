@@ -33,7 +33,7 @@ private:
 
 // Function Declarations
 private:
-	bool Render(float);
+	bool Render(float delta);
 public:
 	Graphics();
 	Graphics(const Graphics&);
@@ -41,7 +41,7 @@ public:
 
 	bool Initialise(int, int, HWND);
 	void Shutdown();
-	bool Frame(float);
+	bool Frame(float delta);
 };
 
 #endif

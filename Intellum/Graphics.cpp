@@ -37,13 +37,13 @@ bool Graphics::Initialise(int screenWidth, int screenHeight, HWND hwnd)
 		result = _shaderController->Initialise(hwnd);
 		if (!_shaderController) throw Exception("Failed to create the shader controller.");
 
-		_model = new Model(_direct3D->GetDevice(), _direct3D->GetDeviceContext(), _shaderController->GetShader(SHADER_DEFAULT));
+		_model = new Model(_direct3D, _direct3D->GetDevice(), _direct3D->GetDeviceContext(), _shaderController->GetShader(SHADER_DEFAULT));
 		if (!_model) throw Exception("Failed to create a Model object.");
 
 		result = _model->Initialise("data/images/stone.tga", "data/models/sphere.obj");
 		if (!result) throw Exception("Could not initialise the model object.");
 
-		_bitmap = new Bitmap(_direct3D->GetDevice(), _direct3D->GetDeviceContext(), _shaderController->GetShader(SHADER_FONT));
+		_bitmap = new Bitmap(_direct3D, _direct3D->GetDevice(), _direct3D->GetDeviceContext(), _shaderController->GetShader(SHADER_FONT));
 		if (!_bitmap) throw Exception("Failed to create the bitmap.");
 
 		result = _bitmap->Initialise(screenWidth, screenHeight, 256, 256, "data/images/stone.tga");
@@ -58,7 +58,7 @@ bool Graphics::Initialise(int screenWidth, int screenHeight, HWND hwnd)
 		_light->SetDirection(0.8f, -1.0f, 0.2f);
 		_light->SetSpecularPower(32.0f);
 
-		_fontEngine = new FontEngine(_direct3D->GetDevice(), _direct3D->GetDeviceContext(), _shaderController->GetShader(SHADER_FONT));
+		_fontEngine = new FontEngine(_direct3D, _direct3D->GetDevice(), _direct3D->GetDeviceContext(), _shaderController->GetShader(SHADER_FONT));
 		if (!_fontEngine) throw Exception("Failed to create the Font Engine.");
 
 		result = _fontEngine->SearchForAvaliableFonts(screenWidth, screenHeight);
@@ -123,16 +123,7 @@ bool Graphics::Frame(float delta)
 {
 	try
 	{
-		static float rotation = 0.0f;
-
-		rotation += static_cast<float>(XM_PI) * 0.5f * delta;
-
-		if (rotation > 360.0f)
-		{
-			rotation -= 360.0f;
-		}
-
-		return Render(rotation);
+		return Render(delta);
 	}
 	catch (Exception& exception)
 	{
@@ -144,7 +135,7 @@ bool Graphics::Frame(float delta)
 	}
 }
 
-bool Graphics::Render(float rotation)
+bool Graphics::Render(float delta)
 {
 	try
 	{
@@ -165,17 +156,17 @@ bool Graphics::Render(float rotation)
 
 		_direct3D->TurnZBufferOff();
 
-		result = _bitmap->Render(worldMatrix, viewMatrix, orthoMatrix, _camera->GetPosition(), _light, 100, 100);
+		result = _bitmap->Render(viewMatrix, _camera->GetPosition(), _light, 100, 100);
 		if (!result) return false;
 
-		result = _fontEngine->Render(worldMatrix, viewMatrix, orthoMatrix, _camera->GetPosition(), _light, 200, 50, "impact", "&Joshukitten loves catnip", XMFLOAT4(0.6f, 0.3f, 0.2f, 1.0f));
+		result = _fontEngine->Render(viewMatrix, _camera->GetPosition(), _light, 200, 50, "impact", "&Joshukitten loves catnip", XMFLOAT4(0.6f, 0.3f, 0.2f, 1.0f));
 		if (!result) return false;
 
 		_direct3D->TurnZBufferOn();
 
-		worldMatrix *= XMMatrixRotationY(rotation);
+		worldMatrix = XMMatrixTranspose(worldMatrix);
 
-		_model->Render(_model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, _model->GetTexture(), _camera->GetPosition(), _light);
+		_model->Render(delta, _model->GetIndexCount(), viewMatrix, _model->GetTexture(), _camera->GetPosition(), _light);
 
 		_direct3D->EndScene();
 

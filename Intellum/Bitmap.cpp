@@ -1,15 +1,15 @@
 #include "Bitmap.h"
 
-Bitmap::Bitmap(ID3D11Device* device, ID3D11DeviceContext* deviceContext, DirectX3D* direct3D): _vertexBuffer(nullptr), _indexBuffer(nullptr), _vertexCount(0), _indexCount(0), _screenWidth(0), _screenHeight(0), _bitmapWidth(0), _bitmapHeight(0), _previousPosX(0), _previousPosY(0), _texture(nullptr), _shader(new DefaultShader(direct3D, device, deviceContext)), _device(device), _deviceContext(deviceContext)
+Bitmap::Bitmap(DirectX3D* direct3D, ID3D11Device* device, ID3D11DeviceContext* deviceContext): _direct3D(direct3D), _vertexBuffer(nullptr), _indexBuffer(nullptr), _vertexCount(0), _indexCount(0), _screenWidth(0), _screenHeight(0), _bitmapWidth(0), _bitmapHeight(0), _previousPosX(0), _previousPosY(0), _texture(nullptr), _shader(new DefaultShader(direct3D, device, deviceContext)), _device(device), _deviceContext(deviceContext)
 {
 }
 
-Bitmap::Bitmap(ID3D11Device* device, ID3D11DeviceContext* deviceContext, IShaderType* shader) : _vertexBuffer(nullptr), _indexBuffer(nullptr), _vertexCount(0), _indexCount(0), _screenWidth(0), _screenHeight(0), _bitmapWidth(0), _bitmapHeight(0), _previousPosX(0), _previousPosY(0), _texture(nullptr), _shader(shader), _device(device), _deviceContext(deviceContext)
+Bitmap::Bitmap(DirectX3D* direct3D, ID3D11Device* device, ID3D11DeviceContext* deviceContext, IShaderType* shader) : _direct3D(direct3D), _vertexBuffer(nullptr), _indexBuffer(nullptr), _vertexCount(0), _indexCount(0), _screenWidth(0), _screenHeight(0), _bitmapWidth(0), _bitmapHeight(0), _previousPosX(0), _previousPosY(0), _texture(nullptr), _shader(shader), _device(device), _deviceContext(deviceContext)
 {
 	
 }
 
-Bitmap::Bitmap(const Bitmap& other): _vertexBuffer(other._vertexBuffer), _indexBuffer(other._indexBuffer), _vertexCount(other._vertexCount), _indexCount(other._indexCount), _screenWidth(other._screenWidth), _screenHeight(other._screenHeight), _bitmapWidth(other._bitmapWidth), _bitmapHeight(other._bitmapHeight), _previousPosX(other._previousPosX), _previousPosY(other._previousPosY), _texture(other._texture), _shader(other._shader), _device(other._device), _deviceContext(other._deviceContext)
+Bitmap::Bitmap(const Bitmap& other): _direct3D(other._direct3D), _vertexBuffer(other._vertexBuffer), _indexBuffer(other._indexBuffer), _vertexCount(other._vertexCount), _indexCount(other._indexCount), _screenWidth(other._screenWidth), _screenHeight(other._screenHeight), _bitmapWidth(other._bitmapWidth), _bitmapHeight(other._bitmapHeight), _previousPosX(other._previousPosX), _previousPosY(other._previousPosY), _texture(other._texture), _shader(other._shader), _device(other._device), _deviceContext(other._deviceContext)
 {
 }
 
@@ -45,14 +45,19 @@ void Bitmap::Shutdown()
 	ShutdownBuffers();
 }
 
-bool Bitmap::Render(XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, XMFLOAT3 cameraPosition, Light* light, int positionX, int positionY)
+bool Bitmap::Render(XMMATRIX viewMatrix, XMFLOAT3 cameraPosition, Light* light, int positionX, int positionY)
 {
 	bool result = UpdateBuffers(positionX, positionY);
 	if (!result) return false;
 
 	RenderBuffers();
 
-	result = _shader->Render(GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, GetTexture(), cameraPosition, light);
+	XMMATRIX worldMatrix;
+	XMMATRIX orthoMatrix;
+	_direct3D->GetWorldMatrix(worldMatrix);
+	_direct3D->GetOrthoMatrix(orthoMatrix);
+
+	result = _shader->Render(GetIndexCount(), worldMatrix, viewMatrix, orthoMatrix, GetTexture(), cameraPosition, light);
 	if (!result) return false;
 
 	return true;

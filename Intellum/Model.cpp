@@ -1,16 +1,16 @@
 #include "Model.h"
 #include "loaders/OBJLoader.h"
 
-Model::Model(ID3D11Device* device, ID3D11DeviceContext* deviceContext, DirectX3D* direct3D): _device(device), _deviceContext(deviceContext), _geometry(new Geometry), _texture(nullptr), _shader(new DefaultShader(direct3D, device, deviceContext))
+Model::Model(DirectX3D* direct3D, ID3D11Device* device, ID3D11DeviceContext* deviceContext): _direct3D(direct3D), _device(device), _deviceContext(deviceContext), _geometry(new Geometry), _texture(nullptr), _shader(new DefaultShader(direct3D, device, deviceContext))
 {
 }
 
-Model::Model(ID3D11Device* device, ID3D11DeviceContext* deviceContext, IShaderType* shader) : _device(device), _deviceContext(deviceContext), _geometry(new Geometry), _texture(nullptr), _shader(shader)
+Model::Model(DirectX3D* direct3D, ID3D11Device* device, ID3D11DeviceContext* deviceContext, IShaderType* shader) : _direct3D(direct3D), _device(device), _deviceContext(deviceContext), _geometry(new Geometry), _texture(nullptr), _shader(shader)
 {
 	
 }
 
-Model::Model(const Model& other) : _device(other._device), _deviceContext(other._deviceContext), _geometry(other._geometry), _texture(other._texture), _shader(other._shader)
+Model::Model(const Model& other) : _direct3D(other._direct3D), _device(other._device), _deviceContext(other._deviceContext), _geometry(other._geometry), _texture(other._texture), _shader(other._shader)
 {
 }
 
@@ -37,9 +37,25 @@ void Model::Shutdown()
 	ShutdownBuffers();
 }
 
-void Model::Render(int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, XMFLOAT3 cameraPosition, Light* light)
+void Model::Render(float delta, int indexCount, XMMATRIX viewMatrix, ID3D11ShaderResourceView* texture, XMFLOAT3 cameraPosition, Light* light)
 {
 	RenderBuffers();
+
+	XMMATRIX worldMatrix;
+	XMMATRIX projectionMatrix;
+	_direct3D->GetWorldMatrix(worldMatrix);
+	_direct3D->GetProjectionMatrix(projectionMatrix);
+
+	static float rotation = 0.0f;
+
+	rotation += static_cast<float>(XM_PI) * 0.5f * delta;
+
+	if (rotation > 360.0f)
+	{
+		rotation -= 360.0f;
+	}
+
+	worldMatrix *= XMMatrixRotationY(rotation);
 
 	_shader->Render(indexCount, worldMatrix, viewMatrix, projectionMatrix, texture, cameraPosition, light);
 }

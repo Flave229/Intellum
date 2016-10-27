@@ -23,6 +23,8 @@ private:
 
 // Member Level Variables
 private:
+	DirectX3D* _direct3D;
+
 	ID3D11Device* _device;
 	ID3D11DeviceContext* _deviceContext;
 
@@ -51,14 +53,14 @@ private:
 	bool LoadTexture(char*);
 	void ReleaseTexture();
 public:
-	Bitmap(ID3D11Device* device, ID3D11DeviceContext* deviceContext, DirectX3D* direct3D);
-	Bitmap(ID3D11Device* device, ID3D11DeviceContext* deviceContext, IShaderType* shader);
+	Bitmap(DirectX3D* direct3D, ID3D11Device* device, ID3D11DeviceContext* deviceContext);
+	Bitmap(DirectX3D* direct3D, ID3D11Device* device, ID3D11DeviceContext* deviceContext, IShaderType* shader);
 	Bitmap(const Bitmap&);
 	~Bitmap();
 
 	bool Initialise(int, int, int, int, char*);
 	void Shutdown();
-	bool Render(XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, XMFLOAT3 cameraPosition, Light* light, int positionX, int positionY);
+	bool Render(XMMATRIX viewMatrix, XMFLOAT3 cameraPosition, Light* light, int positionX, int positionY);
 
 	int GetIndexCount();
 	ID3D11ShaderResourceView* GetTexture();

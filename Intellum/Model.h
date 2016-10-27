@@ -19,6 +19,8 @@ class Model
 {
 // Member Level Variables
 private:
+	DirectX3D* _direct3D;
+
 	ID3D11Device* _device;
 	ID3D11DeviceContext* _deviceContext;
 
@@ -36,14 +38,14 @@ private:
 
 	bool LoadModel(char*);
 public:
-	Model(ID3D11Device* device, ID3D11DeviceContext* deviceContext, DirectX3D* direct3D);
-	Model(ID3D11Device* device, ID3D11DeviceContext* deviceContext, IShaderType* shader);
+	Model(DirectX3D* direct3D, ID3D11Device* device, ID3D11DeviceContext* deviceContext);
+	Model(DirectX3D* direct3D, ID3D11Device* device, ID3D11DeviceContext* deviceContext, IShaderType* shader);
 	Model(const Model&);
 	~Model();
 
 	bool Initialise(char*, char*);
 	void Shutdown();
-	void Render(int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, XMFLOAT3 cameraPosition, Light* light);
+	void Render(float delta, int indexCount, XMMATRIX viewMatrix, ID3D11ShaderResourceView* texture, XMFLOAT3 cameraPosition, Light* light);
 
 	int GetIndexCount();
 

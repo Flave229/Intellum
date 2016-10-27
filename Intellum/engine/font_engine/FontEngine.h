@@ -8,12 +8,15 @@
 #include "Character.h"
 #include "../shader_engine/IShaderType.h"
 #include "../shader_engine/FontShader.h"
+#include "../DirectX3D.h"
 
 using namespace std;
 
 class FontEngine
 {
 private:
+	DirectX3D* _direct3D;
+
 	ID3D11Device* _device;
 	ID3D11DeviceContext* _deviceContext;
 
@@ -33,11 +36,11 @@ private:
 
 	vector<Character*> StringToCharacterTextureList(string font, string input);
 public:
-	FontEngine(ID3D11Device* device, ID3D11DeviceContext* deviceContext, IShaderType* shader);
+	FontEngine(DirectX3D* direct3D, ID3D11Device* device, ID3D11DeviceContext* deviceContext, IShaderType* shader);
 	~FontEngine();
 
 	bool SearchForAvaliableFonts(int screenWidth, int screenHeight);
-	bool Render(XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX orthoMatrix, XMFLOAT3 cameraPosition, Light* light, int positionX, int positionY, string font, string input, XMFLOAT4 textColor);
+	bool Render(XMMATRIX viewMatrix, XMFLOAT3 cameraPosition, Light* light, int positionX, int positionY, string font, string input, XMFLOAT4 textColor);
 
 	Font* GetFont(string font);
 	bool CheckFontExists(string font);

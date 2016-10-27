@@ -1,6 +1,6 @@
 ﻿#include "FontEngine.h"
 
-FontEngine::FontEngine(ID3D11Device* device, ID3D11DeviceContext* deviceContext, IShaderType* shader) : _device(device), _deviceContext(deviceContext), _shader(shader)
+FontEngine::FontEngine(DirectX3D* direct3D, ID3D11Device* device, ID3D11DeviceContext* deviceContext, IShaderType* shader) : _direct3D(direct3D), _device(device), _deviceContext(deviceContext), _shader(shader)
 {
 }
 
@@ -34,7 +34,7 @@ bool FontEngine::SearchForAvaliableFonts(int screenWidth, int screenHeight)
 	}
 }
 
-bool FontEngine::Render(XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX orthoMatrix, XMFLOAT3 cameraPosition, Light* light, int positionX, int positionY, string font, string input, XMFLOAT4 textColor)
+bool FontEngine::Render(XMMATRIX viewMatrix, XMFLOAT3 cameraPosition, Light* light, int positionX, int positionY, string font, string input, XMFLOAT4 textColor)
 {
 	try
 	{
@@ -46,7 +46,7 @@ bool FontEngine::Render(XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX orth
 
 		for (int i = 0; i < stringAsTexture.size(); i++)
 		{
-			result = stringAsTexture.at(i)->_texture->Render(worldMatrix, viewMatrix, orthoMatrix, cameraPosition, light, positionX + (64 * i), positionY);
+			result = stringAsTexture.at(i)->_texture->Render(viewMatrix, cameraPosition, light, positionX + (64 * i), positionY);
 			if (!result) return false;
 		}
 
@@ -217,7 +217,7 @@ bool FontEngine::CheckCharacterExists(string filePath)
 
 Character* FontEngine::CreateCharacterFromFontFolder(string filePath, string name, string unicode, int screenWidth, int screenHeight)
 {
-	Bitmap* texture = new Bitmap(_device, _deviceContext, _shader);
+	Bitmap* texture = new Bitmap(_direct3D, _device, _deviceContext, _shader);
 	if (!texture) throw Exception("Failed to create the letter " + name + " for the font located at: " + filePath + ".");
 
 	bool result = texture->Initialise(screenWidth, screenHeight, 64, 128, &(filePath + "/" + unicode + ".tga")[0u]);
