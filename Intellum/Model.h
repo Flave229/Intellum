@@ -21,9 +21,6 @@ class Model
 private:
 	DirectX3D* _direct3D;
 
-	ID3D11Device* _device;
-	ID3D11DeviceContext* _deviceContext;
-
 	Geometry* _geometry;
 	Texture* _texture;
 	IShaderType* _shader;
@@ -38,8 +35,8 @@ private:
 
 	bool LoadModel(char*);
 public:
-	Model(DirectX3D* direct3D, ID3D11Device* device, ID3D11DeviceContext* deviceContext);
-	Model(DirectX3D* direct3D, ID3D11Device* device, ID3D11DeviceContext* deviceContext, IShaderType* shader);
+	Model(DirectX3D* direct3D);
+	Model(DirectX3D* direct3D, IShaderType* shader);
 	Model(const Model&);
 	~Model();
 

@@ -1,16 +1,16 @@
 #include "Model.h"
 #include "loaders/OBJLoader.h"
 
-Model::Model(DirectX3D* direct3D, ID3D11Device* device, ID3D11DeviceContext* deviceContext): _direct3D(direct3D), _device(device), _deviceContext(deviceContext), _geometry(new Geometry), _texture(nullptr), _shader(new DefaultShader(direct3D, device, deviceContext))
+Model::Model(DirectX3D* direct3D): _direct3D(direct3D), _geometry(new Geometry), _texture(nullptr), _shader(new DefaultShader(direct3D, direct3D->GetDevice(), direct3D->GetDeviceContext()))
 {
 }
 
-Model::Model(DirectX3D* direct3D, ID3D11Device* device, ID3D11DeviceContext* deviceContext, IShaderType* shader) : _direct3D(direct3D), _device(device), _deviceContext(deviceContext), _geometry(new Geometry), _texture(nullptr), _shader(shader)
+Model::Model(DirectX3D* direct3D, IShaderType* shader) : _direct3D(direct3D), _geometry(new Geometry), _texture(nullptr), _shader(shader)
 {
 	
 }
 
-Model::Model(const Model& other) : _direct3D(other._direct3D), _device(other._device), _deviceContext(other._deviceContext), _geometry(other._geometry), _texture(other._texture), _shader(other._shader)
+Model::Model(const Model& other) : _direct3D(other._direct3D), _geometry(other._geometry), _texture(other._texture), _shader(other._shader)
 {
 }
 
@@ -82,14 +82,15 @@ void Model::ShutdownBuffers()
 
 void Model::RenderBuffers()
 {
-	_deviceContext->IASetVertexBuffers(0, 1, &_geometry->VertexBuffer, &_geometry->VBStride, &_geometry->VBOffset);
-	_deviceContext->IASetIndexBuffer(_geometry->IndexBuffer, DXGI_FORMAT_R16_UINT, 0);
-	_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	ID3D11DeviceContext* deviceContext = _direct3D->GetDeviceContext();
+	deviceContext->IASetVertexBuffers(0, 1, &_geometry->VertexBuffer, &_geometry->VBStride, &_geometry->VBOffset);
+	deviceContext->IASetIndexBuffer(_geometry->IndexBuffer, DXGI_FORMAT_R16_UINT, 0);
+	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 
 bool Model::LoadTexture(char* filename)
 {
-	_texture = new Texture(_device, _deviceContext);
+	_texture = new Texture(_direct3D->GetDevice(), _direct3D->GetDeviceContext());
 	if (!_texture) return false;
 	
 	return _texture->Initialise(filename);
@@ -107,7 +108,7 @@ void Model::ReleaseTexture()
 
 bool Model::LoadModel(char* fileName)
 {
-	*_geometry = OBJLoader::Load(fileName, _device);
+	*_geometry = OBJLoader::Load(fileName, _direct3D->GetDevice());
 	if (!_geometry) return false;
 
 	return true;
