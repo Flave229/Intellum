@@ -217,7 +217,7 @@ bool FontEngine::CheckCharacterExists(string filePath)
 
 Character* FontEngine::CreateCharacterFromFontFolder(string filePath, string name, string unicode, int screenWidth, int screenHeight)
 {
-	Bitmap* texture = new Bitmap(_direct3D, _device, _deviceContext, _shader);
+	Bitmap* texture = new Bitmap(_direct3D, _shader);
 	if (!texture) throw Exception("Failed to create the letter " + name + " for the font located at: " + filePath + ".");
 
 	bool result = texture->Initialise(screenWidth, screenHeight, 64, 128, &(filePath + "/" + unicode + ".tga")[0u]);

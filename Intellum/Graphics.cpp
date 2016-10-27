@@ -43,7 +43,7 @@ bool Graphics::Initialise(int screenWidth, int screenHeight, HWND hwnd)
 		result = _model->Initialise("data/images/stone.tga", "data/models/sphere.obj");
 		if (!result) throw Exception("Could not initialise the model object.");
 
-		_bitmap = new Bitmap(_direct3D, _direct3D->GetDevice(), _direct3D->GetDeviceContext(), _shaderController->GetShader(SHADER_FONT));
+		_bitmap = new Bitmap(_direct3D, _shaderController->GetShader(SHADER_FONT));
 		if (!_bitmap) throw Exception("Failed to create the bitmap.");
 
 		result = _bitmap->Initialise(screenWidth, screenHeight, 256, 256, "data/images/stone.tga");

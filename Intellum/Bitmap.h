@@ -25,9 +25,6 @@ private:
 private:
 	DirectX3D* _direct3D;
 
-	ID3D11Device* _device;
-	ID3D11DeviceContext* _deviceContext;
-
 	ID3D11Buffer* _vertexBuffer;
 	ID3D11Buffer* _indexBuffer;
 	int _vertexCount;
@@ -53,8 +50,8 @@ private:
 	bool LoadTexture(char*);
 	void ReleaseTexture();
 public:
-	Bitmap(DirectX3D* direct3D, ID3D11Device* device, ID3D11DeviceContext* deviceContext);
-	Bitmap(DirectX3D* direct3D, ID3D11Device* device, ID3D11DeviceContext* deviceContext, IShaderType* shader);
+	Bitmap(DirectX3D* direct3D);
+	Bitmap(DirectX3D* direct3D, IShaderType* shader);
 	Bitmap(const Bitmap&);
 	~Bitmap();
 

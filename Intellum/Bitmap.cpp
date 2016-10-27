@@ -1,15 +1,15 @@
 #include "Bitmap.h"
 
-Bitmap::Bitmap(DirectX3D* direct3D, ID3D11Device* device, ID3D11DeviceContext* deviceContext): _direct3D(direct3D), _vertexBuffer(nullptr), _indexBuffer(nullptr), _vertexCount(0), _indexCount(0), _screenWidth(0), _screenHeight(0), _bitmapWidth(0), _bitmapHeight(0), _previousPosX(0), _previousPosY(0), _texture(nullptr), _shader(new DefaultShader(direct3D, device, deviceContext)), _device(device), _deviceContext(deviceContext)
+Bitmap::Bitmap(DirectX3D* direct3D): _direct3D(direct3D), _vertexBuffer(nullptr), _indexBuffer(nullptr), _vertexCount(0), _indexCount(0), _screenWidth(0), _screenHeight(0), _bitmapWidth(0), _bitmapHeight(0), _previousPosX(0), _previousPosY(0), _texture(nullptr), _shader(new DefaultShader(direct3D, direct3D->GetDevice(), direct3D->GetDeviceContext()))
 {
 }
 
-Bitmap::Bitmap(DirectX3D* direct3D, ID3D11Device* device, ID3D11DeviceContext* deviceContext, IShaderType* shader) : _direct3D(direct3D), _vertexBuffer(nullptr), _indexBuffer(nullptr), _vertexCount(0), _indexCount(0), _screenWidth(0), _screenHeight(0), _bitmapWidth(0), _bitmapHeight(0), _previousPosX(0), _previousPosY(0), _texture(nullptr), _shader(shader), _device(device), _deviceContext(deviceContext)
+Bitmap::Bitmap(DirectX3D* direct3D, IShaderType* shader) : _direct3D(direct3D), _vertexBuffer(nullptr), _indexBuffer(nullptr), _vertexCount(0), _indexCount(0), _screenWidth(0), _screenHeight(0), _bitmapWidth(0), _bitmapHeight(0), _previousPosX(0), _previousPosY(0), _texture(nullptr), _shader(shader)
 {
 	
 }
 
-Bitmap::Bitmap(const Bitmap& other): _direct3D(other._direct3D), _vertexBuffer(other._vertexBuffer), _indexBuffer(other._indexBuffer), _vertexCount(other._vertexCount), _indexCount(other._indexCount), _screenWidth(other._screenWidth), _screenHeight(other._screenHeight), _bitmapWidth(other._bitmapWidth), _bitmapHeight(other._bitmapHeight), _previousPosX(other._previousPosX), _previousPosY(other._previousPosY), _texture(other._texture), _shader(other._shader), _device(other._device), _deviceContext(other._deviceContext)
+Bitmap::Bitmap(const Bitmap& other): _direct3D(other._direct3D), _vertexBuffer(other._vertexBuffer), _indexBuffer(other._indexBuffer), _vertexCount(other._vertexCount), _indexCount(other._indexCount), _screenWidth(other._screenWidth), _screenHeight(other._screenHeight), _bitmapWidth(other._bitmapWidth), _bitmapHeight(other._bitmapHeight), _previousPosX(other._previousPosX), _previousPosY(other._previousPosY), _texture(other._texture), _shader(other._shader)
 {
 }
 
@@ -111,7 +111,7 @@ bool Bitmap::InitialiseBuffers()
 	vertexData.SysMemPitch = 0;
 	vertexData.SysMemSlicePitch = 0;
 
-	result = _device->CreateBuffer(&vertexBufferDesc, &vertexData, &_vertexBuffer);
+	result = _direct3D->GetDevice()->CreateBuffer(&vertexBufferDesc, &vertexData, &_vertexBuffer);
 	if (FAILED(result)) return false;
 
 	// Setup Index Buffer Description
@@ -126,7 +126,7 @@ bool Bitmap::InitialiseBuffers()
 	indexData.SysMemPitch = 0;
 	indexData.SysMemSlicePitch = 0;
 
-	result = _device->CreateBuffer(&indexBufferDesc, &indexData, &_indexBuffer);
+	result = _direct3D->GetDevice()->CreateBuffer(&indexBufferDesc, &indexData, &_indexBuffer);
 	if (FAILED(result)) return false;
 
 	delete[] vertices;
@@ -193,14 +193,14 @@ bool Bitmap::UpdateBuffers(int positionX, int positionY)
 	vertices[5].position = XMFLOAT3(right, bottom, 0.0f);
 	vertices[5].texture = XMFLOAT2(1.0f, 1.0f);
 
-	result = _deviceContext->Map(_vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	result = _direct3D->GetDeviceContext()->Map(_vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	if (FAILED(result)) return false;
 
 	Vertex* verticesPtr = static_cast<Vertex*>(mappedResource.pData);
 
 	memcpy(verticesPtr, static_cast<void*>(vertices), (sizeof(Vertex) * _vertexCount));
 
-	_deviceContext->Unmap(_vertexBuffer, 0);
+	_direct3D->GetDeviceContext()->Unmap(_vertexBuffer, 0);
 
 	delete[] vertices;
 	vertices = nullptr;
@@ -213,14 +213,15 @@ void Bitmap::RenderBuffers()
 	unsigned int stride = sizeof(Vertex);
 	unsigned int offset = 0;
 
-	_deviceContext->IASetVertexBuffers(0, 1, &_vertexBuffer, &stride, &offset);
-	_deviceContext->IASetIndexBuffer(_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
-	_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	ID3D11DeviceContext* deviceContext = _direct3D->GetDeviceContext();
+	deviceContext->IASetVertexBuffers(0, 1, &_vertexBuffer, &stride, &offset);
+	deviceContext->IASetIndexBuffer(_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
+	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 
 bool Bitmap::LoadTexture(char* filename)
 {
-	_texture = new Texture(_device, _deviceContext);
+	_texture = new Texture(_direct3D->GetDevice(), _direct3D->GetDeviceContext());
 	if (!_texture) return false;
 
 	return _texture->Initialise(filename);
