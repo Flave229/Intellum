@@ -46,7 +46,7 @@ bool FontEngine::Render(XMMATRIX viewMatrix, XMFLOAT3 cameraPosition, Light* lig
 
 		for (int i = 0; i < stringAsTexture.size(); i++)
 		{
-			result = stringAsTexture.at(i)->_texture->Render(viewMatrix, cameraPosition, light, positionX + (fontSize * i), positionY, fontSize);
+			result = stringAsTexture.at(i)->_texture->Render(viewMatrix, cameraPosition, light, positionX + (fontSize * i), positionY, fontSize, fontSize * 2);
 			if (!result) return false;
 		}
 
