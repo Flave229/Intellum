@@ -150,10 +150,10 @@ bool Graphics::Render(float delta)
 
 		_direct3D->TurnZBufferOff();
 
-		result = _bitmap->Render(viewMatrix, _camera->GetPosition(), _light, 100, 100);
+		result = _bitmap->Render(viewMatrix, _camera->GetPosition(), _light, 100, 100, 20);
 		if (!result) return false;
 
-		result = _fontEngine->Render(viewMatrix, _camera->GetPosition(), _light, 200, 50, "impact", "&Joshukitten loves catnip", XMFLOAT4(0.6f, 0.3f, 0.2f, 1.0f));
+		result = _fontEngine->Render(viewMatrix, _camera->GetPosition(), _light, 200, 50, "impact", "&Joshukitten loves catnip", XMFLOAT4(0.6f, 0.3f, 0.2f, 1.0f), 20);
 		if (!result) return false;
 
 		_direct3D->TurnZBufferOn();

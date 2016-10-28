@@ -34,6 +34,7 @@ private:
 	int _screenHeight;
 	int _bitmapWidth;
 	int _bitmapHeight;
+	int _previousSize;
 	int _previousPosX;
 	int _previousPosY;
 
@@ -44,7 +45,7 @@ private:
 private:
 	bool InitialiseBuffers();
 	void ShutdownBuffers();
-	bool UpdateBuffers(int, int);
+	bool UpdateBuffers(int positionX, int positionY, int fontSize);
 	void RenderBuffers();
 
 	bool LoadTexture(char*);
@@ -57,7 +58,7 @@ public:
 
 	bool Initialise(int, int, int, int, char*);
 	void Shutdown();
-	bool Render(XMMATRIX viewMatrix, XMFLOAT3 cameraPosition, Light* light, int positionX, int positionY);
+	bool Render(XMMATRIX viewMatrix, XMFLOAT3 cameraPosition, Light* light, int positionX, int positionY, int fontSize);
 
 	int GetIndexCount();
 	ID3D11ShaderResourceView* GetTexture();

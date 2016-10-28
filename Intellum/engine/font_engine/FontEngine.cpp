@@ -34,7 +34,7 @@ bool FontEngine::SearchForAvaliableFonts(int screenWidth, int screenHeight)
 	}
 }
 
-bool FontEngine::Render(XMMATRIX viewMatrix, XMFLOAT3 cameraPosition, Light* light, int positionX, int positionY, string font, string input, XMFLOAT4 textColor)
+bool FontEngine::Render(XMMATRIX viewMatrix, XMFLOAT3 cameraPosition, Light* light, int positionX, int positionY, string font, string input, XMFLOAT4 textColor, int fontSize)
 {
 	try
 	{
@@ -46,7 +46,7 @@ bool FontEngine::Render(XMMATRIX viewMatrix, XMFLOAT3 cameraPosition, Light* lig
 
 		for (int i = 0; i < stringAsTexture.size(); i++)
 		{
-			result = stringAsTexture.at(i)->_texture->Render(viewMatrix, cameraPosition, light, positionX + (64 * i), positionY);
+			result = stringAsTexture.at(i)->_texture->Render(viewMatrix, cameraPosition, light, positionX + (fontSize * i), positionY, fontSize);
 			if (!result) return false;
 		}
 

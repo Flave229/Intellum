@@ -29,6 +29,7 @@ bool Bitmap::Initialise(int screenWidth, int screenHeight, int bitmapWidth, int 
 
 	_previousPosX = -1;
 	_previousPosY = -1;
+	_previousSize = -1;
 
 	result = InitialiseBuffers();
 	if (!result) return false;
@@ -45,9 +46,9 @@ void Bitmap::Shutdown()
 	ShutdownBuffers();
 }
 
-bool Bitmap::Render(XMMATRIX viewMatrix, XMFLOAT3 cameraPosition, Light* light, int positionX, int positionY)
+bool Bitmap::Render(XMMATRIX viewMatrix, XMFLOAT3 cameraPosition, Light* light, int positionX, int positionY, int fontSize)
 {
-	bool result = UpdateBuffers(positionX, positionY);
+	bool result = UpdateBuffers(positionX, positionY, fontSize);
 	if (!result) return false;
 
 	RenderBuffers();
@@ -153,24 +154,25 @@ void Bitmap::ShutdownBuffers()
 	}
 }
 
-bool Bitmap::UpdateBuffers(int positionX, int positionY)
+bool Bitmap::UpdateBuffers(int positionX, int positionY, int fontSize)
 {
 	HRESULT result;
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
 
-	if ((positionX == _previousPosX) && (positionY == _previousPosY))
+	if ((positionX == _previousPosX) && (positionY == _previousPosY) && (fontSize == _previousSize))
 	{
 		return true;
 	}
 
 	_previousPosX = positionX;
 	_previousPosY = positionY;
+	_previousSize = fontSize;
 
 	float left = static_cast<float>((_screenWidth / 2) * -1) + static_cast<float>(positionX);
-	float right = left + static_cast<float>(_bitmapWidth);
+	float right = left + static_cast<float>(fontSize);
 
 	float top = static_cast<float>(_screenHeight / 2) - static_cast<float>(positionY);
-	float bottom = top - static_cast<float>(_bitmapHeight);
+	float bottom = top - static_cast<float>(fontSize * 2);
 
 	Vertex* vertices = new Vertex[_vertexCount];
 	if (!vertices) return false;
