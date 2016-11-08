@@ -153,7 +153,7 @@ bool Graphics::Render(float delta)
 		result = _bitmap->Render(viewMatrix, _camera->GetPosition(), _light, 100, 100, 256, 256);
 		if (!result) return false;
 
-		result = _fontEngine->Render(viewMatrix, _camera->GetPosition(), _light, 200, 50, "impact", "&Joshukitten loves catnip", XMFLOAT4(0.6f, 0.3f, 0.2f, 1.0f), 20);
+		result = _fontEngine->Render(viewMatrix, _camera->GetPosition(), _light, 50, 600, "impact", "arse$\"$^%$%$$$£", XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 30);
 		if (!result) return false;
 
 		_direct3D->TurnZBufferOn();
