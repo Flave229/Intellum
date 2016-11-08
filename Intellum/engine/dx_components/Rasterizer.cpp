@@ -1,10 +1,10 @@
 #include "Rasterizer.h"
 
-Rasterizer::Rasterizer(): _defaultState(nullptr), _wireframeState(nullptr)
+Rasterizer::Rasterizer(ID3D11Device* device, ID3D11DeviceContext* deviceContext): _device(device), _deviceContext(deviceContext), _defaultState(nullptr), _wireframeState(nullptr)
 {
 }
 
-Rasterizer::Rasterizer(const Rasterizer& other): _defaultState(other._defaultState), _wireframeState(other._wireframeState)
+Rasterizer::Rasterizer(const Rasterizer& other): _device(other._device), _deviceContext(other._deviceContext), _defaultState(other._defaultState), _wireframeState(other._wireframeState)
 {
 }
 
@@ -12,41 +12,16 @@ Rasterizer::~Rasterizer()
 {
 }
 
-bool Rasterizer::Initialise(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
+bool Rasterizer::Initialise()
 {
 	HRESULT result;
 	D3D11_RASTERIZER_DESC defaultDesc;
 	D3D11_RASTERIZER_DESC wireframeDesc;
 
-	defaultDesc.AntialiasedLineEnable = false;
-	defaultDesc.CullMode = D3D11_CULL_BACK;
-	defaultDesc.DepthBias = 0;
-	defaultDesc.DepthBiasClamp = 0.0f;
-	defaultDesc.DepthClipEnable = true;
-	defaultDesc.FillMode = D3D11_FILL_SOLID;
-	defaultDesc.FrontCounterClockwise = false;
-	defaultDesc.MultisampleEnable = false;
-	defaultDesc.ScissorEnable = false;
-	defaultDesc.SlopeScaledDepthBias = 0.0f;
+	CreateRasterizerState(_defaultState, D3D11_FILL_SOLID);
+	CreateRasterizerState(_wireframeState, D3D11_FILL_WIREFRAME);
 
-	result = device->CreateRasterizerState(&defaultDesc, &_defaultState);
-	if (FAILED(result)) return false;
-
-	wireframeDesc.AntialiasedLineEnable = false;
-	wireframeDesc.CullMode = D3D11_CULL_BACK;
-	wireframeDesc.DepthBias = 0;
-	wireframeDesc.DepthBiasClamp = 0.0f;
-	wireframeDesc.DepthClipEnable = true;
-	wireframeDesc.FillMode = D3D11_FILL_WIREFRAME;
-	wireframeDesc.FrontCounterClockwise = false;
-	wireframeDesc.MultisampleEnable = false;
-	wireframeDesc.ScissorEnable = false;
-	wireframeDesc.SlopeScaledDepthBias = 0.0f;
-
-	result = device->CreateRasterizerState(&wireframeDesc, &_wireframeState);
-	if (FAILED(result)) return false;
-
-	deviceContext->RSSetState(_defaultState);
+	_deviceContext->RSSetState(_defaultState);
 
 	return true;
 }
@@ -78,4 +53,23 @@ void Rasterizer::SetStencilType(ID3D11DeviceContext* deviceContext, RasterizerSt
 		deviceContext->RSSetState(_defaultState);
 		break;
 	}
+}
+
+bool Rasterizer::CreateRasterizerState(ID3D11RasterizerState* rasterizerState, D3D11_FILL_MODE fillMode)
+{
+	D3D11_RASTERIZER_DESC rasterizerDescription;
+
+	rasterizerDescription.AntialiasedLineEnable = false;
+	rasterizerDescription.CullMode = D3D11_CULL_BACK;
+	rasterizerDescription.DepthBias = 0;
+	rasterizerDescription.DepthBiasClamp = 0.0f;
+	rasterizerDescription.DepthClipEnable = true;
+	rasterizerDescription.FillMode = fillMode;
+	rasterizerDescription.FrontCounterClockwise = false;
+	rasterizerDescription.MultisampleEnable = false;
+	rasterizerDescription.ScissorEnable = false;
+	rasterizerDescription.SlopeScaledDepthBias = 0.0f;
+
+	bool result = _device->CreateRasterizerState(&rasterizerDescription, &rasterizerState);
+	if (FAILED(result)) return false;
 }

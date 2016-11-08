@@ -87,8 +87,8 @@ bool DirectX3D::Initialise(int screenWidth, int screenHeight, bool vsync, HWND h
 		result = _device->CreateDepthStencilView(_depthStencil->GetDepthStencilBuffer(), &depthStencilViewDesc, &_depthStencilView);
 		if (FAILED(result)) throw Exception("Failed to create the Depth Stencil View.");
 
-		_rasterizer = new Rasterizer;
-		_rasterizer->Initialise(_device, _deviceContext);
+		_rasterizer = new Rasterizer(_device, _deviceContext);
+		_rasterizer->Initialise();
 
 		_deviceContext->OMSetRenderTargets(1, &_renderTargetView, _depthStencilView);
 
