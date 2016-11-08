@@ -21,6 +21,8 @@ private:
 	ID3D11DepthStencilState* _depthDisabledStencilState;
 
 // Function Declarations
+private:
+	bool CreateDepthStencil(ID3D11DepthStencilState* depthStencil, bool depthEnable);
 public:
 	DepthStencil(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 	DepthStencil(const DepthStencil&);
