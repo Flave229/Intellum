@@ -14,13 +14,13 @@ ShaderController::~ShaderController()
 
 bool ShaderController::Initialise(HWND hwnd)
 {
-	_defaultShader = new DefaultShader(_direct3D, _device, _deviceContext);
+	_defaultShader = new DefaultShader(_direct3D);
 	if (!_defaultShader) throw Exception("Failed to create the default shader.");
 
 	bool result = _defaultShader->Initialise(hwnd);
 	if (!result) throw Exception("Could not initialise the default shader.");
 
-	_fontShader = new FontShader(_direct3D, _device, _deviceContext);
+	_fontShader = new FontShader(_direct3D);
 	if (!_fontShader) throw Exception("Failed to create the default shader.");
 
 	result = _fontShader->Initialise(hwnd);

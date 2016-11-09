@@ -27,15 +27,12 @@ class FontShader : public IShaderType
 	};
 
 private:
-	ID3D11Device* _device;
-	ID3D11DeviceContext* _deviceContext;
-
 	ID3D11Buffer* _colorBuffer;
 
 	bool _colorOverloadEnabled;
 	XMFLOAT4 _fontColor;
 public:
-	FontShader(DirectX3D* _direct3D, ID3D11Device* device, ID3D11DeviceContext* deviceContext);
+	FontShader(DirectX3D* _direct3D);
 	~FontShader();
 
 	virtual bool Initialise(HWND hwnd);

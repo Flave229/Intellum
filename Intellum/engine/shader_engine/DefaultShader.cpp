@@ -1,6 +1,6 @@
 #include "DefaultShader.h"
 
-DefaultShader::DefaultShader(DirectX3D* direct3D, ID3D11Device* device, ID3D11DeviceContext* deviceContext) : IShaderType(direct3D), _device(device), _deviceContext(deviceContext)
+DefaultShader::DefaultShader(DirectX3D* direct3D) : IShaderType(direct3D)
 {
 }
 
@@ -61,11 +61,11 @@ bool DefaultShader::InitialiseShader(HWND hwnd, WCHAR* vsFilename, WCHAR* psFile
 	}
 
 	// Create Vertex Shader from the buffer
-	result = _device->CreateVertexShader(vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), nullptr, &_vertexShader);
+	result = _direct3D->GetDevice()->CreateVertexShader(vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), nullptr, &_vertexShader);
 	if (FAILED(result)) return false;
 
 	// Create Pixel Shader from the buffer
-	result = _device->CreatePixelShader(pixelShaderBuffer->GetBufferPointer(), pixelShaderBuffer->GetBufferSize(), nullptr, &_pixelShader);
+	result = _direct3D->GetDevice()->CreatePixelShader(pixelShaderBuffer->GetBufferPointer(), pixelShaderBuffer->GetBufferSize(), nullptr, &_pixelShader);
 	if (FAILED(result)) return false;
 
 	// Vertex Shader layout description
@@ -96,7 +96,7 @@ bool DefaultShader::InitialiseShader(HWND hwnd, WCHAR* vsFilename, WCHAR* psFile
 
 	numElements = sizeof(polygonLayout) / sizeof(polygonLayout[0]);
 
-	result = _device->CreateInputLayout(polygonLayout, numElements, vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), &_layout);
+	result = _direct3D->GetDevice()->CreateInputLayout(polygonLayout, numElements, vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), &_layout);
 	if (FAILED(result)) return false;
 
 	vertexShaderBuffer->Release();
@@ -113,7 +113,7 @@ bool DefaultShader::InitialiseShader(HWND hwnd, WCHAR* vsFilename, WCHAR* psFile
 	matrixBufferDesc.MiscFlags = 0;
 	matrixBufferDesc.StructureByteStride = 0;
 
-	result = _device->CreateBuffer(&matrixBufferDesc, nullptr, &_matrixBuffer);
+	result = _direct3D->GetDevice()->CreateBuffer(&matrixBufferDesc, nullptr, &_matrixBuffer);
 	if (FAILED(result)) return false;
 
 	// Camera Buffer Description
@@ -124,7 +124,7 @@ bool DefaultShader::InitialiseShader(HWND hwnd, WCHAR* vsFilename, WCHAR* psFile
 	cameraBufferDesc.MiscFlags = 0;
 	cameraBufferDesc.StructureByteStride = 0;
 
-	result = _device->CreateBuffer(&cameraBufferDesc, nullptr, &_cameraBuffer);
+	result = _direct3D->GetDevice()->CreateBuffer(&cameraBufferDesc, nullptr, &_cameraBuffer);
 	if (FAILED(result)) return false;
 
 	// Light Buffer Description
@@ -135,7 +135,7 @@ bool DefaultShader::InitialiseShader(HWND hwnd, WCHAR* vsFilename, WCHAR* psFile
 	lightBufferDesc.MiscFlags = 0;
 	lightBufferDesc.StructureByteStride = 0;
 
-	result = _device->CreateBuffer(&lightBufferDesc, nullptr, &_lightBuffer);
+	result = _direct3D->GetDevice()->CreateBuffer(&lightBufferDesc, nullptr, &_lightBuffer);
 	if (FAILED(result)) return false;
 
 	// Sampler State Description
@@ -153,7 +153,7 @@ bool DefaultShader::InitialiseShader(HWND hwnd, WCHAR* vsFilename, WCHAR* psFile
 	samplerDesc.MinLOD = 0;
 	samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
 
-	result = _device->CreateSamplerState(&samplerDesc, &_sampleState);
+	result = _direct3D->GetDevice()->CreateSamplerState(&samplerDesc, &_sampleState);
 	if (FAILED(result)) return false;
 
 	return true;
@@ -227,7 +227,7 @@ bool DefaultShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX viewMatri
 	viewMatrix = XMMatrixTranspose(viewMatrix);
 	projectionMatrix = XMMatrixTranspose(projectionMatrix);
 
-	result = _deviceContext->Map(_matrixBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	result = _direct3D->GetDeviceContext()->Map(_matrixBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	if (FAILED(result)) return false;
 
 	matrixDataPtr = static_cast<ConstantBuffer*>(mappedResource.pData);
@@ -236,13 +236,13 @@ bool DefaultShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX viewMatri
 	matrixDataPtr->view = viewMatrix;
 	matrixDataPtr->projection = projectionMatrix;
 
-	_deviceContext->Unmap(_matrixBuffer, 0);
+	_direct3D->GetDeviceContext()->Unmap(_matrixBuffer, 0);
 
 	bufferNumber = 0;
 
-	_deviceContext->VSSetConstantBuffers(bufferNumber, 1, &_matrixBuffer);
+	_direct3D->GetDeviceContext()->VSSetConstantBuffers(bufferNumber, 1, &_matrixBuffer);
 
-	result = _deviceContext->Map(_cameraBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	result = _direct3D->GetDeviceContext()->Map(_cameraBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	if (FAILED(result)) return false;
 
 	cameraDataPtr = static_cast<CameraBuffer*>(mappedResource.pData);
@@ -250,15 +250,15 @@ bool DefaultShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX viewMatri
 	cameraDataPtr->cameraPosition = cameraPosition;
 	cameraDataPtr->padding = 0.0f;
 
-	_deviceContext->Unmap(_cameraBuffer, 0);
+	_direct3D->GetDeviceContext()->Unmap(_cameraBuffer, 0);
 
 	bufferNumber = 1;
 
-	_deviceContext->VSSetConstantBuffers(bufferNumber, 1, &_cameraBuffer);
+	_direct3D->GetDeviceContext()->VSSetConstantBuffers(bufferNumber, 1, &_cameraBuffer);
 
-	_deviceContext->PSSetShaderResources(0, 1, &texture);
+	_direct3D->GetDeviceContext()->PSSetShaderResources(0, 1, &texture);
 
-	result = _deviceContext->Map(_lightBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	result = _direct3D->GetDeviceContext()->Map(_lightBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	if (FAILED(result)) return false;
 
 	lightDataPtr = static_cast<LightBuffer*>(mappedResource.pData);
@@ -269,24 +269,24 @@ bool DefaultShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX viewMatri
 	lightDataPtr->specularColor = light->GetSpecularColor();
 	lightDataPtr->specularPower = light->GetSpecularPower();
 
-	_deviceContext->Unmap(_lightBuffer, 0);
+	_direct3D->GetDeviceContext()->Unmap(_lightBuffer, 0);
 
 	bufferNumber = 0;
 
-	_deviceContext->PSSetConstantBuffers(bufferNumber, 1, &_lightBuffer);
+	_direct3D->GetDeviceContext()->PSSetConstantBuffers(bufferNumber, 1, &_lightBuffer);
 
 	return true;
 }
 
 void DefaultShader::RenderShader(int indexCount)
 {
-	_deviceContext->IASetInputLayout(_layout);
+	_direct3D->GetDeviceContext()->IASetInputLayout(_layout);
 
-	_deviceContext->VSSetShader(_vertexShader, nullptr, 0);
-	_deviceContext->PSSetShader(_pixelShader, nullptr, 0);
+	_direct3D->GetDeviceContext()->VSSetShader(_vertexShader, nullptr, 0);
+	_direct3D->GetDeviceContext()->PSSetShader(_pixelShader, nullptr, 0);
 
-	_deviceContext->PSSetSamplers(0, 1, &_sampleState);
-	_deviceContext->DrawIndexed(indexCount, 0, 0);
+	_direct3D->GetDeviceContext()->PSSetSamplers(0, 1, &_sampleState);
+	_direct3D->GetDeviceContext()->DrawIndexed(indexCount, 0, 0);
 }
 
 

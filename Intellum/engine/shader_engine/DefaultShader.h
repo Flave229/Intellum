@@ -28,12 +28,8 @@ class DefaultShader : public IShaderType
 		XMFLOAT4 specularColor;
 	};
 
-private:
-	ID3D11Device* _device;
-	ID3D11DeviceContext* _deviceContext;
-
 public:
-	DefaultShader(DirectX3D* _direct3D, ID3D11Device* device, ID3D11DeviceContext* deviceContext);
+	DefaultShader(DirectX3D* _direct3D);
 	~DefaultShader();
 
 	virtual bool Initialise(HWND hwnd);

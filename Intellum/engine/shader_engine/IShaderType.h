@@ -10,6 +10,7 @@
 #include <fstream>
 #include "../../Light.h"
 #include "../DirectX3D.h"
+#include "../../Camera.h"
 
 using namespace DirectX;
 
