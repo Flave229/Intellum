@@ -60,7 +60,7 @@ void Camera::Render()
 	_viewMatrix = XMMatrixLookAtLH(positionVector, lookAtVector, upVector);
 }
 
-void Camera::GetViewMatrix(XMMATRIX& viewMatrix)
+void Camera::MapViewMatrixInto(XMMATRIX& viewMatrix)
 {
 	viewMatrix = _viewMatrix;
 }

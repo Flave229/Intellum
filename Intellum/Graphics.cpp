@@ -146,7 +146,7 @@ bool Graphics::Render(float delta)
 
 		_camera->Render();
 
-		_camera->GetViewMatrix(viewMatrix);
+		_camera->MapViewMatrixInto(viewMatrix);
 
 		_direct3D->TurnZBufferOff();
 
@@ -157,7 +157,7 @@ bool Graphics::Render(float delta)
 		if (!result) return false;
 
 		_direct3D->TurnZBufferOn();
-
+		 
 		_model->Render(delta, viewMatrix, _camera->GetPosition(), _light);
 
 		_direct3D->EndScene();

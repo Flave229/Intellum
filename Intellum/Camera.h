@@ -32,7 +32,7 @@ public:
 	XMFLOAT3 GetRotation();
 
 	void Render();
-	void GetViewMatrix(XMMATRIX&);
+	void MapViewMatrixInto(XMMATRIX&);
 };
 
 #endif
