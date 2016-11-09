@@ -37,7 +37,7 @@ bool Graphics::Initialise(int screenWidth, int screenHeight, HWND hwnd)
 		result = _shaderController->Initialise(hwnd);
 		if (!_shaderController) throw Exception("Failed to create the shader controller.");
 
-		_model = new Model(_direct3D, _shaderController->GetShader(SHADER_DEFAULT));
+		_model = new Model(_direct3D, _camera, _shaderController->GetShader(SHADER_DEFAULT));
 		if (!_model) throw Exception("Failed to create a Model object.");
 
 		result = _model->Initialise("data/images/stone.tga", "data/models/sphere.obj");
@@ -158,7 +158,7 @@ bool Graphics::Render(float delta)
 
 		_direct3D->TurnZBufferOn();
 		 
-		_model->Render(delta, viewMatrix, _camera->GetPosition(), _light);
+		_model->Render(delta, _light);
 
 		_direct3D->EndScene();
 

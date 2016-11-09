@@ -11,6 +11,7 @@
 #include "engine\shader_engine\IShaderType.h"
 #include "engine\shader_engine\DefaultShader.h"
 #include "engine\DirectX3D.h"
+#include "Camera.h"
 
 using namespace DirectX;
 using namespace std;
@@ -19,6 +20,7 @@ class Model
 {
 // Member Level Variables
 private:
+	Camera* _camera;
 	DirectX3D* _direct3D;
 
 	Geometry* _geometry;
@@ -35,14 +37,14 @@ private:
 
 	bool LoadModel(char*);
 public:
-	Model(DirectX3D* direct3D);
-	Model(DirectX3D* direct3D, IShaderType* shader);
+	Model(DirectX3D* direct3D, Camera* camera);
+	Model(DirectX3D* direct3D, Camera* camera, IShaderType* shader);
 	Model(const Model&);
 	~Model();
 
 	bool Initialise(char*, char*);
 	void Shutdown();
-	void Render(float delta, XMMATRIX viewMatrix, XMFLOAT3 cameraPosition, Light* light);
+	void Render(float delta, Light* light);
 
 	int GetIndexCount();
 

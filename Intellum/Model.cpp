@@ -1,16 +1,16 @@
 #include "Model.h"
 #include "loaders/OBJLoader.h"
 
-Model::Model(DirectX3D* direct3D): _direct3D(direct3D), _geometry(new Geometry), _texture(nullptr), _shader(new DefaultShader(direct3D, direct3D->GetDevice(), direct3D->GetDeviceContext()))
+Model::Model(DirectX3D* direct3D, Camera* camera): _direct3D(direct3D), _camera(camera), _geometry(new Geometry), _texture(nullptr), _shader(new DefaultShader(direct3D, direct3D->GetDevice(), direct3D->GetDeviceContext()))
 {
 }
 
-Model::Model(DirectX3D* direct3D, IShaderType* shader) : _direct3D(direct3D), _geometry(new Geometry), _texture(nullptr), _shader(shader)
+Model::Model(DirectX3D* direct3D, Camera* camera, IShaderType* shader) : _direct3D(direct3D), _camera(camera), _geometry(new Geometry), _texture(nullptr), _shader(shader)
 {
 	
 }
 
-Model::Model(const Model& other) : _direct3D(other._direct3D), _geometry(other._geometry), _texture(other._texture), _shader(other._shader)
+Model::Model(const Model& other) : _direct3D(other._direct3D), _camera(other._camera), _geometry(other._geometry), _texture(other._texture), _shader(other._shader)
 {
 }
 
@@ -37,7 +37,7 @@ void Model::Shutdown()
 	ShutdownBuffers();
 }
 
-void Model::Render(float delta, XMMATRIX viewMatrix, XMFLOAT3 cameraPosition, Light* light)
+void Model::Render(float delta, Light* light)
 {
 	RenderBuffers();
 
@@ -57,7 +57,10 @@ void Model::Render(float delta, XMMATRIX viewMatrix, XMFLOAT3 cameraPosition, Li
 
 	worldMatrix *= XMMatrixRotationY(rotation);
 
-	_shader->Render(GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, GetTexture(), cameraPosition, light);
+	XMMATRIX viewMatrix;
+	_camera->MapViewMatrixInto(viewMatrix);
+
+	_shader->Render(GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, GetTexture(), _camera->GetPosition(), light);
 }
 
 int Model::GetIndexCount()
