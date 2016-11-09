@@ -1,13 +1,8 @@
 #include "Model.h"
 #include "loaders/OBJLoader.h"
 
-Model::Model(DirectX3D* direct3D, Camera* camera): Model(direct3D, camera, new DefaultShader(direct3D, direct3D->GetDevice(), direct3D->GetDeviceContext()))
-{
-}
-
 Model::Model(DirectX3D* direct3D, Camera* camera, IShaderType* shader) : _direct3D(direct3D), _camera(camera), _geometry(new Geometry), _texture(nullptr), _shader(shader)
 {
-	
 }
 
 Model::Model(const Model& other) : _direct3D(other._direct3D), _camera(other._camera), _geometry(other._geometry), _texture(other._texture), _shader(other._shader)

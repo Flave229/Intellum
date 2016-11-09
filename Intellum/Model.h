@@ -37,7 +37,6 @@ private:
 
 	bool LoadModel(char*);
 public:
-	Model(DirectX3D* direct3D, Camera* camera);
 	Model(DirectX3D* direct3D, Camera* camera, IShaderType* shader);
 	Model(const Model&);
 	~Model();
