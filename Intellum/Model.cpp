@@ -37,7 +37,7 @@ void Model::Shutdown()
 	ShutdownBuffers();
 }
 
-void Model::Render(float delta, int indexCount, XMMATRIX viewMatrix, ID3D11ShaderResourceView* texture, XMFLOAT3 cameraPosition, Light* light)
+void Model::Render(float delta, XMMATRIX viewMatrix, XMFLOAT3 cameraPosition, Light* light)
 {
 	RenderBuffers();
 
@@ -57,7 +57,7 @@ void Model::Render(float delta, int indexCount, XMMATRIX viewMatrix, ID3D11Shade
 
 	worldMatrix *= XMMatrixRotationY(rotation);
 
-	_shader->Render(indexCount, worldMatrix, viewMatrix, projectionMatrix, texture, cameraPosition, light);
+	_shader->Render(GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, GetTexture(), cameraPosition, light);
 }
 
 int Model::GetIndexCount()

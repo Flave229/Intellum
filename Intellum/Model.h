@@ -42,7 +42,7 @@ public:
 
 	bool Initialise(char*, char*);
 	void Shutdown();
-	void Render(float delta, int indexCount, XMMATRIX viewMatrix, ID3D11ShaderResourceView* texture, XMFLOAT3 cameraPosition, Light* light);
+	void Render(float delta, XMMATRIX viewMatrix, XMFLOAT3 cameraPosition, Light* light);
 
 	int GetIndexCount();
 

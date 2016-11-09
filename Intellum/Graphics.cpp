@@ -153,12 +153,12 @@ bool Graphics::Render(float delta)
 		result = _bitmap->Render(viewMatrix, _camera->GetPosition(), _light, 100, 100, 256, 256);
 		if (!result) return false;
 
-		result = _fontEngine->Render(viewMatrix, _camera->GetPosition(), _light, 50, 600, "impact", "arse$\"$^%$%$$$£", XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 30);
+		result = _fontEngine->Render(viewMatrix, _camera->GetPosition(), _light, 50, 600, "impact", "Victoria Grump", XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 30);
 		if (!result) return false;
 
 		_direct3D->TurnZBufferOn();
 
-		_model->Render(delta, _model->GetIndexCount(), viewMatrix, _model->GetTexture(), _camera->GetPosition(), _light);
+		_model->Render(delta, viewMatrix, _camera->GetPosition(), _light);
 
 		_direct3D->EndScene();
 
