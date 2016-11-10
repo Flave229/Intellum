@@ -1,9 +1,5 @@
 #include "Bitmap.h"
 
-Bitmap::Bitmap(DirectX3D* direct3D): _direct3D(direct3D), _vertexBuffer(nullptr), _indexBuffer(nullptr), _vertexCount(0), _indexCount(0), _screenWidth(0), _screenHeight(0), _bitmapWidth(0), _bitmapHeight(0), _previousPosX(0), _previousPosY(0), _texture(nullptr), _shader(new DefaultShader(direct3D))
-{
-}
-
 Bitmap::Bitmap(DirectX3D* direct3D, IShaderType* shader) : _direct3D(direct3D), _vertexBuffer(nullptr), _indexBuffer(nullptr), _vertexCount(0), _indexCount(0), _screenWidth(0), _screenHeight(0), _bitmapWidth(0), _bitmapHeight(0), _previousPosX(0), _previousPosY(0), _texture(nullptr), _shader(shader)
 {
 	

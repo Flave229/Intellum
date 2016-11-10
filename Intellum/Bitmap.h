@@ -50,7 +50,6 @@ private:
 	bool LoadTexture(char*);
 	void ReleaseTexture();
 public:
-	Bitmap(DirectX3D* direct3D);
 	Bitmap(DirectX3D* direct3D, IShaderType* shader);
 	Bitmap(const Bitmap&);
 	~Bitmap();
