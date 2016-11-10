@@ -1,10 +1,10 @@
 #include "ShaderController.h"
 
-ShaderController::ShaderController(DirectX3D* direct3D, ID3D11Device* device, ID3D11DeviceContext* deviceContext) : _direct3D(direct3D), _device(device), _deviceContext(deviceContext), _defaultShader(nullptr), _fontShader(nullptr)
+ShaderController::ShaderController(DirectX3D* direct3D) : _direct3D(direct3D), _defaultShader(nullptr), _fontShader(nullptr)
 {
 }
 
-ShaderController::ShaderController(const ShaderController& other) : _device(other._device), _deviceContext(other._deviceContext), _defaultShader(other._defaultShader), _fontShader(other._fontShader)
+ShaderController::ShaderController(const ShaderController& other) : _direct3D(other._direct3D), _fontShader(other._fontShader)
 {
 }
 

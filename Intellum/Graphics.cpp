@@ -31,7 +31,7 @@ bool Graphics::Initialise(int screenWidth, int screenHeight, HWND hwnd)
 
 		_camera->SetPosition(0.0f, 0.0f, -5.0f);
 
-		_shaderController = new ShaderController(_direct3D, _direct3D->GetDevice(), _direct3D->GetDeviceContext());
+		_shaderController = new ShaderController(_direct3D);
 		if (!_shaderController) throw Exception("Failed to create the shader controller.");
 
 		result = _shaderController->Initialise(hwnd, _camera);

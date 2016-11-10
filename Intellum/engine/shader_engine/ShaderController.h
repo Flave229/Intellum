@@ -26,14 +26,11 @@ class ShaderController
 private:
 	DirectX3D* _direct3D;
 
-	ID3D11Device* _device;
-	ID3D11DeviceContext* _deviceContext;
-
 	IShaderType* _defaultShader;
 	IShaderType* _fontShader;
 
 public:
-	ShaderController(DirectX3D* direct3D, ID3D11Device* device, ID3D11DeviceContext* deviceContext);
+	ShaderController(DirectX3D* direct3D);
 	ShaderController(const ShaderController&);
 	~ShaderController();
 
