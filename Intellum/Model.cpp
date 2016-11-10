@@ -1,11 +1,11 @@
 #include "Model.h"
 #include "loaders/OBJLoader.h"
 
-Model::Model(DirectX3D* direct3D, Camera* camera, IShaderType* shader) : _direct3D(direct3D), _camera(camera), _geometry(new Geometry), _texture(nullptr), _shader(shader)
+Model::Model(DirectX3D* direct3D, IShaderType* shader) : _direct3D(direct3D), _geometry(new Geometry), _texture(nullptr), _shader(shader)
 {
 }
 
-Model::Model(const Model& other) : _direct3D(other._direct3D), _camera(other._camera), _geometry(other._geometry), _texture(other._texture), _shader(other._shader)
+Model::Model(const Model& other) : _direct3D(other._direct3D), _geometry(other._geometry), _texture(other._texture), _shader(other._shader)
 {
 }
 
@@ -52,10 +52,7 @@ void Model::Render(float delta, Light* light)
 
 	worldMatrix *= XMMatrixRotationY(rotation);
 
-	XMMATRIX viewMatrix;
-	_camera->MapViewMatrixInto(viewMatrix);
-
-	_shader->Render(GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, GetTexture(), _camera->GetPosition(), light);
+	_shader->Render(GetIndexCount(), worldMatrix, projectionMatrix, GetTexture(), light);
 }
 
 int Model::GetIndexCount()

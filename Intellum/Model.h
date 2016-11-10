@@ -20,7 +20,6 @@ class Model
 {
 // Member Level Variables
 private:
-	Camera* _camera;
 	DirectX3D* _direct3D;
 
 	Geometry* _geometry;
@@ -37,7 +36,7 @@ private:
 
 	bool LoadModel(char*);
 public:
-	Model(DirectX3D* direct3D, Camera* camera, IShaderType* shader);
+	Model(DirectX3D* direct3D, IShaderType* shader);
 	Model(const Model&);
 	~Model();
 

@@ -41,7 +41,7 @@ void Bitmap::Shutdown()
 	ShutdownBuffers();
 }
 
-bool Bitmap::Render(XMMATRIX viewMatrix, XMFLOAT3 cameraPosition, Light* light, int positionX, int positionY, int width, int height)
+bool Bitmap::Render(Light* light, int positionX, int positionY, int width, int height)
 {
 	bool result = UpdateBuffers(positionX, positionY, width, height);
 	if (!result) return false;
@@ -53,7 +53,7 @@ bool Bitmap::Render(XMMATRIX viewMatrix, XMFLOAT3 cameraPosition, Light* light, 
 	_direct3D->GetWorldMatrix(worldMatrix);
 	_direct3D->GetOrthoMatrix(orthoMatrix);
 
-	result = _shader->Render(GetIndexCount(), worldMatrix, viewMatrix, orthoMatrix, GetTexture(), cameraPosition, light);
+	result = _shader->Render(GetIndexCount(), worldMatrix, orthoMatrix, GetTexture(), light);
 	if (!result) return false;
 
 	return true;

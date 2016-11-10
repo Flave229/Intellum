@@ -37,7 +37,8 @@ public:
 	ShaderController(const ShaderController&);
 	~ShaderController();
 
-	bool Initialise(HWND);
+	// TODO: inject camera in constructor rather than passing to initialise
+	bool Initialise(HWND hwnd, Camera* camera);
 	void Shutdown();
 
 	IShaderType* GetShader(ShaderType type);

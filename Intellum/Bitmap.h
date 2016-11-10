@@ -56,7 +56,7 @@ public:
 
 	bool Initialise(int, int, int, int, char*);
 	void Shutdown();
-	bool Render(XMMATRIX viewMatrix, XMFLOAT3 cameraPosition, Light* light, int positionX, int positionY, int width, int height);
+	bool Render(Light* light, int positionX, int positionY, int width, int height);
 
 	int GetIndexCount();
 	ID3D11ShaderResourceView* GetTexture();

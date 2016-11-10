@@ -1,6 +1,6 @@
 #include "DefaultShader.h"
 
-DefaultShader::DefaultShader(DirectX3D* direct3D) : IShaderType(direct3D)
+DefaultShader::DefaultShader(DirectX3D* direct3D, Camera* camera) : IShaderType(direct3D, camera)
 {
 }
 
@@ -204,9 +204,9 @@ void DefaultShader::Shutdown()
 	}
 }
 
-bool DefaultShader::Render(int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, XMFLOAT3 cameraPosition, Light* light)
+bool DefaultShader::Render(int indexCount, XMMATRIX worldMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, Light* light)
 {
-	bool result = SetShaderParameters(worldMatrix, viewMatrix, projectionMatrix, texture, cameraPosition, light);
+	bool result = SetShaderParameters(worldMatrix, projectionMatrix, texture, light);
 	if (!result) return false;
 
 	RenderShader(indexCount);
@@ -214,7 +214,7 @@ bool DefaultShader::Render(int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMa
 	return true;
 }
 
-bool DefaultShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, XMFLOAT3 cameraPosition, Light* light)
+bool DefaultShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, Light* light)
 {
 	HRESULT result;
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
@@ -222,6 +222,9 @@ bool DefaultShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX viewMatri
 	CameraBuffer* cameraDataPtr;
 	LightBuffer* lightDataPtr;
 	unsigned int bufferNumber;
+
+	XMMATRIX viewMatrix;
+	_camera->MapViewMatrixInto(viewMatrix);
 
 	worldMatrix = XMMatrixTranspose(worldMatrix);
 	viewMatrix = XMMatrixTranspose(viewMatrix);
@@ -247,7 +250,7 @@ bool DefaultShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX viewMatri
 
 	cameraDataPtr = static_cast<CameraBuffer*>(mappedResource.pData);
 
-	cameraDataPtr->cameraPosition = cameraPosition;
+	cameraDataPtr->cameraPosition = _camera->GetPosition();
 	cameraDataPtr->padding = 0.0f;
 
 	_direct3D->GetDeviceContext()->Unmap(_cameraBuffer, 0);

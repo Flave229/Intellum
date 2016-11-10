@@ -34,10 +34,10 @@ bool Graphics::Initialise(int screenWidth, int screenHeight, HWND hwnd)
 		_shaderController = new ShaderController(_direct3D, _direct3D->GetDevice(), _direct3D->GetDeviceContext());
 		if (!_shaderController) throw Exception("Failed to create the shader controller.");
 
-		result = _shaderController->Initialise(hwnd);
+		result = _shaderController->Initialise(hwnd, _camera);
 		if (!_shaderController) throw Exception("Failed to create the shader controller.");
 
-		_model = new Model(_direct3D, _camera, _shaderController->GetShader(SHADER_DEFAULT));
+		_model = new Model(_direct3D, _shaderController->GetShader(SHADER_DEFAULT));
 		if (!_model) throw Exception("Failed to create a Model object.");
 
 		result = _model->Initialise("data/images/stone.tga", "data/models/sphere.obj");
@@ -150,10 +150,10 @@ bool Graphics::Render(float delta)
 
 		_direct3D->TurnZBufferOff();
 
-		result = _bitmap->Render(viewMatrix, _camera->GetPosition(), _light, 100, 100, 256, 256);
+		result = _bitmap->Render(_light, 100, 100, 256, 256);
 		if (!result) return false;
 
-		result = _fontEngine->Render(viewMatrix, _camera->GetPosition(), _light, 50, 600, "impact", "Victoria Grump", XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 30);
+		result = _fontEngine->Render(_light, 50, 600, "impact", "Victoria Grump", XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 30);
 		if (!result) return false;
 
 		_direct3D->TurnZBufferOn();

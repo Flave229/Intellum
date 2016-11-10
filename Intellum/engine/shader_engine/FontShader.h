@@ -32,16 +32,16 @@ private:
 	bool _colorOverloadEnabled;
 	XMFLOAT4 _fontColor;
 public:
-	FontShader(DirectX3D* _direct3D);
+	FontShader(DirectX3D* direct3D, Camera* camera);
 	~FontShader();
 
 	virtual bool Initialise(HWND hwnd);
 	virtual bool InitialiseShader(HWND hwnd, WCHAR* vsFilename, WCHAR* psFilename);
 	virtual void Shutdown();
 
-	virtual bool SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, XMFLOAT3 cameraPosition, Light* light);
+	virtual bool SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, Light* light);
 
-	virtual bool Render(int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, XMFLOAT3 cameraPosition, Light* light);
+	virtual bool Render(int indexCount, XMMATRIX worldMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, Light* light);
 
 	virtual void RenderShader(int indexCount);
 

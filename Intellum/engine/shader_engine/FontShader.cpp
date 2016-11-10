@@ -1,6 +1,6 @@
 #include "FontShader.h"
 
-FontShader::FontShader(DirectX3D* direct3D) : IShaderType(direct3D)
+FontShader::FontShader(DirectX3D* direct3D, Camera* camera) : IShaderType(direct3D, camera)
 {
 }
 
@@ -196,10 +196,9 @@ void FontShader::Shutdown()
 	}
 }
 
-bool FontShader::Render(int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
-	XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, XMFLOAT3 cameraPosition, Light* light)
+bool FontShader::Render(int indexCount, XMMATRIX worldMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, Light* light)
 {
-	bool result = SetShaderParameters(worldMatrix, viewMatrix, projectionMatrix, texture, cameraPosition, light);
+	bool result = SetShaderParameters(worldMatrix, projectionMatrix, texture, light);
 	if (!result) return false;
 
 	RenderShader(indexCount);
@@ -207,8 +206,7 @@ bool FontShader::Render(int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatri
 	return true;
 }
 
-bool FontShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix,
-	ID3D11ShaderResourceView* texture, XMFLOAT3 cameraPosition, Light* light)
+bool FontShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, Light* light)
 {
 	HRESULT result;
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
@@ -216,6 +214,9 @@ bool FontShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX viewMatrix, 
 	CameraBuffer* cameraDataPtr;
 	ColorBuffer* colorDataPtr;
 	unsigned int bufferNumber;
+
+	XMMATRIX viewMatrix;
+	_camera->MapViewMatrixInto(viewMatrix);
 
 	worldMatrix = XMMatrixTranspose(worldMatrix);
 	viewMatrix = XMMatrixTranspose(viewMatrix);
@@ -241,7 +242,7 @@ bool FontShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX viewMatrix, 
 
 	cameraDataPtr = static_cast<CameraBuffer*>(mappedResource.pData);
 
-	cameraDataPtr->cameraPosition = cameraPosition;
+	cameraDataPtr->cameraPosition = _camera->GetPosition();
 	cameraDataPtr->padding = 0.0f;
 
 	_direct3D->GetDeviceContext()->Unmap(_cameraBuffer, 0);

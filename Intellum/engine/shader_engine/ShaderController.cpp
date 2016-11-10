@@ -12,15 +12,15 @@ ShaderController::~ShaderController()
 {
 }
 
-bool ShaderController::Initialise(HWND hwnd)
+bool ShaderController::Initialise(HWND hwnd, Camera* camera)
 {
-	_defaultShader = new DefaultShader(_direct3D);
+	_defaultShader = new DefaultShader(_direct3D, camera);
 	if (!_defaultShader) throw Exception("Failed to create the default shader.");
 
 	bool result = _defaultShader->Initialise(hwnd);
 	if (!result) throw Exception("Could not initialise the default shader.");
 
-	_fontShader = new FontShader(_direct3D);
+	_fontShader = new FontShader(_direct3D, camera);
 	if (!_fontShader) throw Exception("Failed to create the default shader.");
 
 	result = _fontShader->Initialise(hwnd);
