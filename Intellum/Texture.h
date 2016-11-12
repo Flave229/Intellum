@@ -5,12 +5,12 @@
 #include <stdio.h>
 
 #include "error_handling/Exception.h"
+#include "loaders\TargaLoader.h"
 
 using namespace std;
 
 class Texture
 {
-// Structures
 	struct TargaHeader
 	{
 		unsigned char data1[12];
@@ -20,19 +20,15 @@ class Texture
 		unsigned char data2;
 	};
 
-// Member Level Variables
 private:
 	ID3D11Device* _device;
 	ID3D11DeviceContext* _deviceContext;
 
-	unsigned char* _targaData;
 	ID3D11Texture2D* _texture;
 	ID3D11ShaderResourceView* _textureView;
 
-// Function Declarations
 private:
 	void Initialise(char* filename);
-	void LoadTarga(char* filename, int& height, int& width);
 
 	D3D11_TEXTURE2D_DESC SetupAndReturnD3D11TextureDescription(int height, int width);
 	void SetupD3D11ShaderResourceViewDescription(D3D11_TEXTURE2D_DESC textureDescription);

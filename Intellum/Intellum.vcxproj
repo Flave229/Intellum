@@ -171,6 +171,7 @@
     <ClCompile Include="engine\dx_components\Rasterizer.cpp" />
     <ClCompile Include="engine\shader_engine\ShaderController.cpp" />
     <ClCompile Include="DXSystem.cpp" />
+    <ClCompile Include="loaders\TargaLoader.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="engine\font_engine\UnicodeDictionary.cpp" />
   </ItemGroup>
@@ -198,6 +199,7 @@
     <ClInclude Include="engine\dx_components\Rasterizer.h" />
     <ClInclude Include="engine\shader_engine\ShaderController.h" />
     <ClInclude Include="DXSystem.h" />
+    <ClInclude Include="loaders\TargaLoader.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="engine\font_engine\UnicodeDictionary.h" />
   </ItemGroup>

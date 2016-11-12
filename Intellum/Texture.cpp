@@ -1,11 +1,11 @@
 #include "Texture.h"
 
-Texture::Texture(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* filename): _device(device), _deviceContext(deviceContext), _targaData(nullptr), _texture(nullptr), _textureView(nullptr)
+Texture::Texture(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* filename): _device(device), _deviceContext(deviceContext), _texture(nullptr), _textureView(nullptr)
 {
 	Initialise(filename);
 }
 
-Texture::Texture(const Texture& other) : _device(other._device), _deviceContext(other._deviceContext), _targaData(other._targaData), _texture(other._texture), _textureView(other._textureView)
+Texture::Texture(const Texture& other) : _device(other._device), _deviceContext(other._deviceContext), _texture(other._texture), _textureView(other._textureView)
 {
 }
 
@@ -17,89 +17,21 @@ void Texture::Initialise(char* filename)
 {
 	int height;
 	int width;
-	LoadTarga(filename, height, width);
+
+	unsigned char* targaData = TargaLoader::LoadTarga(filename, height, width);
 
 	D3D11_TEXTURE2D_DESC textureDescription = SetupAndReturnD3D11TextureDescription(height, width);
 
 	unsigned int rowPitch = (width * 4) * sizeof(unsigned char);
 
-	_deviceContext->UpdateSubresource(_texture, 0, nullptr, _targaData, rowPitch, 0);
+	_deviceContext->UpdateSubresource(_texture, 0, nullptr, targaData, rowPitch, 0);
 
 	SetupD3D11ShaderResourceViewDescription(textureDescription);
 
 	_deviceContext->GenerateMips(_textureView);
 
-	delete _targaData;
-	_targaData = nullptr;
-}
-
-void Texture::LoadTarga(char* filename, int& height, int& width)
-{
-	int error;
-	int bpp;
-	int imageSize;
-	int index;
-	int i;
-	int j;
-	int k;
-	FILE* filePtr;
-	unsigned int count;
-	TargaHeader targaFileHeader;
-	unsigned char* targaImage;
-
-	// Open the file ready for reading
-	error = fopen_s(&filePtr, filename, "rb");
-	if (error != 0) throw Exception("Errors occured opening Targa file: '" + string(filename) + "'");
-
-	// Read file header information
-	count = static_cast<unsigned int>(fread(&targaFileHeader, sizeof(TargaHeader), 1, filePtr));
-	if (count != 1) throw Exception("Failed to read Targa header information: '" + string(filename) + "'");
-
-	// Extract necessary data from the file header
-	height = static_cast<int>(targaFileHeader.height);
-	width = static_cast<int>(targaFileHeader.width);
-	bpp = static_cast<int>(targaFileHeader.bpp);
-
-	// Check that file is 32 bit
-	if (bpp != 32) throw Exception("'" + string(filename) + "' is not a 32bit Targa image.");
-
-	imageSize = width * height * 4;
-
-	// Allocate memory
-	targaImage = new unsigned char[imageSize];
-	if (!targaImage) throw Exception("Failed to allocate memory for Targa image: '" + string(filename) + "'");
-
-	count = static_cast<unsigned int>(fread(targaImage, 1, imageSize, filePtr));
-	if (count != imageSize) throw Exception("Failed to allocate memory for Targa image: '" + string(filename) + "'");
-
-	error = fclose(filePtr);
-	if (error != 0)  throw Exception("Failed to close the file: '" + string(filename) + "'");
-
-	// Allocate memory for targa data
-	_targaData = new unsigned char[imageSize];
-	if (!_targaData) throw Exception("Failed to allocate memory for Targa data: '" + string(filename) + "'");
-
-	index = 0;
-	k = (width * height * 4) - (width * 4);
-
-	for (j = 0; j < height; j++)
-	{
-		for (i = 0; i < width; i++)
-		{
-			_targaData[index] = targaImage[k + 2];
-			_targaData[index + 1] = targaImage[k + 1];
-			_targaData[index + 2] = targaImage[k];
-			_targaData[index + 3] = targaImage[k + 3];
-
-			k += 4;
-			index += 4;
-		}
-
-		k -= (width * 8);
-	}
-
-	delete[] targaImage;
-	targaImage = nullptr;
+	delete[] targaData;
+	targaData = nullptr;
 }
 
 D3D11_TEXTURE2D_DESC Texture::SetupAndReturnD3D11TextureDescription(int height, int width)
@@ -151,12 +83,6 @@ void Texture::Shutdown()
 	{
 		_texture->Release();
 		_texture = nullptr;
-	}
-
-	if(_targaData)
-	{
-		delete[] _targaData;
-		_targaData = nullptr;
 	}
 }
 
