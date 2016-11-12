@@ -60,7 +60,7 @@ D3D11_TEXTURE2D_DESC Texture::SetupAndReturnD3D11TextureDescription(int height, 
 	return textureDescription;
 }
 
-void Texture::SetupShaderResourceViewDescription(D3D11_TEXTURE2D_DESC textureDescription)
+void Texture::SetupD3D11ShaderResourceViewDescription(D3D11_TEXTURE2D_DESC textureDescription)
 {
 	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
 	srvDesc.Format = textureDescription.Format;
