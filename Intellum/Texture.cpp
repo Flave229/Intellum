@@ -29,7 +29,7 @@ void Texture::Initialise(char* filename)
 
 	_deviceContext->UpdateSubresource(_texture, 0, nullptr, _targaData, rowPitch, 0);
 
-	SetupShaderResourceViewDescription(textureDescription);
+	SetupD3D11ShaderResourceViewDescription(textureDescription);
 
 	_deviceContext->GenerateMips(_textureView);
 
