@@ -33,6 +33,10 @@ private:
 private:
 	void Initialise(char* filename);
 	bool LoadTarga(char* filename, int& height, int& width);
+
+	D3D11_TEXTURE2D_DESC SetupAndReturnD3D11TextureDescription(int height, int width);
+	void SetupShaderResourceViewDescription(D3D11_TEXTURE2D_DESC textureDescription);
+
 public:
 	Texture(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* filename);
 	Texture(const Texture&);

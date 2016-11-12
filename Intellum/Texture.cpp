@@ -23,47 +23,55 @@ void Texture::Initialise(char* filename)
 		throw Exception("Failed to load Targa file: '" + string(filename) + "'");
 	}
 
-	// Setup Texture Description
-	D3D11_TEXTURE2D_DESC textureDesc;
-	textureDesc.Height = height;
-	textureDesc.Width = width;
-	textureDesc.MipLevels = 0;
-	textureDesc.ArraySize = 1;
-	textureDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-	textureDesc.SampleDesc.Count = 1;
-	textureDesc.SampleDesc.Quality = 0;
-	textureDesc.Usage = D3D11_USAGE_DEFAULT;
-	textureDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET;
-	textureDesc.CPUAccessFlags = 0;
-	textureDesc.MiscFlags = D3D11_RESOURCE_MISC_GENERATE_MIPS;
-
-	HRESULT hResult = _device->CreateTexture2D(&textureDesc, nullptr, &_texture);
-	if (FAILED(hResult))
-	{
-		throw Exception("Failed to create texture: '" + string(filename) + "'");
-	}
+	D3D11_TEXTURE2D_DESC textureDescription = SetupAndReturnD3D11TextureDescription(height, width);
 
 	unsigned int rowPitch = (width * 4) * sizeof(unsigned char);
 
 	_deviceContext->UpdateSubresource(_texture, 0, nullptr, _targaData, rowPitch, 0);
 
-	// Setup Sahder Resource View Description
-	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
-	srvDesc.Format = textureDesc.Format;
-	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
-	srvDesc.Texture2D.MostDetailedMip = 0;
-	srvDesc.Texture2D.MipLevels = -1;
-
-	hResult = _device->CreateShaderResourceView(_texture, &srvDesc, &_textureView);
-	if (FAILED(hResult))
-	{
-		throw Exception("Failed to create the Shader Resource View");
-	}
+	SetupShaderResourceViewDescription(textureDescription);
 
 	_deviceContext->GenerateMips(_textureView);
 
 	delete _targaData;
 	_targaData = nullptr;
+}
+
+D3D11_TEXTURE2D_DESC Texture::SetupAndReturnD3D11TextureDescription(int height, int width)
+{
+	D3D11_TEXTURE2D_DESC textureDescription;
+	textureDescription.Height = height;
+	textureDescription.Width = width;
+	textureDescription.MipLevels = 0;
+	textureDescription.ArraySize = 1;
+	textureDescription.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	textureDescription.SampleDesc.Count = 1;
+	textureDescription.SampleDesc.Quality = 0;
+	textureDescription.Usage = D3D11_USAGE_DEFAULT;
+	textureDescription.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET;
+	textureDescription.CPUAccessFlags = 0;
+	textureDescription.MiscFlags = D3D11_RESOURCE_MISC_GENERATE_MIPS;
+
+	HRESULT hResult = _device->CreateTexture2D(&textureDescription, nullptr, &_texture);
+
+	if (FAILED(hResult))
+		throw Exception("Failed to create texture description");
+
+	return textureDescription;
+}
+
+void Texture::SetupShaderResourceViewDescription(D3D11_TEXTURE2D_DESC textureDescription)
+{
+	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
+	srvDesc.Format = textureDescription.Format;
+	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+	srvDesc.Texture2D.MostDetailedMip = 0;
+	srvDesc.Texture2D.MipLevels = -1;
+
+	HRESULT hResult = _device->CreateShaderResourceView(_texture, &srvDesc, &_textureView);
+
+	if (FAILED(hResult))
+		throw Exception("Failed to create the Shader Resource View");
 }
 
 void Texture::Shutdown()
