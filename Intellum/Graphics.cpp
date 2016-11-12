@@ -37,11 +37,8 @@ bool Graphics::Initialise(int screenWidth, int screenHeight, HWND hwnd)
 		result = _shaderController->Initialise(hwnd, _camera);
 		if (!_shaderController) throw Exception("Failed to create the shader controller.");
 
-		_model = new Model(_direct3D, _shaderController->GetShader(SHADER_DEFAULT));
+		_model = new Model(_direct3D, _shaderController->GetShader(SHADER_DEFAULT), "data/images/stone.tga", "data/models/sphere.obj");
 		if (!_model) throw Exception("Failed to create a Model object.");
-
-		result = _model->Initialise("data/images/stone.tga", "data/models/sphere.obj");
-		if (!result) throw Exception("Could not initialise the model object.");
 
 		_bitmap = new Bitmap(_direct3D, _shaderController->GetShader(SHADER_FONT));
 		if (!_bitmap) throw Exception("Failed to create the bitmap.");

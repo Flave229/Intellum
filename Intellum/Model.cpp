@@ -1,8 +1,9 @@
 #include "Model.h"
 #include "loaders/OBJLoader.h"
 
-Model::Model(DirectX3D* direct3D, IShaderType* shader) : _direct3D(direct3D), _geometry(new Geometry), _texture(nullptr), _shader(shader)
+Model::Model(DirectX3D* direct3D, IShaderType* shader, char* textureFilename, char* modelFilename) : _direct3D(direct3D), _geometry(new Geometry), _texture(nullptr), _shader(shader)
 {
+	Initialise(textureFilename, modelFilename);
 }
 
 Model::Model(const Model& other) : _direct3D(other._direct3D), _geometry(other._geometry), _texture(other._texture), _shader(other._shader)
@@ -13,17 +14,10 @@ Model::~Model()
 {
 }
 
-bool Model::Initialise(char* textureFilename, char* modelFilename)
+void Model::Initialise(char* textureFilename, char* modelFilename)
 {
-	bool result;
-
-	result = LoadModel(modelFilename);
-	if (!result) return false;
-
-	result = LoadTexture(textureFilename);
-	if (!result) return false;
-
-	return true;
+	LoadModel(modelFilename);
+	LoadTexture(textureFilename);
 }
 
 void Model::Shutdown()
@@ -83,12 +77,11 @@ void Model::RenderBuffers()
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 
-bool Model::LoadTexture(char* filename)
+void Model::LoadTexture(char* filename)
 {
 	_texture = new Texture(_direct3D->GetDevice(), _direct3D->GetDeviceContext(), filename);
-	if (!_texture) return false;
-	
-	return true;
+	if (!_texture)
+		throw Exception("Failed to load the texture at: '" + string(filename) + "'");
 }
 
 void Model::ReleaseTexture()
@@ -101,10 +94,9 @@ void Model::ReleaseTexture()
 	}
 }
 
-bool Model::LoadModel(char* fileName)
+void Model::LoadModel(char* filename)
 {
-	*_geometry = OBJLoader::Load(fileName, _direct3D->GetDevice());
-	if (!_geometry) return false;
-
-	return true;
+	*_geometry = OBJLoader::Load(filename, _direct3D->GetDevice());
+	if (!_geometry)
+		throw Exception("Failed to load the model at: '" + string(filename) + "'");
 }

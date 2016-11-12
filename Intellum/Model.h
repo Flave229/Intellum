@@ -28,19 +28,20 @@ private:
 
 // Function Declarations
 private:
+	void Initialise(char* textureFilename, char* modelFilename);
+
 	void ShutdownBuffers();
 	void RenderBuffers();
 
-	bool LoadTexture(char*);
+	void LoadTexture(char* filename);
 	void ReleaseTexture();
 
-	bool LoadModel(char*);
+	void LoadModel(char* filename);
 public:
-	Model(DirectX3D* direct3D, IShaderType* shader);
+	Model(DirectX3D* direct3D, IShaderType* shader, char* textureFilename, char* modelFilename);
 	Model(const Model&);
 	~Model();
 
-	bool Initialise(char*, char*);
 	void Shutdown();
 	void Render(float delta, Light* light);
 
