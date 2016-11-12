@@ -26,7 +26,7 @@ bool DXSystem::Initialise()
 
 		_input = new Input();
 		if (!_input) return false;
-		_input->Initialise();
+		_input->Initialise(_hInstance, _hwnd, screenWidth, screenHeight);
 
 		_graphics = new Graphics();
 		if (!_graphics) return false;
@@ -111,7 +111,7 @@ bool DXSystem::Frame(float delta)
 	bool result;
 	try
 	{
-		if (_input->IsKeyDown(VK_ESCAPE)) return false;
+		if (_input->IsEscapePressed()) return false;
 
 		result = _graphics->Frame(delta);
 
@@ -138,12 +138,12 @@ LRESULT DXSystem::MessageHandler(HWND hwnd, UINT umsg, WPARAM wparam, LPARAM lpa
 	{
 		case WM_KEYDOWN:
 		{
-			_input->KeyDown(static_cast<unsigned int>(wparam));
+			//_input->KeyDown(static_cast<unsigned int>(wparam));
 			return 0;
 		}
 		case WM_KEYUP:
 		{
-			_input->KeyUp(static_cast<unsigned int>(wparam));
+			//_input->KeyUp(static_cast<unsigned int>(wparam));
 			return 0;
 		}
 		default:
