@@ -119,11 +119,11 @@ void Graphics::Shutdown()
 	}
 }
 
-bool Graphics::Frame(float delta)
+bool Graphics::Frame(float delta, int mouseX, int mouseY)
 {
 	try
 	{
-		return Render(delta);
+		return Render(delta, mouseX, mouseY);
 	}
 	catch (Exception& exception)
 	{
@@ -135,7 +135,7 @@ bool Graphics::Frame(float delta)
 	}
 }
 
-bool Graphics::Render(float delta)
+bool Graphics::Render(float delta, int mouseX, int mouseY)
 {
 	try
 	{
@@ -154,6 +154,9 @@ bool Graphics::Render(float delta)
 		if (!result) return false;
 
 		result = _fontEngine->Render(_light, 50, 600, "impact", "Victoria Grump", XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 30);
+		if (!result) return false;
+
+		result = _fontEngine->Render(_light, 10, 10, "impact", "Mouse X: " + to_string(mouseX) + "    " + "Mouse Y: " + to_string(mouseY), XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 20);
 		if (!result) return false;
 
 		_direct3D->TurnZBufferOn();

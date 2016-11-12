@@ -15,8 +15,6 @@ DXSystem::~DXSystem()
 
 bool DXSystem::Initialise()
 {
-	bool result;
-
 	try
 	{
 		auto screenWidth = 1280;
@@ -26,7 +24,8 @@ bool DXSystem::Initialise()
 
 		_input = new Input();
 		if (!_input) return false;
-		_input->Initialise(_hInstance, _hwnd, screenWidth, screenHeight);
+		bool result = _input->Initialise(_hInstance, _hwnd, screenWidth, screenHeight);
+		if (!result) return false;
 
 		_graphics = new Graphics();
 		if (!_graphics) return false;
@@ -65,6 +64,7 @@ void DXSystem::Shutdown()
 
 	if (_input)
 	{
+		_input->Shutdown();
 		delete _input;
 		_input = nullptr;
 	}
@@ -103,19 +103,30 @@ void DXSystem::Run()
 		{
 			done = true;
 		}
+
+		if (_input->IsEscapePressed())
+		{
+			done = true;
+		}
 	}
 }
 
 bool DXSystem::Frame(float delta)
 {
-	bool result;
 	try
 	{
-		if (_input->IsEscapePressed()) return false;
-
-		result = _graphics->Frame(delta);
-
+		bool result = _input->Frame();
 		if (!result) return false;
+
+		int mouseX;
+		int mouseY;
+
+		_input->MapMouseLocationInto(mouseX, mouseY);
+
+		result = _graphics->Frame(delta, mouseX, mouseY);
+		if (!result) return false;
+
+		return true;
 	}
 	catch(Exception& exception)
 	{
@@ -128,27 +139,11 @@ bool DXSystem::Frame(float delta)
 
 		return false;
 	}
-
-	return true;
 }
 
 LRESULT DXSystem::MessageHandler(HWND hwnd, UINT umsg, WPARAM wparam, LPARAM lparam)
 {
-	switch(umsg)
-	{
-		case WM_KEYDOWN:
-		{
-			//_input->KeyDown(static_cast<unsigned int>(wparam));
-			return 0;
-		}
-		case WM_KEYUP:
-		{
-			//_input->KeyUp(static_cast<unsigned int>(wparam));
-			return 0;
-		}
-		default:
-			return DefWindowProc(hwnd, umsg, wparam, lparam);
-	}
+	return DefWindowProc(hwnd, umsg, wparam, lparam);
 }
 
 LRESULT __stdcall WndProc(HWND hwnd, UINT umessage, WPARAM wparam, LPARAM lparam)
