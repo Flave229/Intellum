@@ -1,7 +1,8 @@
 #include "Texture.h"
 
-Texture::Texture(ID3D11Device* device, ID3D11DeviceContext* deviceContext): _device(device), _deviceContext(deviceContext), _targaData(nullptr), _texture(nullptr), _textureView(nullptr)
+Texture::Texture(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* filename): _device(device), _deviceContext(deviceContext), _targaData(nullptr), _texture(nullptr), _textureView(nullptr)
 {
+	Initialise(filename);
 }
 
 Texture::Texture(const Texture& other) : _device(other._device), _deviceContext(other._deviceContext), _targaData(other._targaData), _texture(other._texture), _textureView(other._textureView)
@@ -12,20 +13,18 @@ Texture::~Texture()
 {
 }
 
-bool Texture::Initialise(char* filename)
+void Texture::Initialise(char* filename)
 {
-	bool result;
 	int height;
 	int width;
-	D3D11_TEXTURE2D_DESC textureDesc;
-	HRESULT hResult;
-	unsigned int rowPitch;
-	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
-
-	result = LoadTarga(filename, height, width);
-	if (!result) return false;
+	bool result = LoadTarga(filename, height, width);
+	if (!result)
+	{
+		throw Exception("Failed to load Targa file: '" + string(filename) + "'");
+	}
 
 	// Setup Texture Description
+	D3D11_TEXTURE2D_DESC textureDesc;
 	textureDesc.Height = height;
 	textureDesc.Width = width;
 	textureDesc.MipLevels = 0;
@@ -38,28 +37,33 @@ bool Texture::Initialise(char* filename)
 	textureDesc.CPUAccessFlags = 0;
 	textureDesc.MiscFlags = D3D11_RESOURCE_MISC_GENERATE_MIPS;
 
-	hResult = _device->CreateTexture2D(&textureDesc, nullptr, &_texture);
-	if (FAILED(hResult)) return false;
+	HRESULT hResult = _device->CreateTexture2D(&textureDesc, nullptr, &_texture);
+	if (FAILED(hResult))
+	{
+		throw Exception("Failed to create texture: '" + string(filename) + "'");
+	}
 
-	rowPitch = (width * 4) * sizeof(unsigned char);
+	unsigned int rowPitch = (width * 4) * sizeof(unsigned char);
 
 	_deviceContext->UpdateSubresource(_texture, 0, nullptr, _targaData, rowPitch, 0);
 
 	// Setup Sahder Resource View Description
+	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
 	srvDesc.Format = textureDesc.Format;
 	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
 	srvDesc.Texture2D.MostDetailedMip = 0;
 	srvDesc.Texture2D.MipLevels = -1;
 
 	hResult = _device->CreateShaderResourceView(_texture, &srvDesc, &_textureView);
-	if (FAILED(hResult)) return false;
+	if (FAILED(hResult))
+	{
+		throw Exception("Failed to create the Shader Resource View");
+	}
 
 	_deviceContext->GenerateMips(_textureView);
 
 	delete _targaData;
 	_targaData = nullptr;
-
-	return true;
 }
 
 void Texture::Shutdown()

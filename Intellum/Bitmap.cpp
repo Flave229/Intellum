@@ -219,10 +219,10 @@ void Bitmap::RenderBuffers()
 
 bool Bitmap::LoadTexture(char* filename)
 {
-	_texture = new Texture(_direct3D->GetDevice(), _direct3D->GetDeviceContext());
+	_texture = new Texture(_direct3D->GetDevice(), _direct3D->GetDeviceContext(), filename);
 	if (!_texture) return false;
 
-	return _texture->Initialise(filename);
+	return true;
 }
 
 void Bitmap::ReleaseTexture()

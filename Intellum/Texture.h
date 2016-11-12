@@ -4,6 +4,10 @@
 #include <d3d11.h>
 #include <stdio.h>
 
+#include "error_handling/Exception.h"
+
+using namespace std;
+
 class Texture
 {
 // Structures
@@ -27,13 +31,13 @@ private:
 
 // Function Declarations
 private:
-	bool LoadTarga(char*, int&, int&);
+	void Initialise(char* filename);
+	bool LoadTarga(char* filename, int& height, int& width);
 public:
-	Texture(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
+	Texture(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* filename);
 	Texture(const Texture&);
 	~Texture();
 
-	bool Initialise(char*);
 	void Shutdown();
 
 	ID3D11ShaderResourceView* GetTexture();

@@ -39,7 +39,7 @@ public:
 	Graphics(const Graphics&);
 	~Graphics();
 
-	bool Initialise(int, int, HWND);
+	bool Initialise(int screenWidth, int screenHeight, HWND hwnd);
 	void Shutdown();
 	bool Frame(float delta, int mouseX, int mouseY);
 };
