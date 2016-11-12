@@ -32,7 +32,7 @@ private:
 // Function Declarations
 private:
 	void Initialise(char* filename);
-	bool LoadTarga(char* filename, int& height, int& width);
+	void LoadTarga(char* filename, int& height, int& width);
 
 	D3D11_TEXTURE2D_DESC SetupAndReturnD3D11TextureDescription(int height, int width);
 	void SetupD3D11ShaderResourceViewDescription(D3D11_TEXTURE2D_DESC textureDescription);
