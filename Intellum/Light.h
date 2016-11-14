@@ -22,11 +22,11 @@ public:
 	Light(const Light&);
 	~Light();
 
-	void SetAmbientColor(float, float, float, float);
-	void SetDiffuseColor(float, float, float, float);
-	void SetSpecularColor(float, float, float, float);
+	void SetAmbientColor(XMFLOAT4 color);
+	void SetDiffuseColor(XMFLOAT4 color);
+	void SetSpecularColor(XMFLOAT4 color);
 
-	void SetDirection(float, float, float);
+	void SetDirection(XMFLOAT3 direction);
 	void SetSpecularPower(float);
 
 	XMFLOAT4 GetAmbientColor();

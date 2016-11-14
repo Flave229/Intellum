@@ -49,10 +49,10 @@ bool Graphics::Initialise(int screenWidth, int screenHeight, HWND hwnd)
 		_light = new Light;
 		if (!_light) throw Exception("Failed to create the light object.");
 
-		_light->SetAmbientColor(0.15f, 0.15f, 0.15f, 1.0f);
-		_light->SetDiffuseColor(1.0f, 1.0f, 1.0f, 1.0f);
-		_light->SetSpecularColor(1.0f, 1.0f, 1.0f, 1.0f);
-		_light->SetDirection(0.8f, -1.0f, 0.2f);
+		_light->SetAmbientColor(XMFLOAT4(0.15f, 0.15f, 0.15f, 1.0f));
+		_light->SetDiffuseColor(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
+		_light->SetSpecularColor(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
+		_light->SetDirection(XMFLOAT3(0.8f, -1.0f, 0.2f));
 		_light->SetSpecularPower(32.0f);
 
 		_fontEngine = new FontEngine(_direct3D, _direct3D->GetDevice(), _direct3D->GetDeviceContext(), _shaderController->GetShader(SHADER_FONT));

@@ -12,24 +12,24 @@ Light::~Light()
 {
 }
 
-void Light::SetAmbientColor(float red, float green, float blue, float alpha)
+void Light::SetAmbientColor(XMFLOAT4 color)
 {
-	_ambientColor = XMFLOAT4(red, green, blue, alpha);
+	_ambientColor = color;
 }
 
-void Light::SetDiffuseColor(float red, float green, float blue, float alpha)
+void Light::SetDiffuseColor(XMFLOAT4 color)
 {
-	_diffuseColor = XMFLOAT4(red, green, blue, alpha);
+	_diffuseColor = color;
 }
 
-void Light::SetSpecularColor(float red, float green, float blue, float alpha)
+void Light::SetSpecularColor(XMFLOAT4 color)
 {
-	_specularColor = XMFLOAT4(red, green, blue, alpha);
+	_specularColor = color;
 }	
 
-void Light::SetDirection(float x, float y, float z)
+void Light::SetDirection(XMFLOAT3 direction)
 {
-	_direction = XMFLOAT3(x, y, z);
+	_direction = direction;
 }
 
 void Light::SetSpecularPower(float power)
