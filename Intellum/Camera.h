@@ -9,13 +9,8 @@ class Camera
 {
 // Member Level Variables
 private:
-	float _positionX;
-	float _positionY;
-	float _positionZ;
-
-	float _rotationX;
-	float _rotationY;
-	float _rotationZ;
+	XMFLOAT3 _position;
+	XMFLOAT3 _rotation;
 
 	XMMATRIX _viewMatrix;
 
@@ -25,8 +20,8 @@ public:
 	Camera(const Camera&);
 	~Camera();
 
-	void SetPosition(float, float, float);
-	void SetRotation(float, float, float);
+	void SetPosition(XMFLOAT3 position);
+	void SetRotation(XMFLOAT3 rotation);
 
 	XMFLOAT3 GetPosition();
 	XMFLOAT3 GetRotation();

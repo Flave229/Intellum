@@ -1,11 +1,10 @@
 #include "Camera.h"
 
-Camera::Camera(): _positionX(0), _positionY(0), _positionZ(0), _rotationX(0), _rotationY(0), _rotationZ(0)
+Camera::Camera(): _position(XMFLOAT3(0.0f, 0.0f, 0.0f)), _rotation(XMFLOAT3(0.0f, 0.0f, 0.0f))
 {
 }
 
-Camera::Camera(const Camera& other): _positionX(other._positionX), _positionY(other._positionY), _positionZ(other._positionY), 
-										_rotationX(other._positionY), _rotationY(other._positionY), _rotationZ(other._positionY)
+Camera::Camera(const Camera& other): _position(other._position), _rotation(other._rotation)
 {
 }
 
@@ -13,41 +12,36 @@ Camera::~Camera()
 {
 }
 
-void Camera::SetPosition(float x, float y, float z)
+void Camera::SetPosition(XMFLOAT3 position)
 {
-	_positionX = x;
-	_positionY = y;
-	_positionZ = z;
+	_position = position;
 }
 
-void Camera::SetRotation(float x, float y, float z)
+void Camera::SetRotation(XMFLOAT3 rotation)
 {
-	_rotationX = x;
-	_rotationY = y;
-	_rotationZ = z;
+	_rotation = rotation;
 }
 
 XMFLOAT3 Camera::GetPosition()
 {
-	return XMFLOAT3(_positionX, _positionY, _positionZ);
+	return _position;
 }
 
 XMFLOAT3 Camera::GetRotation()
 {
-	return XMFLOAT3(_rotationX, _rotationY, _rotationZ);
+	return _rotation;
 }
 
 void Camera::Render()
 {
 	XMFLOAT3 up = XMFLOAT3(0.0f, 1.0f, 0.0f);
-	XMFLOAT3 position = XMFLOAT3(_positionX, _positionY, _positionZ);
 	XMFLOAT3 lookAt = XMFLOAT3(0.0f, 0.0f, 1.0f);
 	XMVECTOR upVector = XMLoadFloat3(&up);
-	XMVECTOR positionVector = XMLoadFloat3(&position);
+	XMVECTOR positionVector = XMLoadFloat3(&_position);
 	XMVECTOR lookAtVector = XMLoadFloat3(&lookAt);
-	float yaw = _rotationY * 0.0174532925f;
-	float pitch = _rotationX * 0.0174532925f;
-	float roll = _rotationZ * 0.0174532925f;
+	float yaw = _rotation.y * 0.0174532925f;
+	float pitch = _rotation.x * 0.0174532925f;
+	float roll = _rotation.z * 0.0174532925f;
 	XMMATRIX rotationMatrix = XMMatrixRotationRollPitchYaw(pitch, yaw, roll);
 
 	// Transform LookAt and Up vector so the view is rotated correctly around origin.
