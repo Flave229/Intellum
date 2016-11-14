@@ -33,7 +33,7 @@ private:
 
 // Function Declarations
 private:
-	bool Render(float delta, int mouseX, int mouseY);
+	bool Render(float delta, XMFLOAT2 mousePoint);
 public:
 	Graphics();
 	Graphics(const Graphics&);
@@ -41,7 +41,7 @@ public:
 
 	bool Initialise(int screenWidth, int screenHeight, HWND hwnd);
 	void Shutdown();
-	bool Frame(float delta, int mouseX, int mouseY);
+	bool Frame(float delta, XMFLOAT2 mousePoint);
 };
 
 #endif
