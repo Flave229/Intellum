@@ -14,7 +14,7 @@
 
 using namespace DirectX;
 
-public class IShaderType
+class IShaderType
 {
 protected:
 	DirectX3D* _direct3D;
