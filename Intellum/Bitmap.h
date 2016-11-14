@@ -44,7 +44,7 @@ private:
 private:
 	bool InitialiseBuffers();
 	void ShutdownBuffers();
-	bool UpdateBuffers(int positionX, int positionY, int width, int height);
+	bool UpdateBuffers(XMFLOAT2 position, int width, int height);
 	void RenderBuffers();
 
 	bool LoadTexture(char*);
@@ -54,9 +54,9 @@ public:
 	Bitmap(const Bitmap&);
 	~Bitmap();
 
-	bool Initialise(int, int, int, int, char*);
+	bool Initialise(int screenWidth, int screenHeight, int bitmapWidth, int bitmapHeight, char* textureFilename);
 	void Shutdown();
-	bool Render(Light* light, int positionX, int positionY, int width, int height);
+	bool Render(Light* light, XMFLOAT2 position, int width, int height);
 
 	int GetIndexCount();
 	ID3D11ShaderResourceView* GetTexture();

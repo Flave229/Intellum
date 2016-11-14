@@ -147,7 +147,7 @@ bool Graphics::Render(float delta, XMFLOAT2 mousePoint)
 
 		_direct3D->TurnZBufferOff();
 
-		result = _bitmap->Render(_light, 100, 100, 256, 256);
+		result = _bitmap->Render(_light, XMFLOAT2(100, 100), 256, 256);
 		if (!result) return false;
 
 		result = _fontEngine->Render(_light, 50, 600, "impact", "Victoria Grump", XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 30);

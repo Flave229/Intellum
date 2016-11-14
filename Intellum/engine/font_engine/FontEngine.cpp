@@ -46,7 +46,7 @@ bool FontEngine::Render(Light* light, int positionX, int positionY, string font,
 
 		for (int i = 0; i < stringAsTexture.size(); i++)
 		{
-			result = stringAsTexture.at(i)->_texture->Render(light, positionX + (fontSize * i), positionY, fontSize, fontSize * 2);
+			result = stringAsTexture.at(i)->_texture->Render(light, XMFLOAT2(positionX + (fontSize * i), positionY), fontSize, fontSize * 2);
 			if (!result) return false;
 		}
 

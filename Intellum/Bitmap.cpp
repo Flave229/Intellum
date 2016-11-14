@@ -1,11 +1,11 @@
 #include "Bitmap.h"
 
-Bitmap::Bitmap(DirectX3D* direct3D, IShaderType* shader) : _direct3D(direct3D), _vertexBuffer(nullptr), _indexBuffer(nullptr), _vertexCount(0), _indexCount(0), _screenWidth(0), _screenHeight(0), _bitmapWidth(0), _bitmapHeight(0), _previousPosX(0), _previousPosY(0), _texture(nullptr), _shader(shader)
+Bitmap::Bitmap(DirectX3D* direct3D, IShaderType* shader) : _direct3D(direct3D), _vertexBuffer(nullptr), _indexBuffer(nullptr), _vertexCount(0), _indexCount(0), _screenWidth(0), _screenHeight(0), _bitmapWidth(0), _bitmapHeight(0), _previousPosX(0), _previousPosY(0), _shader(shader), _texture(nullptr)
 {
 	
 }
 
-Bitmap::Bitmap(const Bitmap& other): _direct3D(other._direct3D), _vertexBuffer(other._vertexBuffer), _indexBuffer(other._indexBuffer), _vertexCount(other._vertexCount), _indexCount(other._indexCount), _screenWidth(other._screenWidth), _screenHeight(other._screenHeight), _bitmapWidth(other._bitmapWidth), _bitmapHeight(other._bitmapHeight), _previousPosX(other._previousPosX), _previousPosY(other._previousPosY), _texture(other._texture), _shader(other._shader)
+Bitmap::Bitmap(const Bitmap& other) : _direct3D(other._direct3D), _vertexBuffer(other._vertexBuffer), _indexBuffer(other._indexBuffer), _vertexCount(other._vertexCount), _indexCount(other._indexCount), _screenWidth(other._screenWidth), _screenHeight(other._screenHeight), _bitmapWidth(other._bitmapWidth), _bitmapHeight(other._bitmapHeight), _previousPosX(other._previousPosX), _previousPosY(other._previousPosY), _shader(other._shader), _texture(other._texture)
 {
 }
 
@@ -41,9 +41,9 @@ void Bitmap::Shutdown()
 	ShutdownBuffers();
 }
 
-bool Bitmap::Render(Light* light, int positionX, int positionY, int width, int height)
+bool Bitmap::Render(Light* light, XMFLOAT2 position, int width, int height)
 {
-	bool result = UpdateBuffers(positionX, positionY, width, height);
+	bool result = UpdateBuffers(position, width, height);
 	if (!result) return false;
 
 	RenderBuffers();
@@ -149,25 +149,25 @@ void Bitmap::ShutdownBuffers()
 	}
 }
 
-bool Bitmap::UpdateBuffers(int positionX, int positionY, int width, int height)
+bool Bitmap::UpdateBuffers(XMFLOAT2 position, int width, int height)
 {
 	HRESULT result;
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
 
-	if ((positionX == _previousPosX) && (positionY == _previousPosY) && (width == _bitmapWidth) && (height == _bitmapHeight))
+	if ((position.x == static_cast<int>(_previousPosX)) && (position.y == static_cast<int>(_previousPosY)) && (width == _bitmapWidth) && (height == _bitmapHeight))
 	{
 		return true;
 	}
 
-	_previousPosX = positionX;
-	_previousPosY = positionY;
+	_previousPosX = position.x;
+	_previousPosY = position.y;
 	_bitmapHeight = width;
 	_bitmapWidth = height;
 
-	float left = static_cast<float>((_screenWidth / 2) * -1) + static_cast<float>(positionX);
+	float left = static_cast<float>((_screenWidth / 2) * -1) + static_cast<float>(position.x);
 	float right = left + static_cast<float>(width);
 
-	float top = static_cast<float>(_screenHeight / 2) - static_cast<float>(positionY);
+	float top = static_cast<float>(_screenHeight / 2) - static_cast<float>(position.y);
 	float bottom = top - static_cast<float>(height);
 
 	Vertex* vertices = new Vertex[_vertexCount];
