@@ -6,6 +6,9 @@
 #pragma comment(lib, "dxguid.lib")
 
 #include <dinput.h>
+#include <DirectXMath.h>
+
+using namespace DirectX;
 
 class Input
 {
@@ -38,7 +41,7 @@ public:
 	bool Frame();
 
 	bool IsEscapePressed();
-	void MapMouseLocationInto(int& xPosition, int& yPosition);
+	void MapMouseLocationInto(XMFLOAT2& point);
 };
 
 #endif

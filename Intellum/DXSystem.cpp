@@ -118,12 +118,11 @@ bool DXSystem::Frame(float delta)
 		bool result = _input->Frame();
 		if (!result) return false;
 
-		int mouseX;
-		int mouseY;
+		XMFLOAT2 mousePoint;
 
-		_input->MapMouseLocationInto(mouseX, mouseY);
+		_input->MapMouseLocationInto(mousePoint);
 
-		result = _graphics->Frame(delta, mouseX, mouseY);
+		result = _graphics->Frame(delta, mousePoint.x, mousePoint.y);
 		if (!result) return false;
 
 		return true;

@@ -93,10 +93,9 @@ bool Input::IsEscapePressed()
 	return false;
 }
 
-void Input::MapMouseLocationInto(int& xPosition, int& yPosition)
+void Input::MapMouseLocationInto(XMFLOAT2& point)
 {
-	xPosition = _mouseX;
-	yPosition = _mouseY;
+	point = XMFLOAT2(_mouseX, _mouseY);
 }
 
 bool Input::ReadKeyboard()
