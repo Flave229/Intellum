@@ -153,7 +153,7 @@ bool Graphics::Render(float delta, XMFLOAT2 mousePoint)
 		result = _fontEngine->Render(_light, 50, 600, "impact", "Victoria Grump", XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 30);
 		if (!result) return false;
 
-		result = _fontEngine->Render(_light, 10, 10, "impact", "Mouse X: " + to_string(mousePoint.x) + "    " + "Mouse Y: " + to_string(mousePoint.y), XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 20);
+		result = _fontEngine->Render(_light, 10, 10, "impact", "Mouse X: " + to_string(static_cast<int>(mousePoint.x)) + "    " + "Mouse Y: " + to_string(static_cast<int>(mousePoint.y)), XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 20);
 		if (!result) return false;
 
 		_direct3D->TurnZBufferOn();
