@@ -159,8 +159,8 @@ bool Bitmap::UpdateBuffers(XMFLOAT2 position, int width, int height)
 		return true;
 	}
 
-	_previousPosX = position.x;
-	_previousPosY = position.y;
+	_previousPosX = static_cast<int>(position.x);
+	_previousPosY = static_cast<int>(position.y);
 	_bitmapHeight = width;
 	_bitmapWidth = height;
 
