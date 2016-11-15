@@ -34,7 +34,7 @@ bool FontEngine::SearchForAvaliableFonts(int screenWidth, int screenHeight)
 	}
 }
 
-bool FontEngine::Render(Light* light, int positionX, int positionY, string font, string input, XMFLOAT4 textColor, int fontSize)
+bool FontEngine::Render(Light* light, XMFLOAT2 position, string font, string input, XMFLOAT4 textColor, int fontSize)
 {
 	try
 	{
@@ -46,7 +46,7 @@ bool FontEngine::Render(Light* light, int positionX, int positionY, string font,
 
 		for (int i = 0; i < stringAsTexture.size(); i++)
 		{
-			result = stringAsTexture.at(i)->_texture->Render(light, XMFLOAT2(positionX + (fontSize * i), positionY), fontSize, fontSize * 2);
+			result = stringAsTexture.at(i)->_texture->Render(light, XMFLOAT2(position.x + (fontSize * i), position.y), fontSize, fontSize * 2);
 			if (!result) return false;
 		}
 

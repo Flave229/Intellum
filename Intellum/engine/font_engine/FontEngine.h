@@ -40,7 +40,7 @@ public:
 	~FontEngine();
 
 	bool SearchForAvaliableFonts(int screenWidth, int screenHeight);
-	bool Render(Light* light, int positionX, int positionY, string font, string input, XMFLOAT4 textColor, int fontSize);
+	bool Render(Light* light, XMFLOAT2 position, string font, string input, XMFLOAT4 textColor, int fontSize);
 
 	Font* GetFont(string font);
 	bool CheckFontExists(string font);
