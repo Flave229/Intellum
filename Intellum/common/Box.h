@@ -3,9 +3,9 @@
 class Box
 {
 public:
-	float _width;
-	float _height;
+	float Width;
+	float Height;
 
 	Box() : Box(0, 0) {}
-	Box(float width, float height) : _width(width), _height(height) {}
+	Box(float width, float height) : Width(width), Height(height) {}
 };

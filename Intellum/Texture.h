@@ -6,6 +6,7 @@
 
 #include "error_handling/Exception.h"
 #include "loaders\TargaLoader.h"
+#include "common/Box.h"
 
 using namespace std;
 
@@ -30,7 +31,7 @@ private:
 private:
 	void Initialise(char* filename);
 
-	D3D11_TEXTURE2D_DESC SetupAndReturnD3D11TextureDescription(int height, int width);
+	D3D11_TEXTURE2D_DESC SetupAndReturnD3D11TextureDescription(Box textureBox);
 	void SetupD3D11ShaderResourceViewDescription(D3D11_TEXTURE2D_DESC textureDescription);
 
 public:
