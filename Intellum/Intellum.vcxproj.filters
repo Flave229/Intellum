@@ -198,7 +198,7 @@
     <ClInclude Include="loaders\TargaLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="common\Rectangle.h">
+    <ClInclude Include="common\Box.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
