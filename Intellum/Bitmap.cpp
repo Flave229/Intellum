@@ -50,8 +50,8 @@ bool Bitmap::Render(Light* light, XMFLOAT2 position, int width, int height)
 
 	XMMATRIX worldMatrix;
 	XMMATRIX orthoMatrix;
-	_direct3D->GetWorldMatrix(worldMatrix);
-	_direct3D->GetOrthoMatrix(orthoMatrix);
+	_direct3D->MapWorldMatrixInto(worldMatrix);
+	_direct3D->MapOrthoMatrixInto(orthoMatrix);
 
 	result = _shader->Render(GetIndexCount(), worldMatrix, orthoMatrix, GetTexture(), light);
 	if (!result) return false;

@@ -171,16 +171,16 @@ void DirectX3D::Shutdown()
 }
 
 
-void DirectX3D::BeginScene(float red, float green, float blue, float alpha)
+void DirectX3D::BeginScene(XMFLOAT4 color)
 {
-	float color[4];
+	float colorArray[4];
 
-	color[0] = red;
-	color[1] = green;
-	color[2] = blue;
-	color[3] = alpha;
+	colorArray[0] = color.x;
+	colorArray[1] = color.y;
+	colorArray[2] = color.z;
+	colorArray[3] = color.w;
 
-	_deviceContext->ClearRenderTargetView(_renderTargetView, color);
+	_deviceContext->ClearRenderTargetView(_renderTargetView, colorArray);
 	_deviceContext->ClearDepthStencilView(_depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 }
 
@@ -199,17 +199,17 @@ ID3D11DeviceContext* DirectX3D::GetDeviceContext()
 	return _deviceContext;
 }
 
-void DirectX3D::GetProjectionMatrix(XMMATRIX& projectionMatrix)
+void DirectX3D::MapProjectionMatrixInto(XMMATRIX& projectionMatrix)
 {
 	projectionMatrix = _projectionMatrix;
 }
 
-void DirectX3D::GetWorldMatrix(XMMATRIX& worldMatrix)
+void DirectX3D::MapWorldMatrixInto(XMMATRIX& worldMatrix)
 {
 	worldMatrix = _worldMatrix;
 }
 
-void DirectX3D::GetOrthoMatrix(XMMATRIX& orthoMatrix)
+void DirectX3D::MapOrthoMatrixInto(XMMATRIX& orthoMatrix)
 {
 	orthoMatrix = _orthoMatrix;
 }

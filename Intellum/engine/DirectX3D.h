@@ -40,15 +40,15 @@ public:
 	bool Initialise(int, int, bool, HWND, bool, float, float);
 	void Shutdown();
 	
-	void BeginScene(float, float, float, float);
+	void BeginScene(XMFLOAT4 color);
 	void EndScene();
 
 	ID3D11Device* GetDevice();
 	ID3D11DeviceContext* GetDeviceContext();
 
-	void GetProjectionMatrix(XMMATRIX&);
-	void GetWorldMatrix(XMMATRIX&);
-	void GetOrthoMatrix(XMMATRIX&);
+	void MapProjectionMatrixInto(XMMATRIX&);
+	void MapWorldMatrixInto(XMMATRIX&);
+	void MapOrthoMatrixInto(XMMATRIX&);
 
 	void GetVideoCardInfo(char*, int&);
 

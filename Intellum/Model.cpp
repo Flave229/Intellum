@@ -32,8 +32,8 @@ void Model::Render(float delta, Light* light)
 
 	XMMATRIX worldMatrix;
 	XMMATRIX projectionMatrix;
-	_direct3D->GetWorldMatrix(worldMatrix);
-	_direct3D->GetProjectionMatrix(projectionMatrix);
+	_direct3D->MapWorldMatrixInto(worldMatrix);
+	_direct3D->MapProjectionMatrixInto(projectionMatrix);
 
 	static float rotation = 0.0f;
 

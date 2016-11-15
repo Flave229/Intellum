@@ -139,7 +139,7 @@ bool Graphics::Render(float delta, XMFLOAT2 mousePoint)
 		XMMATRIX viewMatrix;
 		bool result;
 
-		_direct3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
+		_direct3D->BeginScene(XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f));
 
 		_camera->Render();
 
