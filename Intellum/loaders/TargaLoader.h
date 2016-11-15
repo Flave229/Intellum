@@ -15,7 +15,7 @@ struct TargaHeader
 	unsigned char data2;
 };
 
-static class TargaLoader
+class TargaLoader
 {
 private:
 	static FILE* OpenFile(char* filename);
