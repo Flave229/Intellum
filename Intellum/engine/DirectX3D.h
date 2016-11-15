@@ -37,7 +37,7 @@ public:
 	DirectX3D(const DirectX3D&);
 	~DirectX3D();
 
-	bool Initialise(int, int, bool, HWND, bool, float, float);
+	bool Initialise(int screenWidth, int screenHeight, bool vsync, HWND hwnd, bool fullscreen, float screenDepth, float screenNear);
 	void Shutdown();
 	
 	void BeginScene(XMFLOAT4 color);
@@ -46,11 +46,11 @@ public:
 	ID3D11Device* GetDevice();
 	ID3D11DeviceContext* GetDeviceContext();
 
-	void MapProjectionMatrixInto(XMMATRIX&);
-	void MapWorldMatrixInto(XMMATRIX&);
-	void MapOrthoMatrixInto(XMMATRIX&);
+	void MapProjectionMatrixInto(XMMATRIX& projectionMatrix);
+	void MapWorldMatrixInto(XMMATRIX& worldMatrix);
+	void MapOrthoMatrixInto(XMMATRIX& orthoMatrix);
 
-	void GetVideoCardInfo(char*, int&);
+	void GetVideoCardInfo(char* cardname, int& memory);
 
 	void TurnZBufferOn();
 	void TurnZBufferOff();

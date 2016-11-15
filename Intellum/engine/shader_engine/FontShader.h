@@ -35,17 +35,16 @@ public:
 	FontShader(DirectX3D* direct3D, Camera* camera);
 	~FontShader();
 
-	virtual bool Initialise(HWND hwnd);
-	virtual bool InitialiseShader(HWND hwnd, WCHAR* vsFilename, WCHAR* psFilename);
-	virtual void Shutdown();
+	bool Initialise(HWND hwnd) override;
+	bool InitialiseShader(HWND hwnd, WCHAR* vsFilename, WCHAR* psFilename) override;
+	void Shutdown() override;
 
-	virtual bool SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, Light* light);
+	bool SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, Light* light) override;
 
-	virtual bool Render(int indexCount, XMMATRIX worldMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, Light* light);
+	bool Render(int indexCount, XMMATRIX worldMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, Light* light) override;
+	void RenderShader(int indexCount) override;
 
-	virtual void RenderShader(int indexCount);
-
-	virtual void OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, WCHAR* shaderFileName);
+	void OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, WCHAR* shaderFileName) override;
 
 	void SetColorOverload(bool state, XMFLOAT4 color = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
 };
