@@ -183,6 +183,7 @@
   <ItemGroup>
     <ClInclude Include="Bitmap.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="common\Rectangle.h" />
     <ClInclude Include="common\Vertex.h" />
     <ClInclude Include="engine\shader_engine\DefaultShader.h" />
     <ClInclude Include="engine\dx_components\DepthStencil.h" />
