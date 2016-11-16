@@ -15,14 +15,13 @@ Texture::~Texture()
 
 void Texture::Initialise(char* filename)
 {
-	int height;
-	int width;
+	Box targaSize = Box(0, 0);
 
-	unsigned char* targaData = TargaLoader::LoadTarga(filename, height, width);
+	unsigned char* targaData = TargaLoader::LoadTarga(filename, targaSize);
 
-	D3D11_TEXTURE2D_DESC textureDescription = SetupAndReturnD3D11TextureDescription(Box(width, height));
+	D3D11_TEXTURE2D_DESC textureDescription = SetupAndReturnD3D11TextureDescription(targaSize);
 
-	unsigned int rowPitch = (width * 4) * sizeof(unsigned char);
+	unsigned int rowPitch = (targaSize.Width * 4) * sizeof(unsigned char);
 
 	_deviceContext->UpdateSubresource(_texture, 0, nullptr, targaData, rowPitch, 0);
 

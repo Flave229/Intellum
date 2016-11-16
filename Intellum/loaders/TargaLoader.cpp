@@ -1,24 +1,23 @@
 #include "TargaLoader.h"
 
-unsigned char* TargaLoader::LoadTarga(char* filename, int& height, int& width)
+unsigned char* TargaLoader::LoadTarga(char* filename, Box& imageSize)
 {
 	FILE* filePointer = OpenFile(filename);
 
 	TargaHeader targaFileHeader = GetFileHeaderInformation(filePointer, filename);
 
-	height = static_cast<int>(targaFileHeader.height);
-	width = static_cast<int>(targaFileHeader.width);
+	imageSize = Box(targaFileHeader.width, targaFileHeader.height);
 
 	if (CheckTarga32BitsPerPixel(targaFileHeader) == false)
 		throw Exception("'" + string(filename) + "' is not a 32bit Targa image.");
 
-	int imageSize = width * height * 4;
+	int imageDataSize = static_cast<int>(imageSize.Width) * static_cast<int>(imageSize.Height) * 4;
 
-	unsigned char* targaImage = ReadTargaImageData(filePointer, imageSize, filename);
+	unsigned char* targaImage = ReadTargaImageData(filePointer, imageDataSize, filename);
 
 	CloseFile(filePointer, filename);
 
-	return ReverseTargaData(targaImage, imageSize, width, height);
+	return ReverseTargaData(targaImage, imageDataSize, imageSize);
 }
 
 FILE* TargaLoader::OpenFile(char* filename)
@@ -67,15 +66,17 @@ unsigned char* TargaLoader::ReadTargaImageData(FILE* filePointer, int imageSize,
 	return targaImage;
 }
 
-unsigned char* TargaLoader::ReverseTargaData(unsigned char* rawTargaData, int imageSize, int width, int height)
+unsigned char* TargaLoader::ReverseTargaData(unsigned char* rawTargaData, int imageDataSize, Box imageSize)
 {
-	unsigned char* targaData = new unsigned char[imageSize];
+	unsigned char* targaData = new unsigned char[imageDataSize];
 	if (!targaData) 
 		throw Exception("Failed to allocate memory for Targa data");
 
 	int index = 0;
 	int i = 0;
 	int j = 0;
+	float width = imageSize.Width;
+	float height = imageSize.Height;
 	int k = (width * height * 4) - (width * 4);
 
 	for (j = 0; j < height; j++)

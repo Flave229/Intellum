@@ -5,6 +5,7 @@
 #include <stdio.h>
 
 #include "../error_handling/Exception.h"
+#include "../common/Box.h"
 
 struct TargaHeader
 {
@@ -24,9 +25,9 @@ private:
 	static TargaHeader GetFileHeaderInformation(FILE* filePointer, char* filename);
 	static bool CheckTarga32BitsPerPixel(TargaHeader headerInfo);
 	static unsigned char* ReadTargaImageData(FILE* filePointer, int imageSize, char* filename);
-	static unsigned char* ReverseTargaData(unsigned char* rawTargaData, int imageSize, int width, int height);
+	static unsigned char* ReverseTargaData(unsigned char* rawTargaData, int imageDataSize, Box imageSize);
 public:
-	static unsigned char* LoadTarga(char* filename, int& height, int& width);
+	static unsigned char* LoadTarga(char* filename, Box& imageSize);
 };
 
 #endif
