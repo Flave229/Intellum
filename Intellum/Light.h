@@ -27,7 +27,7 @@ public:
 	void SetSpecularColor(XMFLOAT4 color);
 
 	void SetDirection(XMFLOAT3 direction);
-	void SetSpecularPower(float);
+	void SetSpecularPower(float power);
 
 	XMFLOAT4 GetAmbientColor();
 	XMFLOAT4 GetDiffuseColor();

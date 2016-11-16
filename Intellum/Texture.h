@@ -36,7 +36,7 @@ private:
 
 public:
 	Texture(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* filename);
-	Texture(const Texture&);
+	Texture(const Texture& other);
 	~Texture();
 
 	void Shutdown();

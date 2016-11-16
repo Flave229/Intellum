@@ -7,6 +7,7 @@
 
 #include <dinput.h>
 #include <DirectXMath.h>
+#include "common/Box.h"
 
 using namespace DirectX;
 
@@ -20,11 +21,8 @@ private:
 	unsigned char _keyboardState[256];
 	DIMOUSESTATE _mouseState;
 
-	int _screenWidth;
-	int _screenHeight;
-
-	int _mouseX;
-	int _mouseY;
+	Box _screen;
+	XMFLOAT2 _mousePosition;
 
 private:
 	bool ReadKeyboard();
@@ -36,7 +34,7 @@ public:
 	Input(const Input& other);
 	~Input();
 
-	bool Initialise(HINSTANCE hInstance, HWND hwnd, int screenWidth, int screenHeight);
+	bool Initialise(HINSTANCE hInstance, HWND hwnd, Box screen);
 	void Shutdown();
 	bool Frame();
 

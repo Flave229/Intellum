@@ -12,13 +12,11 @@ Input::~Input()
 {
 }
 
-bool Input::Initialise(HINSTANCE hInstance, HWND hwnd, int screenWidth, int screenHeight)
+bool Input::Initialise(HINSTANCE hInstance, HWND hwnd, Box screen)
 {
-	_screenWidth = screenWidth;
-	_screenHeight = screenHeight;
-	_mouseX = 0;
-	_mouseY = 0;
-
+	_screen = screen;
+	_mousePosition = XMFLOAT2(0, 0);
+	
 	HRESULT result = DirectInput8Create(hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8, reinterpret_cast<void**>(&_directInput), nullptr);
 	if (FAILED(result)) return false;
 
@@ -95,7 +93,7 @@ bool Input::IsEscapePressed()
 
 void Input::MapMouseLocationInto(XMFLOAT2& point)
 {
-	point = XMFLOAT2(_mouseX, _mouseY);
+	point = _mousePosition;
 }
 
 bool Input::ReadKeyboard()
@@ -129,15 +127,15 @@ bool Input::ReadMouse()
 
 void Input::ProcessInput()
 {
-	_mouseX += _mouseState.lX;
-	_mouseY += _mouseState.lY;
+	_mousePosition.x += _mouseState.lX;
+	_mousePosition.y += _mouseState.lY;
 
-	if (_mouseX < 0)
-		_mouseX = 0;
-	if (_mouseY < 0)
-		_mouseY = 0;
-	if (_mouseX > _screenWidth)
-		_mouseX = _screenWidth;
-	if (_mouseY > _screenHeight)
-		_mouseY = _screenHeight;
+	if (_mousePosition.x < 0)
+		_mousePosition.x = 0;
+	if (_mousePosition.y < 0)
+		_mousePosition.y = 0;
+	if (_mousePosition.x > _screen.Width)
+		_mousePosition.x = _screen.Width;
+	if (_mousePosition.y > _screen.Height)
+		_mousePosition.y = _screen.Height;
 }
