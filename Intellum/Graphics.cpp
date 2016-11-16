@@ -23,7 +23,7 @@ bool Graphics::Initialise(int screenWidth, int screenHeight, HWND hwnd)
 		_direct3D = new DirectX3D;
 		if (!_direct3D) throw Exception("Failed to create a DirectX3D object.");
 
-		result = _direct3D->Initialise(screenWidth, screenHeight, VSYNC_ENABLED, hwnd, FULL_SCREEN, SCREEN_DEPTH, SCREEN_NEAR);
+		result = _direct3D->Initialise(Box(screenWidth, screenHeight), VSYNC_ENABLED, hwnd, FULL_SCREEN, SCREEN_DEPTH, SCREEN_NEAR);
 		if (!result) throw Exception("Could not initialise Direct3D.");;
 
 		_camera = new Camera;

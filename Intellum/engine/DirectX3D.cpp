@@ -18,7 +18,7 @@ DirectX3D::~DirectX3D()
 {
 }
 
-bool DirectX3D::Initialise(int screenWidth, int screenHeight, bool vsync, HWND hwnd, bool fullscreen, float screenDepth, float screenNear)
+bool DirectX3D::Initialise(Box screenSize, bool vsync, HWND hwnd, bool fullscreen, float screenDepth, float screenNear)
 {
 	try
 	{
@@ -31,13 +31,13 @@ bool DirectX3D::Initialise(int screenWidth, int screenHeight, bool vsync, HWND h
 		_vsync_enabled = vsync;
 
 		_hardware = new HardwareDescription;
-		_hardware->Initialise(screenWidth, screenHeight);
+		_hardware->Initialise(screenSize.Width, screenSize.Height);
 
 		ZeroMemory(&swapChainDesc, sizeof(swapChainDesc));
 
 		swapChainDesc.BufferCount = 1;
-		swapChainDesc.BufferDesc.Width = screenWidth;
-		swapChainDesc.BufferDesc.Height = screenHeight;
+		swapChainDesc.BufferDesc.Width = screenSize.Width;
+		swapChainDesc.BufferDesc.Height = screenSize.Height;
 		swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 
 		if (_vsync_enabled)
@@ -76,7 +76,7 @@ bool DirectX3D::Initialise(int screenWidth, int screenHeight, bool vsync, HWND h
 		backBufferPtr = nullptr;
 
 		_depthStencil = new DepthStencil(_device, _deviceContext);
-		_depthStencil->Initialise(screenWidth, screenHeight);
+		_depthStencil->Initialise(screenSize.Width, screenSize.Height);
 
 		ZeroMemory(&depthStencilViewDesc, sizeof(depthStencilViewDesc));
 
@@ -92,8 +92,8 @@ bool DirectX3D::Initialise(int screenWidth, int screenHeight, bool vsync, HWND h
 
 		_deviceContext->OMSetRenderTargets(1, &_renderTargetView, _depthStencilView);
 
-		viewPort.Width = static_cast<float>(screenWidth);
-		viewPort.Height = static_cast<float>(screenHeight);
+		viewPort.Width = static_cast<float>(screenSize.Width);
+		viewPort.Height = static_cast<float>(screenSize.Height);
 		viewPort.MinDepth = 0.0f;
 		viewPort.MaxDepth = 1.0f;
 		viewPort.TopLeftX = 0.0f;
@@ -102,11 +102,11 @@ bool DirectX3D::Initialise(int screenWidth, int screenHeight, bool vsync, HWND h
 		_deviceContext->RSSetViewports(1, &viewPort);
 
 		float fieldOfView = 3.141592654f / 4.0f;
-		float screenAspect = static_cast<float>(screenWidth) / static_cast<float>(screenHeight);
+		float screenAspect = static_cast<float>(screenSize.Width) / static_cast<float>(screenSize.Height);
 
 		_projectionMatrix = XMMatrixPerspectiveFovLH(fieldOfView, screenAspect, screenNear, screenDepth);
 		_worldMatrix = XMMatrixIdentity();
-		_orthoMatrix = XMMatrixOrthographicLH(static_cast<float>(screenWidth), static_cast<float>(screenHeight), screenNear, screenDepth);
+		_orthoMatrix = XMMatrixOrthographicLH(static_cast<float>(screenSize.Width), static_cast<float>(screenSize.Height), screenNear, screenDepth);
 
 		return true;
 	}

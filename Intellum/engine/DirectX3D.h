@@ -10,6 +10,7 @@
 #include "dx_components/HardwareDescription.h"
 #include "dx_components/DepthStencil.h"
 #include "dx_components/Rasterizer.h"
+#include "../common/Box.h"
 
 using namespace DirectX;
 
@@ -37,7 +38,7 @@ public:
 	DirectX3D(const DirectX3D&);
 	~DirectX3D();
 
-	bool Initialise(int screenWidth, int screenHeight, bool vsync, HWND hwnd, bool fullscreen, float screenDepth, float screenNear);
+	bool Initialise(Box screenSize, bool vsync, HWND hwnd, bool fullscreen, float screenDepth, float screenNear);
 	void Shutdown();
 	
 	void BeginScene(XMFLOAT4 color);
