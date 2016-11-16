@@ -14,7 +14,7 @@ Graphics::~Graphics()
 {
 }
 
-bool Graphics::Initialise(int screenWidth, int screenHeight, HWND hwnd)
+bool Graphics::Initialise(Box screenSize, HWND hwnd)
 {
 	bool result;
 
@@ -23,7 +23,7 @@ bool Graphics::Initialise(int screenWidth, int screenHeight, HWND hwnd)
 		_direct3D = new DirectX3D;
 		if (!_direct3D) throw Exception("Failed to create a DirectX3D object.");
 
-		result = _direct3D->Initialise(Box(screenWidth, screenHeight), VSYNC_ENABLED, hwnd, FULL_SCREEN, SCREEN_DEPTH, SCREEN_NEAR);
+		result = _direct3D->Initialise(screenSize, VSYNC_ENABLED, hwnd, FULL_SCREEN, SCREEN_DEPTH, SCREEN_NEAR);
 		if (!result) throw Exception("Could not initialise Direct3D.");;
 
 		_camera = new Camera;
@@ -43,7 +43,7 @@ bool Graphics::Initialise(int screenWidth, int screenHeight, HWND hwnd)
 		_bitmap = new Bitmap(_direct3D, _shaderController->GetShader(SHADER_FONT));
 		if (!_bitmap) throw Exception("Failed to create the bitmap.");
 
-		result = _bitmap->Initialise(Box(screenWidth, screenHeight), Box(256, 256), "data/images/stone.tga");
+		result = _bitmap->Initialise(screenSize, Box(256, 256), "data/images/stone.tga");
 		if (!result) throw Exception("Could not initialise the bitmap.");
 
 		_light = new Light;
@@ -58,7 +58,7 @@ bool Graphics::Initialise(int screenWidth, int screenHeight, HWND hwnd)
 		_fontEngine = new FontEngine(_direct3D, _direct3D->GetDevice(), _direct3D->GetDeviceContext(), _shaderController->GetShader(SHADER_FONT));
 		if (!_fontEngine) throw Exception("Failed to create the Font Engine.");
 
-		result = _fontEngine->SearchForAvaliableFonts(screenWidth, screenHeight);
+		result = _fontEngine->SearchForAvaliableFonts(screenSize.Width, screenSize.Height);
 		if (!result) throw Exception("Could not initialise Font Engine.");
 	}
 	catch(Exception& exception)

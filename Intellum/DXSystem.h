@@ -22,7 +22,7 @@ private:
 // Function Declarations
 private:
 	bool Frame(float delta);
-	void InitialiseWindows(int&, int&);
+	void InitialiseWindows(Box& screenSize);
 	void ShutdownWindows();
 public:
 	DXSystem();

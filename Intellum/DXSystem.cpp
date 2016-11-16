@@ -17,19 +17,18 @@ bool DXSystem::Initialise()
 {
 	try
 	{
-		auto screenWidth = 1280;
-		auto screenHeight = 720;
+		Box screenSize = Box(1280, 720);
 
-		InitialiseWindows(screenWidth, screenHeight);
+		InitialiseWindows(screenSize);
 
 		_input = new Input();
 		if (!_input) return false;
-		bool result = _input->Initialise(_hInstance, _hwnd, Box(screenWidth, screenHeight));
+		bool result = _input->Initialise(_hInstance, _hwnd, screenSize);
 		if (!result) return false;
 
 		_graphics = new Graphics();
 		if (!_graphics) return false;
-		result = _graphics->Initialise(screenWidth, screenHeight, _hwnd);
+		result = _graphics->Initialise(screenSize, _hwnd);
 		if (!result) return false;
 	}
 	catch(Exception& exception)
@@ -168,7 +167,7 @@ LRESULT __stdcall WndProc(HWND hwnd, UINT umessage, WPARAM wparam, LPARAM lparam
 	}
 }
 
-void DXSystem::InitialiseWindows(int&, int&)
+void DXSystem::InitialiseWindows(Box& screenSize)
 {
 	WNDCLASSEX wc;
 	DEVMODE dmScreenSettings;
