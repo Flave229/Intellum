@@ -46,7 +46,7 @@ bool FontEngine::Render(Light* light, XMFLOAT2 position, string font, string inp
 
 		for (int i = 0; i < stringAsTexture.size(); i++)
 		{
-			result = stringAsTexture.at(i)->_texture->Render(light, XMFLOAT2(position.x + (fontSize * i), position.y), fontSize, fontSize * 2);
+			result = stringAsTexture.at(i)->_texture->Render(light, XMFLOAT2(position.x + (fontSize * i), position.y), Box(fontSize, fontSize * 2));
 			if (!result) return false;
 		}
 
@@ -220,7 +220,7 @@ Character* FontEngine::CreateCharacterFromFontFolder(string filePath, string nam
 	Bitmap* texture = new Bitmap(_direct3D, _shader);
 	if (!texture) throw Exception("Failed to create the letter " + name + " for the font located at: " + filePath + ".");
 
-	bool result = texture->Initialise(screenWidth, screenHeight, 64, 128, &(filePath + "/" + unicode + ".tga")[0u]);
+	bool result = texture->Initialise(Box(screenWidth, screenHeight), Box(64, 128), &(filePath + "/" + unicode + ".tga")[0u]);
 	if (!result) throw Exception("Failed to initialise the texture for letter " + name + " for the character located at: " + filePath + "/" + unicode + ".tga");
 
 	Character* character = new Character(name, unicode, texture);

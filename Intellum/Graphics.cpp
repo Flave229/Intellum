@@ -43,7 +43,7 @@ bool Graphics::Initialise(int screenWidth, int screenHeight, HWND hwnd)
 		_bitmap = new Bitmap(_direct3D, _shaderController->GetShader(SHADER_FONT));
 		if (!_bitmap) throw Exception("Failed to create the bitmap.");
 
-		result = _bitmap->Initialise(screenWidth, screenHeight, 256, 256, "data/images/stone.tga");
+		result = _bitmap->Initialise(Box(screenWidth, screenHeight), Box(256, 256), "data/images/stone.tga");
 		if (!result) throw Exception("Could not initialise the bitmap.");
 
 		_light = new Light;
@@ -147,7 +147,7 @@ bool Graphics::Render(float delta, XMFLOAT2 mousePoint)
 
 		_direct3D->TurnZBufferOff();
 
-		result = _bitmap->Render(_light, XMFLOAT2(100, 100), 256, 256);
+		result = _bitmap->Render(_light, XMFLOAT2(100, 100), Box(256, 256));
 		if (!result) return false;
 
 		result = _fontEngine->Render(_light, XMFLOAT2(50, 600), "impact", "Victoria Grump", XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 30);

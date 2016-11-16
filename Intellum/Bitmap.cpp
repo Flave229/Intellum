@@ -1,11 +1,11 @@
 #include "Bitmap.h"
 
-Bitmap::Bitmap(DirectX3D* direct3D, IShaderType* shader) : _direct3D(direct3D), _vertexBuffer(nullptr), _indexBuffer(nullptr), _vertexCount(0), _indexCount(0), _screenWidth(0), _screenHeight(0), _bitmapWidth(0), _bitmapHeight(0), _previousPosX(0), _previousPosY(0), _shader(shader), _texture(nullptr)
+Bitmap::Bitmap(DirectX3D* direct3D, IShaderType* shader) : _direct3D(direct3D), _vertexBuffer(nullptr), _indexBuffer(nullptr), _vertexCount(0), _indexCount(0), _screenSize(Box(0, 0)), _bitmapSize(Box(0, 0)), _previousPosition(XMFLOAT2(0, 0)), _shader(shader), _texture(nullptr)
 {
 	
 }
 
-Bitmap::Bitmap(const Bitmap& other) : _direct3D(other._direct3D), _vertexBuffer(other._vertexBuffer), _indexBuffer(other._indexBuffer), _vertexCount(other._vertexCount), _indexCount(other._indexCount), _screenWidth(other._screenWidth), _screenHeight(other._screenHeight), _bitmapWidth(other._bitmapWidth), _bitmapHeight(other._bitmapHeight), _previousPosX(other._previousPosX), _previousPosY(other._previousPosY), _shader(other._shader), _texture(other._texture)
+Bitmap::Bitmap(const Bitmap& other) : _direct3D(other._direct3D), _vertexBuffer(other._vertexBuffer), _indexBuffer(other._indexBuffer), _vertexCount(other._vertexCount), _indexCount(other._indexCount), _screenSize(other._screenSize), _bitmapSize(other._bitmapSize), _previousPosition(other._previousPosition), _shader(other._shader), _texture(other._texture)
 {
 }
 
@@ -14,19 +14,13 @@ Bitmap::~Bitmap()
 {
 }
 
-bool Bitmap::Initialise(int screenWidth, int screenHeight, int bitmapWidth, int bitmapHeight, char* textureFilename)
+bool Bitmap::Initialise(Box screenSize, Box bitmapSize, char* textureFilename)
 {
-	bool result;
-
-	_screenWidth = screenWidth;
-	_screenHeight = screenHeight;
-	_bitmapWidth = bitmapWidth;
-	_bitmapHeight = bitmapHeight;
-
-	_previousPosX = -1;
-	_previousPosY = -1;
-
-	result = InitialiseBuffers();
+	_screenSize = screenSize;
+	_bitmapSize = bitmapSize;
+	_previousPosition = XMFLOAT2(-1, -1);
+	
+	bool result = InitialiseBuffers();
 	if (!result) return false;
 
 	result = LoadTexture(textureFilename);
@@ -41,9 +35,9 @@ void Bitmap::Shutdown()
 	ShutdownBuffers();
 }
 
-bool Bitmap::Render(Light* light, XMFLOAT2 position, int width, int height)
+bool Bitmap::Render(Light* light, XMFLOAT2 position, Box bitmapSize)
 {
-	bool result = UpdateBuffers(position, width, height);
+	bool result = UpdateBuffers(position, bitmapSize);
 	if (!result) return false;
 
 	RenderBuffers();
@@ -149,26 +143,24 @@ void Bitmap::ShutdownBuffers()
 	}
 }
 
-bool Bitmap::UpdateBuffers(XMFLOAT2 position, int width, int height)
+bool Bitmap::UpdateBuffers(XMFLOAT2 position, Box bitmapSize)
 {
 	HRESULT result;
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
 
-	if ((position.x == static_cast<int>(_previousPosX)) && (position.y == static_cast<int>(_previousPosY)) && (width == _bitmapWidth) && (height == _bitmapHeight))
+	if ((position.x == static_cast<int>(_previousPosition.x)) && (position.y == static_cast<int>(_previousPosition.y)) && (bitmapSize.Width == _bitmapSize.Width) && (bitmapSize.Height == _bitmapSize.Height))
 	{
 		return true;
 	}
 
-	_previousPosX = static_cast<int>(position.x);
-	_previousPosY = static_cast<int>(position.y);
-	_bitmapHeight = width;
-	_bitmapWidth = height;
+	_previousPosition = position;
+	_bitmapSize = bitmapSize;
 
-	float left = static_cast<float>((_screenWidth / 2) * -1) + static_cast<float>(position.x);
-	float right = left + static_cast<float>(width);
+	float left = ((_screenSize.Width / 2) * -1) + (position.x);
+	float right = left + bitmapSize.Width;
 
-	float top = static_cast<float>(_screenHeight / 2) - static_cast<float>(position.y);
-	float bottom = top - static_cast<float>(height);
+	float top = (_screenSize.Height / 2) - position.y;
+	float bottom = top - bitmapSize.Height;
 
 	Vertex* vertices = new Vertex[_vertexCount];
 	if (!vertices) return false;

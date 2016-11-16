@@ -30,12 +30,9 @@ private:
 	int _vertexCount;
 	int _indexCount;
 
-	int _screenWidth;
-	int _screenHeight;
-	int _bitmapWidth;
-	int _bitmapHeight;
-	int _previousPosX;
-	int _previousPosY;
+	Box _screenSize;
+	Box _bitmapSize;
+	XMFLOAT2 _previousPosition;
 
 	IShaderType* _shader;
 	Texture* _texture;
@@ -44,7 +41,7 @@ private:
 private:
 	bool InitialiseBuffers();
 	void ShutdownBuffers();
-	bool UpdateBuffers(XMFLOAT2 position, int width, int height);
+	bool UpdateBuffers(XMFLOAT2 position, Box bitmapSize);
 	void RenderBuffers();
 
 	bool LoadTexture(char*);
@@ -54,9 +51,9 @@ public:
 	Bitmap(const Bitmap&);
 	~Bitmap();
 
-	bool Initialise(int screenWidth, int screenHeight, int bitmapWidth, int bitmapHeight, char* textureFilename);
+	bool Initialise(Box screenSize, Box bitmapBox, char* textureFilename);
 	void Shutdown();
-	bool Render(Light* light, XMFLOAT2 position, int width, int height);
+	bool Render(Light* light, XMFLOAT2 position, Box bitmapSize);
 
 	int GetIndexCount();
 	ID3D11ShaderResourceView* GetTexture();
