@@ -8,7 +8,7 @@ FontEngine::~FontEngine()
 {
 }
 
-bool FontEngine::SearchForAvaliableFonts(int screenWidth, int screenHeight)
+bool FontEngine::SearchForAvaliableFonts(Box screenSize)
 {
 	try
 	{
@@ -23,7 +23,7 @@ bool FontEngine::SearchForAvaliableFonts(int screenWidth, int screenHeight)
 		vector<string> fonts = ValidatePotentialFonts(potentialFonts);
 		if (fonts.size() <= 0) return false;
 
-		result = CreateFonts(fonts, screenWidth, screenHeight);
+		result = CreateFonts(fonts, screenSize);
 		if (!result) return false;
 
 		return true;
@@ -154,7 +154,7 @@ vector<string> FontEngine::ValidatePotentialFonts(vector<string> potentialFonts)
 	return validatedFonts;
 }
 
-bool FontEngine::CreateFonts(vector<string> fontFiles, int screenWidth, int screenHeight)
+bool FontEngine::CreateFonts(vector<string> fontFiles, Box screenSize)
 {
 	try
 	{
@@ -163,7 +163,7 @@ bool FontEngine::CreateFonts(vector<string> fontFiles, int screenWidth, int scre
 			Font* font = new Font();
 			font->_fontName = fontFiles.at(i);
 
-			vector<Character*> characters = GetCharactersFromFontFolder("fonts/" + fontFiles.at(i), screenWidth, screenHeight);
+			vector<Character*> characters = GetCharactersFromFontFolder("fonts/" + fontFiles.at(i), screenSize);
 
 			font->_characters = characters;
 
@@ -178,7 +178,7 @@ bool FontEngine::CreateFonts(vector<string> fontFiles, int screenWidth, int scre
 	}
 }
 
-vector<Character*> FontEngine::GetCharactersFromFontFolder(string filePath, int screenWidth, int screenHeight)
+vector<Character*> FontEngine::GetCharactersFromFontFolder(string filePath, Box screenSize)
 {
 	try
 	{
@@ -190,11 +190,11 @@ vector<Character*> FontEngine::GetCharactersFromFontFolder(string filePath, int 
 		for(int i = 0; i < unicodes.size(); i++)
 		{
 			if (CheckCharacterExists(filePath + "/" + unicodes.at(i) + ".tga"))
-				characters.push_back(CreateCharacterFromFontFolder(filePath, unicodeDictionary.GetCharacterForUnicode(unicodes.at(i)), unicodes.at(i), screenWidth, screenHeight));
+				characters.push_back(CreateCharacterFromFontFolder(filePath, unicodeDictionary.GetCharacterForUnicode(unicodes.at(i)), unicodes.at(i), screenSize));
 		}
 
 		// Always reserve unicode 0000 in EVERY font to display the default error character in fonts/default
-		characters.push_back(CreateCharacterFromFontFolder("fonts/default", unicodeDictionary.GetCharacterForUnicode("0000"), "0000", screenWidth, screenHeight));
+		characters.push_back(CreateCharacterFromFontFolder("fonts/default", unicodeDictionary.GetCharacterForUnicode("0000"), "0000", screenSize));
 
 		return characters;
 	}
@@ -215,12 +215,12 @@ bool FontEngine::CheckCharacterExists(string filePath)
 	return true;
 }
 
-Character* FontEngine::CreateCharacterFromFontFolder(string filePath, string name, string unicode, int screenWidth, int screenHeight)
+Character* FontEngine::CreateCharacterFromFontFolder(string filePath, string name, string unicode, Box screenSize)
 {
 	Bitmap* texture = new Bitmap(_direct3D, _shader);
 	if (!texture) throw Exception("Failed to create the letter " + name + " for the font located at: " + filePath + ".");
 
-	bool result = texture->Initialise(Box(screenWidth, screenHeight), Box(64, 128), &(filePath + "/" + unicode + ".tga")[0u]);
+	bool result = texture->Initialise(screenSize, Box(64, 128), &(filePath + "/" + unicode + ".tga")[0u]);
 	if (!result) throw Exception("Failed to initialise the texture for letter " + name + " for the character located at: " + filePath + "/" + unicode + ".tga");
 
 	Character* character = new Character(name, unicode, texture);

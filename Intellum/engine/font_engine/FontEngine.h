@@ -29,17 +29,17 @@ private:
 	vector<string> GetPotentialFonts();
 	vector<string> ValidatePotentialFonts(vector<string> potentialFonts);
 
-	bool CreateFonts(vector<string> fontFiles, int screenWidth, int screenHeight);
-	vector<Character*> GetCharactersFromFontFolder(string filePath, int screenWidth, int screenHeight);
+	bool CreateFonts(vector<string> fontFiles, Box screenSize);
+	vector<Character*> GetCharactersFromFontFolder(string filePath, Box screenSize);
 	bool CheckCharacterExists(string filePath);
-	Character* CreateCharacterFromFontFolder(string filePath, string name, string unicode, int screenWidth, int screenHeight);
+	Character* CreateCharacterFromFontFolder(string filePath, string name, string unicode, Box screenSize);
 
 	vector<Character*> StringToCharacterTextureList(string font, string input);
 public:
 	FontEngine(DirectX3D* direct3D, ID3D11Device* device, ID3D11DeviceContext* deviceContext, IShaderType* shader);
 	~FontEngine();
 
-	bool SearchForAvaliableFonts(int screenWidth, int screenHeight);
+	bool SearchForAvaliableFonts(Box screenSize);
 	bool Render(Light* light, XMFLOAT2 position, string font, string input, XMFLOAT4 textColor, int fontSize);
 
 	Font* GetFont(string font);

@@ -58,7 +58,7 @@ bool Graphics::Initialise(Box screenSize, HWND hwnd)
 		_fontEngine = new FontEngine(_direct3D, _direct3D->GetDevice(), _direct3D->GetDeviceContext(), _shaderController->GetShader(SHADER_FONT));
 		if (!_fontEngine) throw Exception("Failed to create the Font Engine.");
 
-		result = _fontEngine->SearchForAvaliableFonts(screenSize.Width, screenSize.Height);
+		result = _fontEngine->SearchForAvaliableFonts(screenSize);
 		if (!result) throw Exception("Could not initialise Font Engine.");
 	}
 	catch(Exception& exception)
