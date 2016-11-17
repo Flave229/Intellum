@@ -200,6 +200,7 @@
     <ClInclude Include="engine\font_engine\Character.h" />
     <ClInclude Include="engine\shader_engine\IShaderType.h" />
     <ClInclude Include="Light.h" />
+    <ClInclude Include="loaders\models\TargaData.h" />
     <ClInclude Include="loaders\OBJLoader.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="engine\dx_components\Rasterizer.h" />

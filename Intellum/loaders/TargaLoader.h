@@ -6,6 +6,7 @@
 
 #include "../error_handling/Exception.h"
 #include "../common/Box.h"
+#include "models/TargaData.h"
 
 struct TargaHeader
 {
@@ -27,7 +28,7 @@ private:
 	static unsigned char* ReadTargaImageData(FILE* filePointer, int imageSize, char* filename);
 	static unsigned char* ReverseTargaData(unsigned char* rawTargaData, int imageDataSize, Box imageSize);
 public:
-	static unsigned char* LoadTarga(char* filename, Box& imageSize);
+	static TargaData LoadTarga(char* filename);
 };
 
 #endif

@@ -15,22 +15,20 @@ Texture::~Texture()
 
 void Texture::Initialise(char* filename)
 {
-	Box targaSize = Box(0, 0);
+	TargaData targaData = TargaLoader::LoadTarga(filename);
 
-	unsigned char* targaData = TargaLoader::LoadTarga(filename, targaSize);
+	D3D11_TEXTURE2D_DESC textureDescription = SetupAndReturnD3D11TextureDescription(targaData.ImageSize);
 
-	D3D11_TEXTURE2D_DESC textureDescription = SetupAndReturnD3D11TextureDescription(targaSize);
+	unsigned int rowPitch = (targaData.ImageSize.Width * 4) * sizeof(unsigned char);
 
-	unsigned int rowPitch = (targaSize.Width * 4) * sizeof(unsigned char);
-
-	_deviceContext->UpdateSubresource(_texture, 0, nullptr, targaData, rowPitch, 0);
+	_deviceContext->UpdateSubresource(_texture, 0, nullptr, targaData.ImageData, rowPitch, 0);
 
 	SetupD3D11ShaderResourceViewDescription(textureDescription);
 
 	_deviceContext->GenerateMips(_textureView);
 
-	delete[] targaData;
-	targaData = nullptr;
+	delete[] targaData.ImageData;
+	targaData.ImageData = nullptr;
 }
 
 D3D11_TEXTURE2D_DESC Texture::SetupAndReturnD3D11TextureDescription(Box textureBox)

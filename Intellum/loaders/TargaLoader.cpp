@@ -1,12 +1,12 @@
 #include "TargaLoader.h"
 
-unsigned char* TargaLoader::LoadTarga(char* filename, Box& imageSize)
+TargaData TargaLoader::LoadTarga(char* filename)
 {
 	FILE* filePointer = OpenFile(filename);
 
 	TargaHeader targaFileHeader = GetFileHeaderInformation(filePointer, filename);
 
-	imageSize = Box(targaFileHeader.width, targaFileHeader.height);
+	Box imageSize = Box(targaFileHeader.width, targaFileHeader.height);
 
 	if (CheckTarga32BitsPerPixel(targaFileHeader) == false)
 		throw Exception("'" + string(filename) + "' is not a 32bit Targa image.");
@@ -17,7 +17,11 @@ unsigned char* TargaLoader::LoadTarga(char* filename, Box& imageSize)
 
 	CloseFile(filePointer, filename);
 
-	return ReverseTargaData(targaImage, imageDataSize, imageSize);
+	TargaData targaData;
+	targaData.ImageSize = imageSize;
+	targaData.ImageData = ReverseTargaData(targaImage, imageDataSize, imageSize);
+
+	return targaData;
 }
 
 FILE* TargaLoader::OpenFile(char* filename)
