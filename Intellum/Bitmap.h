@@ -39,19 +39,20 @@ private:
 
 // Function Declarations
 private:
-	bool InitialiseBuffers();
-	void ShutdownBuffers();
+	void Initialise(Box screenSize, Box bitmapBox, char* textureFilename);
+	void InitialiseBuffers();
+	void LoadTexture(char*);
+
 	bool UpdateBuffers(XMFLOAT2 position, Box bitmapSize);
 	void RenderBuffers();
 
-	bool LoadTexture(char*);
+	void ShutdownBuffers();
 	void ReleaseTexture();
 public:
-	Bitmap(DirectX3D* direct3D, IShaderType* shader);
+	Bitmap(DirectX3D* direct3D, IShaderType* shader, Box screenSize, Box bitmapBox, char* textureFilename);
 	Bitmap(const Bitmap&);
 	~Bitmap();
 
-	bool Initialise(Box screenSize, Box bitmapBox, char* textureFilename);
 	void Shutdown();
 	bool Render(Light* light, XMFLOAT2 position, Box bitmapSize);
 

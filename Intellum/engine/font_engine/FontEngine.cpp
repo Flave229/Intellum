@@ -217,15 +217,19 @@ bool FontEngine::CheckCharacterExists(string filePath)
 
 Character* FontEngine::CreateCharacterFromFontFolder(string filePath, string name, string unicode, Box screenSize)
 {
-	Bitmap* texture = new Bitmap(_direct3D, _shader);
-	if (!texture) throw Exception("Failed to create the letter " + name + " for the font located at: " + filePath + ".");
+	try
+	{
+		Bitmap* texture = new Bitmap(_direct3D, _shader, screenSize, Box(64, 128), &(filePath + "/" + unicode + ".tga")[0u]);
+		if (!texture) throw Exception("Failed to create the letter " + name + " for the font located at: " + filePath + ".");
 
-	bool result = texture->Initialise(screenSize, Box(64, 128), &(filePath + "/" + unicode + ".tga")[0u]);
-	if (!result) throw Exception("Failed to initialise the texture for letter " + name + " for the character located at: " + filePath + "/" + unicode + ".tga");
+		Character* character = new Character(name, unicode, texture);
 
-	Character* character = new Character(name, unicode, texture);
-
-	return character;
+		return character;
+	}
+	catch (Exception& exception)
+	{
+		throw Exception("Failed to create the letter " + name + " for the font located at: " + filePath + ".", exception);
+	}
 }
 
 vector<Character*> FontEngine::StringToCharacterTextureList(string font, string input)

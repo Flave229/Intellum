@@ -37,11 +37,8 @@ void Graphics::Initialise(Box screenSize, HWND hwnd)
 		_model = new Model(_direct3D, _shaderController->GetShader(SHADER_DEFAULT), "data/images/stone.tga", "data/models/sphere.obj");
 		if (!_model) throw Exception("Failed to create a Model object.");
 
-		_bitmap = new Bitmap(_direct3D, _shaderController->GetShader(SHADER_FONT));
+		_bitmap = new Bitmap(_direct3D, _shaderController->GetShader(SHADER_FONT), screenSize, Box(256, 256), "data/images/stone.tga");
 		if (!_bitmap) throw Exception("Failed to create the bitmap.");
-
-		result = _bitmap->Initialise(screenSize, Box(256, 256), "data/images/stone.tga");
-		if (!result) throw Exception("Could not initialise the bitmap.");
 
 		_light = new Light;
 		if (!_light) throw Exception("Failed to create the light object.");

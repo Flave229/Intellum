@@ -1,8 +1,8 @@
 #include "Bitmap.h"
 
-Bitmap::Bitmap(DirectX3D* direct3D, IShaderType* shader) : _direct3D(direct3D), _vertexBuffer(nullptr), _indexBuffer(nullptr), _vertexCount(0), _indexCount(0), _screenSize(Box(0, 0)), _bitmapSize(Box(0, 0)), _previousPosition(XMFLOAT2(0, 0)), _shader(shader), _texture(nullptr)
+Bitmap::Bitmap(DirectX3D* direct3D, IShaderType* shader, Box screenSize, Box bitmapBox, char* textureFilename) : _direct3D(direct3D), _vertexBuffer(nullptr), _indexBuffer(nullptr), _vertexCount(0), _indexCount(0), _screenSize(Box(0, 0)), _bitmapSize(Box(0, 0)), _previousPosition(XMFLOAT2(0, 0)), _shader(shader), _texture(nullptr)
 {
-	
+	Initialise(screenSize, bitmapBox, textureFilename);
 }
 
 Bitmap::Bitmap(const Bitmap& other) : _direct3D(other._direct3D), _vertexBuffer(other._vertexBuffer), _indexBuffer(other._indexBuffer), _vertexCount(other._vertexCount), _indexCount(other._indexCount), _screenSize(other._screenSize), _bitmapSize(other._bitmapSize), _previousPosition(other._previousPosition), _shader(other._shader), _texture(other._texture)
@@ -14,19 +14,14 @@ Bitmap::~Bitmap()
 {
 }
 
-bool Bitmap::Initialise(Box screenSize, Box bitmapSize, char* textureFilename)
+void Bitmap::Initialise(Box screenSize, Box bitmapSize, char* textureFilename)
 {
 	_screenSize = screenSize;
 	_bitmapSize = bitmapSize;
 	_previousPosition = XMFLOAT2(-1, -1);
 	
-	bool result = InitialiseBuffers();
-	if (!result) return false;
-
-	result = LoadTexture(textureFilename);
-	if (!result) return false;
-
-	return true;
+	InitialiseBuffers();
+	LoadTexture(textureFilename);
 }
 
 void Bitmap::Shutdown()
@@ -63,7 +58,7 @@ ID3D11ShaderResourceView* Bitmap::GetTexture()
 	return _texture->GetTexture();
 }
 
-bool Bitmap::InitialiseBuffers()
+void Bitmap::InitialiseBuffers()
 {
 	Vertex* vertices;
 	unsigned long* indices;
@@ -77,10 +72,10 @@ bool Bitmap::InitialiseBuffers()
 	_indexCount = _vertexCount;
 
 	vertices = new Vertex[_vertexCount];
-	if (!vertices) return false;
+	if (!vertices) throw Exception("Failed to initialise the vertex list.");
 
 	indices = new unsigned long[_indexCount];
-	if (!indices) return false;
+	if (!indices) throw Exception("Failed to initialise the index list.");
 
 	memset(vertices, 0, sizeof(Vertex) * _vertexCount);
 
@@ -102,7 +97,7 @@ bool Bitmap::InitialiseBuffers()
 	vertexData.SysMemSlicePitch = 0;
 
 	result = _direct3D->GetDevice()->CreateBuffer(&vertexBufferDesc, &vertexData, &_vertexBuffer);
-	if (FAILED(result)) return false;
+	if (FAILED(result)) throw Exception("Failed to create the vertex buffer.");
 
 	// Setup Index Buffer Description
 	indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
@@ -117,15 +112,13 @@ bool Bitmap::InitialiseBuffers()
 	indexData.SysMemSlicePitch = 0;
 
 	result = _direct3D->GetDevice()->CreateBuffer(&indexBufferDesc, &indexData, &_indexBuffer);
-	if (FAILED(result)) return false;
+	if (FAILED(result)) throw Exception("Failed to create the index buffer.");
 
 	delete[] vertices;
 	vertices = nullptr;
 
 	delete[] indices;
 	indices = nullptr;
-
-	return true;
 }
 
 void Bitmap::ShutdownBuffers()
@@ -209,12 +202,10 @@ void Bitmap::RenderBuffers()
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 
-bool Bitmap::LoadTexture(char* filename)
+void Bitmap::LoadTexture(char* filename)
 {
 	_texture = new Texture(_direct3D->GetDevice(), _direct3D->GetDeviceContext(), filename);
-	if (!_texture) return false;
-
-	return true;
+	if (!_texture) throw Exception("Failed to create a texture for the file: '" + string(filename) + "'");
 }
 
 void Bitmap::ReleaseTexture()
