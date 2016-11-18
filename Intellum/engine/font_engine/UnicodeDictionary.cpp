@@ -1,5 +1,7 @@
 ﻿#include "UnicodeDictionary.h"
 
+#pragma warning( disable : 4566)
+
 UnicodeDictionary::UnicodeDictionary()
 {
 	_unicodeToLetter = map<string, string>
