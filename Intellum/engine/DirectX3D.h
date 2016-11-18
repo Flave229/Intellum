@@ -16,9 +16,8 @@ using namespace DirectX;
 
 class DirectX3D
 {
-// Member Level Variables
 private:
-	bool _vsync_enabled;
+	bool _vsyncEnabled;
 	IDXGISwapChain* _swapChain;
 	ID3D11Device* _device;
 	ID3D11DeviceContext* _deviceContext;
@@ -32,13 +31,14 @@ private:
 	DepthStencil* _depthStencil;
 	Rasterizer* _rasterizer;
 
-// Function Declarations
+private: 
+	void Initialise(Box screenSize, bool vsync, HWND hwnd, bool fullscreen, float screenDepth, float screenNear);
+
 public:
-	DirectX3D();
-	DirectX3D(const DirectX3D&);
+	DirectX3D(Box screenSize, bool vsync, HWND hwnd, bool fullscreen, float screenDepth, float screenNear);
+	DirectX3D(const DirectX3D& other);
 	~DirectX3D();
 
-	bool Initialise(Box screenSize, bool vsync, HWND hwnd, bool fullscreen, float screenDepth, float screenNear);
 	void Shutdown();
 	
 	void BeginScene(XMFLOAT4 color);

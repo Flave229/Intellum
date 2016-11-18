@@ -17,11 +17,8 @@ void Graphics::Initialise(Box screenSize, HWND hwnd)
 {
 	try
 	{
-		_direct3D = new DirectX3D;
+		_direct3D = new DirectX3D(screenSize, VSYNC_ENABLED, hwnd, FULL_SCREEN, SCREEN_DEPTH, SCREEN_NEAR);
 		if (!_direct3D) throw Exception("Failed to create a DirectX3D object.");
-
-		bool result = _direct3D->Initialise(screenSize, VSYNC_ENABLED, hwnd, FULL_SCREEN, SCREEN_DEPTH, SCREEN_NEAR);
-		if (!result) throw Exception("Could not initialise Direct3D.");
 
 		_camera = new Camera;
 		if (!_camera) throw Exception("Failed to create a camera object.");
@@ -31,7 +28,7 @@ void Graphics::Initialise(Box screenSize, HWND hwnd)
 		_shaderController = new ShaderController(_direct3D);
 		if (!_shaderController) throw Exception("Failed to create the shader controller.");
 
-		result = _shaderController->Initialise(hwnd, _camera);
+		bool result = _shaderController->Initialise(hwnd, _camera);
 		if (!_shaderController) throw Exception("Failed to create the shader controller.");
 
 		_model = new Model(_direct3D, _shaderController->GetShader(SHADER_DEFAULT), "data/images/stone.tga", "data/models/sphere.obj");

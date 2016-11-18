@@ -1,16 +1,14 @@
 #include "DirectX3D.h"
 #include "../error_handling/Exception.h"
 
-DirectX3D::DirectX3D(): _vsync_enabled(false), _swapChain(nullptr), _device(nullptr), _deviceContext(nullptr),
-							_renderTargetView(nullptr), _depthStencilView(nullptr), _hardware(nullptr), _depthStencil(nullptr), 
-							_rasterizer(nullptr)
+DirectX3D::DirectX3D(Box screenSize, bool vsync, HWND hwnd, bool fullscreen, float screenDepth, float screenNear)
+	: _vsyncEnabled(false), _swapChain(nullptr), _device(nullptr), _deviceContext(nullptr), _renderTargetView(nullptr), _depthStencilView(nullptr), _hardware(nullptr), _depthStencil(nullptr), _rasterizer(nullptr)
 {
-
+	Initialise(screenSize, vsync, hwnd, fullscreen, screenDepth, screenNear);
 }
 
-DirectX3D::DirectX3D(const DirectX3D& other) : _vsync_enabled(other._vsync_enabled), _swapChain(other._swapChain), _device(other._device), _deviceContext(other._deviceContext),
-												_renderTargetView(other._renderTargetView), _depthStencilView(other._depthStencilView), _hardware(nullptr), _depthStencil(other._depthStencil),
-												_rasterizer(other._rasterizer)
+DirectX3D::DirectX3D(const DirectX3D& other)  
+	: _vsyncEnabled(other._vsyncEnabled), _swapChain(other._swapChain), _device(other._device), _deviceContext(other._deviceContext), _renderTargetView(other._renderTargetView), _depthStencilView(other._depthStencilView), _hardware(nullptr), _depthStencil(other._depthStencil), _rasterizer(other._rasterizer)
 {
 }
 
@@ -18,7 +16,7 @@ DirectX3D::~DirectX3D()
 {
 }
 
-bool DirectX3D::Initialise(Box screenSize, bool vsync, HWND hwnd, bool fullscreen, float screenDepth, float screenNear)
+void DirectX3D::Initialise(Box screenSize, bool vsync, HWND hwnd, bool fullscreen, float screenDepth, float screenNear)
 {
 	try
 	{
@@ -28,7 +26,7 @@ bool DirectX3D::Initialise(Box screenSize, bool vsync, HWND hwnd, bool fullscree
 		D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
 		D3D11_VIEWPORT viewPort;
 
-		_vsync_enabled = vsync;
+		_vsyncEnabled = vsync;
 
 		_hardware = new HardwareDescription;
 		_hardware->Initialise(screenSize.Width, screenSize.Height);
@@ -40,7 +38,7 @@ bool DirectX3D::Initialise(Box screenSize, bool vsync, HWND hwnd, bool fullscree
 		swapChainDesc.BufferDesc.Height = screenSize.Height;
 		swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 
-		if (_vsync_enabled)
+		if (_vsyncEnabled)
 		{
 			swapChainDesc.BufferDesc.RefreshRate.Numerator = _hardware->GetRefreshRateNumerator();
 			swapChainDesc.BufferDesc.RefreshRate.Denominator = _hardware->GetRefreshRateDenominator();
@@ -107,8 +105,6 @@ bool DirectX3D::Initialise(Box screenSize, bool vsync, HWND hwnd, bool fullscree
 		_projectionMatrix = XMMatrixPerspectiveFovLH(fieldOfView, screenAspect, screenNear, screenDepth);
 		_worldMatrix = XMMatrixIdentity();
 		_orthoMatrix = XMMatrixOrthographicLH(static_cast<float>(screenSize.Width), static_cast<float>(screenSize.Height), screenNear, screenDepth);
-
-		return true;
 	}
 	catch(Exception exception)
 	{
@@ -186,7 +182,7 @@ void DirectX3D::BeginScene(XMFLOAT4 color)
 
 void DirectX3D::EndScene()
 {
-	_swapChain->Present(_vsync_enabled ? 1 : 0, 0);
+	_swapChain->Present(_vsyncEnabled ? 1 : 0, 0);
 }
 
 ID3D11Device* DirectX3D::GetDevice()
