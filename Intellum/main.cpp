@@ -7,11 +7,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline,
 	bool result;
 
 	system = new DXSystem;
-
 	if (!system) return 0;
 
-	result = system->Initialise();
-	if (result) system->Run();
+	system->Run();
 
 	system->Shutdown();
 	delete system;

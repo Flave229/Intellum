@@ -1,11 +1,12 @@
 #include "DXSystem.h"
 #include "error_handling/Exception.h"
 
-DXSystem::DXSystem(): _applicationName(nullptr), _hInstance(nullptr), _hwnd(nullptr), _input(nullptr), _graphics(nullptr)
+DXSystem::DXSystem(): _applicationName(nullptr), _hInstance(nullptr), _hwnd(nullptr), _timer(nullptr), _input(nullptr), _graphics(nullptr)
 {
+	Initialise();
 }
 
-DXSystem::DXSystem(const DXSystem& other): _applicationName(nullptr), _hInstance(nullptr), _hwnd(nullptr), _input(nullptr), _graphics(nullptr)
+DXSystem::DXSystem(const DXSystem& other): _applicationName(nullptr), _hInstance(nullptr), _hwnd(nullptr), _timer(nullptr), _input(nullptr), _graphics(nullptr)
 {
 }
 
@@ -13,7 +14,7 @@ DXSystem::~DXSystem()
 {
 }
 
-bool DXSystem::Initialise()
+void DXSystem::Initialise()
 {
 	try
 	{
@@ -22,10 +23,7 @@ bool DXSystem::Initialise()
 		InitialiseWindows(screenSize);
 
 		_input = new Input(_hInstance, _hwnd, screenSize);
-		if (!_input) return false;
-
 		_graphics = new Graphics(screenSize, _hwnd);
-		if (!_graphics) return false;
 	}
 	catch(Exception& exception)
 	{
@@ -35,17 +33,11 @@ bool DXSystem::Initialise()
 		MessageBox(_hwnd, wstring(exceptionMessage.begin(), exceptionMessage.end()).c_str(), L"Error", MB_OK);
 
 		exception.Shutdown();
-
-		return false;
 	}
 	catch(...)
 	{
 		MessageBox(_hwnd, L"An unknown error occured while initialising the system.", L"Error", MB_OK);
-
-		return false;
 	}
-
-	return true;
 }
 
 void DXSystem::Shutdown()

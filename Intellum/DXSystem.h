@@ -9,7 +9,6 @@
 
 class DXSystem
 {
-// Member-Level Variables
 private:
 	LPCWSTR _applicationName;
 	HINSTANCE _hInstance;
@@ -19,17 +18,18 @@ private:
 
 	Input* _input;
 	Graphics* _graphics;
-// Function Declarations
+
 private:
-	bool Frame(float delta);
+	void Initialise();
 	void InitialiseWindows(Box& screenSize);
+
+	bool Frame(float delta);
 	void ShutdownWindows();
 public:
 	DXSystem();
 	DXSystem(const DXSystem&);
 	~DXSystem();
 
-	bool Initialise();
 	void Shutdown();
 	void Run();
 
