@@ -21,14 +21,12 @@ bool DXSystem::Initialise()
 
 		InitialiseWindows(screenSize);
 
-		_input = new Input();
+		_input = new Input(_hInstance, _hwnd, screenSize);
 		if (!_input) return false;
-		bool result = _input->Initialise(_hInstance, _hwnd, screenSize);
-		if (!result) return false;
 
 		_graphics = new Graphics();
 		if (!_graphics) return false;
-		result = _graphics->Initialise(screenSize, _hwnd);
+		bool result = _graphics->Initialise(screenSize, _hwnd);
 		if (!result) return false;
 	}
 	catch(Exception& exception)

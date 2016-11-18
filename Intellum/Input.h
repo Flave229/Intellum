@@ -8,6 +8,7 @@
 #include <dinput.h>
 #include <DirectXMath.h>
 #include "common/Box.h"
+#include "error_handling/Exception.h"
 
 using namespace DirectX;
 
@@ -25,16 +26,16 @@ private:
 	XMFLOAT2 _mousePosition;
 
 private:
+	void Initialise(HINSTANCE hInstance, HWND hwnd, Box screenSize);
+
 	bool ReadKeyboard();
 	bool ReadMouse();
 	void ProcessInput();
 
 public:
-	Input();
+	Input(HINSTANCE hInstance, HWND hwnd, Box screenSize);
 	Input(const Input& other);
 	~Input();
-
-	bool Initialise(HINSTANCE hInstance, HWND hwnd, Box screen);
 	void Shutdown();
 	bool Frame();
 
