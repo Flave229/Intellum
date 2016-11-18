@@ -1,9 +1,10 @@
 #include "HardwareDescription.h"
 
-HardwareDescription::HardwareDescription(): _videoCardMemory(0) {
+HardwareDescription::HardwareDescription(int screenWidth, int screenHeight): _videoCardMemory(0), _refreshRateNumerator(0), _refreshRateDenominator(0)
+{
 }
 
-HardwareDescription::HardwareDescription(const HardwareDescription& other): _videoCardMemory(other._videoCardMemory)
+HardwareDescription::HardwareDescription(const HardwareDescription& other): _videoCardMemory(other._videoCardMemory), _refreshRateNumerator(other._refreshRateNumerator), _refreshRateDenominator(other._refreshRateDenominator)
 {
 }
 
@@ -11,7 +12,7 @@ HardwareDescription::~HardwareDescription()
 {
 }
 
-bool HardwareDescription::Initialise(int screenWidth, int screenHeight)
+void HardwareDescription::Initialise(int screenWidth, int screenHeight)
 {
 	try
 	{
@@ -68,7 +69,7 @@ bool HardwareDescription::Initialise(int screenWidth, int screenHeight)
 		_videoCardMemory = static_cast<int>(adapterDesc.DedicatedVideoMemory / 1024 / 1024);
 
 		int error = wcstombs_s(&stringLength, _videoCardDescription, 128, adapterDesc.Description, 128);
-		if (error != 0) return false;
+		if (error != 0) throw Exception("An error occured writing the video card description");
 
 		delete[] displayModeList;
 		displayModeList = nullptr;
@@ -90,8 +91,6 @@ bool HardwareDescription::Initialise(int screenWidth, int screenHeight)
 	{
 		throw Exception("Hardware setup failed.");
 	}
-
-	return true;
 }
 
 unsigned HardwareDescription::GetRefreshRateNumerator() const
@@ -104,7 +103,7 @@ unsigned HardwareDescription::GetRefreshRateDenominator() const
 	return _refreshRateDenominator;
 }
 
-void HardwareDescription::GetVideoCardMemory(int& memory) const
+void HardwareDescription::MapVideoCardMemoryInto(int& memory) const
 {
 	memory = _videoCardMemory;
 }

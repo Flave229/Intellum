@@ -5,24 +5,24 @@
 
 class HardwareDescription
 {
-// Member Level Variables
 private:
 	int _videoCardMemory;
 	char _videoCardDescription[128];
 
 	unsigned int _refreshRateNumerator;
 	unsigned int _refreshRateDenominator;
+
+	void Initialise(int screenWidth, int screenHeight);
 public:
-	HardwareDescription();
-	HardwareDescription(const HardwareDescription&);
+	HardwareDescription(int screenWidth, int screenHeight);
+	HardwareDescription(const HardwareDescription& other);
 	~HardwareDescription();
 
-	bool Initialise(int, int);
 
 	unsigned int GetRefreshRateNumerator() const;
 	unsigned int GetRefreshRateDenominator() const;
 
-	void GetVideoCardMemory(int&) const;
+	void MapVideoCardMemoryInto(int&) const;
 	void GetVideoCardDescription(char*);
 };
 

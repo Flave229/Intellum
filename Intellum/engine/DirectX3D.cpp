@@ -28,8 +28,7 @@ void DirectX3D::Initialise(Box screenSize, bool vsync, HWND hwnd, bool fullscree
 
 		_vsyncEnabled = vsync;
 
-		_hardware = new HardwareDescription;
-		_hardware->Initialise(screenSize.Width, screenSize.Height);
+		_hardware = new HardwareDescription(screenSize.Width, screenSize.Height);
 
 		ZeroMemory(&swapChainDesc, sizeof(swapChainDesc));
 
@@ -212,7 +211,7 @@ void DirectX3D::MapOrthoMatrixInto(XMMATRIX& orthoMatrix)
 void DirectX3D::GetVideoCardInfo(char* cardname, int& memory)
 {
 	_hardware->GetVideoCardDescription(cardname);
-	_hardware->GetVideoCardMemory(memory);
+	_hardware->MapVideoCardMemoryInto(memory);
 }
 
 void DirectX3D::TurnZBufferOn()
