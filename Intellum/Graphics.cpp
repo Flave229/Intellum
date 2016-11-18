@@ -1,12 +1,11 @@
 #include "Graphics.h"
 
-Graphics::Graphics(): _direct3D(nullptr), _camera(nullptr), _model(nullptr), _shaderController(nullptr),
-						_light(nullptr), _bitmap(nullptr)
+Graphics::Graphics(Box screenSize, HWND hwnd): _direct3D(nullptr), _fontEngine(nullptr), _camera(nullptr), _model(nullptr), _shaderController(nullptr), _light(nullptr), _bitmap(nullptr)
 {
+	Initialise(screenSize, hwnd);
 }
 
-Graphics::Graphics(const Graphics& other) : _direct3D(other._direct3D), _camera(other._camera), _model(other._model), _shaderController(other._shaderController),
-												_light(other._light), _bitmap(other._bitmap)
+Graphics::Graphics(const Graphics& other) : _direct3D(other._direct3D), _fontEngine(nullptr), _camera(other._camera), _model(other._model), _shaderController(other._shaderController), _light(other._light), _bitmap(other._bitmap)
 {
 }
 
@@ -14,17 +13,15 @@ Graphics::~Graphics()
 {
 }
 
-bool Graphics::Initialise(Box screenSize, HWND hwnd)
+void Graphics::Initialise(Box screenSize, HWND hwnd)
 {
-	bool result;
-
 	try
 	{
 		_direct3D = new DirectX3D;
 		if (!_direct3D) throw Exception("Failed to create a DirectX3D object.");
 
-		result = _direct3D->Initialise(screenSize, VSYNC_ENABLED, hwnd, FULL_SCREEN, SCREEN_DEPTH, SCREEN_NEAR);
-		if (!result) throw Exception("Could not initialise Direct3D.");;
+		bool result = _direct3D->Initialise(screenSize, VSYNC_ENABLED, hwnd, FULL_SCREEN, SCREEN_DEPTH, SCREEN_NEAR);
+		if (!result) throw Exception("Could not initialise Direct3D.");
 
 		_camera = new Camera;
 		if (!_camera) throw Exception("Failed to create a camera object.");
@@ -69,8 +66,6 @@ bool Graphics::Initialise(Box screenSize, HWND hwnd)
 	{
 		throw Exception("Failed to initialise the graphics class.");
 	}
-
-	return true;
 }
 
 void Graphics::Shutdown()

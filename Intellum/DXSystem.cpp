@@ -24,10 +24,8 @@ bool DXSystem::Initialise()
 		_input = new Input(_hInstance, _hwnd, screenSize);
 		if (!_input) return false;
 
-		_graphics = new Graphics();
+		_graphics = new Graphics(screenSize, _hwnd);
 		if (!_graphics) return false;
-		bool result = _graphics->Initialise(screenSize, _hwnd);
-		if (!result) return false;
 	}
 	catch(Exception& exception)
 	{

@@ -19,7 +19,6 @@ const float SCREEN_NEAR = 0.1f;
 
 class Graphics
 {
-// Member Level Variables
 private:
 	DirectX3D* _direct3D;
 
@@ -31,15 +30,15 @@ private:
 	Light* _light;
 	Bitmap* _bitmap;
 
-// Function Declarations
 private:
+	void Initialise(Box screenSize, HWND hwnd);
+
 	bool Render(float delta, XMFLOAT2 mousePoint);
 public:
-	Graphics();
-	Graphics(const Graphics&);
+	Graphics(Box screenSize, HWND hwnd);
+	Graphics(const Graphics& other);
 	~Graphics();
 
-	bool Initialise(Box screenSize, HWND hwnd);
 	void Shutdown();
 	bool Frame(float delta, XMFLOAT2 mousePoint);
 };
