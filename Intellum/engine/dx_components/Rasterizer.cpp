@@ -1,7 +1,9 @@
 #include "Rasterizer.h"
+#include "../../error_handling/Exception.h"
 
 Rasterizer::Rasterizer(ID3D11Device* device, ID3D11DeviceContext* deviceContext): _device(device), _deviceContext(deviceContext), _defaultState(nullptr), _wireframeState(nullptr)
 {
+	Initialise();
 }
 
 Rasterizer::Rasterizer(const Rasterizer& other): _device(other._device), _deviceContext(other._deviceContext), _defaultState(other._defaultState), _wireframeState(other._wireframeState)
@@ -12,7 +14,7 @@ Rasterizer::~Rasterizer()
 {
 }
 
-bool Rasterizer::Initialise()
+void Rasterizer::Initialise()
 {
 	HRESULT result;
 	D3D11_RASTERIZER_DESC defaultDesc;
@@ -22,8 +24,6 @@ bool Rasterizer::Initialise()
 	CreateRasterizerState(_wireframeState, D3D11_FILL_WIREFRAME);
 
 	_deviceContext->RSSetState(_defaultState);
-
-	return true;
 }
 
 void Rasterizer::Shutdown()
@@ -55,7 +55,7 @@ void Rasterizer::SetStencilType(ID3D11DeviceContext* deviceContext, RasterizerSt
 	}
 }
 
-bool Rasterizer::CreateRasterizerState(ID3D11RasterizerState* rasterizerState, D3D11_FILL_MODE fillMode)
+void Rasterizer::CreateRasterizerState(ID3D11RasterizerState* rasterizerState, D3D11_FILL_MODE fillMode)
 {
 	D3D11_RASTERIZER_DESC rasterizerDescription;
 
@@ -71,5 +71,5 @@ bool Rasterizer::CreateRasterizerState(ID3D11RasterizerState* rasterizerState, D
 	rasterizerDescription.SlopeScaledDepthBias = 0.0f;
 
 	bool result = _device->CreateRasterizerState(&rasterizerDescription, &rasterizerState);
-	if (FAILED(result)) return false;
+	if (FAILED(result)) throw Exception("Failed to create the rasterizer state");
 }

@@ -265,7 +265,6 @@ UnicodeDictionary::UnicodeDictionary()
 	};
 }
 
-
 UnicodeDictionary::~UnicodeDictionary()
 {
 }
