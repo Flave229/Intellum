@@ -1,6 +1,7 @@
 #pragma once
 
 #include <d3d11.h>
+#include "../../common/Box.h"
 
 enum DepthStencilType
 {
@@ -22,13 +23,14 @@ private:
 
 // Function Declarations
 private:
-	bool CreateDepthStencil(ID3D11DepthStencilState* depthStencil, bool depthEnable);
+	void Initialise(Box screenSize);
+	void CreateDepthStencil(ID3D11DepthStencilState* depthStencil, bool depthEnable);
+
 public:
-	DepthStencil(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
-	DepthStencil(const DepthStencil&);
+	DepthStencil(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Box screenSize);
+	DepthStencil(const DepthStencil& other);
 	~DepthStencil();
 
-	bool Initialise(int, int);
 	void Shutdown();
 
 	void SetStencilType(DepthStencilType) const;

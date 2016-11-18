@@ -2,8 +2,9 @@
 #include "../../error_handling/Exception.h"
 #include <map>
 
-DepthStencil::DepthStencil(ID3D11Device* device, ID3D11DeviceContext* deviceContext): _device(device), _deviceContext(deviceContext), _depthStencilBuffer(nullptr), _depthStencilState(nullptr), _depthDisabledStencilState(nullptr)
+DepthStencil::DepthStencil(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Box screenSize): _device(device), _deviceContext(deviceContext), _depthStencilBuffer(nullptr), _depthStencilState(nullptr), _depthDisabledStencilState(nullptr)
 {
+	Initialise(screenSize);
 }
 
 DepthStencil::DepthStencil(const DepthStencil& other): _device(other._device), _deviceContext(other._deviceContext), _depthStencilBuffer(other._depthStencilBuffer), _depthStencilState(other._depthStencilState), _depthDisabledStencilState(other._depthDisabledStencilState)
@@ -14,7 +15,7 @@ DepthStencil::~DepthStencil()
 {
 }
 
-bool DepthStencil::Initialise(int screenWidth, int screenHeight)
+void DepthStencil::Initialise(Box screenSize)
 {
 	HRESULT result;
 	D3D11_TEXTURE2D_DESC depthBufferDesc;
@@ -23,8 +24,8 @@ bool DepthStencil::Initialise(int screenWidth, int screenHeight)
 
 	ZeroMemory(&depthBufferDesc, sizeof(depthBufferDesc));
 
-	depthBufferDesc.Width = screenWidth;
-	depthBufferDesc.Height = screenHeight;
+	depthBufferDesc.Width = screenSize.Width;
+	depthBufferDesc.Height = screenSize.Height;
 	depthBufferDesc.MipLevels = 1;
 	depthBufferDesc.ArraySize = 1;
 	depthBufferDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
@@ -36,14 +37,12 @@ bool DepthStencil::Initialise(int screenWidth, int screenHeight)
 	depthBufferDesc.MiscFlags = 0;
 
 	result = _device->CreateTexture2D(&depthBufferDesc, nullptr, &_depthStencilBuffer);
-	if (FAILED(result)) return false;
+	if (FAILED(result)) throw Exception("Failed to create the Depth Stencil Buffer");
 
 	CreateDepthStencil(_depthStencilState, true);
 	CreateDepthStencil(_depthDisabledStencilState, false);
 
 	_deviceContext->OMSetDepthStencilState(_depthStencilState, 1);
-
-	return true;
 }
 
 void DepthStencil::Shutdown()
@@ -106,7 +105,7 @@ ID3D11Texture2D* DepthStencil::GetDepthStencilBuffer() const
 	return _depthStencilBuffer;
 }
 
-bool DepthStencil::CreateDepthStencil(ID3D11DepthStencilState* depthStencil, bool depthEnable)
+void DepthStencil::CreateDepthStencil(ID3D11DepthStencilState* depthStencil, bool depthEnable)
 {
 	D3D11_DEPTH_STENCIL_DESC depthStencilDescription;
 
@@ -128,7 +127,5 @@ bool DepthStencil::CreateDepthStencil(ID3D11DepthStencilState* depthStencil, boo
 	depthStencilDescription.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
 
 	bool result = _device->CreateDepthStencilState(&depthStencilDescription, &depthStencil);
-	if (FAILED(result)) return false;
-
-	return true;
+	if (FAILED(result)) throw Exception("Failed to create the Depth Stencil State");
 }

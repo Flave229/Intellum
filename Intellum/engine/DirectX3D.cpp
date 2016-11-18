@@ -72,8 +72,7 @@ void DirectX3D::Initialise(Box screenSize, bool vsync, HWND hwnd, bool fullscree
 		backBufferPtr->Release();
 		backBufferPtr = nullptr;
 
-		_depthStencil = new DepthStencil(_device, _deviceContext);
-		_depthStencil->Initialise(screenSize.Width, screenSize.Height);
+		_depthStencil = new DepthStencil(_device, _deviceContext, screenSize);
 
 		ZeroMemory(&depthStencilViewDesc, sizeof(depthStencilViewDesc));
 
