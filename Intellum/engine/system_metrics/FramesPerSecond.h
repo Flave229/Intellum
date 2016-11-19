@@ -9,7 +9,7 @@ class FramesPerSecond
 private:
 	int _framesPerSecond;
 	int _frameCount;
-	int _deltaCount;
+	float _deltaCount;
 
 public:
 	FramesPerSecond();

@@ -6,7 +6,7 @@ DXSystem::DXSystem(): _applicationName(nullptr), _hInstance(nullptr), _hwnd(null
 	Initialise();
 }
 
-DXSystem::DXSystem(const DXSystem& other): _applicationName(nullptr), _hInstance(nullptr), _hwnd(nullptr), _timer(nullptr), _input(nullptr), _graphics(nullptr)
+DXSystem::DXSystem(const DXSystem& other): _applicationName(other._applicationName), _hInstance(other._hInstance), _hwnd(other._hwnd), _framesPerSecond(other._framesPerSecond), _timer(other._timer), _input(other._input), _graphics(other._graphics)
 {
 }
 
@@ -22,8 +22,10 @@ void DXSystem::Initialise()
 
 		InitialiseWindows(screenSize);
 
+		_framesPerSecond = new FramesPerSecond();
+
 		_input = new Input(_hInstance, _hwnd, screenSize);
-		_graphics = new Graphics(screenSize, _hwnd);
+		_graphics = new Graphics(screenSize, _hwnd, _framesPerSecond);
 	}
 	catch(Exception& exception)
 	{
@@ -54,6 +56,12 @@ void DXSystem::Shutdown()
 		_input->Shutdown();
 		delete _input;
 		_input = nullptr;
+	}
+
+	if (_framesPerSecond)
+	{
+		delete _framesPerSecond;
+		_framesPerSecond = nullptr;
 	}
 
 	ShutdownWindows();
@@ -105,8 +113,9 @@ bool DXSystem::Frame(float delta)
 		bool result = _input->Frame();
 		if (!result) return false;
 
-		XMFLOAT2 mousePoint;
+		_framesPerSecond->Frame(delta);
 
+		XMFLOAT2 mousePoint;
 		_input->MapMouseLocationInto(mousePoint);
 
 		result = _graphics->Frame(delta, mousePoint);

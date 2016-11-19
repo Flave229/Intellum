@@ -6,6 +6,7 @@
 #include "Input.h"
 #include "Graphics.h"
 #include "engine/GameTimer.h"
+#include "engine/system_metrics/FramesPerSecond.h"
 
 class DXSystem
 {
@@ -14,6 +15,7 @@ private:
 	HINSTANCE _hInstance;
 	HWND _hwnd;
 
+	FramesPerSecond* _framesPerSecond;
 	GameTimer* _timer;
 
 	Input* _input;

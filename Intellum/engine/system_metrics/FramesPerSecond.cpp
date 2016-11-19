@@ -15,9 +15,9 @@ FramesPerSecond::~FramesPerSecond()
 void FramesPerSecond::Frame(float delta)
 {
 	_frameCount++;
-	_deltaCount = _deltaCount + delta;
+	_deltaCount += delta;
 	
-	if (_deltaCount >= 1000)
+	if (_deltaCount >= 1)
 	{
 		_framesPerSecond = _frameCount;
 

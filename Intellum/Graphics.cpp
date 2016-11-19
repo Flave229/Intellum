@@ -1,11 +1,11 @@
 #include "Graphics.h"
 
-Graphics::Graphics(Box screenSize, HWND hwnd): _direct3D(nullptr), _fontEngine(nullptr), _camera(nullptr), _model(nullptr), _shaderController(nullptr), _light(nullptr), _bitmap(nullptr)
+Graphics::Graphics(Box screenSize, HWND hwnd, FramesPerSecond* framesPerSecond): _direct3D(nullptr), _fontEngine(nullptr), _framesPerSecond(framesPerSecond), _camera(nullptr), _model(nullptr), _shaderController(nullptr), _light(nullptr), _bitmap(nullptr)
 {
 	Initialise(screenSize, hwnd);
 }
 
-Graphics::Graphics(const Graphics& other) : _direct3D(other._direct3D), _fontEngine(nullptr), _camera(other._camera), _model(other._model), _shaderController(other._shaderController), _light(other._light), _bitmap(other._bitmap)
+Graphics::Graphics(const Graphics& other) : _direct3D(other._direct3D), _fontEngine(nullptr), _framesPerSecond(nullptr), _camera(other._camera), _model(other._model), _shaderController(other._shaderController), _light(other._light), _bitmap(other._bitmap)
 {
 }
 
@@ -143,6 +143,9 @@ bool Graphics::Render(float delta, XMFLOAT2 mousePoint)
 		if (!result) return false;
 
 		result = _fontEngine->Render(_light, XMFLOAT2(10, 10), "impact", "Mouse X: " + to_string(static_cast<int>(mousePoint.x)) + "    " + "Mouse Y: " + to_string(static_cast<int>(mousePoint.y)), XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 20);
+		if (!result) return false;
+
+		result = _fontEngine->Render(_light, XMFLOAT2(10, 35), "impact", "FPS: " + to_string(_framesPerSecond->GetFramesPerSeond()), XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 20);
 		if (!result) return false;
 
 		_direct3D->TurnZBufferOn();

@@ -11,6 +11,7 @@
 #include "error_handling/Exception.h"
 #include "engine/DirectX3D.h"
 #include "engine/font_engine/FontEngine.h"
+#include "engine/system_metrics/FramesPerSecond.h"
 
 const bool FULL_SCREEN = false;
 const bool VSYNC_ENABLED = true;
@@ -23,6 +24,7 @@ private:
 	DirectX3D* _direct3D;
 
 	FontEngine* _fontEngine;
+	FramesPerSecond* _framesPerSecond;
 	
 	Camera* _camera;
 	Model* _model;
@@ -35,7 +37,7 @@ private:
 
 	bool Render(float delta, XMFLOAT2 mousePoint);
 public:
-	Graphics(Box screenSize, HWND hwnd);
+	Graphics(Box screenSize, HWND hwnd, FramesPerSecond* framesPerSecond);
 	Graphics(const Graphics& other);
 	~Graphics();
 
