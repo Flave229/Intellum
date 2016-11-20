@@ -121,6 +121,9 @@
     <ClCompile Include="engine\system_metrics\FramesPerSecond.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="engine\system_metrics\Cpu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Input.h">
@@ -208,6 +211,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="engine\system_metrics\FramesPerSecond.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\system_metrics\Cpu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

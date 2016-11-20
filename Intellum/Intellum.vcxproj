@@ -157,6 +157,7 @@
   <ItemGroup>
     <ClCompile Include="Bitmap.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="engine\system_metrics\Cpu.cpp" />
     <ClCompile Include="engine\shader_engine\DefaultShader.cpp" />
     <ClCompile Include="engine\dx_components\DepthStencil.cpp" />
     <ClCompile Include="engine\DirectX3D.cpp" />
@@ -188,6 +189,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="common\Box.h" />
     <ClInclude Include="common\Vertex.h" />
+    <ClInclude Include="engine\system_metrics\Cpu.h" />
     <ClInclude Include="engine\shader_engine\DefaultShader.h" />
     <ClInclude Include="engine\dx_components\DepthStencil.h" />
     <ClInclude Include="engine\DirectX3D.h" />
