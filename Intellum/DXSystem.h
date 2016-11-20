@@ -7,6 +7,7 @@
 #include "Graphics.h"
 #include "engine/GameTimer.h"
 #include "engine/system_metrics/FramesPerSecond.h"
+#include "engine/system_metrics/Cpu.h"
 
 class DXSystem
 {
@@ -16,6 +17,7 @@ private:
 	HWND _hwnd;
 
 	FramesPerSecond* _framesPerSecond;
+	Cpu* _cpu;
 	GameTimer* _timer;
 
 	Input* _input;

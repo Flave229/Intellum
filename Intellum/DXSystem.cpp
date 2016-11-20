@@ -1,12 +1,12 @@
 #include "DXSystem.h"
 #include "error_handling/Exception.h"
 
-DXSystem::DXSystem(): _applicationName(nullptr), _hInstance(nullptr), _hwnd(nullptr), _timer(nullptr), _input(nullptr), _graphics(nullptr)
+DXSystem::DXSystem(): _applicationName(nullptr), _hInstance(nullptr), _hwnd(nullptr), _framesPerSecond(nullptr), _cpu(nullptr), _timer(nullptr), _input(nullptr), _graphics(nullptr)
 {
 	Initialise();
 }
 
-DXSystem::DXSystem(const DXSystem& other): _applicationName(other._applicationName), _hInstance(other._hInstance), _hwnd(other._hwnd), _framesPerSecond(other._framesPerSecond), _timer(other._timer), _input(other._input), _graphics(other._graphics)
+DXSystem::DXSystem(const DXSystem& other): _applicationName(other._applicationName), _hInstance(other._hInstance), _hwnd(other._hwnd), _framesPerSecond(other._framesPerSecond), _cpu(other._cpu), _timer(other._timer), _input(other._input), _graphics(other._graphics)
 {
 }
 
@@ -23,9 +23,10 @@ void DXSystem::Initialise()
 		InitialiseWindows(screenSize);
 
 		_framesPerSecond = new FramesPerSecond();
+		_cpu = new Cpu();
 
 		_input = new Input(_hInstance, _hwnd, screenSize);
-		_graphics = new Graphics(screenSize, _hwnd, _framesPerSecond);
+		_graphics = new Graphics(screenSize, _hwnd, _framesPerSecond, _cpu);
 	}
 	catch(Exception& exception)
 	{
@@ -62,6 +63,12 @@ void DXSystem::Shutdown()
 	{
 		delete _framesPerSecond;
 		_framesPerSecond = nullptr;
+	}
+
+	if (_cpu)
+	{
+		delete _cpu;
+		_cpu = nullptr;
 	}
 
 	ShutdownWindows();
@@ -114,6 +121,7 @@ bool DXSystem::Frame(float delta)
 		if (!result) return false;
 
 		_framesPerSecond->Frame(delta);
+		_cpu->Frame();
 
 		XMFLOAT2 mousePoint;
 		_input->MapMouseLocationInto(mousePoint);
