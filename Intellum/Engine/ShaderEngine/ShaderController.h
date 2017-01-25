@@ -6,7 +6,7 @@
 #include <DirectXMath.h>
 #include <fstream>
 
-#include "../../error_handling/Exception.h"
+#include "../../ErrorHandling/Exception.h"
 #include "../DirectX3D.h"
 #include "DefaultShader.h"
 #include "FontShader.h"

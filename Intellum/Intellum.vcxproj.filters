@@ -67,61 +67,61 @@
     <ClCompile Include="Light.cpp">
       <Filter>Source Files\Application</Filter>
     </ClCompile>
-    <ClCompile Include="loaders\OBJLoader.cpp">
-      <Filter>Loaders</Filter>
-    </ClCompile>
-    <ClCompile Include="engine\GameTimer.cpp">
-      <Filter>Header Files\Application</Filter>
-    </ClCompile>
     <ClCompile Include="Bitmap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="engine\DirectX3D.cpp">
-      <Filter>Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="error_handling\Exception.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="engine\font_engine\Font.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="engine\dx_components\DepthStencil.cpp">
-      <Filter>Engine\DX11Components</Filter>
-    </ClCompile>
-    <ClCompile Include="engine\dx_components\HardwareDescription.cpp">
-      <Filter>Engine\DX11Components</Filter>
-    </ClCompile>
-    <ClCompile Include="engine\dx_components\Rasterizer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DXSystem.cpp">
       <Filter>Source Files\Application</Filter>
     </ClCompile>
-    <ClCompile Include="engine\font_engine\FontEngine.cpp">
+    <ClCompile Include="engine\DirectX3D.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\GameTimer.cpp">
+      <Filter>Header Files\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\DxComponents\DepthStencil.cpp">
+      <Filter>Engine\DX11Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\DxComponents\HardwareDescription.cpp">
+      <Filter>Engine\DX11Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\DxComponents\Rasterizer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="engine\font_engine\Character.cpp">
+    <ClCompile Include="Engine\FontEngine\Character.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="engine\shader_engine\DefaultShader.cpp">
+    <ClCompile Include="Engine\FontEngine\Font.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="engine\shader_engine\ShaderController.cpp">
+    <ClCompile Include="Engine\FontEngine\FontEngine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\FontEngine\UnicodeDictionary.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\ShaderEngine\DefaultShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\ShaderEngine\FontShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\ShaderEngine\ShaderController.cpp">
       <Filter>Source Files\Application</Filter>
     </ClCompile>
-    <ClCompile Include="engine\shader_engine\FontShader.cpp">
+    <ClCompile Include="Engine\SystemMetrics\Cpu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="engine\font_engine\UnicodeDictionary.cpp">
+    <ClCompile Include="Engine\SystemMetrics\FramesPerSecond.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ErrorHandling\Exception.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="loaders\OBJLoader.cpp">
+      <Filter>Loaders</Filter>
     </ClCompile>
     <ClCompile Include="loaders\TargaLoader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="engine\system_metrics\FramesPerSecond.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="engine\system_metrics\Cpu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -144,13 +144,70 @@
     <ClInclude Include="Light.h">
       <Filter>Header Files\Application</Filter>
     </ClInclude>
-    <ClInclude Include="loaders\OBJLoader.h">
-      <Filter>Loaders</Filter>
+    <ClInclude Include="Bitmap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DXSystem.h">
+      <Filter>Header Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\DirectX3D.h">
+      <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="engine\GameTimer.h">
       <Filter>Header Files\Application</Filter>
     </ClInclude>
-    <ClInclude Include="Bitmap.h">
+    <ClInclude Include="Engine\DxComponents\DepthStencil.h">
+      <Filter>Engine\DX11Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\DxComponents\HardwareDescription.h">
+      <Filter>Engine\DX11Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\DxComponents\Rasterizer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\FontEngine\Character.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\FontEngine\Font.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\FontEngine\FontEngine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\FontEngine\UnicodeDictionary.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ShaderEngine\DefaultShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ShaderEngine\FontShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ShaderEngine\IShaderType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ShaderEngine\ShaderController.h">
+      <Filter>Header Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\SystemMetrics\Cpu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\SystemMetrics\FramesPerSecond.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ErrorHandling\Exception.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="loaders\models\TargaData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="loaders\OBJLoader.h">
+      <Filter>Loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="loaders\TargaLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\Box.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="common\Geometry.h">
@@ -159,68 +216,6 @@
     <ClInclude Include="common\Vertex.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="engine\DirectX3D.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="error_handling\Exception.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="engine\font_engine\Font.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="engine\dx_components\DepthStencil.h">
-      <Filter>Engine\DX11Components</Filter>
-    </ClInclude>
-    <ClInclude Include="engine\dx_components\HardwareDescription.h">
-      <Filter>Engine\DX11Components</Filter>
-    </ClInclude>
-    <ClInclude Include="engine\dx_components\Rasterizer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DXSystem.h">
-      <Filter>Header Files\Application</Filter>
-    </ClInclude>
-    <ClInclude Include="engine\font_engine\FontEngine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="engine\font_engine\Character.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="engine\shader_engine\IShaderType.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="engine\shader_engine\DefaultShader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="engine\shader_engine\ShaderController.h">
-      <Filter>Header Files\Application</Filter>
-    </ClInclude>
-    <ClInclude Include="engine\shader_engine\FontShader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="engine\font_engine\UnicodeDictionary.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="loaders\TargaLoader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="common\Box.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="loaders\models\TargaData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="engine\system_metrics\FramesPerSecond.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="engine\system_metrics\Cpu.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="data\models\Cube.txt">
-      <Filter>Data\Models</Filter>
-    </Text>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="shaders\PixelShader.hlsl">
@@ -229,6 +224,11 @@
     <FxCompile Include="shaders\VertexShader.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="data\models\Cube.txt">
+      <Filter>Data\Models</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <Object Include="data\models\sphere.obj">

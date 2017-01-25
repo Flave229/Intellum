@@ -1,5 +1,5 @@
 #include "Rasterizer.h"
-#include "../../error_handling/Exception.h"
+#include "../../ErrorHandling/Exception.h"
 
 Rasterizer::Rasterizer(ID3D11Device* device, ID3D11DeviceContext* deviceContext): _device(device), _deviceContext(deviceContext), _defaultState(nullptr), _wireframeState(nullptr)
 {

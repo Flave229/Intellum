@@ -8,9 +8,9 @@
 
 #include "Texture.h"
 #include "common/Geometry.h"
-#include "engine\shader_engine\IShaderType.h"
-#include "engine\shader_engine\DefaultShader.h"
-#include "engine\DirectX3D.h"
+#include "Engine\ShaderEngine\IShaderType.h"
+#include "Engine\ShaderEngine\DefaultShader.h"
+#include "Engine\DirectX3D.h"
 #include "Camera.h"
 
 using namespace DirectX;

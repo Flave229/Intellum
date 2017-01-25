@@ -5,9 +5,9 @@
 #include <windows.h>
 #include "Input.h"
 #include "Graphics.h"
-#include "engine/GameTimer.h"
-#include "engine/system_metrics/FramesPerSecond.h"
-#include "engine/system_metrics/Cpu.h"
+#include "Engine/GameTimer.h"
+#include "Engine/SystemMetrics/FramesPerSecond.h"
+#include "Engine/SystemMetrics/Cpu.h"
 
 class DXSystem
 {

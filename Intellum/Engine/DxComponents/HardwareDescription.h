@@ -1,7 +1,7 @@
 #pragma once
 #include <d3d11.h>
 
-#include "../../error_handling/Exception.h"
+#include "../../ErrorHandling/Exception.h"
 
 class HardwareDescription
 {

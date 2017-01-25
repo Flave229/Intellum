@@ -1,5 +1,5 @@
 #include "DXSystem.h"
-#include "error_handling/Exception.h"
+#include "ErrorHandling/Exception.h"
 
 DXSystem::DXSystem(): _applicationName(nullptr), _hInstance(nullptr), _hwnd(nullptr), _framesPerSecond(nullptr), _cpu(nullptr), _timer(nullptr), _input(nullptr), _graphics(nullptr)
 {

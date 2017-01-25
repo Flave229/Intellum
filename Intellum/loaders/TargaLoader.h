@@ -4,7 +4,7 @@
 #include <d3d11.h>
 #include <stdio.h>
 
-#include "../error_handling/Exception.h"
+#include "../ErrorHandling/Exception.h"
 #include "../common/Box.h"
 #include "models/TargaData.h"
 

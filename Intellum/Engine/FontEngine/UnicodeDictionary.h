@@ -3,7 +3,7 @@
 #include <string>
 #include <map>
 
-#include "../../error_handling/Exception.h"
+#include "../../ErrorHandling/Exception.h"
 #include "Character.h"
 
 using namespace std;

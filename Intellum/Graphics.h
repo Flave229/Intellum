@@ -3,16 +3,16 @@
 
 #include "Camera.h"
 #include "Model.h"
-#include "engine\shader_engine\ShaderController.h"
-#include "engine\shader_engine\IShaderType.h"
-#include "engine\shader_engine\DefaultShader.h"
+#include "Engine\ShaderEngine\ShaderController.h"
+#include "Engine\ShaderEngine\IShaderType.h"
+#include "Engine\ShaderEngine\DefaultShader.h"
 #include "Light.h"
 #include "Bitmap.h"
-#include "error_handling/Exception.h"
-#include "engine/DirectX3D.h"
-#include "engine/font_engine/FontEngine.h"
-#include "engine/system_metrics/FramesPerSecond.h"
-#include "engine/system_metrics/Cpu.h"
+#include "ErrorHandling/Exception.h"
+#include "Engine/DirectX3D.h"
+#include "Engine/FontEngine/FontEngine.h"
+#include "Engine/SystemMetrics/FramesPerSecond.h"
+#include "Engine/SystemMetrics/Cpu.h"
 
 const bool FULL_SCREEN = false;
 const bool VSYNC_ENABLED = true;

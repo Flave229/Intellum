@@ -3,11 +3,11 @@
 #include <Windows.h>
 #include <dirent.h>
 
-#include "../../error_handling/Exception.h"
+#include "../../ErrorHandling/Exception.h"
 #include "Font.h"
 #include "Character.h"
-#include "../shader_engine/IShaderType.h"
-#include "../shader_engine/FontShader.h"
+#include "../ShaderEngine/IShaderType.h"
+#include "../ShaderEngine/FontShader.h"
 #include "../DirectX3D.h"
 
 using namespace std;

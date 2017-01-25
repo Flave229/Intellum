@@ -139,16 +139,16 @@ bool Graphics::Render(float delta, XMFLOAT2 mousePoint)
 		result = _bitmap->Render(_light, XMFLOAT2(100, 100), Box(256, 256));
 		if (!result) return false;
 
-		result = _fontEngine->Render(_light, XMFLOAT2(50, 600), "impact", "Victoria Grump", XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 30);
+		result = _fontEngine->Render(_light, XMFLOAT2(50, 600), "Impact", "Victoria Grump", XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 30);
 		if (!result) return false;
 
-		result = _fontEngine->Render(_light, XMFLOAT2(10, 10), "impact", "Mouse X: " + to_string(static_cast<int>(mousePoint.x)) + "    " + "Mouse Y: " + to_string(static_cast<int>(mousePoint.y)), XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 20);
+		result = _fontEngine->Render(_light, XMFLOAT2(10, 10), "Impact", "Mouse X: " + to_string(static_cast<int>(mousePoint.x)) + "    " + "Mouse Y: " + to_string(static_cast<int>(mousePoint.y)), XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 20);
 		if (!result) return false;
 
-		result = _fontEngine->Render(_light, XMFLOAT2(10, 35), "impact", "FPS: " + to_string(_framesPerSecond->GetFramesPerSeond()), XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 20);
+		result = _fontEngine->Render(_light, XMFLOAT2(10, 35), "Impact", "FPS: " + to_string(_framesPerSecond->GetFramesPerSeond()), XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 20);
 		if (!result) return false;
 
-		result = _fontEngine->Render(_light, XMFLOAT2(10, 60), "impact", "Cpu: " + to_string(_cpu->GetCpuPercentage()) + "%", XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 20);
+		result = _fontEngine->Render(_light, XMFLOAT2(10, 60), "Impact", "Cpu: " + to_string(_cpu->GetCpuPercentage()) + "%", XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 20);
 		if (!result) return false;
 
 		_direct3D->TurnZBufferOn();

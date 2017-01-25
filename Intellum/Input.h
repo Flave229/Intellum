@@ -8,7 +8,7 @@
 #include <dinput.h>
 #include <DirectXMath.h>
 #include "common/Box.h"
-#include "error_handling/Exception.h"
+#include "ErrorHandling/Exception.h"
 
 using namespace DirectX;
 

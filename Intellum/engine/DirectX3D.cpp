@@ -1,5 +1,5 @@
 #include "DirectX3D.h"
-#include "../error_handling/Exception.h"
+#include "../ErrorHandling/Exception.h"
 
 DirectX3D::DirectX3D(Box screenSize, bool vsync, HWND hwnd, bool fullscreen, float screenDepth, float screenNear)
 	: _vsyncEnabled(false), _swapChain(nullptr), _device(nullptr), _deviceContext(nullptr), _renderTargetView(nullptr), _depthStencilView(nullptr), _hardware(nullptr), _depthStencil(nullptr), _rasterizer(nullptr)

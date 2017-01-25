@@ -99,7 +99,7 @@ bool FontEngine::FindFontsFolder()
 		{
 			string subDirectory = (string)entry->d_name;
 
-			if (subDirectory.find("fonts") != string::npos)
+			if (subDirectory.find("Fonts") != string::npos)
 			{
 				closedir(directory);
 				return true;
@@ -193,8 +193,8 @@ vector<Character*> FontEngine::GetCharactersFromFontFolder(string filePath, Box 
 				characters.push_back(CreateCharacterFromFontFolder(filePath, unicodeDictionary.GetCharacterForUnicode(unicodes.at(i)), unicodes.at(i), screenSize));
 		}
 
-		// Always reserve unicode 0000 in EVERY font to display the default error character in fonts/default
-		characters.push_back(CreateCharacterFromFontFolder("fonts/default", unicodeDictionary.GetCharacterForUnicode("0000"), "0000", screenSize));
+		// Always reserve unicode 0000 in EVERY font to display the default error character in Fonts/Default
+		characters.push_back(CreateCharacterFromFontFolder("Fonts/Default", unicodeDictionary.GetCharacterForUnicode("0000"), "0000", screenSize));
 
 		return characters;
 	}
@@ -236,7 +236,7 @@ vector<Character*> FontEngine::StringToCharacterTextureList(string font, string 
 {
 	try
 	{
-		Font* defaultFont = GetFont("default");
+		Font* defaultFont = GetFont("Default");
 		Font* chosenFont = GetFont(font);
 		vector<Character*> characterList;
 

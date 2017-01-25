@@ -1,5 +1,5 @@
 #include "DepthStencil.h"
-#include "../../error_handling/Exception.h"
+#include "../../ErrorHandling/Exception.h"
 #include <map>
 
 DepthStencil::DepthStencil(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Box screenSize): _device(device), _deviceContext(deviceContext), _depthStencilBuffer(nullptr), _depthStencilState(nullptr), _depthDisabledStencilState(nullptr)

@@ -7,9 +7,9 @@
 
 #include <d3d11.h>
 #include <DirectXMath.h>
-#include "dx_components/HardwareDescription.h"
-#include "dx_components/DepthStencil.h"
-#include "dx_components/Rasterizer.h"
+#include "DxComponents/HardwareDescription.h"
+#include "DxComponents/DepthStencil.h"
+#include "DxComponents/Rasterizer.h"
 #include "../common/Box.h"
 
 using namespace DirectX;
