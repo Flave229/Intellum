@@ -52,23 +52,8 @@
     <ClCompile Include="Input.cpp">
       <Filter>Source Files\Application</Filter>
     </ClCompile>
-    <ClCompile Include="Graphics.cpp">
-      <Filter>Source Files\Application</Filter>
-    </ClCompile>
-    <ClCompile Include="Model.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files\Application</Filter>
-    </ClCompile>
-    <ClCompile Include="Texture.cpp">
-      <Filter>Source Files\ObjectData</Filter>
-    </ClCompile>
-    <ClCompile Include="Light.cpp">
-      <Filter>Source Files\Application</Filter>
-    </ClCompile>
-    <ClCompile Include="Bitmap.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DXSystem.cpp">
       <Filter>Source Files\Application</Filter>
@@ -124,28 +109,28 @@
     <ClCompile Include="loaders\TargaLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Graphics\Bitmap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Graphics\Graphics.cpp">
+      <Filter>Source Files\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Graphics\Model.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Graphics\Light.cpp">
+      <Filter>Source Files\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Graphics\Texture.cpp">
+      <Filter>Source Files\ObjectData</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Input.h">
       <Filter>Header Files\Application</Filter>
     </ClInclude>
-    <ClInclude Include="Graphics.h">
-      <Filter>Header Files\Application</Filter>
-    </ClInclude>
-    <ClInclude Include="Model.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>Header Files\Application</Filter>
-    </ClInclude>
-    <ClInclude Include="Texture.h">
-      <Filter>Header Files\ObjectData</Filter>
-    </ClInclude>
-    <ClInclude Include="Light.h">
-      <Filter>Header Files\Application</Filter>
-    </ClInclude>
-    <ClInclude Include="Bitmap.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DXSystem.h">
       <Filter>Header Files\Application</Filter>
@@ -215,6 +200,21 @@
     </ClInclude>
     <ClInclude Include="common\Vertex.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Graphics\Bitmap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Graphics\Graphics.h">
+      <Filter>Header Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Graphics\Model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Graphics\Light.h">
+      <Filter>Header Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Graphics\Texture.h">
+      <Filter>Header Files\ObjectData</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

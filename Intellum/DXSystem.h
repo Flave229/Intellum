@@ -4,7 +4,7 @@
 
 #include <windows.h>
 #include "Input.h"
-#include "Graphics.h"
+#include "Engine/Graphics/Graphics.h"
 #include "Engine/GameTimer.h"
 #include "Engine/SystemMetrics/FramesPerSecond.h"
 #include "Engine/SystemMetrics/Cpu.h"

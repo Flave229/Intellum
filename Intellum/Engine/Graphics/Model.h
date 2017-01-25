@@ -7,11 +7,11 @@
 #include <fstream>
 
 #include "Texture.h"
-#include "common/Geometry.h"
-#include "Engine\ShaderEngine\IShaderType.h"
-#include "Engine\ShaderEngine\DefaultShader.h"
-#include "Engine\DirectX3D.h"
-#include "Camera.h"
+#include "../../Common/Geometry.h"
+#include "../../Engine/ShaderEngine/IShaderType.h"
+#include "../../Engine/ShaderEngine/DefaultShader.h"
+#include "../../Engine/DirectX3D.h"
+#include "../../Camera.h"
 
 using namespace DirectX;
 using namespace std;

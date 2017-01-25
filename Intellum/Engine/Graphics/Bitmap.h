@@ -3,9 +3,9 @@
 #include <d3d11.h>
 #include <DirectXMath.h>
 
-#include "Engine\ShaderEngine\IShaderType.h"
-#include "Engine\ShaderEngine\DefaultShader.h"
-#include "Engine\DirectX3D.h"
+#include "../../Engine/ShaderEngine/IShaderType.h"
+#include "../../Engine/ShaderEngine/DefaultShader.h"
+#include "../../Engine/DirectX3D.h"
 #include "Texture.h"
 #include "Light.h"
 

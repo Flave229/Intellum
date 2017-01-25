@@ -1,5 +1,5 @@
 #include "Model.h"
-#include "loaders/OBJLoader.h"
+#include "../../Loaders/OBJLoader.h"
 
 Model::Model(DirectX3D* direct3D, IShaderType* shader, char* textureFilename, char* modelFilename) : _direct3D(direct3D), _geometry(new Geometry), _texture(nullptr), _shader(shader)
 {

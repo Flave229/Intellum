@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 
-#include "../../Bitmap.h"
+#include "../Graphics/Bitmap.h"
 
 using namespace std;
 

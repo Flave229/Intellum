@@ -8,7 +8,7 @@
 #include <d3dcompiler.h>
 #include <DirectXMath.h>
 #include <fstream>
-#include "../../Light.h"
+#include "../Graphics/Light.h"
 #include "../DirectX3D.h"
 #include "../../Camera.h"
 

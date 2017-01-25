@@ -155,7 +155,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Bitmap.cpp" />
+    <ClCompile Include="Engine\Graphics\Bitmap.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Engine\SystemMetrics\Cpu.cpp" />
     <ClCompile Include="Engine\ShaderEngine\DefaultShader.cpp" />
@@ -169,23 +169,23 @@
     <ClCompile Include="Engine\FontEngine\Font.cpp" />
     <ClCompile Include="Engine\ShaderEngine\FontShader.cpp" />
     <ClCompile Include="Engine\SystemMetrics\FramesPerSecond.cpp" />
-    <ClCompile Include="Graphics.cpp" />
+    <ClCompile Include="Engine\Graphics\Graphics.cpp" />
     <ClCompile Include="Engine\DxComponents\HardwareDescription.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Engine\FontEngine\Character.cpp" />
-    <ClCompile Include="Light.cpp" />
+    <ClCompile Include="Engine\Graphics\Light.cpp" />
     <ClCompile Include="loaders\OBJLoader.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Model.cpp" />
+    <ClCompile Include="Engine\Graphics\Model.cpp" />
     <ClCompile Include="Engine\DxComponents\Rasterizer.cpp" />
     <ClCompile Include="Engine\ShaderEngine\ShaderController.cpp" />
     <ClCompile Include="DXSystem.cpp" />
     <ClCompile Include="loaders\TargaLoader.cpp" />
-    <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="Engine\Graphics\Texture.cpp" />
     <ClCompile Include="Engine\FontEngine\UnicodeDictionary.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Bitmap.h" />
+    <ClInclude Include="Engine\Graphics\Bitmap.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="common\Box.h" />
     <ClInclude Include="common\Vertex.h" />
@@ -200,20 +200,20 @@
     <ClInclude Include="Engine\FontEngine\Font.h" />
     <ClInclude Include="Engine\ShaderEngine\FontShader.h" />
     <ClInclude Include="Engine\SystemMetrics\FramesPerSecond.h" />
-    <ClInclude Include="Graphics.h" />
+    <ClInclude Include="Engine\Graphics\Graphics.h" />
     <ClInclude Include="Engine\DxComponents\HardwareDescription.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Engine\FontEngine\Character.h" />
     <ClInclude Include="Engine\ShaderEngine\IShaderType.h" />
-    <ClInclude Include="Light.h" />
+    <ClInclude Include="Engine\Graphics\Light.h" />
     <ClInclude Include="loaders\models\TargaData.h" />
     <ClInclude Include="loaders\OBJLoader.h" />
-    <ClInclude Include="Model.h" />
+    <ClInclude Include="Engine\Graphics\Model.h" />
     <ClInclude Include="Engine\DxComponents\Rasterizer.h" />
     <ClInclude Include="Engine\ShaderEngine\ShaderController.h" />
     <ClInclude Include="DXSystem.h" />
     <ClInclude Include="loaders\TargaLoader.h" />
-    <ClInclude Include="Texture.h" />
+    <ClInclude Include="Engine\Graphics\Texture.h" />
     <ClInclude Include="Engine\FontEngine\UnicodeDictionary.h" />
   </ItemGroup>
   <ItemGroup>
