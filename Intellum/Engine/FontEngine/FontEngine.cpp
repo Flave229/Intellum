@@ -34,7 +34,7 @@ bool FontEngine::SearchForAvaliableFonts(Box screenSize)
 	}
 }
 
-void FontEngine::Render(Light* light, XMFLOAT2 position, string font, string input, XMFLOAT4 textColor, int fontSize)
+void FontEngine::Update(XMFLOAT2 position, string font, string input, XMFLOAT4 textColor, int fontSize)
 {
 	try
 	{
@@ -49,7 +49,8 @@ void FontEngine::Render(Light* light, XMFLOAT2 position, string font, string inp
 
 		for (int i = 0; i < stringAsTexture.size(); i++)
 		{
-			stringAsTexture.at(i)->_texture->Render(light, XMFLOAT2(position.x + (fontSize * i), position.y), Box(fontSize, fontSize * 2));
+			stringAsTexture.at(i)->_texture->Update(XMFLOAT2(position.x + (fontSize * i), position.y), Box(fontSize, fontSize * 2));
+			stringAsTexture.at(i)->_texture->Render();
 		}
 
 		((FontShader*)_shader)->SetColorOverload(false);

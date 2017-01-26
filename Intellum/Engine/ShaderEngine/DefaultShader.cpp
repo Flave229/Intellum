@@ -264,7 +264,7 @@ void DefaultShader::SetCameraBuffer(unsigned int bufferNumber) const
 	if (FAILED(result)) throw Exception("Failed to map camera buffer to the Device Context.");
 
 	CameraBuffer* cameraDataPtr = static_cast<CameraBuffer*>(mappedResource.pData);
-	cameraDataPtr->cameraPosition = _camera->GetPosition();
+	cameraDataPtr->cameraPosition = _camera->GetTransform()->GetPosition();
 	cameraDataPtr->padding = 0.0f;
 
 	_direct3D->GetDeviceContext()->Unmap(_cameraBuffer, 0);

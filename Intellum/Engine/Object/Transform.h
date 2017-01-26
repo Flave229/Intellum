@@ -25,16 +25,16 @@ public:
 
 	void Update(float delta);
 	
-	XMMATRIX GetTransformation() const;
+	XMMATRIX& GetTransformation();
 	
 	void SetPosition(XMFLOAT3 position);
-	XMFLOAT3 GetPosition() const;
+	XMFLOAT3& GetPosition();
 
 	void SetRotation(XMFLOAT3 rotation);
-	XMFLOAT3 GetRotation() const;
+	XMFLOAT3& GetRotation();
 
 	void SetAngularVelocity(XMFLOAT3 angularVelocity);
-	XMFLOAT3 GetAngularVelocity() const;
+	XMFLOAT3& GetAngularVelocity();
 
 	void Move(XMFLOAT3 movementVector);
 };

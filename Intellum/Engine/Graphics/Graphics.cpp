@@ -20,10 +20,10 @@ void Graphics::Initialise(Box screenSize, HWND hwnd)
 		_direct3D = new DirectX3D(screenSize, VSYNC_ENABLED, hwnd, FULL_SCREEN, SCREEN_DEPTH, SCREEN_NEAR);
 		if (!_direct3D) throw Exception("Failed to create a DirectX3D object.");
 
-		_camera = new Camera;
+		_camera = new Camera(new Transform(_direct3D));
 		if (!_camera) throw Exception("Failed to create a camera object.");
 
-		_camera->SetPosition(XMFLOAT3(0.0f, 0.0f, -5.0f));
+		_camera->GetTransform()->SetPosition(XMFLOAT3(0.0f, 0.0f, -5.0f));
 
 		_shaderController = new ShaderController(_direct3D);
 		if (!_shaderController) throw Exception("Failed to create the shader controller.");
@@ -105,11 +105,13 @@ void Graphics::Shutdown()
 	}
 }
 
-void Graphics::Update(float delta)
+void Graphics::Update(float delta) const
 {
 	try
 	{
 		_objectHandler->Update(delta);
+		_bitmap->Update(XMFLOAT2(100, 100), Box(256, 256));
+		_camera->Update(delta);
 	}
 	catch (Exception& exception)
 	{
@@ -127,19 +129,14 @@ void Graphics::Render(XMFLOAT2 mousePoint) const
 	{
 		_direct3D->BeginScene(XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f));
 
-		_camera->Render();
-
-		XMMATRIX viewMatrix;
-		_camera->MapViewMatrixInto(viewMatrix);
-
 		_direct3D->TurnZBufferOff();
 
-		_bitmap->Render(_light, XMFLOAT2(100, 100), Box(256, 256));
+		_bitmap->Render();
 
-		_fontEngine->Render(_light, XMFLOAT2(50, 600), "Impact", "Victoria Grump", XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 30);
-		_fontEngine->Render(_light, XMFLOAT2(10, 10), "Impact", "Mouse X: " + to_string(static_cast<int>(mousePoint.x)) + "    " + "Mouse Y: " + to_string(static_cast<int>(mousePoint.y)), XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 20);
-		_fontEngine->Render(_light, XMFLOAT2(10, 35), "Impact", "FPS: " + to_string(_framesPerSecond->GetFramesPerSeond()), XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 20);
-		_fontEngine->Render(_light, XMFLOAT2(10, 60), "Impact", "Cpu: " + to_string(_cpu->GetCpuPercentage()) + "%", XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 20);
+		_fontEngine->Update(XMFLOAT2(50, 600), "Impact", "Victoria Grump", XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 30);
+		_fontEngine->Update(XMFLOAT2(10, 10), "Impact", "Mouse X: " + to_string(static_cast<int>(mousePoint.x)) + "    " + "Mouse Y: " + to_string(static_cast<int>(mousePoint.y)), XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 20);
+		_fontEngine->Update(XMFLOAT2(10, 35), "Impact", "FPS: " + to_string(_framesPerSecond->GetFramesPerSeond()), XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 20);
+		_fontEngine->Update(XMFLOAT2(10, 60), "Impact", "Cpu: " + to_string(_cpu->GetCpuPercentage()) + "%", XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 20);
 
 		_direct3D->TurnZBufferOn();
 		 

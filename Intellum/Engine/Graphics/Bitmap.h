@@ -54,7 +54,9 @@ public:
 	~Bitmap();
 
 	void Shutdown();
-	void Render(Light* light, XMFLOAT2 position, Box bitmapSize);
+
+	void Update(XMFLOAT2 position, Box bitmapSize);
+	void Render();
 
 	int GetIndexCount() const;
 	ID3D11ShaderResourceView* GetTexture() const;

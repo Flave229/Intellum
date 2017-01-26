@@ -24,36 +24,6 @@ void Bitmap::Initialise(Box screenSize, Box bitmapSize, char* textureFilename)
 	LoadTexture(textureFilename);
 }
 
-void Bitmap::Shutdown()
-{
-	ReleaseTexture();
-	ShutdownBuffers();
-}
-
-void Bitmap::Render(Light* light, XMFLOAT2 position, Box bitmapSize)
-{
-	UpdateBuffers(position, bitmapSize);
-
-	RenderBuffers();
-
-	XMMATRIX worldMatrix;
-	XMMATRIX orthoMatrix;
-	_direct3D->MapWorldMatrixInto(worldMatrix);
-	_direct3D->MapOrthoMatrixInto(orthoMatrix);
-
-	_shader->Render(GetIndexCount(), worldMatrix, orthoMatrix, GetTexture());
-}
-
-int Bitmap::GetIndexCount() const
-{
-	return _indexCount;
-}
-
-ID3D11ShaderResourceView* Bitmap::GetTexture() const
-{
-	return _texture->GetTexture();
-}
-
 void Bitmap::InitialiseBuffers()
 {
 	Vertex* vertices;
@@ -115,6 +85,39 @@ void Bitmap::InitialiseBuffers()
 
 	delete[] indices;
 	indices = nullptr;
+}
+
+void Bitmap::Shutdown()
+{
+	ReleaseTexture();
+	ShutdownBuffers();
+}
+
+void Bitmap::Update(XMFLOAT2 position, Box bitmapSize)
+{
+	UpdateBuffers(position, bitmapSize);
+}
+
+void Bitmap::Render()
+{
+	RenderBuffers();
+
+	XMMATRIX worldMatrix;
+	XMMATRIX orthoMatrix;
+	_direct3D->MapWorldMatrixInto(worldMatrix);
+	_direct3D->MapOrthoMatrixInto(orthoMatrix);
+
+	_shader->Render(GetIndexCount(), worldMatrix, orthoMatrix, GetTexture());
+}
+
+int Bitmap::GetIndexCount() const
+{
+	return _indexCount;
+}
+
+ID3D11ShaderResourceView* Bitmap::GetTexture() const
+{
+	return _texture->GetTexture();
 }
 
 void Bitmap::ShutdownBuffers()

@@ -39,10 +39,10 @@ public:
 	FontEngine(DirectX3D* direct3D, ID3D11Device* device, ID3D11DeviceContext* deviceContext, IShaderType* shader);
 	~FontEngine();
 
+	void Update(XMFLOAT2 position, string font, string input, XMFLOAT4 textColor, int fontSize);
+	
 	bool SearchForAvaliableFonts(Box screenSize);
-	void Render(Light* light, XMFLOAT2 position, string font, string input, XMFLOAT4 textColor, int fontSize);
 
 	Font* GetFont(string font);
 	bool CheckFontExists(string font);
 };
-

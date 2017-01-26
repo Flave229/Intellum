@@ -28,6 +28,7 @@ class FontShader : public IShaderType
 
 private:
 	ID3D11Buffer* _colorBuffer;
+	XMMATRIX _viewMatrix;
 
 	bool _colorOverloadEnabled;
 	XMFLOAT4 _fontColor;

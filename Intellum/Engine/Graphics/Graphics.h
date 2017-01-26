@@ -45,7 +45,7 @@ public:
 	~Graphics();
 
 	void Shutdown();
-	void Update(float delta);
+	void Update(float delta) const;
 	void Render(XMFLOAT2 mousePoint) const;
 };
 

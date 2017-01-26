@@ -2,6 +2,7 @@
 #define _CAMERA_H_
 
 #include <DirectXMath.h>
+#include "../Object/Transform.h"
 
 using namespace DirectX;
 
@@ -9,25 +10,21 @@ class Camera
 {
 // Member Level Variables
 private:
-	XMFLOAT3 _position;
-	XMFLOAT3 _rotation;
+	Transform* _transform;
 
+	XMMATRIX _ViewMatrix2D;
 	XMMATRIX _viewMatrix;
 
 // Function Declarations
 public:
-	Camera();
-	Camera(const Camera&);
+	Camera(Transform* transform);
+	Camera(const Camera& other);
 	~Camera();
 
-	void SetPosition(XMFLOAT3 position);
-	void SetRotation(XMFLOAT3 rotation);
+	Transform* GetTransform() const;
 
-	XMFLOAT3 GetPosition();
-	XMFLOAT3 GetRotation();
-
-	void Render();
-	void MapViewMatrixInto(XMMATRIX&);
+	void Update(float delta);
+	void MapViewMatrixInto(XMMATRIX& matrix) const;
 };
 
 #endif

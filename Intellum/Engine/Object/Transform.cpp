@@ -31,7 +31,7 @@ void Transform::UpdateRotation(float delta)
 	_rotation.z = CapRotationRange(_rotation.z + _angularVelocity.z * delta);
 }
 
-XMMATRIX Transform::GetTransformation() const
+XMMATRIX& Transform::GetTransformation()
 {
 	return _transformation;
 }
@@ -41,7 +41,7 @@ void Transform::SetPosition(XMFLOAT3 position)
 	_position = position;
 }
 
-XMFLOAT3 Transform::GetPosition() const
+XMFLOAT3& Transform::GetPosition()
 {
 	return _position;
 }
@@ -54,7 +54,7 @@ void Transform::SetRotation(XMFLOAT3 rotation)
 	_rotation = rotation;
 }
 
-XMFLOAT3 Transform::GetRotation() const
+XMFLOAT3& Transform::GetRotation()
 {
 	return _rotation;
 }
@@ -64,7 +64,7 @@ void Transform::SetAngularVelocity(XMFLOAT3 angularVelocity)
 	_angularVelocity = angularVelocity;
 }
 
-XMFLOAT3 Transform::GetAngularVelocity() const
+XMFLOAT3& Transform::GetAngularVelocity()
 {
 	return _angularVelocity;
 }

@@ -144,6 +144,8 @@ void FontShader::InitialiseShader(HWND hwnd, WCHAR* vsFilename, WCHAR* psFilenam
 
 		result = _direct3D->GetDevice()->CreateSamplerState(&samplerDesc, &_sampleState);
 		if (FAILED(result)) throw Exception("Failed to create the sampler state");
+		
+		_camera->MapViewMatrixInto(_viewMatrix);
 	}
 	catch (Exception& exception)
 	{
@@ -211,10 +213,7 @@ void FontShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectionMa
 {
 	try
 	{
-		XMMATRIX viewMatrix;
-		_camera->MapViewMatrixInto(viewMatrix);
-
-		SetMatrixBuffer(worldMatrix, projectionMatrix, viewMatrix, 0);
+		SetMatrixBuffer(worldMatrix, projectionMatrix, _viewMatrix, 0);
 		SetCameraBuffer(1); 
 		SetColorBuffer(0);
 
@@ -256,7 +255,7 @@ void FontShader::SetCameraBuffer(unsigned bufferNumber) const
 	if (FAILED(result)) throw Exception("Failed to map camera buffer to the Device Context.");
 
 	CameraBuffer* cameraDataPtr = static_cast<CameraBuffer*>(mappedResource.pData);
-	cameraDataPtr->cameraPosition = _camera->GetPosition();
+	cameraDataPtr->cameraPosition = _camera->GetTransform()->GetPosition();
 	cameraDataPtr->padding = 0.0f;
 
 	_direct3D->GetDeviceContext()->Unmap(_cameraBuffer, 0);
