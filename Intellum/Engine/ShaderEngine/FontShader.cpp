@@ -214,63 +214,11 @@ void FontShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectionMa
 		XMMATRIX viewMatrix;
 		_camera->MapViewMatrixInto(viewMatrix);
 
-		worldMatrix = XMMatrixTranspose(worldMatrix);
-		viewMatrix = XMMatrixTranspose(viewMatrix);
-		projectionMatrix = XMMatrixTranspose(projectionMatrix);
-
-		D3D11_MAPPED_SUBRESOURCE mappedResource;
-		HRESULT result = _direct3D->GetDeviceContext()->Map(_matrixBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-		if (FAILED(result)) throw Exception("Failed to map matrix buffer to the Device Context.");
-
-		ConstantBuffer* matrixDataPtr = static_cast<ConstantBuffer*>(mappedResource.pData);
-		matrixDataPtr->world = worldMatrix;
-		matrixDataPtr->view = viewMatrix;
-		matrixDataPtr->projection = projectionMatrix;
-
-		_direct3D->GetDeviceContext()->Unmap(_matrixBuffer, 0);
-		
-		unsigned int bufferNumber = 0;
-
-		_direct3D->GetDeviceContext()->VSSetConstantBuffers(bufferNumber, 1, &_matrixBuffer);
-
-		result = _direct3D->GetDeviceContext()->Map(_cameraBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-		if (FAILED(result)) throw Exception("Failed to map camera buffer to the Device Context.");
-		
-		CameraBuffer* cameraDataPtr = static_cast<CameraBuffer*>(mappedResource.pData);
-		cameraDataPtr->cameraPosition = _camera->GetPosition();
-		cameraDataPtr->padding = 0.0f;
-
-		_direct3D->GetDeviceContext()->Unmap(_cameraBuffer, 0);
-
-		bufferNumber = 1;
-
-		_direct3D->GetDeviceContext()->VSSetConstantBuffers(bufferNumber, 1, &_cameraBuffer);
+		SetMatrixBuffer(worldMatrix, projectionMatrix, viewMatrix, 0);
+		SetCameraBuffer(1); 
+		SetColorBuffer(0);
 
 		_direct3D->GetDeviceContext()->PSSetShaderResources(0, 1, &texture);
-	
-		result = _direct3D->GetDeviceContext()->Map(_colorBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-		if (FAILED(result)) throw Exception("Failed to map color buffer to the Device Context.");
-		
-		ColorBuffer* colorDataPtr = static_cast<ColorBuffer*>(mappedResource.pData);
-
-		if (_colorOverloadEnabled)
-		{
-			colorDataPtr->colorOverloadEnabled = 1.0f;
-			colorDataPtr->colorOverload = _fontColor;
-		}
-		else
-		{
-			colorDataPtr->colorOverloadEnabled = 0.0f;
-			colorDataPtr->colorOverload = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
-		}
-
-		colorDataPtr->padding = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	
-		_direct3D->GetDeviceContext()->Unmap(_colorBuffer, 0);
-
-		bufferNumber = 0;
-
-		_direct3D->GetDeviceContext()->PSSetConstantBuffers(bufferNumber, 1, &_colorBuffer);
 	}
 	catch (Exception& exception)
 	{
@@ -280,6 +228,64 @@ void FontShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectionMa
 	{
 		throw Exception("Error when setting Shader Parameters in Font Shader: ");
 	}
+}
+
+void FontShader::SetMatrixBuffer(XMMATRIX worldMatrix, XMMATRIX projectionMatrix, XMMATRIX viewMatrix, unsigned int bufferNumber) const
+{
+	worldMatrix = XMMatrixTranspose(worldMatrix);
+	viewMatrix = XMMatrixTranspose(viewMatrix);
+	projectionMatrix = XMMatrixTranspose(projectionMatrix);
+
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	HRESULT result = _direct3D->GetDeviceContext()->Map(_matrixBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	if (FAILED(result)) throw Exception("Failed to map matrix buffer to the Device Context.");
+
+	ConstantBuffer* matrixDataPtr = static_cast<ConstantBuffer*>(mappedResource.pData);
+	matrixDataPtr->world = worldMatrix;
+	matrixDataPtr->view = viewMatrix;
+	matrixDataPtr->projection = projectionMatrix;
+
+	_direct3D->GetDeviceContext()->Unmap(_matrixBuffer, 0);
+	_direct3D->GetDeviceContext()->VSSetConstantBuffers(bufferNumber, 1, &_matrixBuffer);
+}
+
+void FontShader::SetCameraBuffer(unsigned bufferNumber) const
+{
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	HRESULT result = _direct3D->GetDeviceContext()->Map(_cameraBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	if (FAILED(result)) throw Exception("Failed to map camera buffer to the Device Context.");
+
+	CameraBuffer* cameraDataPtr = static_cast<CameraBuffer*>(mappedResource.pData);
+	cameraDataPtr->cameraPosition = _camera->GetPosition();
+	cameraDataPtr->padding = 0.0f;
+
+	_direct3D->GetDeviceContext()->Unmap(_cameraBuffer, 0);
+	_direct3D->GetDeviceContext()->VSSetConstantBuffers(bufferNumber, 1, &_cameraBuffer);
+}
+
+void FontShader::SetColorBuffer(unsigned bufferNumber) const
+{
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	HRESULT result = _direct3D->GetDeviceContext()->Map(_colorBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	if (FAILED(result)) throw Exception("Failed to map color buffer to the Device Context.");
+
+	ColorBuffer* colorDataPtr = static_cast<ColorBuffer*>(mappedResource.pData);
+
+	if (_colorOverloadEnabled)
+	{
+		colorDataPtr->colorOverloadEnabled = 1.0f;
+		colorDataPtr->colorOverload = _fontColor;
+	}
+	else
+	{
+		colorDataPtr->colorOverloadEnabled = 0.0f;
+		colorDataPtr->colorOverload = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
+	}
+
+	colorDataPtr->padding = XMFLOAT3(0.0f, 0.0f, 0.0f);
+
+	_direct3D->GetDeviceContext()->Unmap(_colorBuffer, 0);
+	_direct3D->GetDeviceContext()->PSSetConstantBuffers(bufferNumber, 1, &_colorBuffer);
 }
 
 void FontShader::RenderShader(int indexCount)

@@ -222,55 +222,11 @@ void DefaultShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectio
 		XMMATRIX viewMatrix;
 		_camera->MapViewMatrixInto(viewMatrix);
 
-		worldMatrix = XMMatrixTranspose(worldMatrix);
-		viewMatrix = XMMatrixTranspose(viewMatrix);
-		projectionMatrix = XMMatrixTranspose(projectionMatrix);
-
-		D3D11_MAPPED_SUBRESOURCE mappedResource;
-		HRESULT result = _direct3D->GetDeviceContext()->Map(_matrixBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-		if (FAILED(result)) throw Exception("Failed to map matrix buffer to the Device Context.");
-		
-		ConstantBuffer* matrixDataPtr = static_cast<ConstantBuffer*>(mappedResource.pData);
-		matrixDataPtr->world = worldMatrix;
-		matrixDataPtr->view = viewMatrix;
-		matrixDataPtr->projection = projectionMatrix;
-
-		_direct3D->GetDeviceContext()->Unmap(_matrixBuffer, 0);
-		
-		unsigned int bufferNumber = 0;
-
-		_direct3D->GetDeviceContext()->VSSetConstantBuffers(bufferNumber, 1, &_matrixBuffer);
-
-		result = _direct3D->GetDeviceContext()->Map(_cameraBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-		if (FAILED(result)) throw Exception("Failed to map camera buffer to the Device Context.");
-		
-		CameraBuffer* cameraDataPtr = static_cast<CameraBuffer*>(mappedResource.pData);
-		cameraDataPtr->cameraPosition = _camera->GetPosition();
-		cameraDataPtr->padding = 0.0f;
-
-		_direct3D->GetDeviceContext()->Unmap(_cameraBuffer, 0);
-
-		bufferNumber = 1;
-
-		_direct3D->GetDeviceContext()->VSSetConstantBuffers(bufferNumber, 1, &_cameraBuffer);
+		SetMatrixBuffer(worldMatrix, projectionMatrix, viewMatrix, 0);
+		SetCameraBuffer(1);
+		SetLightBuffer(0);
 
 		_direct3D->GetDeviceContext()->PSSetShaderResources(0, 1, &texture);
-
-		result = _direct3D->GetDeviceContext()->Map(_lightBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-		if (FAILED(result)) throw Exception("Failed to map light buffer to the Device Context.");
-		
-		LightBuffer* lightDataPtr = static_cast<LightBuffer*>(mappedResource.pData);
-		lightDataPtr->ambientColor = _light->GetAmbientColor();
-		lightDataPtr->diffuseColor = _light->GetDiffuseColor();
-		lightDataPtr->lightDirection = _light->GetDirection();
-		lightDataPtr->specularColor = _light->GetSpecularColor();
-		lightDataPtr->specularPower = _light->GetSpecularPower();
-
-		_direct3D->GetDeviceContext()->Unmap(_lightBuffer, 0);
-
-		bufferNumber = 0;
-
-		_direct3D->GetDeviceContext()->PSSetConstantBuffers(bufferNumber, 1, &_lightBuffer);
 	}
 	catch(Exception& exception)
 	{
@@ -280,6 +236,59 @@ void DefaultShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectio
 	{
 		throw Exception("Error when setting Shader Parameters in Default Shader: ");
 	}
+}
+
+void DefaultShader::SetMatrixBuffer(XMMATRIX worldMatrix, XMMATRIX projectionMatrix, XMMATRIX viewMatrix, unsigned int bufferNumber) const
+{
+	worldMatrix = XMMatrixTranspose(worldMatrix);
+	viewMatrix = XMMatrixTranspose(viewMatrix);
+	projectionMatrix = XMMatrixTranspose(projectionMatrix);
+
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	HRESULT result = _direct3D->GetDeviceContext()->Map(_matrixBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	if (FAILED(result)) throw Exception("Failed to map matrix buffer to the Device Context.");
+
+	ConstantBuffer* matrixDataPtr = static_cast<ConstantBuffer*>(mappedResource.pData);
+	matrixDataPtr->world = worldMatrix;
+	matrixDataPtr->view = viewMatrix;
+	matrixDataPtr->projection = projectionMatrix;
+
+	_direct3D->GetDeviceContext()->Unmap(_matrixBuffer, 0);
+	_direct3D->GetDeviceContext()->VSSetConstantBuffers(bufferNumber, 1, &_matrixBuffer);
+}
+
+void DefaultShader::SetCameraBuffer(unsigned int bufferNumber) const
+{
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	HRESULT result = _direct3D->GetDeviceContext()->Map(_cameraBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	if (FAILED(result)) throw Exception("Failed to map camera buffer to the Device Context.");
+
+	CameraBuffer* cameraDataPtr = static_cast<CameraBuffer*>(mappedResource.pData);
+	cameraDataPtr->cameraPosition = _camera->GetPosition();
+	cameraDataPtr->padding = 0.0f;
+
+	_direct3D->GetDeviceContext()->Unmap(_cameraBuffer, 0);
+	_direct3D->GetDeviceContext()->VSSetConstantBuffers(bufferNumber, 1, &_cameraBuffer);
+}
+
+void DefaultShader::SetLightBuffer(unsigned bufferNumber) const
+{
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	HRESULT result = _direct3D->GetDeviceContext()->Map(_lightBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	if (FAILED(result)) throw Exception("Failed to map light buffer to the Device Context.");
+
+	LightBuffer* lightDataPtr = static_cast<LightBuffer*>(mappedResource.pData);
+	lightDataPtr->ambientColor = _light->GetAmbientColor();
+	lightDataPtr->diffuseColor = _light->GetDiffuseColor();
+	lightDataPtr->lightDirection = _light->GetDirection();
+	lightDataPtr->specularColor = _light->GetSpecularColor();
+	lightDataPtr->specularPower = _light->GetSpecularPower();
+
+	_direct3D->GetDeviceContext()->Unmap(_lightBuffer, 0);
+
+	bufferNumber = 0;
+
+	_direct3D->GetDeviceContext()->PSSetConstantBuffers(bufferNumber, 1, &_lightBuffer);
 }
 
 void DefaultShader::RenderShader(int indexCount)
