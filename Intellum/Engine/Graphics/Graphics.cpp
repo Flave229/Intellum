@@ -134,20 +134,12 @@ void Graphics::Render(XMFLOAT2 mousePoint) const
 
 		_direct3D->TurnZBufferOff();
 
-		bool result = _bitmap->Render(_light, XMFLOAT2(100, 100), Box(256, 256));
-		if (!result) throw Exception("Failed to render bitmap");
+		_bitmap->Render(_light, XMFLOAT2(100, 100), Box(256, 256));
 
-		result = _fontEngine->Render(_light, XMFLOAT2(50, 600), "Impact", "Victoria Grump", XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 30);
-		if (!result) throw Exception("Failed to render text");
-
-		result = _fontEngine->Render(_light, XMFLOAT2(10, 10), "Impact", "Mouse X: " + to_string(static_cast<int>(mousePoint.x)) + "    " + "Mouse Y: " + to_string(static_cast<int>(mousePoint.y)), XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 20);
-		if (!result) throw Exception("Failed to render text");
-
-		result = _fontEngine->Render(_light, XMFLOAT2(10, 35), "Impact", "FPS: " + to_string(_framesPerSecond->GetFramesPerSeond()), XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 20);
-		if (!result) throw Exception("Failed to render text");
-
-		result = _fontEngine->Render(_light, XMFLOAT2(10, 60), "Impact", "Cpu: " + to_string(_cpu->GetCpuPercentage()) + "%", XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 20);
-		if (!result) throw Exception("Failed to render text");
+		_fontEngine->Render(_light, XMFLOAT2(50, 600), "Impact", "Victoria Grump", XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 30);
+		_fontEngine->Render(_light, XMFLOAT2(10, 10), "Impact", "Mouse X: " + to_string(static_cast<int>(mousePoint.x)) + "    " + "Mouse Y: " + to_string(static_cast<int>(mousePoint.y)), XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 20);
+		_fontEngine->Render(_light, XMFLOAT2(10, 35), "Impact", "FPS: " + to_string(_framesPerSecond->GetFramesPerSeond()), XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 20);
+		_fontEngine->Render(_light, XMFLOAT2(10, 60), "Impact", "Cpu: " + to_string(_cpu->GetCpuPercentage()) + "%", XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 20);
 
 		_direct3D->TurnZBufferOn();
 		 

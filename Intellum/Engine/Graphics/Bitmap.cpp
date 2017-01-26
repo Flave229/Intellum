@@ -30,10 +30,9 @@ void Bitmap::Shutdown()
 	ShutdownBuffers();
 }
 
-bool Bitmap::Render(Light* light, XMFLOAT2 position, Box bitmapSize)
+void Bitmap::Render(Light* light, XMFLOAT2 position, Box bitmapSize)
 {
-	bool result = UpdateBuffers(position, bitmapSize);
-	if (!result) return false;
+	UpdateBuffers(position, bitmapSize);
 
 	RenderBuffers();
 
@@ -42,18 +41,15 @@ bool Bitmap::Render(Light* light, XMFLOAT2 position, Box bitmapSize)
 	_direct3D->MapWorldMatrixInto(worldMatrix);
 	_direct3D->MapOrthoMatrixInto(orthoMatrix);
 
-	result = _shader->Render(GetIndexCount(), worldMatrix, orthoMatrix, GetTexture());
-	if (!result) return false;
-
-	return true;
+	_shader->Render(GetIndexCount(), worldMatrix, orthoMatrix, GetTexture());
 }
 
-int Bitmap::GetIndexCount()
+int Bitmap::GetIndexCount() const
 {
 	return _indexCount;
 }
 
-ID3D11ShaderResourceView* Bitmap::GetTexture()
+ID3D11ShaderResourceView* Bitmap::GetTexture() const
 {
 	return _texture->GetTexture();
 }
@@ -136,14 +132,14 @@ void Bitmap::ShutdownBuffers()
 	}
 }
 
-bool Bitmap::UpdateBuffers(XMFLOAT2 position, Box bitmapSize)
+void Bitmap::UpdateBuffers(XMFLOAT2 position, Box bitmapSize)
 {
 	HRESULT result;
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
 
 	if ((position.x == static_cast<int>(_previousPosition.x)) && (position.y == static_cast<int>(_previousPosition.y)) && (bitmapSize.Width == _bitmapSize.Width) && (bitmapSize.Height == _bitmapSize.Height))
 	{
-		return true;
+		return;
 	}
 
 	_previousPosition = position;
@@ -156,7 +152,7 @@ bool Bitmap::UpdateBuffers(XMFLOAT2 position, Box bitmapSize)
 	float bottom = top - bitmapSize.Height;
 
 	Vertex* vertices = new Vertex[_vertexCount];
-	if (!vertices) return false;
+	if (!vertices) throw Exception("Failed to initialise vertices for bitmap");
 
 	vertices[0].position = XMFLOAT3(left, top, 0.0f);
 	vertices[0].texture = XMFLOAT2(0.0f, 0.0f);
@@ -177,7 +173,7 @@ bool Bitmap::UpdateBuffers(XMFLOAT2 position, Box bitmapSize)
 	vertices[5].texture = XMFLOAT2(1.0f, 1.0f);
 
 	result = _direct3D->GetDeviceContext()->Map(_vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-	if (FAILED(result)) return false;
+	if (FAILED(result)) throw Exception("Failed to map vertex buffer to the Device Context");
 
 	Vertex* verticesPtr = static_cast<Vertex*>(mappedResource.pData);
 
@@ -187,8 +183,6 @@ bool Bitmap::UpdateBuffers(XMFLOAT2 position, Box bitmapSize)
 
 	delete[] vertices;
 	vertices = nullptr;
-
-	return true;
 }
 
 void Bitmap::RenderBuffers()

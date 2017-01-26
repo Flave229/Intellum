@@ -34,24 +34,25 @@ bool FontEngine::SearchForAvaliableFonts(Box screenSize)
 	}
 }
 
-bool FontEngine::Render(Light* light, XMFLOAT2 position, string font, string input, XMFLOAT4 textColor, int fontSize)
+void FontEngine::Render(Light* light, XMFLOAT2 position, string font, string input, XMFLOAT4 textColor, int fontSize)
 {
 	try
 	{
 		((FontShader*)_shader)->SetColorOverload(true, textColor);
 		bool result = CheckFontExists(font);
-		if (!result) return false;
+		if (!result)
+		{
+			font = "Default";
+		}
 
 		vector<Character*> stringAsTexture = StringToCharacterTextureList(font, input);
 
 		for (int i = 0; i < stringAsTexture.size(); i++)
 		{
-			result = stringAsTexture.at(i)->_texture->Render(light, XMFLOAT2(position.x + (fontSize * i), position.y), Box(fontSize, fontSize * 2));
-			if (!result) return false;
+			stringAsTexture.at(i)->_texture->Render(light, XMFLOAT2(position.x + (fontSize * i), position.y), Box(fontSize, fontSize * 2));
 		}
 
 		((FontShader*)_shader)->SetColorOverload(false);
-		return true;
 	}
 	catch (Exception& exception)
 	{
@@ -237,7 +238,12 @@ vector<Character*> FontEngine::StringToCharacterTextureList(string font, string 
 	try
 	{
 		Font* defaultFont = GetFont("Default");
-		Font* chosenFont = GetFont(font);
+		Font* chosenFont;
+		if (font != "Default")
+			chosenFont = GetFont(font);
+		else
+			chosenFont = defaultFont;
+
 		vector<Character*> characterList;
 
 		for (int i = 0; i < input.size(); i++)

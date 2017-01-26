@@ -43,7 +43,7 @@ private:
 	void InitialiseBuffers();
 	void LoadTexture(char*);
 
-	bool UpdateBuffers(XMFLOAT2 position, Box bitmapSize);
+	void UpdateBuffers(XMFLOAT2 position, Box bitmapSize);
 	void RenderBuffers();
 
 	void ShutdownBuffers();
@@ -54,8 +54,8 @@ public:
 	~Bitmap();
 
 	void Shutdown();
-	bool Render(Light* light, XMFLOAT2 position, Box bitmapSize);
+	void Render(Light* light, XMFLOAT2 position, Box bitmapSize);
 
-	int GetIndexCount();
-	ID3D11ShaderResourceView* GetTexture();
+	int GetIndexCount() const;
+	ID3D11ShaderResourceView* GetTexture() const;
 };

@@ -34,13 +34,13 @@ public:
 	IShaderType(DirectX3D* direct3D, Camera* camera, Light* light) : _direct3D(direct3D), _camera(camera), _light(light) {};
 	virtual ~IShaderType() {};
 
-	virtual bool Initialise(HWND hwnd) = 0;
-	virtual bool InitialiseShader(HWND hwnd, WCHAR* vsFilename, WCHAR* psFilename) = 0;
+	virtual void Initialise(HWND hwnd) = 0;
+	virtual void InitialiseShader(HWND hwnd, WCHAR* vsFilename, WCHAR* psFilename) = 0;
 	virtual void Shutdown() = 0;
 
-	virtual bool SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture) = 0;
+	virtual void SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture) = 0;
 
-	virtual bool Render(int indexCount, XMMATRIX worldMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture) = 0;
+	virtual void Render(int indexCount, XMMATRIX worldMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture) = 0;
 
 	virtual void RenderShader(int indexCount) = 0;
 	
