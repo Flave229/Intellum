@@ -1,11 +1,11 @@
 #include "Graphics.h"
 
-Graphics::Graphics(Box screenSize, HWND hwnd, FramesPerSecond* framesPerSecond, Cpu* cpu): _direct3D(nullptr), _fontEngine(nullptr), _framesPerSecond(framesPerSecond), _cpu(cpu), _camera(nullptr), _model(nullptr), _shaderController(nullptr), _light(nullptr), _bitmap(nullptr)
+Graphics::Graphics(Box screenSize, HWND hwnd, FramesPerSecond* framesPerSecond, Cpu* cpu): _direct3D(nullptr), _fontEngine(nullptr), _framesPerSecond(framesPerSecond), _cpu(cpu), _camera(nullptr), _objectHandler(nullptr), _shaderController(nullptr), _light(nullptr), _bitmap(nullptr)
 {
 	Initialise(screenSize, hwnd);
 }
 
-Graphics::Graphics(const Graphics& other) : _direct3D(other._direct3D), _fontEngine(nullptr), _framesPerSecond(nullptr), _cpu(other._cpu), _camera(other._camera), _model(other._model), _shaderController(other._shaderController), _light(other._light), _bitmap(other._bitmap)
+Graphics::Graphics(const Graphics& other) : _direct3D(other._direct3D), _fontEngine(nullptr), _framesPerSecond(nullptr), _cpu(other._cpu), _camera(other._camera), _objectHandler(other._objectHandler), _shaderController(other._shaderController), _light(other._light), _bitmap(other._bitmap)
 {
 }
 
@@ -28,17 +28,17 @@ void Graphics::Initialise(Box screenSize, HWND hwnd)
 		_shaderController = new ShaderController(_direct3D);
 		if (!_shaderController) throw Exception("Failed to create the shader controller.");
 
-		bool result = _shaderController->Initialise(hwnd, _camera);
-		if (!_shaderController) throw Exception("Failed to create the shader controller.");
-
-		_model = new Model(_direct3D, _shaderController->GetShader(SHADER_DEFAULT), "data/images/stone.tga", "data/models/sphere.obj");
-		if (!_model) throw Exception("Failed to create a Model object.");
-
-		_bitmap = new Bitmap(_direct3D, _shaderController->GetShader(SHADER_FONT), screenSize, Box(256, 256), "data/images/stone.tga");
-		if (!_bitmap) throw Exception("Failed to create the bitmap.");
-
 		_light = new Light;
 		if (!_light) throw Exception("Failed to create the light object.");
+
+		bool result = _shaderController->Initialise(hwnd, _camera, _light);
+		if (!_shaderController) throw Exception("Failed to create the shader controller.");
+
+		_objectHandler = new ObjectHandler(_direct3D, _shaderController);
+		if (!_objectHandler) throw Exception("Failed to create the object handler.");
+		
+		_bitmap = new Bitmap(_direct3D, _shaderController->GetShader(SHADER_FONT), screenSize, Box(256, 256), "data/images/stone.tga");
+		if (!_bitmap) throw Exception("Failed to create the bitmap.");
 
 		_light->SetAmbientColor(XMFLOAT4(0.15f, 0.15f, 0.15f, 1.0f));
 		_light->SetDiffuseColor(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
@@ -78,11 +78,11 @@ void Graphics::Shutdown()
 		_shaderController = nullptr;
 	}
 
-	if (_model)
+	if (_objectHandler)
 	{
-		_model->Shutdown();
-		delete _model;
-		_model = nullptr;
+		_objectHandler->Shutdown();
+		delete _objectHandler;
+		_objectHandler = nullptr;
 	}
 
 	if (_camera)
@@ -130,6 +130,8 @@ bool Graphics::Render(float delta, XMFLOAT2 mousePoint)
 
 		_direct3D->BeginScene(XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f));
 
+		_objectHandler->Update(delta);
+
 		_camera->Render();
 
 		_camera->MapViewMatrixInto(viewMatrix);
@@ -153,7 +155,7 @@ bool Graphics::Render(float delta, XMFLOAT2 mousePoint)
 
 		_direct3D->TurnZBufferOn();
 		 
-		_model->Render(delta, _light);
+		_objectHandler->Render();
 
 		_direct3D->EndScene();
 

@@ -42,7 +42,7 @@ bool Bitmap::Render(Light* light, XMFLOAT2 position, Box bitmapSize)
 	_direct3D->MapWorldMatrixInto(worldMatrix);
 	_direct3D->MapOrthoMatrixInto(orthoMatrix);
 
-	result = _shader->Render(GetIndexCount(), worldMatrix, orthoMatrix, GetTexture(), light);
+	result = _shader->Render(GetIndexCount(), worldMatrix, orthoMatrix, GetTexture());
 	if (!result) return false;
 
 	return true;

@@ -112,9 +112,6 @@
     <ClCompile Include="Engine\Graphics\Graphics.cpp">
       <Filter>Source Files\Application</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Graphics\Model.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Graphics\Light.cpp">
       <Filter>Source Files\Application</Filter>
     </ClCompile>
@@ -127,7 +124,16 @@
     <ClCompile Include="Engine\Camera\Frustrum.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Handlers\ModelHandler.cpp">
+    <ClCompile Include="Engine\Object\SceneObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Object\Transform.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Handlers\ObjectHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Object\Appearance.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -210,9 +216,6 @@
     <ClInclude Include="Engine\Graphics\Graphics.h">
       <Filter>Header Files\Application</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Graphics\Model.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Graphics\Light.h">
       <Filter>Header Files\Application</Filter>
     </ClInclude>
@@ -225,7 +228,16 @@
     <ClInclude Include="Engine\Camera\Frustrum.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Handlers\ModelHandler.h">
+    <ClInclude Include="Engine\Object\SceneObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Object\Transform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Handlers\ObjectHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Object\Appearance.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

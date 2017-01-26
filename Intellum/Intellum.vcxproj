@@ -177,14 +177,16 @@
     <ClCompile Include="Engine\Graphics\Light.cpp" />
     <ClCompile Include="loaders\OBJLoader.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Engine\Graphics\Model.cpp" />
+    <ClCompile Include="Engine\Object\Appearance.cpp" />
     <ClCompile Include="Engine\DxComponents\Rasterizer.cpp" />
     <ClCompile Include="Engine\ShaderEngine\ShaderController.cpp" />
     <ClCompile Include="DXSystem.cpp" />
     <ClCompile Include="loaders\TargaLoader.cpp" />
     <ClCompile Include="Engine\Graphics\Texture.cpp" />
     <ClCompile Include="Engine\FontEngine\UnicodeDictionary.cpp" />
-    <ClCompile Include="Engine\Handlers\ModelHandler.cpp" />
+    <ClCompile Include="Engine\Handlers\ObjectHandler.cpp" />
+    <ClCompile Include="Engine\Object\Transform.cpp" />
+    <ClCompile Include="Engine\Object\SceneObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Graphics\Bitmap.h" />
@@ -211,14 +213,16 @@
     <ClInclude Include="Engine\Graphics\Light.h" />
     <ClInclude Include="loaders\models\TargaData.h" />
     <ClInclude Include="loaders\OBJLoader.h" />
-    <ClInclude Include="Engine\Graphics\Model.h" />
+    <ClInclude Include="Engine\Object\Appearance.h" />
     <ClInclude Include="Engine\DxComponents\Rasterizer.h" />
     <ClInclude Include="Engine\ShaderEngine\ShaderController.h" />
     <ClInclude Include="DXSystem.h" />
     <ClInclude Include="loaders\TargaLoader.h" />
     <ClInclude Include="Engine\Graphics\Texture.h" />
     <ClInclude Include="Engine\FontEngine\UnicodeDictionary.h" />
-    <ClInclude Include="Engine\Handlers\ModelHandler.h" />
+    <ClInclude Include="Engine\Handlers\ObjectHandler.h" />
+    <ClInclude Include="Engine\Object\Transform.h" />
+    <ClInclude Include="Engine\Object\SceneObject.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="data\models\Cube.txt">

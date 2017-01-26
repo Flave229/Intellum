@@ -1,6 +1,6 @@
 #include "DefaultShader.h"
 
-DefaultShader::DefaultShader(DirectX3D* direct3D, Camera* camera) : IShaderType(direct3D, camera)
+DefaultShader::DefaultShader(DirectX3D* direct3D, Camera* camera, Light* light) : IShaderType(direct3D, camera, light)
 {
 }
 
@@ -204,9 +204,9 @@ void DefaultShader::Shutdown()
 	}
 }
 
-bool DefaultShader::Render(int indexCount, XMMATRIX worldMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, Light* light)
+bool DefaultShader::Render(int indexCount, XMMATRIX worldMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture)
 {
-	bool result = SetShaderParameters(worldMatrix, projectionMatrix, texture, light);
+	bool result = SetShaderParameters(worldMatrix, projectionMatrix, texture);
 	if (!result) return false;
 
 	RenderShader(indexCount);
@@ -214,7 +214,7 @@ bool DefaultShader::Render(int indexCount, XMMATRIX worldMatrix, XMMATRIX projec
 	return true;
 }
 
-bool DefaultShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, Light* light)
+bool DefaultShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture)
 {
 	HRESULT result;
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
@@ -266,11 +266,11 @@ bool DefaultShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectio
 
 	lightDataPtr = static_cast<LightBuffer*>(mappedResource.pData);
 
-	lightDataPtr->ambientColor = light->GetAmbientColor();
-	lightDataPtr->diffuseColor = light->GetDiffuseColor();
-	lightDataPtr->lightDirection = light->GetDirection();
-	lightDataPtr->specularColor = light->GetSpecularColor();
-	lightDataPtr->specularPower = light->GetSpecularPower();
+	lightDataPtr->ambientColor = _light->GetAmbientColor();
+	lightDataPtr->diffuseColor = _light->GetDiffuseColor();
+	lightDataPtr->lightDirection = _light->GetDirection();
+	lightDataPtr->specularColor = _light->GetSpecularColor();
+	lightDataPtr->specularPower = _light->GetSpecularPower();
 
 	_direct3D->GetDeviceContext()->Unmap(_lightBuffer, 0);
 

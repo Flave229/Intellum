@@ -1,6 +1,6 @@
 #include "FontShader.h"
 
-FontShader::FontShader(DirectX3D* direct3D, Camera* camera) : IShaderType(direct3D, camera)
+FontShader::FontShader(DirectX3D* direct3D, Camera* camera, Light* light) : IShaderType(direct3D, camera, light)
 {
 }
 
@@ -196,9 +196,9 @@ void FontShader::Shutdown()
 	}
 }
 
-bool FontShader::Render(int indexCount, XMMATRIX worldMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, Light* light)
+bool FontShader::Render(int indexCount, XMMATRIX worldMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture)
 {
-	bool result = SetShaderParameters(worldMatrix, projectionMatrix, texture, light);
+	bool result = SetShaderParameters(worldMatrix, projectionMatrix, texture);
 	if (!result) return false;
 
 	RenderShader(indexCount);
@@ -206,7 +206,7 @@ bool FontShader::Render(int indexCount, XMMATRIX worldMatrix, XMMATRIX projectio
 	return true;
 }
 
-bool FontShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, Light* light)
+bool FontShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture)
 {
 	HRESULT result;
 	D3D11_MAPPED_SUBRESOURCE mappedResource;

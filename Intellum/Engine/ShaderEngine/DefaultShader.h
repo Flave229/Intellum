@@ -29,16 +29,16 @@ class DefaultShader : public IShaderType
 	};
 
 public:
-	DefaultShader(DirectX3D* _direct3D, Camera* camera);
+	DefaultShader(DirectX3D* _direct3D, Camera* camera, Light* light);
 	~DefaultShader();
 
 	bool Initialise(HWND hwnd) override;
 	bool InitialiseShader(HWND hwnd, WCHAR* vsFilename, WCHAR* psFilename) override;
 	void Shutdown() override;
 
-	bool SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, Light* light) override;
+	bool SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture) override;
 
-	bool Render(int indexCount, XMMATRIX worldMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, Light* light) override;
+	bool Render(int indexCount, XMMATRIX worldMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture) override;
 	void RenderShader(int indexCount) override;
 
 	void OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, WCHAR* shaderFileName) override;

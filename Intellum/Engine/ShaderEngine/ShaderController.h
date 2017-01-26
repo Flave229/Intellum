@@ -34,7 +34,7 @@ public:
 	ShaderController(const ShaderController&);
 	~ShaderController();
 
-	bool Initialise(HWND hwnd, Camera* camera);
+	bool Initialise(HWND hwnd, Camera* camera, Light* light);
 	void Shutdown();
 
 	IShaderType* GetShader(ShaderType type);

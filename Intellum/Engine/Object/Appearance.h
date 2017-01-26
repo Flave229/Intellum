@@ -6,17 +6,15 @@
 
 #include <fstream>
 
-#include "Texture.h"
 #include "../../Common/Geometry.h"
-#include "../../Engine/ShaderEngine/IShaderType.h"
-#include "../../Engine/ShaderEngine/DefaultShader.h"
 #include "../../Engine/DirectX3D.h"
-#include "../../Camera.h"
+#include "../Graphics/Texture.h"
+#include "../../Loaders/OBJLoader.h"
 
 using namespace DirectX;
 using namespace std;
 
-class Model
+class Appearance
 {
 // Member Level Variables
 private:
@@ -24,30 +22,29 @@ private:
 
 	Geometry* _geometry;
 	Texture* _texture;
-	IShaderType* _shader;
 
 // Function Declarations
 private:
 	void Initialise(char* textureFilename, char* modelFilename);
 
 	void ShutdownBuffers();
-	void RenderBuffers();
+	void RenderBuffers() const;
 
 	void LoadTexture(char* filename);
 	void ReleaseTexture();
 
-	void LoadModel(char* filename);
+	void LoadModel(char* filename) const;
 public:
-	Model(DirectX3D* direct3D, IShaderType* shader, char* textureFilename, char* modelFilename);
-	Model(const Model&);
-	~Model();
+	Appearance(DirectX3D* direct3D, char* textureFilename, char* modelFilename);
+	Appearance(const Appearance& other);
+	~Appearance();
 
 	void Shutdown();
-	void Render(float delta, Light* light);
+	void Render() const;
 
-	int GetIndexCount();
+	int GetIndexCount() const;
 
-	ID3D11ShaderResourceView* GetTexture();
+	ID3D11ShaderResourceView* GetTexture() const;
 };
 
 #endif
