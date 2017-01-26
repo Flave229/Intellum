@@ -27,5 +27,4 @@ public:
 	void Render();
 
 	int GetModelCount() const;
-	void GetData(XMFLOAT4& color, XMFLOAT3& position, float index);
 };

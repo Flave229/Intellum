@@ -22,7 +22,7 @@ void OBJLoader::CreateIndices(const std::vector<XMFLOAT3>& inVertices, const std
 
 	std::pair<Vertex, unsigned short> pair;
 
-	int numVertices = inVertices.size();
+	unsigned long long numVertices = inVertices.size();
 	for(int i = 0; i < numVertices; ++i) //For each vertex
 	{
 		Vertex vertex = { inVertices[i],  inTexCoords[i], inNormals[i] };
@@ -130,8 +130,8 @@ Geometry OBJLoader::Load(char* filename, ID3D11Device* _pd3dDevice, bool invertT
 					for(int i = 0; i < 3; ++i)
 					{
 						inFile >> input;
-						int slash = input.find("/"); //Find first forward slash
-						int secondSlash = input.find("/", slash + 1); //Find second forward slash
+						unsigned long long slash = input.find("/"); //Find first forward slash
+						unsigned long long secondSlash = input.find("/", slash + 1); //Find second forward slash
 
 						//Extract from string
 						beforeFirstSlash = input.substr(0, slash); //The vertex position index
@@ -159,7 +159,7 @@ Geometry OBJLoader::Load(char* filename, ID3D11Device* _pd3dDevice, bool invertT
 			std::vector<XMFLOAT3> expandedVertices;
 			std::vector<XMFLOAT3> expandedNormals;
 			std::vector<XMFLOAT2> expandedTexCoords;
-			unsigned int numIndices = vertIndices.size();
+			unsigned long long numIndices = vertIndices.size();
 			for(unsigned int i = 0; i < numIndices; i++)
 			{
 				expandedVertices.push_back(verts[vertIndices[i]]);
@@ -183,7 +183,7 @@ Geometry OBJLoader::Load(char* filename, ID3D11Device* _pd3dDevice, bool invertT
 
 			//Turn data from vector form to arrays
 			Vertex* finalVerts = new Vertex[meshVertices.size()];
-			unsigned int numMeshVertices = meshVertices.size();
+			unsigned long long numMeshVertices = meshVertices.size();
 			for(unsigned int i = 0; i < numMeshVertices; ++i)
 			{
 				finalVerts[i].position = meshVertices[i];
@@ -198,7 +198,7 @@ Geometry OBJLoader::Load(char* filename, ID3D11Device* _pd3dDevice, bool invertT
 			D3D11_BUFFER_DESC bd;
 			ZeroMemory(&bd, sizeof(bd));
 			bd.Usage = D3D11_USAGE_DEFAULT;
-			bd.ByteWidth = sizeof(Vertex) * meshVertices.size();
+			bd.ByteWidth = sizeof(Vertex) * static_cast<UINT>(meshVertices.size());
 			bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 			bd.CPUAccessFlags = 0;
 
@@ -213,7 +213,7 @@ Geometry OBJLoader::Load(char* filename, ID3D11Device* _pd3dDevice, bool invertT
 			meshData.VBStride = sizeof(Vertex);
 
 			unsigned short* indicesArray = new unsigned short[meshIndices.size()];
-			unsigned int numMeshIndices = meshIndices.size();
+			unsigned long long numMeshIndices = meshIndices.size();
 			for(unsigned int i = 0; i < numMeshIndices; ++i)
 			{
 				indicesArray[i] = meshIndices[i];
@@ -231,7 +231,7 @@ Geometry OBJLoader::Load(char* filename, ID3D11Device* _pd3dDevice, bool invertT
 
 			ZeroMemory(&bd, sizeof(bd));
 			bd.Usage = D3D11_USAGE_DEFAULT;
-			bd.ByteWidth = sizeof(WORD) * meshIndices.size();     
+			bd.ByteWidth = sizeof(WORD) * static_cast<UINT>(meshIndices.size());
 			bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
 			bd.CPUAccessFlags = 0;
 
@@ -239,7 +239,7 @@ Geometry OBJLoader::Load(char* filename, ID3D11Device* _pd3dDevice, bool invertT
 			InitData.pSysMem = indicesArray;
 			_pd3dDevice->CreateBuffer(&bd, &InitData, &indexBuffer);
 
-			meshData.IndexCount = meshIndices.size();
+			meshData.IndexCount = static_cast<UINT>(meshIndices.size());
 			meshData.IndexBuffer = indexBuffer;
 
 			//This data has now been sent over to the GPU so we can delete this CPU-side stuff
@@ -306,7 +306,7 @@ Geometry OBJLoader::Load(char* filename, ID3D11Device* _pd3dDevice, bool invertT
 		float lowestZ = finalVerts[0].position.z;
 		float highestZ = finalVerts[0].position.z;
 
-		for (int i = 0; i < meshData.VertexCount; i++) {
+		for (int i = 0; i < static_cast<int>(meshData.VertexCount); i++) {
 			if (finalVerts[i].position.x < lowestX) {
 				lowestX = finalVerts[i].position.x;
 			}

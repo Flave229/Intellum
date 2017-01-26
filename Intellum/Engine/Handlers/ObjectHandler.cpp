@@ -29,7 +29,7 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 
 void ObjectHandler::Shutdown()
 {
-	for (int i = _objectList.size(); i > 0 ; i--)
+	for (unsigned long long i = _objectList.size(); i > 0 ; i--)
 	{
 		_objectList.back()->Shutdown();
 		_objectList.pop_back();
