@@ -113,21 +113,21 @@ void DXSystem::Run()
 	}
 }
 
-bool DXSystem::Frame(float delta)
+bool DXSystem::Frame(float delta) const
 {
 	try
 	{
-		bool result = _input->Frame();
-		if (!result) return false;
+		_input->Update();
 
 		_framesPerSecond->Frame(delta);
 		_cpu->Frame();
+		
+		_graphics->Update(delta);
 
 		XMFLOAT2 mousePoint;
 		_input->MapMouseLocationInto(mousePoint);
 
-		result = _graphics->Frame(delta, mousePoint);
-		if (!result) return false;
+		_graphics->Render(mousePoint);
 
 		return true;
 	}

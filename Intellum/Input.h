@@ -37,10 +37,10 @@ public:
 	Input(const Input& other);
 	~Input();
 	void Shutdown();
-	bool Frame();
+	void Update();
 
-	bool IsEscapePressed();
-	void MapMouseLocationInto(XMFLOAT2& point);
+	bool IsEscapePressed() const;
+	void MapMouseLocationInto(XMFLOAT2& point) const;
 };
 
 #endif

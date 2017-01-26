@@ -27,7 +27,7 @@ private:
 	void Initialise();
 	void InitialiseWindows(Box& screenSize);
 
-	bool Frame(float delta);
+	bool Frame(float delta) const;
 	void ShutdownWindows();
 public:
 	DXSystem();
@@ -37,7 +37,7 @@ public:
 	void Shutdown();
 	void Run();
 
-	LRESULT CALLBACK MessageHandler(HWND hwnd, UINT umsg, WPARAM wparam, LPARAM lparam);
+	static LRESULT CALLBACK MessageHandler(HWND hwnd, UINT umsg, WPARAM wparam, LPARAM lparam);
 };
 
 static LRESULT CALLBACK WndProc(HWND hwnd, UINT umsg, WPARAM wparam, LPARAM lparam);

@@ -69,20 +69,18 @@ void Input::Shutdown()
 	}
 }
 
-bool Input::Frame()
+void Input::Update()
 {
 	bool result = ReadKeyboard();
-	if (!result) return false;
+	if (!result) throw Exception("Failed to read keyboard input");
 
 	result = ReadMouse();
-	if (!result) return false;
+	if (!result) throw Exception("Failed to read mouse input");;
 
 	ProcessInput();
-
-	return true;
 }
 
-bool Input::IsEscapePressed()
+bool Input::IsEscapePressed() const
 {
 	if (_keyboardState[DIK_ESCAPE] & 0x80)
 		return true;
@@ -90,7 +88,7 @@ bool Input::IsEscapePressed()
 	return false;
 }
 
-void Input::MapMouseLocationInto(XMFLOAT2& point)
+void Input::MapMouseLocationInto(XMFLOAT2& point) const
 {
 	point = _mousePosition;
 }

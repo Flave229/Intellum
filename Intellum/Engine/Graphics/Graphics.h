@@ -39,15 +39,14 @@ private:
 
 private:
 	void Initialise(Box screenSize, HWND hwnd);
-
-	bool Render(float delta, XMFLOAT2 mousePoint);
 public:
 	Graphics(Box screenSize, HWND hwnd, FramesPerSecond* framesPerSecond, Cpu* cpu);
 	Graphics(const Graphics& other);
 	~Graphics();
 
 	void Shutdown();
-	bool Frame(float delta, XMFLOAT2 mousePoint);
+	void Update(float delta);
+	void Render(XMFLOAT2 mousePoint) const;
 };
 
 #endif

@@ -4,7 +4,6 @@
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmdshow)
 {
 	DXSystem* system;
-	bool result;
 
 	system = new DXSystem;
 	if (!system) return 0;

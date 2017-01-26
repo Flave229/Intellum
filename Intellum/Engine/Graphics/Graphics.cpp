@@ -1,11 +1,11 @@
 #include "Graphics.h"
 
-Graphics::Graphics(Box screenSize, HWND hwnd, FramesPerSecond* framesPerSecond, Cpu* cpu): _direct3D(nullptr), _fontEngine(nullptr), _framesPerSecond(framesPerSecond), _cpu(cpu), _camera(nullptr), _objectHandler(nullptr), _shaderController(nullptr), _light(nullptr), _bitmap(nullptr)
+Graphics::Graphics(Box screenSize, HWND hwnd, FramesPerSecond* framesPerSecond, Cpu* cpu) : _direct3D(nullptr), _fontEngine(nullptr), _framesPerSecond(framesPerSecond), _cpu(cpu), _shaderController(nullptr), _objectHandler(nullptr), _camera(nullptr), _light(nullptr), _bitmap(nullptr)
 {
 	Initialise(screenSize, hwnd);
 }
 
-Graphics::Graphics(const Graphics& other) : _direct3D(other._direct3D), _fontEngine(nullptr), _framesPerSecond(nullptr), _cpu(other._cpu), _camera(other._camera), _objectHandler(other._objectHandler), _shaderController(other._shaderController), _light(other._light), _bitmap(other._bitmap)
+Graphics::Graphics(const Graphics& other) : _direct3D(other._direct3D), _fontEngine(nullptr), _framesPerSecond(nullptr), _cpu(other._cpu), _shaderController(other._shaderController), _objectHandler(other._objectHandler), _camera(other._camera), _light(other._light), _bitmap(other._bitmap)
 {
 }
 
@@ -105,11 +105,11 @@ void Graphics::Shutdown()
 	}
 }
 
-bool Graphics::Frame(float delta, XMFLOAT2 mousePoint)
+void Graphics::Update(float delta)
 {
 	try
 	{
-		return Render(delta, mousePoint);
+		_objectHandler->Update(delta);
 	}
 	catch (Exception& exception)
 	{
@@ -121,45 +121,39 @@ bool Graphics::Frame(float delta, XMFLOAT2 mousePoint)
 	}
 }
 
-bool Graphics::Render(float delta, XMFLOAT2 mousePoint)
+void Graphics::Render(XMFLOAT2 mousePoint) const
 {
 	try
 	{
-		XMMATRIX viewMatrix;
-		bool result;
-
 		_direct3D->BeginScene(XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f));
-
-		_objectHandler->Update(delta);
 
 		_camera->Render();
 
+		XMMATRIX viewMatrix;
 		_camera->MapViewMatrixInto(viewMatrix);
 
 		_direct3D->TurnZBufferOff();
 
-		result = _bitmap->Render(_light, XMFLOAT2(100, 100), Box(256, 256));
-		if (!result) return false;
+		bool result = _bitmap->Render(_light, XMFLOAT2(100, 100), Box(256, 256));
+		if (!result) throw Exception("Failed to render bitmap");
 
 		result = _fontEngine->Render(_light, XMFLOAT2(50, 600), "Impact", "Victoria Grump", XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 30);
-		if (!result) return false;
+		if (!result) throw Exception("Failed to render text");
 
 		result = _fontEngine->Render(_light, XMFLOAT2(10, 10), "Impact", "Mouse X: " + to_string(static_cast<int>(mousePoint.x)) + "    " + "Mouse Y: " + to_string(static_cast<int>(mousePoint.y)), XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 20);
-		if (!result) return false;
+		if (!result) throw Exception("Failed to render text");
 
 		result = _fontEngine->Render(_light, XMFLOAT2(10, 35), "Impact", "FPS: " + to_string(_framesPerSecond->GetFramesPerSeond()), XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 20);
-		if (!result) return false;
+		if (!result) throw Exception("Failed to render text");
 
 		result = _fontEngine->Render(_light, XMFLOAT2(10, 60), "Impact", "Cpu: " + to_string(_cpu->GetCpuPercentage()) + "%", XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 20);
-		if (!result) return false;
+		if (!result) throw Exception("Failed to render text");
 
 		_direct3D->TurnZBufferOn();
 		 
 		_objectHandler->Render();
 
 		_direct3D->EndScene();
-
-		return true;
 	}
 	catch(Exception& exception)
 	{
