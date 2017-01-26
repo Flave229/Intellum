@@ -156,7 +156,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Graphics\Bitmap.cpp" />
-    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Engine\Camera\Camera.cpp" />
     <ClCompile Include="Engine\SystemMetrics\Cpu.cpp" />
     <ClCompile Include="Engine\ShaderEngine\DefaultShader.cpp" />
     <ClCompile Include="Engine\DxComponents\DepthStencil.cpp" />
@@ -171,6 +171,7 @@
     <ClCompile Include="Engine\SystemMetrics\FramesPerSecond.cpp" />
     <ClCompile Include="Engine\Graphics\Graphics.cpp" />
     <ClCompile Include="Engine\DxComponents\HardwareDescription.cpp" />
+    <ClCompile Include="Engine\Camera\Frustrum.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Engine\FontEngine\Character.cpp" />
     <ClCompile Include="Engine\Graphics\Light.cpp" />
@@ -183,10 +184,11 @@
     <ClCompile Include="loaders\TargaLoader.cpp" />
     <ClCompile Include="Engine\Graphics\Texture.cpp" />
     <ClCompile Include="Engine\FontEngine\UnicodeDictionary.cpp" />
+    <ClCompile Include="Engine\Handlers\ModelHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Graphics\Bitmap.h" />
-    <ClInclude Include="Camera.h" />
+    <ClInclude Include="Engine\Camera\Camera.h" />
     <ClInclude Include="common\Box.h" />
     <ClInclude Include="common\Vertex.h" />
     <ClInclude Include="Engine\SystemMetrics\Cpu.h" />
@@ -202,6 +204,7 @@
     <ClInclude Include="Engine\SystemMetrics\FramesPerSecond.h" />
     <ClInclude Include="Engine\Graphics\Graphics.h" />
     <ClInclude Include="Engine\DxComponents\HardwareDescription.h" />
+    <ClInclude Include="Engine\Camera\Frustrum.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Engine\FontEngine\Character.h" />
     <ClInclude Include="Engine\ShaderEngine\IShaderType.h" />
@@ -215,6 +218,7 @@
     <ClInclude Include="loaders\TargaLoader.h" />
     <ClInclude Include="Engine\Graphics\Texture.h" />
     <ClInclude Include="Engine\FontEngine\UnicodeDictionary.h" />
+    <ClInclude Include="Engine\Handlers\ModelHandler.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="data\models\Cube.txt">

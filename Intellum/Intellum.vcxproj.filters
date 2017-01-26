@@ -52,9 +52,6 @@
     <ClCompile Include="Input.cpp">
       <Filter>Source Files\Application</Filter>
     </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Source Files\Application</Filter>
-    </ClCompile>
     <ClCompile Include="DXSystem.cpp">
       <Filter>Source Files\Application</Filter>
     </ClCompile>
@@ -124,12 +121,18 @@
     <ClCompile Include="Engine\Graphics\Texture.cpp">
       <Filter>Source Files\ObjectData</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Camera\Camera.cpp">
+      <Filter>Source Files\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Camera\Frustrum.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Handlers\ModelHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Input.h">
-      <Filter>Header Files\Application</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
       <Filter>Header Files\Application</Filter>
     </ClInclude>
     <ClInclude Include="DXSystem.h">
@@ -215,6 +218,15 @@
     </ClInclude>
     <ClInclude Include="Engine\Graphics\Texture.h">
       <Filter>Header Files\ObjectData</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Camera\Camera.h">
+      <Filter>Header Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Camera\Frustrum.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Handlers\ModelHandler.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
