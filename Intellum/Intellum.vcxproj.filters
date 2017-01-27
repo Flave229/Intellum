@@ -49,9 +49,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Input.cpp">
-      <Filter>Source Files\Application</Filter>
-    </ClCompile>
     <ClCompile Include="DXSystem.cpp">
       <Filter>Source Files\Application</Filter>
     </ClCompile>
@@ -136,11 +133,14 @@
     <ClCompile Include="Engine\Object\Appearance.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Input\Input.cpp">
+      <Filter>Source Files\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Input\KeyboardMappings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Input.h">
-      <Filter>Header Files\Application</Filter>
-    </ClInclude>
     <ClInclude Include="DXSystem.h">
       <Filter>Header Files\Application</Filter>
     </ClInclude>
@@ -241,6 +241,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Common\Constants.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Input\Input.h">
+      <Filter>Header Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Input\KeyboardMappings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Input\Controls.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

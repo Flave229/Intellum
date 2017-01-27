@@ -106,7 +106,7 @@ void DXSystem::Run()
 			done = true;
 		}
 
-		if (_input->IsEscapePressed())
+		if (_input->IsControlPressed(ESCAPE))
 		{
 			done = true;
 		}

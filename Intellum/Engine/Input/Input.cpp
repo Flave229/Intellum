@@ -44,6 +44,8 @@ void Input::Initialise(HINSTANCE hInstance, HWND hwnd, Box screenSize)
 
 	result = _mouse->Acquire();
 	if (FAILED(result)) throw Exception("Failed to acquire the mouse device.");
+
+	_keyboardMappings = KeyboardMappings();
 }
 
 void Input::Shutdown()
@@ -80,9 +82,9 @@ void Input::Update()
 	ProcessInput();
 }
 
-bool Input::IsEscapePressed() const
+bool Input::IsControlPressed(Controls control)
 {
-	if (_keyboardState[DIK_ESCAPE] & 0x80)
+	if (_keyboardState[_keyboardMappings.GetControlMappingFor(control)] & 0x80)
 		return true;
 
 	return false;
@@ -95,7 +97,7 @@ void Input::MapMouseLocationInto(XMFLOAT2& point) const
 
 bool Input::ReadKeyboard()
 {
-	HRESULT result = _keyboard->GetDeviceState(sizeof(_keyboardState), static_cast<LPVOID>(&_keyboardState));
+	HRESULT result = _keyboard->GetDeviceState(sizeof _keyboardState, static_cast<LPVOID>(&_keyboardState));
 	
 	if (FAILED(result))
 	{

@@ -7,8 +7,9 @@
 
 #include <dinput.h>
 #include <DirectXMath.h>
-#include "common/Box.h"
-#include "ErrorHandling/Exception.h"
+#include "../../ErrorHandling/Exception.h"
+#include "../../common/Box.h"
+#include "KeyboardMappings.h"
 
 using namespace DirectX;
 
@@ -25,6 +26,8 @@ private:
 	Box _screen;
 	XMFLOAT2 _mousePosition;
 
+	KeyboardMappings _keyboardMappings;
+
 private:
 	void Initialise(HINSTANCE hInstance, HWND hwnd, Box screenSize);
 
@@ -39,7 +42,8 @@ public:
 	void Shutdown();
 	void Update();
 
-	bool IsEscapePressed() const;
+	bool IsControlPressed(Controls control);
+
 	void MapMouseLocationInto(XMFLOAT2& point) const;
 };
 

@@ -3,11 +3,11 @@
 #define WIN32_LEAN_AND_MEAN
 
 #include <windows.h>
-#include "Input.h"
 #include "Engine/Graphics/Graphics.h"
 #include "Engine/GameTimer.h"
 #include "Engine/SystemMetrics/FramesPerSecond.h"
 #include "Engine/SystemMetrics/Cpu.h"
+#include "engine/Input/Input.h"
 
 class DXSystem
 {

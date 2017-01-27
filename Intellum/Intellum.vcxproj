@@ -172,9 +172,10 @@
     <ClCompile Include="Engine\Graphics\Graphics.cpp" />
     <ClCompile Include="Engine\DxComponents\HardwareDescription.cpp" />
     <ClCompile Include="Engine\Camera\Frustrum.cpp" />
-    <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Engine\Input\Input.cpp" />
     <ClCompile Include="Engine\FontEngine\Character.cpp" />
     <ClCompile Include="Engine\Graphics\Light.cpp" />
+    <ClCompile Include="Engine\Input\KeyboardMappings.cpp" />
     <ClCompile Include="loaders\OBJLoader.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\Object\Appearance.cpp" />
@@ -194,6 +195,7 @@
     <ClInclude Include="Engine\Camera\Camera.h" />
     <ClInclude Include="common\Box.h" />
     <ClInclude Include="common\Vertex.h" />
+    <ClInclude Include="Engine\Input\Controls.h" />
     <ClInclude Include="Engine\SystemMetrics\Cpu.h" />
     <ClInclude Include="Engine\ShaderEngine\DefaultShader.h" />
     <ClInclude Include="Engine\DxComponents\DepthStencil.h" />
@@ -208,10 +210,11 @@
     <ClInclude Include="Engine\Graphics\Graphics.h" />
     <ClInclude Include="Engine\DxComponents\HardwareDescription.h" />
     <ClInclude Include="Engine\Camera\Frustrum.h" />
-    <ClInclude Include="Input.h" />
+    <ClInclude Include="Engine\Input\Input.h" />
     <ClInclude Include="Engine\FontEngine\Character.h" />
     <ClInclude Include="Engine\ShaderEngine\IShaderType.h" />
     <ClInclude Include="Engine\Graphics\Light.h" />
+    <ClInclude Include="Engine\Input\KeyboardMappings.h" />
     <ClInclude Include="loaders\models\TargaData.h" />
     <ClInclude Include="loaders\OBJLoader.h" />
     <ClInclude Include="Engine\Object\Appearance.h" />
