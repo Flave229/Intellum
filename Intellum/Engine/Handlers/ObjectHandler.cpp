@@ -1,12 +1,8 @@
 #include "ObjectHandler.h"
 
-ObjectHandler::ObjectHandler(DirectX3D* direct3D, ShaderController* shaderController)
+ObjectHandler::ObjectHandler(DirectX3D* direct3D, ShaderController* shaderController, Frustrum* frustrum) : _frustrum(frustrum)
 {
 	InitialiseObjects(direct3D, shaderController);
-}
-
-ObjectHandler::ObjectHandler(const ObjectHandler& other) : _objectList(other._objectList)
-{
 }
 
 ObjectHandler::~ObjectHandler()

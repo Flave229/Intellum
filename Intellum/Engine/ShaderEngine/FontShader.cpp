@@ -145,7 +145,7 @@ void FontShader::InitialiseShader(HWND hwnd, WCHAR* vsFilename, WCHAR* psFilenam
 		result = _direct3D->GetDevice()->CreateSamplerState(&samplerDesc, &_sampleState);
 		if (FAILED(result)) throw Exception("Failed to create the sampler state");
 		
-		_camera->MapViewMatrixInto(_viewMatrix);
+		_viewMatrix = _camera->GetViewMatrix();
 	}
 	catch (Exception& exception)
 	{

@@ -189,6 +189,7 @@
     <ClCompile Include="Engine\Object\SceneObject.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Common\Constants.h" />
     <ClInclude Include="Engine\Graphics\Bitmap.h" />
     <ClInclude Include="Engine\Camera\Camera.h" />
     <ClInclude Include="common\Box.h" />

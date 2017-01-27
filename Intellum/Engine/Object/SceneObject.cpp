@@ -4,10 +4,6 @@ SceneObject::SceneObject(DirectX3D* direct3D, Transform* transform, Appearance* 
 {
 }
 
-SceneObject::SceneObject(const SceneObject& other) : SceneObject(other._direct3D, other._transform, other._appearance, other._shader)
-{
-}
-
 SceneObject::~SceneObject()
 {
 }
@@ -20,11 +16,7 @@ void SceneObject::Update(float delta) const
 void SceneObject::Render() const
 {
 	_appearance->Render();
-
-	XMMATRIX projectionMatrix;
-	_direct3D->MapProjectionMatrixInto(projectionMatrix);
-
-	_shader->Render(_appearance->GetIndexCount(), _transform->GetTransformation(), projectionMatrix, _appearance->GetTexture());
+	_shader->Render(_appearance->GetIndexCount(), _transform->GetTransformation(), _direct3D->GetProjectionMatrix(), _appearance->GetTexture());
 }
 
 void SceneObject::Shutdown()

@@ -13,12 +13,12 @@ using namespace std;
 class ObjectHandler
 {
 private:
+	Frustrum* _frustrum;
 	vector<SceneObject*> _objectList;
 
 	void InitialiseObjects(DirectX3D* direct3D, ShaderController* shaderController);
 public:
-	ObjectHandler(DirectX3D* direct3D, ShaderController* shaderController);
-	ObjectHandler(const ObjectHandler& other);
+	ObjectHandler(DirectX3D* direct3D, ShaderController* shaderController, Frustrum* frustrum);
 	~ObjectHandler();
 
 	void Shutdown();

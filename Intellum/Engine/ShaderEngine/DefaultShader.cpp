@@ -219,8 +219,7 @@ void DefaultShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectio
 {
 	try
 	{
-		XMMATRIX viewMatrix;
-		_camera->MapViewMatrixInto(viewMatrix);
+		XMMATRIX viewMatrix = _camera->GetViewMatrix();
 
 		SetMatrixBuffer(worldMatrix, projectionMatrix, viewMatrix, 0);
 		SetCameraBuffer(1);

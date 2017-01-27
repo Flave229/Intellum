@@ -14,8 +14,7 @@ Transform::~Transform()
 
 void Transform::Update(float delta)
 {
-	XMMATRIX transformation;
-	_direct3D->MapWorldMatrixInto(transformation);
+	XMMATRIX transformation = _direct3D-> GetWorldMatrix();
 
 	UpdateRotation(delta);
 

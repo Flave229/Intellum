@@ -19,8 +19,8 @@ void Graphics::Initialise(Box screenSize, HWND hwnd)
 	{
 		_direct3D = new DirectX3D(screenSize, VSYNC_ENABLED, hwnd, FULL_SCREEN, SCREEN_DEPTH, SCREEN_NEAR);
 		if (!_direct3D) throw Exception("Failed to create a DirectX3D object.");
-
-		_camera = new Camera(new Transform(_direct3D));
+		
+		_camera = new Camera(new Frustrum(_direct3D), new Transform(_direct3D));
 		if (!_camera) throw Exception("Failed to create a camera object.");
 
 		_camera->GetTransform()->SetPosition(XMFLOAT3(0.0f, 0.0f, -5.0f));
@@ -34,7 +34,7 @@ void Graphics::Initialise(Box screenSize, HWND hwnd)
 		bool result = _shaderController->Initialise(hwnd, _camera, _light);
 		if (!_shaderController) throw Exception("Failed to create the shader controller.");
 
-		_objectHandler = new ObjectHandler(_direct3D, _shaderController);
+		_objectHandler = new ObjectHandler(_direct3D, _shaderController, _camera->GetFrustrum());
 		if (!_objectHandler) throw Exception("Failed to create the object handler.");
 		
 		_bitmap = new Bitmap(_direct3D, _shaderController->GetShader(SHADER_FONT), screenSize, Box(256, 256), "data/images/stone.tga");
@@ -87,6 +87,7 @@ void Graphics::Shutdown()
 
 	if (_camera)
 	{
+		_camera->Shutdown();
 		delete _camera;
 		_camera = nullptr;
 	}

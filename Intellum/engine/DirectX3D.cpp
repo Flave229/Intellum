@@ -192,19 +192,19 @@ ID3D11DeviceContext* DirectX3D::GetDeviceContext()
 	return _deviceContext;
 }
 
-void DirectX3D::MapProjectionMatrixInto(XMMATRIX& projectionMatrix)
+XMMATRIX DirectX3D::GetProjectionMatrix() const
 {
-	projectionMatrix = _projectionMatrix;
+	return _projectionMatrix;
 }
 
-void DirectX3D::MapWorldMatrixInto(XMMATRIX& worldMatrix)
+XMMATRIX DirectX3D::GetWorldMatrix() const
 {
-	worldMatrix = _worldMatrix;
+	return _worldMatrix;
 }
 
-void DirectX3D::MapOrthoMatrixInto(XMMATRIX& orthoMatrix)
+XMMATRIX DirectX3D::GetOrthoMatrix() const
 {
-	orthoMatrix = _orthoMatrix;
+	return _orthoMatrix;
 }
 
 void DirectX3D::GetVideoCardInfo(char* cardname, int& memory)

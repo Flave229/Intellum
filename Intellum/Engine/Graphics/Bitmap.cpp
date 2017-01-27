@@ -102,10 +102,8 @@ void Bitmap::Render()
 {
 	RenderBuffers();
 
-	XMMATRIX worldMatrix;
-	XMMATRIX orthoMatrix;
-	_direct3D->MapWorldMatrixInto(worldMatrix);
-	_direct3D->MapOrthoMatrixInto(orthoMatrix);
+	XMMATRIX worldMatrix = _direct3D->GetWorldMatrix();
+	XMMATRIX orthoMatrix = _direct3D->GetOrthoMatrix();
 
 	_shader->Render(GetIndexCount(), worldMatrix, orthoMatrix, GetTexture());
 }

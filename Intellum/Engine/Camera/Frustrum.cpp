@@ -1,10 +1,10 @@
 #include "Frustrum.h"
 
-Frustrum::Frustrum()
+Frustrum::Frustrum(DirectX3D* direct3D): _direct3D(direct3D)
 {
 }
 
-Frustrum::Frustrum(const Frustrum& other)
+Frustrum::Frustrum(const Frustrum& other) : _direct3D(other._direct3D)
 {
 }
 
@@ -12,8 +12,11 @@ Frustrum::~Frustrum()
 {
 }
 
-void Frustrum::ConstructFrustrum(XMFLOAT4X4 projectionMatrix, XMFLOAT4X4 viewMatrix, float screenDepth)
+void Frustrum::ConstructFrustrum(XMFLOAT4X4 viewMatrix, float screenDepth)
 {
+	XMFLOAT4X4 projectionMatrix;
+	XMStoreFloat4x4(&projectionMatrix, _direct3D->GetProjectionMatrix());
+
 	CalculateMinimumZDistanceFrom(projectionMatrix, screenDepth);
 
 	XMFLOAT4X4 matrix;
