@@ -20,6 +20,7 @@ void Transform::Update(float delta)
 	UpdateRotation(delta);
 
 	transformation *= XMMatrixRotationRollPitchYaw(_rotation.x, _rotation.y, _rotation.z);
+	transformation *= XMMatrixTranslation(_position.x, _position.y, _position.z);
 
 	_transformation = transformation;
 }

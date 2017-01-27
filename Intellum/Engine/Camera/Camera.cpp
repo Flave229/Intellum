@@ -21,7 +21,7 @@ Transform* Camera::GetTransform() const
 
 void Camera::Update(float delta)
 {
-	_transform->SetAngularVelocity(XMFLOAT3(0.0f, 3.0f, 0.0f));
+	_transform->SetAngularVelocity(XMFLOAT3(0.0f, 1.5f, 0.0f));
 	_transform->Update(delta);
 
 	XMFLOAT3 rotation = _transform->GetRotation();

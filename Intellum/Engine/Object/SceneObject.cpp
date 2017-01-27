@@ -14,8 +14,6 @@ SceneObject::~SceneObject()
 
 void SceneObject::Update(float delta) const
 {
-	_transform->SetAngularVelocity(XMFLOAT3(0.0f, static_cast<float>(XM_PI) * 0.5f, 0.0f));
-
 	_transform->Update(delta);
 }
 
