@@ -110,9 +110,9 @@ void Graphics::Update(float delta) const
 {
 	try
 	{
+		_camera->Update(delta);
 		_objectHandler->Update(delta);
 		_bitmap->Update(XMFLOAT2(100, 100), Box(256, 256));
-		_camera->Update(delta);
 	}
 	catch (Exception& exception)
 	{

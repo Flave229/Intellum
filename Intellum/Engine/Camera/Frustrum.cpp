@@ -20,7 +20,7 @@ void Frustrum::ConstructFrustrum(XMFLOAT4X4 viewMatrix, float screenDepth)
 	CalculateMinimumZDistanceFrom(projectionMatrix, screenDepth);
 
 	XMFLOAT4X4 matrix;
-	XMStoreFloat4x4(&matrix, XMMatrixMultiply(XMLoadFloat4x4(&projectionMatrix), XMLoadFloat4x4(&viewMatrix)));
+	XMStoreFloat4x4(&matrix, XMMatrixMultiply(XMLoadFloat4x4(&viewMatrix), XMLoadFloat4x4(&projectionMatrix)));
 
 	ConstructFrustrumNearPlane(matrix);
 	ConstructFrustrumFarPlane(matrix);
@@ -33,10 +33,10 @@ void Frustrum::ConstructFrustrum(XMFLOAT4X4 viewMatrix, float screenDepth)
 void Frustrum::CalculateMinimumZDistanceFrom(XMFLOAT4X4& projectionMatrix, float screenDepth)
 {
 	float zMinimum = -projectionMatrix._43 / projectionMatrix._33;
-	float frustrumRight = screenDepth / (screenDepth - zMinimum);
+	float frustrumRadius = screenDepth / (screenDepth - zMinimum);
 
-	projectionMatrix._33 = frustrumRight;
-	projectionMatrix._43 = -frustrumRight * zMinimum;
+	projectionMatrix._33 = frustrumRadius;
+	projectionMatrix._43 = -frustrumRadius * zMinimum;
 }
 
 void Frustrum::ConstructFrustrumNearPlane(XMFLOAT4X4 matrix)
@@ -140,10 +140,7 @@ bool Frustrum::CheckCubeInsideFrustrum(XMFLOAT3 center, float radius) const
 
 bool Frustrum::CheckSphereInsideFrustrum(XMFLOAT3 center, float radius) const
 {
-	if (CheckPointInsideFrustrum(XMFLOAT3(center.x, center.y, center.z), -radius) == false)
-		return false;
-
-	return true;
+	return CheckPointInsideFrustrum(XMFLOAT3(center.x, center.y, center.z), -radius);
 }
 
 bool Frustrum::CheckRectangleInsideFrustrum(XMFLOAT3 center, XMFLOAT3 size) const

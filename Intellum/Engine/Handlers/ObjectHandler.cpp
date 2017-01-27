@@ -54,7 +54,8 @@ void ObjectHandler::Render()
 {
 	for (int i = 0; i < _objectList.size(); i++)
 	{
-		_objectList.at(i)->Render();
+		if (_frustrum->CheckSphereInsideFrustrum(_objectList.at(i)->GetTransform()->GetPosition(), 0.5f))
+			_objectList.at(i)->Render();
 	}
 }
 

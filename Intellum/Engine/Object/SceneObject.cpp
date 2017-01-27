@@ -19,6 +19,11 @@ void SceneObject::Render() const
 	_shader->Render(_appearance->GetIndexCount(), _transform->GetTransformation(), _direct3D->GetProjectionMatrix(), _appearance->GetTexture());
 }
 
+Transform* SceneObject::GetTransform()
+{
+	return _transform;
+}
+
 void SceneObject::Shutdown()
 {
 	if (_transform)
