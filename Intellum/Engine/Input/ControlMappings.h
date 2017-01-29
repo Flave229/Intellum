@@ -12,15 +12,15 @@
 
 using namespace std;
 
-class KeyboardMappings
+class ControlMappings
 {
 private:
 	vector<Controls> _controls = vector<Controls>();
 	map<Controls, InputControl> _keyboardMappings = map<Controls, InputControl>();
 
 public:
-	KeyboardMappings();
-	~KeyboardMappings();
+	ControlMappings();
+	~ControlMappings();
 
 	InputControl GetControlMappingFor(Controls control);
 };

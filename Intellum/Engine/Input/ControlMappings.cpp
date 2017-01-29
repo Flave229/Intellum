@@ -1,6 +1,6 @@
-#include "KeyboardMappings.h"
+#include "ControlMappings.h"
 
-KeyboardMappings::KeyboardMappings()
+ControlMappings::ControlMappings()
 {
 	_keyboardMappings = map<Controls, InputControl>
 	{
@@ -16,11 +16,11 @@ KeyboardMappings::KeyboardMappings()
 	};
 }
 
-KeyboardMappings::~KeyboardMappings()
+ControlMappings::~ControlMappings()
 {
 }
 
-InputControl KeyboardMappings::GetControlMappingFor(Controls control)
+InputControl ControlMappings::GetControlMappingFor(Controls control)
 {
 	return _keyboardMappings[control];
 }

@@ -9,7 +9,7 @@
 #include <DirectXMath.h>
 #include "../../ErrorHandling/Exception.h"
 #include "../../common/Box.h"
-#include "KeyboardMappings.h"
+#include "ControlMappings.h"
 
 using namespace DirectX;
 
@@ -27,7 +27,7 @@ private:
 	XMFLOAT2 _previousMousePosition;
 	XMFLOAT2 _mousePosition;
 
-	KeyboardMappings _keyboardMappings;
+	ControlMappings _keyboardMappings;
 private:
 	void Initialise(HINSTANCE hInstance, HWND hwnd, Box screenSize);
 

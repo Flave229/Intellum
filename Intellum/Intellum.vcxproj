@@ -175,7 +175,7 @@
     <ClCompile Include="Engine\Input\Input.cpp" />
     <ClCompile Include="Engine\FontEngine\Character.cpp" />
     <ClCompile Include="Engine\Graphics\Light.cpp" />
-    <ClCompile Include="Engine\Input\KeyboardMappings.cpp" />
+    <ClCompile Include="Engine\Input\ControlMappings.cpp" />
     <ClCompile Include="Engine\Input\InputControl.cpp" />
     <ClCompile Include="loaders\OBJLoader.cpp" />
     <ClCompile Include="main.cpp" />
@@ -216,7 +216,7 @@
     <ClInclude Include="Engine\FontEngine\Character.h" />
     <ClInclude Include="Engine\ShaderEngine\IShaderType.h" />
     <ClInclude Include="Engine\Graphics\Light.h" />
-    <ClInclude Include="Engine\Input\KeyboardMappings.h" />
+    <ClInclude Include="Engine\Input\ControlMappings.h" />
     <ClInclude Include="Engine\Input\InputControl.h" />
     <ClInclude Include="loaders\models\TargaData.h" />
     <ClInclude Include="loaders\OBJLoader.h" />

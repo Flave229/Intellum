@@ -46,7 +46,7 @@ void Input::Initialise(HINSTANCE hInstance, HWND hwnd, Box screenSize)
 	result = _mouse->Acquire();
 	if (FAILED(result)) throw Exception("Failed to acquire the mouse device.");
 
-	_keyboardMappings = KeyboardMappings();
+	_keyboardMappings = ControlMappings();
 }
 
 void Input::Shutdown()
