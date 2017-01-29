@@ -26,7 +26,7 @@ void DXSystem::Initialise()
 		_cpu = new Cpu();
 
 		_input = new Input(_hInstance, _hwnd, screenSize);
-		_graphics = new Graphics(screenSize, _hwnd, _framesPerSecond, _cpu);
+		_graphics = new Graphics(_input, screenSize, _hwnd, _framesPerSecond, _cpu);
 	}
 	catch(Exception& exception)
 	{

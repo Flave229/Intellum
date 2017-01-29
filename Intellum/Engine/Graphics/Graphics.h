@@ -34,9 +34,9 @@ private:
 	Bitmap* _bitmap;
 
 private:
-	void Initialise(Box screenSize, HWND hwnd);
+	void Initialise(Input* input, Box screenSize, HWND hwnd);
 public:
-	Graphics(Box screenSize, HWND hwnd, FramesPerSecond* framesPerSecond, Cpu* cpu);
+	Graphics(Input* input, Box screenSize, HWND hwnd, FramesPerSecond* framesPerSecond, Cpu* cpu);
 	Graphics(const Graphics& other);
 	~Graphics();
 

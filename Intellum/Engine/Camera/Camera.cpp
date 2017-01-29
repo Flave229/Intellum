@@ -1,6 +1,6 @@
 #include "Camera.h"
 
-Camera::Camera(Frustrum* frustrum, Transform* transform): _frustrum(frustrum), _transform(transform)
+Camera::Camera(Frustrum* frustrum, Transform* transform, Input* input): _input(input), _frustrum(frustrum), _transform(transform)
 {
 	_transform->SetPosition(XMFLOAT3(0.0f, 0.0f, -1.0f));
 	Update(0.0f);
@@ -27,7 +27,26 @@ void Camera::Shutdown()
 
 void Camera::Update(float delta)
 {
-	_transform->SetAngularVelocity(XMFLOAT3(0.0f, 1.5f, 0.0f));
+	_transform->SetAngularVelocity(XMFLOAT3(0.0f, 0.0f, 0.0f));
+
+	if (_input->IsControlPressed(CAMERA_LOOK_LEFT))
+	{
+		_transform->AddAngularVelocity(XMFLOAT3(0.0f, -1.5f, 0.0f));
+	}
+	else if (_input->IsControlPressed(CAMERA_LOOK_RIGHT))
+	{
+		_transform->AddAngularVelocity(XMFLOAT3(0.0f, 1.5f, 0.0f));
+	}
+
+	if (_input->IsControlPressed(CAMERA_LOOK_UP))
+	{
+		_transform->AddAngularVelocity(XMFLOAT3(-1.5f, 0.0f, 0.0f));
+	}
+	else if (_input->IsControlPressed(CAMERA_LOOK_DOWN))
+	{
+		_transform->AddAngularVelocity(XMFLOAT3(1.5f, 0.0f, 0.0f));
+	}
+
 	_transform->Update(delta);
 
 	XMFLOAT3 rotation = _transform->GetRotation();

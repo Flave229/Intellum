@@ -34,6 +34,7 @@ public:
 	XMFLOAT3& GetRotation();
 
 	void SetAngularVelocity(XMFLOAT3 angularVelocity);
+	void AddAngularVelocity(XMFLOAT3 angularVelocity);
 	XMFLOAT3& GetAngularVelocity();
 
 	void Move(XMFLOAT3 movementVector);

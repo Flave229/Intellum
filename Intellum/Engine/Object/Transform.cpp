@@ -64,6 +64,13 @@ void Transform::SetAngularVelocity(XMFLOAT3 angularVelocity)
 	_angularVelocity = angularVelocity;
 }
 
+void Transform::AddAngularVelocity(XMFLOAT3 angularVelocity)
+{
+	_angularVelocity.x += angularVelocity.x;
+	_angularVelocity.y += angularVelocity.y;
+	_angularVelocity.z += angularVelocity.z;
+}
+
 XMFLOAT3& Transform::GetAngularVelocity()
 {
 	return _angularVelocity;

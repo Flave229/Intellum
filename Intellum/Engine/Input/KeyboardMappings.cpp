@@ -5,10 +5,10 @@ KeyboardMappings::KeyboardMappings()
 	_keyboardMappings = map<Controls, unsigned char> 
 	{
 		{ ESCAPE, DIK_ESCAPE },
-		{ CAMERA_MOVE_LEFT, DIK_A },
-		{ CAMERA_MOVE_RIGHT, DIK_D },
-		{ CAMERA_MOVE_UP, DIK_W },
-		{ CAMERA_MOVE_DOWN, DIK_S },
+		{ CAMERA_LOOK_LEFT, DIK_A },
+		{ CAMERA_LOOK_RIGHT, DIK_D },
+		{ CAMERA_LOOK_UP, DIK_W },
+		{ CAMERA_LOOK_DOWN, DIK_S },
 	};
 }
 

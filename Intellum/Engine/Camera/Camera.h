@@ -5,6 +5,7 @@
 #include "../Object/Transform.h"
 #include "Frustrum.h"
 #include "../../Common/Constants.h"
+#include "../Input/Input.h"
 
 using namespace DirectX;
 
@@ -12,8 +13,9 @@ class Camera
 {
 // Member Level Variables
 private:
-	Frustrum* _frustrum;
+	Input* _input;
 
+	Frustrum* _frustrum;
 	Transform* _transform;
 
 	XMMATRIX _viewMatrix2D;
@@ -21,7 +23,7 @@ private:
 
 // Function Declarations
 public:
-	Camera(Frustrum* frustrum, Transform* transform);
+	Camera(Frustrum* frustrum, Transform* transform, Input* input);
 	~Camera();
 
 	void Shutdown();

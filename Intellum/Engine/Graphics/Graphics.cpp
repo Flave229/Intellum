@@ -1,26 +1,22 @@
 #include "Graphics.h"
 
-Graphics::Graphics(Box screenSize, HWND hwnd, FramesPerSecond* framesPerSecond, Cpu* cpu) : _direct3D(nullptr), _fontEngine(nullptr), _framesPerSecond(framesPerSecond), _cpu(cpu), _shaderController(nullptr), _objectHandler(nullptr), _camera(nullptr), _light(nullptr), _bitmap(nullptr)
+Graphics::Graphics(Input* input, Box screenSize, HWND hwnd, FramesPerSecond* framesPerSecond, Cpu* cpu) : _direct3D(nullptr), _fontEngine(nullptr), _framesPerSecond(framesPerSecond), _cpu(cpu), _shaderController(nullptr), _objectHandler(nullptr), _camera(nullptr), _light(nullptr), _bitmap(nullptr)
 {
-	Initialise(screenSize, hwnd);
-}
-
-Graphics::Graphics(const Graphics& other) : _direct3D(other._direct3D), _fontEngine(nullptr), _framesPerSecond(nullptr), _cpu(other._cpu), _shaderController(other._shaderController), _objectHandler(other._objectHandler), _camera(other._camera), _light(other._light), _bitmap(other._bitmap)
-{
+	Initialise(input, screenSize, hwnd);
 }
 
 Graphics::~Graphics()
 {
 }
 
-void Graphics::Initialise(Box screenSize, HWND hwnd)
+void Graphics::Initialise(Input* input, Box screenSize, HWND hwnd)
 {
 	try
 	{
 		_direct3D = new DirectX3D(screenSize, VSYNC_ENABLED, hwnd, FULL_SCREEN, SCREEN_DEPTH, SCREEN_NEAR);
 		if (!_direct3D) throw Exception("Failed to create a DirectX3D object.");
 		
-		_camera = new Camera(new Frustrum(_direct3D), new Transform(_direct3D));
+		_camera = new Camera(new Frustrum(_direct3D), new Transform(_direct3D), input);
 		if (!_camera) throw Exception("Failed to create a camera object.");
 
 		_camera->GetTransform()->SetPosition(XMFLOAT3(0.0f, 0.0f, -5.0f));
