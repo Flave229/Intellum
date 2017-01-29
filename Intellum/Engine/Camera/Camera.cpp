@@ -28,23 +28,42 @@ void Camera::Shutdown()
 void Camera::Update(float delta)
 {
 	_transform->SetAngularVelocity(XMFLOAT3(0.0f, 0.0f, 0.0f));
+	_transform->SetVelocity(XMFLOAT3(0.0f, 0.0f, 0.0f));
+
+	if (_input->IsControlPressed(CAMERA_MOVE_LEFT))
+	{
+		_transform->AddVelocity(XMFLOAT3(-1.5f, 0.0f, 0.0f));
+	}
+	else if (_input->IsControlPressed(CAMERA_MOVE_RIGHT))
+	{
+		_transform->AddVelocity(XMFLOAT3(1.5f, 0.0f, 0.0f));
+	}
+
+	if (_input->IsControlPressed(CAMERA_MOVE_UP))
+	{
+		_transform->AddVelocity(XMFLOAT3(0.0f, 1.5f, 0.0f));
+	}
+	else if (_input->IsControlPressed(CAMERA_MOVE_DOWN))
+	{
+		_transform->AddVelocity(XMFLOAT3(0.0f, -1.5f, 0.0f));
+	}
 
 	if (_input->IsControlPressed(CAMERA_LOOK_LEFT))
 	{
-		_transform->AddAngularVelocity(XMFLOAT3(0.0f, -1.5f, 0.0f));
+		_transform->AddAngularVelocity(XMFLOAT3(0.0f, -3.0f, 0.0f));
 	}
 	else if (_input->IsControlPressed(CAMERA_LOOK_RIGHT))
 	{
-		_transform->AddAngularVelocity(XMFLOAT3(0.0f, 1.5f, 0.0f));
+		_transform->AddAngularVelocity(XMFLOAT3(0.0f, 3.0f, 0.0f));
 	}
 
 	if (_input->IsControlPressed(CAMERA_LOOK_UP))
 	{
-		_transform->AddAngularVelocity(XMFLOAT3(-1.5f, 0.0f, 0.0f));
+		_transform->AddAngularVelocity(XMFLOAT3(3.0f, 0.0f, 0.0f));
 	}
 	else if (_input->IsControlPressed(CAMERA_LOOK_DOWN))
 	{
-		_transform->AddAngularVelocity(XMFLOAT3(1.5f, 0.0f, 0.0f));
+		_transform->AddAngularVelocity(XMFLOAT3(-3.0f, 0.0f, 0.0f));
 	}
 
 	_transform->Update(delta);

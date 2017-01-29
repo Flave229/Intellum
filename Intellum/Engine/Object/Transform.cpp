@@ -14,8 +14,9 @@ Transform::~Transform()
 
 void Transform::Update(float delta)
 {
-	XMMATRIX transformation = _direct3D-> GetWorldMatrix();
-
+	XMMATRIX transformation = _direct3D->GetWorldMatrix();
+	
+	UpdatePosition(delta);
 	UpdateRotation(delta);
 
 	transformation *= XMMatrixRotationRollPitchYaw(_rotation.x, _rotation.y, _rotation.z);
@@ -24,11 +25,18 @@ void Transform::Update(float delta)
 	_transformation = transformation;
 }
 
+void Transform::UpdatePosition(float delta)
+{
+	_position.x += _velocity.x * delta;
+	_position.y += _velocity.y * delta;
+	_position.z += _velocity.z * delta;
+}
+
 void Transform::UpdateRotation(float delta)
 {
-	_rotation.x = CapRotationRange(_rotation.x + _angularVelocity.x * delta);
-	_rotation.y = CapRotationRange(_rotation.y + _angularVelocity.y * delta);
-	_rotation.z = CapRotationRange(_rotation.z + _angularVelocity.z * delta);
+	_rotation.x = _rotation.x + _angularVelocity.x * delta;
+	_rotation.y = _rotation.y + _angularVelocity.y * delta;
+	_rotation.z = _rotation.z + _angularVelocity.z * delta;
 }
 
 XMMATRIX& Transform::GetTransformation()
@@ -57,6 +65,23 @@ void Transform::SetRotation(XMFLOAT3 rotation)
 XMFLOAT3& Transform::GetRotation()
 {
 	return _rotation;
+}
+
+void Transform::SetVelocity(XMFLOAT3 velocity)
+{
+	_velocity = velocity;
+}
+
+void Transform::AddVelocity(XMFLOAT3 velocity)
+{
+	_velocity.x += velocity.x;
+	_velocity.y += velocity.y;
+	_velocity.z += velocity.z;
+}
+
+XMFLOAT3& Transform::GetVelocity()
+{
+	return _velocity;
 }
 
 void Transform::SetAngularVelocity(XMFLOAT3 angularVelocity)

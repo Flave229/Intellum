@@ -176,6 +176,7 @@
     <ClCompile Include="Engine\FontEngine\Character.cpp" />
     <ClCompile Include="Engine\Graphics\Light.cpp" />
     <ClCompile Include="Engine\Input\KeyboardMappings.cpp" />
+    <ClCompile Include="Engine\Input\InputControl.cpp" />
     <ClCompile Include="loaders\OBJLoader.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\Object\Appearance.cpp" />
@@ -196,6 +197,7 @@
     <ClInclude Include="common\Box.h" />
     <ClInclude Include="common\Vertex.h" />
     <ClInclude Include="Engine\Input\Controls.h" />
+    <ClInclude Include="Engine\Input\ControlType.h" />
     <ClInclude Include="Engine\SystemMetrics\Cpu.h" />
     <ClInclude Include="Engine\ShaderEngine\DefaultShader.h" />
     <ClInclude Include="Engine\DxComponents\DepthStencil.h" />
@@ -215,6 +217,7 @@
     <ClInclude Include="Engine\ShaderEngine\IShaderType.h" />
     <ClInclude Include="Engine\Graphics\Light.h" />
     <ClInclude Include="Engine\Input\KeyboardMappings.h" />
+    <ClInclude Include="Engine\Input\InputControl.h" />
     <ClInclude Include="loaders\models\TargaData.h" />
     <ClInclude Include="loaders\OBJLoader.h" />
     <ClInclude Include="Engine\Object\Appearance.h" />

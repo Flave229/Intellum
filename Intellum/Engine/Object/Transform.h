@@ -13,8 +13,10 @@ private:
 	XMFLOAT3 _position;
 	XMFLOAT3 _rotation;
 
+	XMFLOAT3 _velocity;
 	XMFLOAT3 _angularVelocity;
 
+	void UpdatePosition(float delta);
 	void UpdateRotation(float delta);
 	static float CapRotationRange(float rotation);
 
@@ -32,6 +34,10 @@ public:
 
 	void SetRotation(XMFLOAT3 rotation);
 	XMFLOAT3& GetRotation();
+
+	void SetVelocity(XMFLOAT3 velocity);
+	void AddVelocity(XMFLOAT3 velocity);
+	XMFLOAT3& GetVelocity();
 
 	void SetAngularVelocity(XMFLOAT3 angularVelocity);
 	void AddAngularVelocity(XMFLOAT3 angularVelocity);

@@ -16,6 +16,7 @@ Input::~Input()
 void Input::Initialise(HINSTANCE hInstance, HWND hwnd, Box screenSize)
 {
 	_screen = screenSize;
+	_previousMousePosition = XMFLOAT2(0, 0);
 	_mousePosition = XMFLOAT2(0, 0);
 	
 	HRESULT result = DirectInput8Create(hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8, reinterpret_cast<void**>(&_directInput), nullptr);
@@ -84,7 +85,29 @@ void Input::Update()
 
 bool Input::IsControlPressed(Controls control)
 {
-	if (_keyboardState[_keyboardMappings.GetControlMappingFor(control)] & 0x80)
+	InputControl input = _keyboardMappings.GetControlMappingFor(control);
+
+	if (input.GetControlType() == KEYBOARD_CONTROL && _keyboardState[input.GetInput()] & 0x80)
+		return true;
+	
+	if (input.GetControlType() == MOUSE_CONTROL)
+		return ProcessMouseControl(input);
+
+	return false;
+}
+
+bool Input::ProcessMouseControl(InputControl input)
+{
+	if (input.GetInput() == MOUSE_LEFT && _previousMousePosition.x > _mousePosition.x)
+		return true;
+
+	if (input.GetInput() == MOUSE_RIGHT && _previousMousePosition.x < _mousePosition.x)
+		return true;
+
+	if (input.GetInput() == MOUSE_UP && _previousMousePosition.y < _mousePosition.y)
+		return true;
+
+	if (input.GetInput() == MOUSE_DOWN && _previousMousePosition.y > _mousePosition.y)
 		return true;
 
 	return false;
@@ -126,15 +149,9 @@ bool Input::ReadMouse()
 
 void Input::ProcessInput()
 {
+	_previousMousePosition.x = _mousePosition.x;
+	_previousMousePosition.y = _mousePosition.y;
+
 	_mousePosition.x += _mouseState.lX;
 	_mousePosition.y += _mouseState.lY;
-
-	if (_mousePosition.x < 0)
-		_mousePosition.x = 0;
-	if (_mousePosition.y < 0)
-		_mousePosition.y = 0;
-	if (_mousePosition.x > _screen.Width)
-		_mousePosition.x = _screen.Width;
-	if (_mousePosition.y > _screen.Height)
-		_mousePosition.y = _screen.Height;
 }

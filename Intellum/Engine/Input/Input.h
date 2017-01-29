@@ -24,10 +24,10 @@ private:
 	DIMOUSESTATE _mouseState;
 
 	Box _screen;
+	XMFLOAT2 _previousMousePosition;
 	XMFLOAT2 _mousePosition;
 
 	KeyboardMappings _keyboardMappings;
-
 private:
 	void Initialise(HINSTANCE hInstance, HWND hwnd, Box screenSize);
 
@@ -43,6 +43,7 @@ public:
 	void Update();
 
 	bool IsControlPressed(Controls control);
+	bool ProcessMouseControl(InputControl input);
 
 	void MapMouseLocationInto(XMFLOAT2& point) const;
 };
