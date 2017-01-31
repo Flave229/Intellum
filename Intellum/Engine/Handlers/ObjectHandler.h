@@ -16,6 +16,8 @@ private:
 	Frustrum* _frustrum;
 	vector<SceneObject*> _objectList;
 
+	int _renderCount;
+
 	void InitialiseObjects(DirectX3D* direct3D, ShaderController* shaderController);
 public:
 	ObjectHandler(DirectX3D* direct3D, ShaderController* shaderController, Frustrum* frustrum);
@@ -26,5 +28,5 @@ public:
 	void Update(float delta);
 	void Render();
 
-	int GetModelCount() const;
+	int GetRenderedModelCount() const;
 };

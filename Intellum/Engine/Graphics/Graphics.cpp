@@ -108,7 +108,7 @@ void Graphics::Update(float delta) const
 	{
 		_camera->Update(delta);
 		_objectHandler->Update(delta);
-		_bitmap->Update(XMFLOAT2(100, 100), Box(256, 256));
+		_bitmap->Update(XMFLOAT2(50, 150), Box(256, 256));
 	}
 	catch (Exception& exception)
 	{
@@ -134,6 +134,7 @@ void Graphics::Render(XMFLOAT2 mousePoint) const
 		_fontEngine->Update(XMFLOAT2(10, 10), "Impact", "Mouse X: " + to_string(static_cast<int>(mousePoint.x)) + "    " + "Mouse Y: " + to_string(static_cast<int>(mousePoint.y)), XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 20);
 		_fontEngine->Update(XMFLOAT2(10, 35), "Impact", "FPS: " + to_string(_framesPerSecond->GetFramesPerSeond()), XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 20);
 		_fontEngine->Update(XMFLOAT2(10, 60), "Impact", "Cpu: " + to_string(_cpu->GetCpuPercentage()) + "%", XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 20);
+		_fontEngine->Update(XMFLOAT2(10, 85), "Impact", "Rendered: " + to_string(_objectHandler->GetRenderedModelCount()), XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 20);
 
 		_direct3D->TurnZBufferOn();
 		 
