@@ -34,9 +34,7 @@ void Transform::UpdatePosition(float delta)
 
 void Transform::UpdateRotation(float delta)
 {
-	_rotation.x = _rotation.x + _angularVelocity.x * delta;
-	_rotation.y = _rotation.y + _angularVelocity.y * delta;
-	_rotation.z = _rotation.z + _angularVelocity.z * delta;
+	SetRotation(XMFLOAT3(_rotation.x + _angularVelocity.x * delta, _rotation.y + _angularVelocity.y * delta, _rotation.z + _angularVelocity.z * delta));
 }
 
 XMMATRIX& Transform::GetTransformation()
@@ -103,13 +101,13 @@ XMFLOAT3& Transform::GetAngularVelocity()
 
 float Transform::CapRotationRange(float rotation)
 {
-	if (rotation > 360.0f)
+	if (rotation > XM_2PI)
 	{
-		rotation -= 360.0f;
+		rotation -= XM_2PI;
 	}
 	else if (rotation < 0.0f)
 	{
-		rotation += 360.0f;
+		rotation += XM_2PI;
 	}
 
 	return rotation;

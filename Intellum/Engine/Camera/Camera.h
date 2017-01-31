@@ -11,7 +11,6 @@ using namespace DirectX;
 
 class Camera
 {
-// Member Level Variables
 private:
 	Input* _input;
 
@@ -21,13 +20,12 @@ private:
 	XMMATRIX _viewMatrix2D;
 	XMMATRIX _viewMatrix;
 
-// Function Declarations
+	void HandleCameraInput() const;
 public:
 	Camera(Frustrum* frustrum, Transform* transform, Input* input);
 	~Camera();
 
 	void Shutdown();
-
 	void Update(float delta);
 
 	Frustrum* GetFrustrum() const;

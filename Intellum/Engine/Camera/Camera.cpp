@@ -25,7 +25,7 @@ void Camera::Shutdown()
 	}
 }
 
-void Camera::Update(float delta)
+void Camera::HandleCameraInput() const
 {
 	_transform->SetAngularVelocity(XMFLOAT3(0.0f, 0.0f, 0.0f));
 	_transform->SetVelocity(XMFLOAT3(0.0f, 0.0f, 0.0f));
@@ -65,6 +65,11 @@ void Camera::Update(float delta)
 	{
 		_transform->AddAngularVelocity(XMFLOAT3(-3.0f, 0.0f, 0.0f));
 	}
+}
+
+void Camera::Update(float delta)
+{
+	HandleCameraInput();
 
 	_transform->Update(delta);
 
