@@ -25,28 +25,39 @@ void Camera::Shutdown()
 	}
 }
 
-void Camera::HandleCameraInput() const
+void Camera::Update(float delta)
+{
+	HandleRotationInput();
+
+	_transform->Update(delta);
+
+	XMFLOAT3 rotation = _transform->GetRotation();
+	XMMATRIX rotationMatrix = XMMatrixRotationRollPitchYaw(rotation.x, rotation.y, rotation.z);
+
+	XMFLOAT3 up = XMFLOAT3(0.0f, 1.0f, 0.0f);
+	XMVECTOR upVector = XMLoadFloat3(&up);
+	upVector = XMVector3TransformCoord(upVector, rotationMatrix);
+
+	XMFLOAT3 lookAt = XMFLOAT3(0.0f, 0.0f, 1.0f);
+	XMVECTOR lookAtVector = XMLoadFloat3(&lookAt);
+	lookAtVector = XMVector3TransformCoord(lookAtVector, rotationMatrix);
+
+	XMStoreFloat3(&lookAt, lookAtVector);
+	HandleMovementInput(lookAt);
+
+	XMVECTOR positionVector = XMLoadFloat3(&_transform->GetPosition());
+	lookAtVector = XMVectorAdd(positionVector, lookAtVector);
+
+	_viewMatrix = XMMatrixLookAtLH(positionVector, lookAtVector, upVector);
+
+	XMFLOAT4X4 viewMatrix;
+	XMStoreFloat4x4(&viewMatrix, _viewMatrix);
+	_frustrum->ConstructFrustrum(viewMatrix, SCREEN_DEPTH);
+}
+
+void Camera::HandleRotationInput() const
 {
 	_transform->SetAngularVelocity(XMFLOAT3(0.0f, 0.0f, 0.0f));
-	_transform->SetVelocity(XMFLOAT3(0.0f, 0.0f, 0.0f));
-
-	if (_input->IsControlPressed(CAMERA_MOVE_LEFT))
-	{
-		_transform->AddVelocity(XMFLOAT3(-1.5f, 0.0f, 0.0f));
-	}
-	else if (_input->IsControlPressed(CAMERA_MOVE_RIGHT))
-	{
-		_transform->AddVelocity(XMFLOAT3(1.5f, 0.0f, 0.0f));
-	}
-
-	if (_input->IsControlPressed(CAMERA_MOVE_UP))
-	{
-		_transform->AddVelocity(XMFLOAT3(0.0f, 1.5f, 0.0f));
-	}
-	else if (_input->IsControlPressed(CAMERA_MOVE_DOWN))
-	{
-		_transform->AddVelocity(XMFLOAT3(0.0f, -1.5f, 0.0f));
-	}
 
 	if (_input->IsControlPressed(CAMERA_LOOK_LEFT))
 	{
@@ -67,31 +78,29 @@ void Camera::HandleCameraInput() const
 	}
 }
 
-void Camera::Update(float delta)
+void Camera::HandleMovementInput(XMFLOAT3 lookAt) const
 {
-	HandleCameraInput();
+	_transform->SetVelocity(XMFLOAT3(0.0f, 0.0f, 0.0f));
 
-	_transform->Update(delta);
+	XMStoreFloat3(&lookAt, XMVector4Normalize(XMLoadFloat3(&lookAt)));
 
-	XMFLOAT3 rotation = _transform->GetRotation();
-	XMMATRIX rotationMatrix = XMMatrixRotationRollPitchYaw(rotation.x, rotation.y, rotation.z);
+	if (_input->IsControlPressed(CAMERA_MOVE_LEFT))
+	{
+		_transform->AddVelocity(XMFLOAT3(-1.5f, 0.0f, 0.0f));
+	}
+	else if (_input->IsControlPressed(CAMERA_MOVE_RIGHT))
+	{
+		_transform->AddVelocity(XMFLOAT3(1.5f, 0.0f, 0.0f));
+	}
 
-	XMFLOAT3 up = XMFLOAT3(0.0f, 1.0f, 0.0f);
-	XMVECTOR upVector = XMLoadFloat3(&up);
-	upVector = XMVector3TransformCoord(upVector, rotationMatrix);
-
-	XMFLOAT3 lookAt = XMFLOAT3(0.0f, 0.0f, 1.0f);
-	XMVECTOR lookAtVector = XMLoadFloat3(&lookAt);
-	lookAtVector = XMVector3TransformCoord(lookAtVector, rotationMatrix);
-
-	XMVECTOR positionVector = XMLoadFloat3(&_transform->GetPosition());
-	lookAtVector = XMVectorAdd(positionVector, lookAtVector);
-
-	_viewMatrix = XMMatrixLookAtLH(positionVector, lookAtVector, upVector);
-
-	XMFLOAT4X4 viewMatrix;
-	XMStoreFloat4x4(&viewMatrix, _viewMatrix);
-	_frustrum->ConstructFrustrum(viewMatrix, SCREEN_DEPTH);
+	if (_input->IsControlPressed(CAMERA_MOVE_FORWARD))
+	{
+		_transform->AddVelocity(XMFLOAT3(lookAt.x * 5.0f, lookAt.y * 5.0f, lookAt.z * 5.0f));
+	}
+	else if (_input->IsControlPressed(CAMERA_MOVE_BACKWARD))
+	{
+		_transform->AddVelocity(XMFLOAT3(-lookAt.x * 5.0f, -lookAt.y * 5.0f, -lookAt.z * 5.0f));
+	}
 }
 
 Frustrum* Camera::GetFrustrum() const
