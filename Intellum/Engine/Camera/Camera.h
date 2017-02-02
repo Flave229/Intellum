@@ -21,7 +21,7 @@ private:
 	XMMATRIX _viewMatrix;
 
 	void HandleRotationInput() const;
-	void HandleMovementInput(XMFLOAT3 lookAt) const;
+	void HandleMovementInput(XMFLOAT3 lookAt, XMFLOAT3 up) const;
 public:
 	Camera(Frustrum* frustrum, Transform* transform, Input* input);
 	~Camera();

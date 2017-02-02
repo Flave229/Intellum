@@ -43,7 +43,8 @@ void Camera::Update(float delta)
 	lookAtVector = XMVector3TransformCoord(lookAtVector, rotationMatrix);
 
 	XMStoreFloat3(&lookAt, lookAtVector);
-	HandleMovementInput(lookAt);
+	XMStoreFloat3(&up, upVector);
+	HandleMovementInput(lookAt, up);
 
 	XMVECTOR positionVector = XMLoadFloat3(&_transform->GetPosition());
 	lookAtVector = XMVectorAdd(positionVector, lookAtVector);
@@ -78,19 +79,22 @@ void Camera::HandleRotationInput() const
 	}
 }
 
-void Camera::HandleMovementInput(XMFLOAT3 lookAt) const
+void Camera::HandleMovementInput(XMFLOAT3 lookAt, XMFLOAT3 up) const
 {
 	_transform->SetVelocity(XMFLOAT3(0.0f, 0.0f, 0.0f));
 
 	XMStoreFloat3(&lookAt, XMVector4Normalize(XMLoadFloat3(&lookAt)));
 
+	XMFLOAT3 crossProduct;
+	XMStoreFloat3(&crossProduct, XMVector3Cross(XMLoadFloat3(&up), XMLoadFloat3(&lookAt)));
+
 	if (_input->IsControlPressed(CAMERA_MOVE_LEFT))
 	{
-		_transform->AddVelocity(XMFLOAT3(-1.5f, 0.0f, 0.0f));
+		_transform->AddVelocity(XMFLOAT3(-crossProduct.x * 5.0f, -crossProduct.y * 5.0f, -crossProduct.z * 5.0f));
 	}
 	else if (_input->IsControlPressed(CAMERA_MOVE_RIGHT))
 	{
-		_transform->AddVelocity(XMFLOAT3(1.5f, 0.0f, 0.0f));
+		_transform->AddVelocity(XMFLOAT3(crossProduct.x * 5.0f, crossProduct.y * 5.0f, crossProduct.z * 5.0f));
 	}
 
 	if (_input->IsControlPressed(CAMERA_MOVE_FORWARD))
