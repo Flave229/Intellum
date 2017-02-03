@@ -208,14 +208,14 @@ void DefaultShader::Shutdown()
 	}
 }
 
-void DefaultShader::Render(int indexCount, XMMATRIX worldMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture)
+void DefaultShader::Render(int indexCount, XMMATRIX worldMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView** textureArray)
 {
-	SetShaderParameters(worldMatrix, projectionMatrix, texture);
+	SetShaderParameters(worldMatrix, projectionMatrix, textureArray);
 
 	RenderShader(indexCount);
 }
 
-void DefaultShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture)
+void DefaultShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView** textureArray)
 {
 	try
 	{
@@ -225,7 +225,7 @@ void DefaultShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectio
 		SetCameraBuffer(1);
 		SetLightBuffer(0);
 
-		_direct3D->GetDeviceContext()->PSSetShaderResources(0, 1, &texture);
+		_direct3D->GetDeviceContext()->PSSetShaderResources(0, 2, textureArray);
 	}
 	catch(Exception& exception)
 	{

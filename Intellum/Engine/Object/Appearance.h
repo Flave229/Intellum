@@ -25,17 +25,17 @@ private:
 
 // Function Declarations
 private:
-	void Initialise(char* textureFilename, char* modelFilename);
+	void Initialise(vector<char*> textureFilenames, char* modelFilename);
 
 	void ShutdownBuffers();
 	void RenderBuffers() const;
 
-	void LoadTexture(char* filename);
+	void LoadTextures(vector<char*> filenames);
 	void ReleaseTexture();
 
 	void LoadModel(char* filename) const;
 public:
-	Appearance(DirectX3D* direct3D, char* textureFilename, char* modelFilename);
+	Appearance(DirectX3D* direct3D, vector<char*> textureFilenames, char* modelFilename);
 	Appearance(const Appearance& other);
 	~Appearance();
 
@@ -44,7 +44,7 @@ public:
 
 	int GetIndexCount() const;
 
-	ID3D11ShaderResourceView* GetTexture() const;
+	ID3D11ShaderResourceView** GetTexture() const;
 };
 
 #endif

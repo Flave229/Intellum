@@ -1,8 +1,8 @@
 #include "Appearance.h"
 
-Appearance::Appearance(DirectX3D* direct3D, char* textureFilename, char* modelFilename) : _direct3D(direct3D), _geometry(new Geometry), _texture(nullptr)
+Appearance::Appearance(DirectX3D* direct3D, vector<char*> textureFilenames, char* modelFilename) : _direct3D(direct3D), _geometry(new Geometry), _texture(nullptr)
 {
-	Initialise(textureFilename, modelFilename);
+	Initialise(textureFilenames, modelFilename);
 }
 
 Appearance::Appearance(const Appearance& other) : _direct3D(other._direct3D), _geometry(other._geometry), _texture(other._texture)
@@ -13,10 +13,10 @@ Appearance::~Appearance()
 {
 }
 
-void Appearance::Initialise(char* textureFilename, char* modelFilename)
+void Appearance::Initialise(vector<char*> textureFilenames, char* modelFilename)
 {
 	LoadModel(modelFilename);
-	LoadTexture(textureFilename);
+	LoadTextures(textureFilenames);
 }
 
 void Appearance::Shutdown()
@@ -35,9 +35,9 @@ int Appearance::GetIndexCount() const
 	return _geometry->IndexCount;
 }
 
-ID3D11ShaderResourceView* Appearance::GetTexture() const
+ID3D11ShaderResourceView** Appearance::GetTexture() const
 {
-	return _texture->GetTexture();
+	return _texture->GetTextures();
 }
 
 void Appearance::ShutdownBuffers()
@@ -58,11 +58,19 @@ void Appearance::RenderBuffers() const
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 
-void Appearance::LoadTexture(char* filename)
+void Appearance::LoadTextures(vector<char*> filenames)
 {
-	_texture = new Texture(_direct3D->GetDevice(), _direct3D->GetDeviceContext(), filename);
+	_texture = new Texture(_direct3D->GetDevice(), _direct3D->GetDeviceContext(), filenames);
+
 	if (!_texture)
-		throw Exception("Failed to load the texture at: '" + string(filename) + "'");
+	{
+		string message = "Failed to load one or all of the following textures: '";
+		for (int i = 0; i < filenames.size(); i++)
+		{
+			message += "\t'" + string(filenames.at(i)) + "\n'";
+		}
+		throw Exception(message);
+	}
 }
 
 void Appearance::ReleaseTexture()

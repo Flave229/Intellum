@@ -21,7 +21,7 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 		transform->SetPosition(XMFLOAT3(((static_cast<float>(rand()) / RAND_MAX) * 30.0f) - 15.0f, ((static_cast<float>(rand()) / RAND_MAX) * 10.0f) - 5.0f, ((static_cast<float>(rand()) / RAND_MAX) * 30.0f) - 15.0f));
 		transform->SetAngularVelocity(XMFLOAT3(0.0f, (static_cast<float>(rand()) / RAND_MAX * 5.0f - 2.5f) * static_cast<float>(XM_PI), 0.0f));
 
-		Appearance* appearance = new Appearance(direct3D, "data/images/stone.tga", "data/models/sphere.obj");
+		Appearance* appearance = new Appearance(direct3D, vector<char*> { "data/images/stone.tga", "data/images/dirt.tga" }, "data/models/sphere.obj");
 		if (!appearance) throw Exception("Failed to create a Appearance object.");
 
 		SceneObject* object = new SceneObject(direct3D, transform, appearance, shaderController->GetShader(SHADER_DEFAULT));

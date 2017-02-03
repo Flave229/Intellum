@@ -1,8 +1,8 @@
 #include "Bitmap.h"
 
-Bitmap::Bitmap(DirectX3D* direct3D, IShaderType* shader, Box screenSize, Box bitmapBox, char* textureFilename) : _direct3D(direct3D), _vertexBuffer(nullptr), _indexBuffer(nullptr), _vertexCount(0), _indexCount(0), _screenSize(Box(0, 0)), _bitmapSize(Box(0, 0)), _previousPosition(XMFLOAT2(0, 0)), _shader(shader), _texture(nullptr)
+Bitmap::Bitmap(DirectX3D* direct3D, IShaderType* shader, Box screenSize, Box bitmapBox, vector<char*> textureFilenames) : _direct3D(direct3D), _vertexBuffer(nullptr), _indexBuffer(nullptr), _vertexCount(0), _indexCount(0), _screenSize(Box(0, 0)), _bitmapSize(Box(0, 0)), _previousPosition(XMFLOAT2(0, 0)), _shader(shader), _texture(nullptr)
 {
-	Initialise(screenSize, bitmapBox, textureFilename);
+	Initialise(screenSize, bitmapBox, textureFilenames);
 }
 
 Bitmap::Bitmap(const Bitmap& other) : _direct3D(other._direct3D), _vertexBuffer(other._vertexBuffer), _indexBuffer(other._indexBuffer), _vertexCount(other._vertexCount), _indexCount(other._indexCount), _screenSize(other._screenSize), _bitmapSize(other._bitmapSize), _previousPosition(other._previousPosition), _shader(other._shader), _texture(other._texture)
@@ -14,14 +14,14 @@ Bitmap::~Bitmap()
 {
 }
 
-void Bitmap::Initialise(Box screenSize, Box bitmapSize, char* textureFilename)
+void Bitmap::Initialise(Box screenSize, Box bitmapSize, vector<char*> textureFilenames)
 {
 	_screenSize = screenSize;
 	_bitmapSize = bitmapSize;
 	_previousPosition = XMFLOAT2(-1, -1);
 	
 	InitialiseBuffers();
-	LoadTexture(textureFilename);
+	LoadTextures(textureFilenames);
 }
 
 void Bitmap::InitialiseBuffers()
@@ -113,9 +113,9 @@ int Bitmap::GetIndexCount() const
 	return _indexCount;
 }
 
-ID3D11ShaderResourceView* Bitmap::GetTexture() const
+ID3D11ShaderResourceView** Bitmap::GetTexture() const
 {
-	return _texture->GetTexture();
+	return _texture->GetTextures();
 }
 
 void Bitmap::ShutdownBuffers()
@@ -197,10 +197,19 @@ void Bitmap::RenderBuffers()
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 
-void Bitmap::LoadTexture(char* filename)
+void Bitmap::LoadTextures(vector<char*> filenames)
 {
-	_texture = new Texture(_direct3D->GetDevice(), _direct3D->GetDeviceContext(), filename);
-	if (!_texture) throw Exception("Failed to create a texture for the file: '" + string(filename) + "'");
+	_texture = new Texture(_direct3D->GetDevice(), _direct3D->GetDeviceContext(), filenames);
+
+	if (!_texture)
+	{
+		string message = "Failed to load one or all of the following textures: '";
+		for (int i = 0; i < filenames.size(); i++)
+		{
+			message += "\t'" + string(filenames.at(i)) + "\n'";
+		}
+		throw Exception(message);
+	}
 }
 
 void Bitmap::ReleaseTexture()

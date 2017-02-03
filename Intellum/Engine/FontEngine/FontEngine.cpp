@@ -221,7 +221,7 @@ Character* FontEngine::CreateCharacterFromFontFolder(string filePath, string nam
 {
 	try
 	{
-		Bitmap* texture = new Bitmap(_direct3D, _shader, screenSize, Box(64, 128), &(filePath + "/" + unicode + ".tga")[0u]);
+		Bitmap* texture = new Bitmap(_direct3D, _shader, screenSize, Box(64, 128), vector<char*> { &(filePath + "/" + unicode + ".tga")[0u] });
 		if (!texture) throw Exception("Failed to create the letter " + name + " for the font located at: " + filePath + ".");
 
 		Character* character = new Character(name, unicode, texture);

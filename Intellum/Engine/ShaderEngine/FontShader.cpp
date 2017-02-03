@@ -202,14 +202,14 @@ void FontShader::Shutdown()
 	}
 }
 
-void FontShader::Render(int indexCount, XMMATRIX worldMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture)
+void FontShader::Render(int indexCount, XMMATRIX worldMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView** textureArray)
 {
-	SetShaderParameters(worldMatrix, projectionMatrix, texture);
+	SetShaderParameters(worldMatrix, projectionMatrix, textureArray);
 
 	RenderShader(indexCount);
 }
 
-void FontShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture)
+void FontShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView** textureArray)
 {
 	try
 	{
@@ -217,7 +217,7 @@ void FontShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectionMa
 		SetCameraBuffer(1); 
 		SetColorBuffer(0);
 
-		_direct3D->GetDeviceContext()->PSSetShaderResources(0, 1, &texture);
+		_direct3D->GetDeviceContext()->PSSetShaderResources(0, 1, textureArray);
 	}
 	catch (Exception& exception)
 	{

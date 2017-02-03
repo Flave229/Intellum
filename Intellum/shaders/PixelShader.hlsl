@@ -1,4 +1,4 @@
-Texture2D shaderTexture;
+Texture2D shaderTexture[2];
 SamplerState SampleType;
 
 cbuffer LightBuffer
@@ -20,7 +20,11 @@ struct PixelInputType
 
 float4 DefaultPixelShader(PixelInputType input) : SV_TARGET
 {
-	float4 textureColor = shaderTexture.Sample(SampleType, input.tex);
+    float4 texture1Color = shaderTexture[0].Sample(SampleType, input.tex);
+    float4 texture2Color = shaderTexture[1].Sample(SampleType, input.tex);
+
+    float4 textureColor = texture1Color * texture2Color * 2.0;
+
 	float3 lightDir = -lightDirection;
 	float lightIntensity = saturate(dot(input.normal, lightDir));
 	float4 color = ambientColor;
@@ -37,7 +41,7 @@ float4 DefaultPixelShader(PixelInputType input) : SV_TARGET
 		specular = pow(saturate(dot(reflection, input.viewDirection)), specularPower);
 	}
 
-	color = color * textureColor;
+    color = color * textureColor;
 	color = saturate(color + specular);
 
 	return color;

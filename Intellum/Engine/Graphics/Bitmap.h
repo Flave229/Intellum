@@ -39,9 +39,9 @@ private:
 
 // Function Declarations
 private:
-	void Initialise(Box screenSize, Box bitmapBox, char* textureFilename);
+	void Initialise(Box screenSize, Box bitmapBox, vector<char*> textureFilenames);
 	void InitialiseBuffers();
-	void LoadTexture(char*);
+	void LoadTextures(vector<char*> filenames);
 
 	void UpdateBuffers(XMFLOAT2 position, Box bitmapSize);
 	void RenderBuffers();
@@ -49,7 +49,7 @@ private:
 	void ShutdownBuffers();
 	void ReleaseTexture();
 public:
-	Bitmap(DirectX3D* direct3D, IShaderType* shader, Box screenSize, Box bitmapBox, char* textureFilename);
+	Bitmap(DirectX3D* direct3D, IShaderType* shader, Box screenSize, Box bitmapBox, vector<char*> textureFilenames);
 	Bitmap(const Bitmap&);
 	~Bitmap();
 
@@ -59,5 +59,5 @@ public:
 	void Render();
 
 	int GetIndexCount() const;
-	ID3D11ShaderResourceView* GetTexture() const;
+	ID3D11ShaderResourceView** GetTexture() const;
 };
