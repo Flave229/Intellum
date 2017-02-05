@@ -20,14 +20,12 @@ class FontShader : public IShaderType
 	};
 
 private:
-	ID3D11Buffer* _colorBuffer;
 	XMMATRIX _viewMatrix;
 
 	bool _colorOverloadEnabled;
-	XMFLOAT4 _fontColor;
+	XMFLOAT4 _colorOverload;
 
 private:
-	void SetColorBuffer(unsigned bufferNumber) const;
 	void SetTextureBuffer(unsigned bufferNumber, int textureCount) const;
 
 public:

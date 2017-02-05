@@ -13,6 +13,8 @@
 #include "../Camera/Camera.h"
 #include "ConstantBuffers/MatrixBuffer.h"
 #include "ConstantBuffers/CameraBuffer.h"
+#include "ConstantBuffers/LightBuffer.h"
+#include "ConstantBuffers/ColorOverrideBuffer.h"
 
 using namespace DirectX;
 
@@ -31,7 +33,8 @@ protected:
 	IShaderBuffer* _matrixBuffer;
 	IShaderBuffer* _cameraBuffer;
 	IShaderBuffer* _lightBuffer;
-	
+	IShaderBuffer* _colorBuffer;
+
 	ID3D11Buffer* _textureBuffer;
 
 public:

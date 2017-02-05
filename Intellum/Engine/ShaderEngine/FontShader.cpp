@@ -92,18 +92,7 @@ void FontShader::InitialiseShader(HWND hwnd, WCHAR* vsFilename, WCHAR* psFilenam
 
 		_matrixBuffer = new MatrixBuffer(_direct3D);
 		_cameraBuffer = new CameraBuffer(_direct3D, _camera);
-
-		// Color Buffer Description
-		D3D11_BUFFER_DESC colorBufferDesc;
-		colorBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-		colorBufferDesc.ByteWidth = sizeof(ColorBuffer);
-		colorBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-		colorBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-		colorBufferDesc.MiscFlags = 0;
-		colorBufferDesc.StructureByteStride = 0;
-
-		result = _direct3D->GetDevice()->CreateBuffer(&colorBufferDesc, nullptr, &_colorBuffer);
-		if (FAILED(result)) throw Exception("Failed to create the buffer for the color description");
+		_colorBuffer = new ColorOverrideBuffer(_direct3D);
 
 		// Texture Buffer Description
 		D3D11_BUFFER_DESC textureBufferDesc;
@@ -164,7 +153,7 @@ void FontShader::Shutdown()
 
 	if (_colorBuffer)
 	{
-		_colorBuffer->Release();
+		_colorBuffer->Shutdown();
 		_colorBuffer = nullptr;
 	}
 
@@ -204,10 +193,10 @@ void FontShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectionMa
 {
 	try
 	{
-		_matrixBuffer->SetShaderParameters(worldMatrix, projectionMatrix, _viewMatrix, 0);
-		_cameraBuffer->SetShaderParameters(XMMATRIX(), XMMATRIX(), XMMATRIX(), 1);
-		
-		SetColorBuffer(0);
+		_matrixBuffer->SetShaderParameters(0, worldMatrix, projectionMatrix, _viewMatrix);
+		_cameraBuffer->SetShaderParameters(1);
+		_colorBuffer->SetShaderParameters(0, XMMATRIX(), XMMATRIX(), XMMATRIX(), _colorOverloadEnabled, _colorOverload);
+
 		SetTextureBuffer(1, textureCount);
 
 		_direct3D->GetDeviceContext()->PSSetShaderResources(0, textureCount, textureArray);
@@ -220,31 +209,6 @@ void FontShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectionMa
 	{
 		throw Exception("Error when setting Shader Parameters in Font Shader: ");
 	}
-}
-
-void FontShader::SetColorBuffer(unsigned int bufferNumber) const
-{
-	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	HRESULT result = _direct3D->GetDeviceContext()->Map(_colorBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-	if (FAILED(result)) throw Exception("Failed to map color buffer to the Device Context.");
-
-	ColorBuffer* colorDataPtr = static_cast<ColorBuffer*>(mappedResource.pData);
-
-	if (_colorOverloadEnabled)
-	{
-		colorDataPtr->colorOverloadEnabled = 1.0f;
-		colorDataPtr->colorOverload = _fontColor;
-	}
-	else
-	{
-		colorDataPtr->colorOverloadEnabled = 0.0f;
-		colorDataPtr->colorOverload = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
-	}
-
-	colorDataPtr->padding = XMFLOAT3(0.0f, 0.0f, 0.0f);
-
-	_direct3D->GetDeviceContext()->Unmap(_colorBuffer, 0);
-	_direct3D->GetDeviceContext()->PSSetConstantBuffers(bufferNumber, 1, &_colorBuffer);
 }
 
 void FontShader::SetTextureBuffer(unsigned int bufferNumber, int textureCount) const
@@ -301,5 +265,5 @@ void FontShader::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, W
 void FontShader::SetColorOverload(bool state, XMFLOAT4 color)
 {
 	_colorOverloadEnabled = state;
-	_fontColor = color;
+	_colorOverload = color;
 }

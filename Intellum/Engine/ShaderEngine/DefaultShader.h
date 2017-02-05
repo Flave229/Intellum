@@ -5,8 +5,7 @@
 using namespace std;
 
 class DefaultShader : public IShaderType
-{
-	
+{	
 public:
 	DefaultShader(DirectX3D* _direct3D, Camera* camera, Light* light);
 	~DefaultShader();

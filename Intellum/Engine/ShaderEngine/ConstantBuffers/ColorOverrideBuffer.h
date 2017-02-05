@@ -1,28 +1,27 @@
 #pragma once
 #include <DirectXMath.h>
 #include "IShaderBuffer.h"
-#include "../../Camera/Camera.h"
 
 using namespace DirectX;
 
-class CameraBuffer : public IShaderBuffer
+class ColorOverrideBuffer : public IShaderBuffer
 {
 private:
 	struct Buffer
 	{
-		XMFLOAT3 cameraPosition;
-		float padding;
+		float colorOverloadEnabled;
+		XMFLOAT3 padding;
+		XMFLOAT4 colorOverload;
 	};
 
 	ID3D11Buffer* _buffer;
-	Camera* _camera;
 private:
 	void Initialise() override;
 
 public:
-	CameraBuffer(DirectX3D* direct3D, Camera* camera);
-	~CameraBuffer();
-	
+	ColorOverrideBuffer(DirectX3D* direct3D);
+	~ColorOverrideBuffer();
+
 	void Shutdown() override;
 
 	void SetShaderParameters(int bufferIndex, XMMATRIX worldMatrix = XMMATRIX(), XMMATRIX projectionMatrix = XMMATRIX(), XMMATRIX viewMatrix = XMMATRIX(), bool colorEnabled = false, XMFLOAT4 colorOverload = XMFLOAT4()) override;

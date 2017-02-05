@@ -1,5 +1,4 @@
 #include "DefaultShader.h"
-#include "ConstantBuffers/LightBuffer.h"
 
 DefaultShader::DefaultShader(DirectX3D* direct3D, Camera* camera, Light* light) : IShaderType(direct3D, camera, light)
 {
@@ -188,9 +187,9 @@ void DefaultShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectio
 {
 	try
 	{
-		_matrixBuffer->SetShaderParameters(worldMatrix, projectionMatrix, _camera->GetViewMatrix(), 0);
-		_cameraBuffer->SetShaderParameters(XMMATRIX(), XMMATRIX(), XMMATRIX(), 1);
-		_lightBuffer->SetShaderParameters(XMMATRIX(), XMMATRIX(), XMMATRIX(), 0);
+		_matrixBuffer->SetShaderParameters(0, worldMatrix, projectionMatrix, _camera->GetViewMatrix());
+		_cameraBuffer->SetShaderParameters(1);
+		_lightBuffer->SetShaderParameters(0);
 
 		_direct3D->GetDeviceContext()->PSSetShaderResources(0, textureCount, textureArray);
 	}

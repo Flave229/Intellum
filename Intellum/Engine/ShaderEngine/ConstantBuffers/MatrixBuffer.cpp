@@ -32,7 +32,7 @@ void MatrixBuffer::Initialise()
 	if (FAILED(result)) throw Exception("Failed to create the buffer for the matrix description");
 }
 
-void MatrixBuffer::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectionMatrix, XMMATRIX viewMatrix, int bufferIndex)
+void MatrixBuffer::SetShaderParameters(int bufferIndex, XMMATRIX worldMatrix, XMMATRIX projectionMatrix, XMMATRIX viewMatrix, bool colorEnabled, XMFLOAT4 colorOverload)
 {
 	worldMatrix = XMMatrixTranspose(worldMatrix);
 	viewMatrix = XMMatrixTranspose(viewMatrix);
