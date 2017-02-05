@@ -225,7 +225,7 @@ void DefaultShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectio
 		SetCameraBuffer(1);
 		SetLightBuffer(0);
 
-		_direct3D->GetDeviceContext()->PSSetShaderResources(0, 2, textureArray);
+		_direct3D->GetDeviceContext()->PSSetShaderResources(0, textureCount, textureArray);
 	}
 	catch(Exception& exception)
 	{

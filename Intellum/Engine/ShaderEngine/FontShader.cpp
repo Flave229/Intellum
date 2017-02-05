@@ -230,7 +230,7 @@ void FontShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectionMa
 		SetColorBuffer(0);
 		SetTextureBuffer(1, textureCount);
 
-		_direct3D->GetDeviceContext()->PSSetShaderResources(0, 2, textureArray);
+		_direct3D->GetDeviceContext()->PSSetShaderResources(0, textureCount, textureArray);
 	}
 	catch (Exception& exception)
 	{
