@@ -99,18 +99,7 @@ void DefaultShader::InitialiseShader(HWND hwnd, WCHAR* vsFilename, WCHAR* psFile
 		pixelShaderBuffer = nullptr;
 
 		_matrixBuffer = new MatrixBuffer(_direct3D);
-
-		// Camera Buffer Description
-		D3D11_BUFFER_DESC cameraBufferDesc;
-		cameraBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-		cameraBufferDesc.ByteWidth = sizeof(CameraBuffer);
-		cameraBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-		cameraBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-		cameraBufferDesc.MiscFlags = 0;
-		cameraBufferDesc.StructureByteStride = 0;
-
-		result = _direct3D->GetDevice()->CreateBuffer(&cameraBufferDesc, nullptr, &_cameraBuffer);
-		if (FAILED(result)) throw Exception("Failed to create the buffer for the camera description");
+		_cameraBuffer = new CameraBuffer(_direct3D, _camera);
 
 		// Light Buffer Description
 		D3D11_BUFFER_DESC lightBufferDesc;
@@ -163,7 +152,7 @@ void DefaultShader::Shutdown()
 
 	if (_cameraBuffer)
 	{
-		_cameraBuffer->Release();
+		_cameraBuffer->Shutdown();
 		_cameraBuffer = nullptr;
 	}
 
@@ -212,8 +201,8 @@ void DefaultShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectio
 		XMMATRIX viewMatrix = _camera->GetViewMatrix();
 
 		_matrixBuffer->SetShaderParameters(worldMatrix, projectionMatrix, viewMatrix, 0);
-		
-		SetCameraBuffer(1);
+		_cameraBuffer->SetShaderParameters(XMMATRIX(), XMMATRIX(), XMMATRIX(), 1);
+
 		SetLightBuffer(0);
 
 		_direct3D->GetDeviceContext()->PSSetShaderResources(0, textureCount, textureArray);
@@ -226,20 +215,6 @@ void DefaultShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectio
 	{
 		throw Exception("Error when setting Shader Parameters in Default Shader: ");
 	}
-}
-
-void DefaultShader::SetCameraBuffer(unsigned int bufferNumber) const
-{
-	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	HRESULT result = _direct3D->GetDeviceContext()->Map(_cameraBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-	if (FAILED(result)) throw Exception("Failed to map camera buffer to the Device Context.");
-
-	CameraBuffer* cameraDataPtr = static_cast<CameraBuffer*>(mappedResource.pData);
-	cameraDataPtr->cameraPosition = _camera->GetTransform()->GetPosition();
-	cameraDataPtr->padding = 0.0f;
-
-	_direct3D->GetDeviceContext()->Unmap(_cameraBuffer, 0);
-	_direct3D->GetDeviceContext()->VSSetConstantBuffers(bufferNumber, 1, &_cameraBuffer);
 }
 
 void DefaultShader::SetLightBuffer(unsigned bufferNumber) const

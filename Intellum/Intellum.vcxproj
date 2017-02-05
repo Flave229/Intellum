@@ -157,6 +157,7 @@
   <ItemGroup>
     <ClCompile Include="Engine\Graphics\Bitmap.cpp" />
     <ClCompile Include="Engine\Camera\Camera.cpp" />
+    <ClCompile Include="Engine\ShaderEngine\ConstantBuffers\CameraBuffer.cpp" />
     <ClCompile Include="Engine\SystemMetrics\Cpu.cpp" />
     <ClCompile Include="Engine\ShaderEngine\DefaultShader.cpp" />
     <ClCompile Include="Engine\DxComponents\DepthStencil.cpp" />
@@ -199,6 +200,7 @@
     <ClInclude Include="common\Vertex.h" />
     <ClInclude Include="Engine\Input\Controls.h" />
     <ClInclude Include="Engine\Input\ControlType.h" />
+    <ClInclude Include="Engine\ShaderEngine\ConstantBuffers\CameraBuffer.h" />
     <ClInclude Include="Engine\SystemMetrics\Cpu.h" />
     <ClInclude Include="Engine\ShaderEngine\DefaultShader.h" />
     <ClInclude Include="Engine\DxComponents\DepthStencil.h" />

@@ -6,19 +6,6 @@ using namespace std;
 
 class FontShader : public IShaderType
 {
-	struct ConstantBuffer
-	{
-		XMMATRIX world;
-		XMMATRIX view;
-		XMMATRIX projection;
-	};
-
-	struct CameraBuffer
-	{
-		XMFLOAT3 cameraPosition;
-		float padding;
-	};
-
 	struct ColorBuffer
 	{
 		float colorOverloadEnabled;
@@ -40,7 +27,6 @@ private:
 	XMFLOAT4 _fontColor;
 
 private:
-	void SetCameraBuffer(unsigned int bufferNumber) const;
 	void SetColorBuffer(unsigned bufferNumber) const;
 	void SetTextureBuffer(unsigned bufferNumber, int textureCount) const;
 

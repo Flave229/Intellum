@@ -6,12 +6,6 @@ using namespace std;
 
 class DefaultShader : public IShaderType
 {
-	struct CameraBuffer
-	{
-		XMFLOAT3 cameraPosition;
-		float padding;
-	};
-
 	struct LightBuffer
 	{
 		XMFLOAT4 ambientColor;
@@ -21,7 +15,6 @@ class DefaultShader : public IShaderType
 		XMFLOAT4 specularColor;
 	};
 	
-	void SetCameraBuffer(unsigned int bufferNumber) const;
 	void SetLightBuffer(unsigned bufferNumber) const;
 public:
 	DefaultShader(DirectX3D* _direct3D, Camera* camera, Light* light);
