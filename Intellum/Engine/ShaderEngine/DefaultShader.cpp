@@ -1,4 +1,5 @@
 #include "DefaultShader.h"
+#include "ConstantBuffers/LightBuffer.h"
 
 DefaultShader::DefaultShader(DirectX3D* direct3D, Camera* camera, Light* light) : IShaderType(direct3D, camera, light)
 {
@@ -100,18 +101,7 @@ void DefaultShader::InitialiseShader(HWND hwnd, WCHAR* vsFilename, WCHAR* psFile
 
 		_matrixBuffer = new MatrixBuffer(_direct3D);
 		_cameraBuffer = new CameraBuffer(_direct3D, _camera);
-
-		// Light Buffer Description
-		D3D11_BUFFER_DESC lightBufferDesc;
-		lightBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-		lightBufferDesc.ByteWidth = sizeof(LightBuffer);
-		lightBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-		lightBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-		lightBufferDesc.MiscFlags = 0;
-		lightBufferDesc.StructureByteStride = 0;
-
-		result = _direct3D->GetDevice()->CreateBuffer(&lightBufferDesc, nullptr, &_lightBuffer);
-		if (FAILED(result)) throw Exception("Failed to create the buffer for the light description");
+		_lightBuffer = new LightBuffer(_direct3D, _light);
 
 		// Sampler State Description
 		D3D11_SAMPLER_DESC samplerDesc;
@@ -158,7 +148,7 @@ void DefaultShader::Shutdown()
 
 	if (_lightBuffer)
 	{
-		_lightBuffer->Release();
+		_lightBuffer->Shutdown();
 		_lightBuffer = nullptr;
 	}
 
@@ -198,12 +188,9 @@ void DefaultShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectio
 {
 	try
 	{
-		XMMATRIX viewMatrix = _camera->GetViewMatrix();
-
-		_matrixBuffer->SetShaderParameters(worldMatrix, projectionMatrix, viewMatrix, 0);
+		_matrixBuffer->SetShaderParameters(worldMatrix, projectionMatrix, _camera->GetViewMatrix(), 0);
 		_cameraBuffer->SetShaderParameters(XMMATRIX(), XMMATRIX(), XMMATRIX(), 1);
-
-		SetLightBuffer(0);
+		_lightBuffer->SetShaderParameters(XMMATRIX(), XMMATRIX(), XMMATRIX(), 0);
 
 		_direct3D->GetDeviceContext()->PSSetShaderResources(0, textureCount, textureArray);
 	}
@@ -215,26 +202,6 @@ void DefaultShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectio
 	{
 		throw Exception("Error when setting Shader Parameters in Default Shader: ");
 	}
-}
-
-void DefaultShader::SetLightBuffer(unsigned bufferNumber) const
-{
-	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	HRESULT result = _direct3D->GetDeviceContext()->Map(_lightBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-	if (FAILED(result)) throw Exception("Failed to map light buffer to the Device Context.");
-
-	LightBuffer* lightDataPtr = static_cast<LightBuffer*>(mappedResource.pData);
-	lightDataPtr->ambientColor = _light->GetAmbientColor();
-	lightDataPtr->diffuseColor = _light->GetDiffuseColor();
-	lightDataPtr->lightDirection = _light->GetDirection();
-	lightDataPtr->specularColor = _light->GetSpecularColor();
-	lightDataPtr->specularPower = _light->GetSpecularPower();
-
-	_direct3D->GetDeviceContext()->Unmap(_lightBuffer, 0);
-
-	bufferNumber = 0;
-
-	_direct3D->GetDeviceContext()->PSSetConstantBuffers(bufferNumber, 1, &_lightBuffer);
 }
 
 void DefaultShader::RenderShader(int indexCount)

@@ -148,6 +148,9 @@
     <ClCompile Include="Engine\ShaderEngine\ConstantBuffers\CameraBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\ShaderEngine\ConstantBuffers\LightBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DXSystem.h">
@@ -274,6 +277,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\ShaderEngine\ConstantBuffers\CameraBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ShaderEngine\ConstantBuffers\LightBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

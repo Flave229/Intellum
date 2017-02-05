@@ -90,11 +90,10 @@ void FontShader::InitialiseShader(HWND hwnd, WCHAR* vsFilename, WCHAR* psFilenam
 		pixelShaderBuffer->Release();
 		pixelShaderBuffer = nullptr;
 
-		// Constant Buffer description
 		_matrixBuffer = new MatrixBuffer(_direct3D);
 		_cameraBuffer = new CameraBuffer(_direct3D, _camera);
 
-		// Camera Buffer Description
+		// Color Buffer Description
 		D3D11_BUFFER_DESC colorBufferDesc;
 		colorBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
 		colorBufferDesc.ByteWidth = sizeof(ColorBuffer);

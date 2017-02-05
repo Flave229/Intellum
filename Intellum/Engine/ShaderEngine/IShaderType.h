@@ -30,8 +30,8 @@ protected:
 
 	IShaderBuffer* _matrixBuffer;
 	IShaderBuffer* _cameraBuffer;
+	IShaderBuffer* _lightBuffer;
 	
-	ID3D11Buffer* _lightBuffer;
 	ID3D11Buffer* _textureBuffer;
 
 public:
