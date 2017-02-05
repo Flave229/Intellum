@@ -29,6 +29,7 @@ protected:
 	ID3D11Buffer* _matrixBuffer;
 	ID3D11Buffer* _cameraBuffer;
 	ID3D11Buffer* _lightBuffer;
+	ID3D11Buffer* _textureBuffer;
 
 public:
 	IShaderType(DirectX3D* direct3D, Camera* camera, Light* light) : _direct3D(direct3D), _camera(camera), _light(light) {};
@@ -38,9 +39,9 @@ public:
 	virtual void InitialiseShader(HWND hwnd, WCHAR* vsFilename, WCHAR* psFilename) = 0;
 	virtual void Shutdown() = 0;
 
-	virtual void SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView** textureArray) = 0;
+	virtual void SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView** textureArray, int textureCount) = 0;
 
-	virtual void Render(int indexCount, XMMATRIX worldMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView** textureArray) = 0;
+	virtual void Render(int indexCount, XMMATRIX worldMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView** textureArray, int textureCount) = 0;
 
 	virtual void RenderShader(int indexCount) = 0;
 	

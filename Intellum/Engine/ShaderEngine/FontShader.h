@@ -26,6 +26,12 @@ class FontShader : public IShaderType
 		XMFLOAT4 colorOverload;
 	};
 
+	struct TextureBuffer
+	{
+		float texturesIncluded;
+		XMFLOAT3 padding;
+	};
+
 private:
 	ID3D11Buffer* _colorBuffer;
 	XMMATRIX _viewMatrix;
@@ -37,6 +43,7 @@ private:
 	void SetMatrixBuffer(XMMATRIX worldMatrix, XMMATRIX projectionMatrix, XMMATRIX viewMatrix, unsigned int bufferNumber) const;
 	void SetCameraBuffer(unsigned int bufferNumber) const;
 	void SetColorBuffer(unsigned bufferNumber) const;
+	void SetTextureBuffer(unsigned bufferNumber, int textureCount) const;
 public:
 	FontShader(DirectX3D* direct3D, Camera* camera, Light* light);
 	~FontShader();
@@ -45,9 +52,9 @@ public:
 	void InitialiseShader(HWND hwnd, WCHAR* vsFilename, WCHAR* psFilename) override;
 	void Shutdown() override;
 
-	void SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView** textureArray) override;
+	void SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView** textureArray, int textureCount) override;
 
-	void Render(int indexCount, XMMATRIX worldMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView** textureArray) override;
+	void Render(int indexCount, XMMATRIX worldMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView** textureArray, int textureCount) override;
 	void RenderShader(int indexCount) override;
 
 	void OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, WCHAR* shaderFileName) override;

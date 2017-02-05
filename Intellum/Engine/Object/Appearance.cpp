@@ -35,9 +35,9 @@ int Appearance::GetIndexCount() const
 	return _geometry->IndexCount;
 }
 
-ID3D11ShaderResourceView** Appearance::GetTexture() const
+Texture* Appearance::GetTexture() const
 {
-	return _texture->GetTextures();
+	return _texture;
 }
 
 void Appearance::ShutdownBuffers()

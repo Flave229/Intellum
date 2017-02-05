@@ -44,7 +44,7 @@ public:
 
 	int GetIndexCount() const;
 
-	ID3D11ShaderResourceView** GetTexture() const;
+	Texture* GetTexture() const;
 };
 
 #endif

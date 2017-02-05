@@ -105,7 +105,7 @@ void Bitmap::Render()
 	XMMATRIX worldMatrix = _direct3D->GetWorldMatrix();
 	XMMATRIX orthoMatrix = _direct3D->GetOrthoMatrix();
 
-	_shader->Render(GetIndexCount(), worldMatrix, orthoMatrix, GetTexture());
+	_shader->Render(GetIndexCount(), worldMatrix, orthoMatrix, GetTexture(), _texture->GetTextureCount());
 }
 
 int Bitmap::GetIndexCount() const

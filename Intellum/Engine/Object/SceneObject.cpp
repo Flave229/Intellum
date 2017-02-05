@@ -16,10 +16,12 @@ void SceneObject::Update(float delta) const
 void SceneObject::Render() const
 {
 	_appearance->Render();
-	_shader->Render(_appearance->GetIndexCount(), _transform->GetTransformation(), _direct3D->GetProjectionMatrix(), _appearance->GetTexture());
+
+	Texture* texture = _appearance->GetTexture();
+	_shader->Render(_appearance->GetIndexCount(), _transform->GetTransformation(), _direct3D->GetProjectionMatrix(), texture->GetTextures(), texture->GetTextureCount());
 }
 
-Transform* SceneObject::GetTransform()
+Transform* SceneObject::GetTransform() const
 {
 	return _transform;
 }

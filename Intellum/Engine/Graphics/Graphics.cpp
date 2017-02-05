@@ -33,7 +33,7 @@ void Graphics::Initialise(Input* input, Box screenSize, HWND hwnd)
 		_objectHandler = new ObjectHandler(_direct3D, _shaderController, _camera->GetFrustrum());
 		if (!_objectHandler) throw Exception("Failed to create the object handler.");
 		
-		_bitmap = new Bitmap(_direct3D, _shaderController->GetShader(SHADER_FONT), screenSize, Box(256, 256), vector<char*> { "data/images/stone.tga", "data/images/dirt.tga" });
+		_bitmap = new Bitmap(_direct3D, _shaderController->GetShader(SHADER_FONT), screenSize, Box(256, 256), vector<char*> { "data/images/dirt.tga", "data/images/josh.tga" });
 		if (!_bitmap) throw Exception("Failed to create the bitmap.");
 
 		_light->SetAmbientColor(XMFLOAT4(0.15f, 0.15f, 0.15f, 1.0f));

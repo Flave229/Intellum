@@ -126,6 +126,18 @@ void FontShader::InitialiseShader(HWND hwnd, WCHAR* vsFilename, WCHAR* psFilenam
 		result = _direct3D->GetDevice()->CreateBuffer(&colorBufferDesc, nullptr, &_colorBuffer);
 		if (FAILED(result)) throw Exception("Failed to create the buffer for the color description");
 
+		// Texture Buffer Description
+		D3D11_BUFFER_DESC textureBufferDesc;
+		textureBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+		textureBufferDesc.ByteWidth = sizeof(TextureBuffer);
+		textureBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+		textureBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+		textureBufferDesc.MiscFlags = 0;
+		textureBufferDesc.StructureByteStride = 0;
+
+		result = _direct3D->GetDevice()->CreateBuffer(&textureBufferDesc, nullptr, &_textureBuffer);
+		if (FAILED(result)) throw Exception("Failed to create the buffer for the texture description");
+
 		// Sampler State Description
 		D3D11_SAMPLER_DESC samplerDesc;
 		samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
@@ -202,22 +214,23 @@ void FontShader::Shutdown()
 	}
 }
 
-void FontShader::Render(int indexCount, XMMATRIX worldMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView** textureArray)
+void FontShader::Render(int indexCount, XMMATRIX worldMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView** textureArray, int textureCount)
 {
-	SetShaderParameters(worldMatrix, projectionMatrix, textureArray);
+	SetShaderParameters(worldMatrix, projectionMatrix, textureArray, textureCount);
 
 	RenderShader(indexCount);
 }
 
-void FontShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView** textureArray)
+void FontShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView** textureArray, int textureCount)
 {
 	try
 	{
 		SetMatrixBuffer(worldMatrix, projectionMatrix, _viewMatrix, 0);
 		SetCameraBuffer(1); 
 		SetColorBuffer(0);
+		SetTextureBuffer(1, textureCount);
 
-		_direct3D->GetDeviceContext()->PSSetShaderResources(0, 1, textureArray);
+		_direct3D->GetDeviceContext()->PSSetShaderResources(0, 2, textureArray);
 	}
 	catch (Exception& exception)
 	{
@@ -248,7 +261,7 @@ void FontShader::SetMatrixBuffer(XMMATRIX worldMatrix, XMMATRIX projectionMatrix
 	_direct3D->GetDeviceContext()->VSSetConstantBuffers(bufferNumber, 1, &_matrixBuffer);
 }
 
-void FontShader::SetCameraBuffer(unsigned bufferNumber) const
+void FontShader::SetCameraBuffer(unsigned int bufferNumber) const
 {
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
 	HRESULT result = _direct3D->GetDeviceContext()->Map(_cameraBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
@@ -262,7 +275,7 @@ void FontShader::SetCameraBuffer(unsigned bufferNumber) const
 	_direct3D->GetDeviceContext()->VSSetConstantBuffers(bufferNumber, 1, &_cameraBuffer);
 }
 
-void FontShader::SetColorBuffer(unsigned bufferNumber) const
+void FontShader::SetColorBuffer(unsigned int bufferNumber) const
 {
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
 	HRESULT result = _direct3D->GetDeviceContext()->Map(_colorBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
@@ -285,6 +298,20 @@ void FontShader::SetColorBuffer(unsigned bufferNumber) const
 
 	_direct3D->GetDeviceContext()->Unmap(_colorBuffer, 0);
 	_direct3D->GetDeviceContext()->PSSetConstantBuffers(bufferNumber, 1, &_colorBuffer);
+}
+
+void FontShader::SetTextureBuffer(unsigned int bufferNumber, int textureCount) const
+{
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	HRESULT result = _direct3D->GetDeviceContext()->Map(_textureBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	if (FAILED(result)) throw Exception("Failed to map texture buffer to the Device Context.");
+
+	TextureBuffer* textureData = static_cast<TextureBuffer*>(mappedResource.pData);
+
+	textureData->texturesIncluded = textureCount;
+
+	_direct3D->GetDeviceContext()->Unmap(_textureBuffer, 0);
+	_direct3D->GetDeviceContext()->PSSetConstantBuffers(bufferNumber, 1, &_textureBuffer);
 }
 
 void FontShader::RenderShader(int indexCount)

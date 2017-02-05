@@ -27,6 +27,7 @@ private:
 
 	ID3D11Texture2D* _texture;
 	ID3D11ShaderResourceView* _textureView[2];
+	int _textureCount;
 
 private:
 	void Initialise(vector<char*> filenames);
@@ -41,6 +42,7 @@ public:
 	void Shutdown();
 
 	ID3D11ShaderResourceView** GetTextures();
+	int GetTextureCount() const;
 };
 
 #endif

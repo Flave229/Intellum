@@ -208,14 +208,14 @@ void DefaultShader::Shutdown()
 	}
 }
 
-void DefaultShader::Render(int indexCount, XMMATRIX worldMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView** textureArray)
+void DefaultShader::Render(int indexCount, XMMATRIX worldMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView** textureArray, int textureCount)
 {
-	SetShaderParameters(worldMatrix, projectionMatrix, textureArray);
+	SetShaderParameters(worldMatrix, projectionMatrix, textureArray, textureCount);
 
 	RenderShader(indexCount);
 }
 
-void DefaultShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView** textureArray)
+void DefaultShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView** textureArray, int textureCount)
 {
 	try
 	{

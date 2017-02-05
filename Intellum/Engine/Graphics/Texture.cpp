@@ -4,6 +4,7 @@ Texture::Texture(ID3D11Device* device, ID3D11DeviceContext* deviceContext, vecto
 {
 	_textureView[0] = nullptr;
 	_textureView[1] = nullptr;
+	_textureCount = filenames.size();
 	Initialise(filenames);
 }
 
@@ -95,4 +96,9 @@ void Texture::Shutdown()
 ID3D11ShaderResourceView** Texture::GetTextures()
 {
 	return _textureView;
+}
+
+int Texture::GetTextureCount() const
+{
+	return _textureCount;
 }

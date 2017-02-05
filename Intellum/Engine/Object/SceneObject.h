@@ -19,7 +19,7 @@ public:
 	void Update(float delta) const;
 	void Render() const;
 
-	Transform* GetTransform();
+	Transform* GetTransform() const;
 
 	void Shutdown();
 };
