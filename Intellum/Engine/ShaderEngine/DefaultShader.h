@@ -6,13 +6,6 @@ using namespace std;
 
 class DefaultShader : public IShaderType
 {
-	struct ConstantBuffer
-	{
-		XMMATRIX world;
-		XMMATRIX view;
-		XMMATRIX projection;
-	};
-
 	struct CameraBuffer
 	{
 		XMFLOAT3 cameraPosition;
@@ -27,8 +20,7 @@ class DefaultShader : public IShaderType
 		float specularPower;
 		XMFLOAT4 specularColor;
 	};
-
-	void SetMatrixBuffer(XMMATRIX worldMatrix, XMMATRIX projectionMatrix, XMMATRIX viewMatrix, unsigned int bufferNumber) const;
+	
 	void SetCameraBuffer(unsigned int bufferNumber) const;
 	void SetLightBuffer(unsigned bufferNumber) const;
 public:

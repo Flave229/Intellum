@@ -189,6 +189,7 @@
     <ClCompile Include="Engine\Handlers\ObjectHandler.cpp" />
     <ClCompile Include="Engine\Object\Transform.cpp" />
     <ClCompile Include="Engine\Object\SceneObject.cpp" />
+    <ClCompile Include="Engine\ShaderEngine\ConstantBuffers\MatrixBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common\Constants.h" />
@@ -218,6 +219,7 @@
     <ClInclude Include="Engine\Graphics\Light.h" />
     <ClInclude Include="Engine\Input\ControlMappings.h" />
     <ClInclude Include="Engine\Input\InputControl.h" />
+    <ClInclude Include="Engine\ShaderEngine\ConstantBuffers\IShaderBuffer.h" />
     <ClInclude Include="loaders\models\TargaData.h" />
     <ClInclude Include="loaders\OBJLoader.h" />
     <ClInclude Include="Engine\Object\Appearance.h" />
@@ -230,6 +232,7 @@
     <ClInclude Include="Engine\Handlers\ObjectHandler.h" />
     <ClInclude Include="Engine\Object\Transform.h" />
     <ClInclude Include="Engine\Object\SceneObject.h" />
+    <ClInclude Include="Engine\ShaderEngine\ConstantBuffers\MatrixBuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="data\models\Cube.txt">

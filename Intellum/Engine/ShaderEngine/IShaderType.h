@@ -11,6 +11,7 @@
 #include "../Graphics/Light.h"
 #include "../DirectX3D.h"
 #include "../Camera/Camera.h"
+#include "ConstantBuffers/MatrixBuffer.h"
 
 using namespace DirectX;
 
@@ -26,7 +27,7 @@ protected:
 	ID3D11InputLayout* _layout;
 	ID3D11SamplerState* _sampleState;
 
-	ID3D11Buffer* _matrixBuffer;
+	IShaderBuffer* _matrixBuffer;
 	ID3D11Buffer* _cameraBuffer;
 	ID3D11Buffer* _lightBuffer;
 	ID3D11Buffer* _textureBuffer;

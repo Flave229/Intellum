@@ -98,17 +98,7 @@ void DefaultShader::InitialiseShader(HWND hwnd, WCHAR* vsFilename, WCHAR* psFile
 		pixelShaderBuffer->Release();
 		pixelShaderBuffer = nullptr;
 
-		// Constant Buffer description
-		D3D11_BUFFER_DESC matrixBufferDesc;
-		matrixBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-		matrixBufferDesc.ByteWidth = sizeof(ConstantBuffer);
-		matrixBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-		matrixBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-		matrixBufferDesc.MiscFlags = 0;
-		matrixBufferDesc.StructureByteStride = 0;
-
-		result = _direct3D->GetDevice()->CreateBuffer(&matrixBufferDesc, nullptr, &_matrixBuffer);
-		if (FAILED(result)) throw Exception("Failed to create the buffer for the matrix description");
+		_matrixBuffer = new MatrixBuffer(_direct3D);
 
 		// Camera Buffer Description
 		D3D11_BUFFER_DESC cameraBufferDesc;
@@ -167,7 +157,7 @@ void DefaultShader::Shutdown()
 {
 	if (_matrixBuffer)
 	{
-		_matrixBuffer->Release();
+		_matrixBuffer->Shutdown();
 		_matrixBuffer = nullptr;
 	}
 
@@ -221,7 +211,8 @@ void DefaultShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectio
 	{
 		XMMATRIX viewMatrix = _camera->GetViewMatrix();
 
-		SetMatrixBuffer(worldMatrix, projectionMatrix, viewMatrix, 0);
+		_matrixBuffer->SetShaderParameters(worldMatrix, projectionMatrix, viewMatrix, 0);
+		
 		SetCameraBuffer(1);
 		SetLightBuffer(0);
 
@@ -235,25 +226,6 @@ void DefaultShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectio
 	{
 		throw Exception("Error when setting Shader Parameters in Default Shader: ");
 	}
-}
-
-void DefaultShader::SetMatrixBuffer(XMMATRIX worldMatrix, XMMATRIX projectionMatrix, XMMATRIX viewMatrix, unsigned int bufferNumber) const
-{
-	worldMatrix = XMMatrixTranspose(worldMatrix);
-	viewMatrix = XMMatrixTranspose(viewMatrix);
-	projectionMatrix = XMMatrixTranspose(projectionMatrix);
-
-	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	HRESULT result = _direct3D->GetDeviceContext()->Map(_matrixBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-	if (FAILED(result)) throw Exception("Failed to map matrix buffer to the Device Context.");
-
-	ConstantBuffer* matrixDataPtr = static_cast<ConstantBuffer*>(mappedResource.pData);
-	matrixDataPtr->world = worldMatrix;
-	matrixDataPtr->view = viewMatrix;
-	matrixDataPtr->projection = projectionMatrix;
-
-	_direct3D->GetDeviceContext()->Unmap(_matrixBuffer, 0);
-	_direct3D->GetDeviceContext()->VSSetConstantBuffers(bufferNumber, 1, &_matrixBuffer);
 }
 
 void DefaultShader::SetCameraBuffer(unsigned int bufferNumber) const

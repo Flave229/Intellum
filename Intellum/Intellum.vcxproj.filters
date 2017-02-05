@@ -142,6 +142,9 @@
     <ClCompile Include="Engine\Input\ControlMappings.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\ShaderEngine\ConstantBuffers\MatrixBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DXSystem.h">
@@ -259,6 +262,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Input\ControlMappings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ShaderEngine\ConstantBuffers\IShaderBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ShaderEngine\ConstantBuffers\MatrixBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
