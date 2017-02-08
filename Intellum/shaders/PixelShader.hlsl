@@ -10,6 +10,12 @@ cbuffer LightBuffer
 	float4 specularColor;
 };
 
+cbuffer TextureBuffer
+{
+    float textureCount;
+    float3 padding2;
+};
+
 struct PixelInputType
 {
 	float4 position : SV_POSITION;
@@ -19,11 +25,11 @@ struct PixelInputType
 };
 
 float4 DefaultPixelShader(PixelInputType input) : SV_TARGET
-{
-    float4 texture1Color = shaderTexture[0].Sample(SampleType, input.tex);
-    float4 texture2Color = shaderTexture[1].Sample(SampleType, input.tex);
+{    
+    float4 textureColor = shaderTexture[0].Sample(SampleType, input.tex);
 
-    float4 textureColor = texture1Color * texture2Color * 2.0;
+    if (textureCount > 1)
+        textureColor *= shaderTexture[1].Sample(SampleType, input.tex) * 2.0;
 
 	float3 lightDir = -lightDirection;
 	float lightIntensity = saturate(dot(input.normal, lightDir));

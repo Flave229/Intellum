@@ -101,6 +101,7 @@ void DefaultShader::InitialiseShader(HWND hwnd, WCHAR* vsFilename, WCHAR* psFile
 		_matrixBuffer = new MatrixBuffer(_direct3D);
 		_cameraBuffer = new CameraBuffer(_direct3D, _camera);
 		_lightBuffer = new LightBuffer(_direct3D, _light);
+		_textureBuffer = new TextureBuffer(_direct3D);
 
 		// Sampler State Description
 		D3D11_SAMPLER_DESC samplerDesc;
@@ -190,6 +191,7 @@ void DefaultShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectio
 		_matrixBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructMatrixBufferParameters(0, worldMatrix, projectionMatrix, _camera->GetViewMatrix()));
 		_cameraBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructDefaultBufferParameters(1));
 		_lightBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructDefaultBufferParameters(0));
+		_textureBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructTextureBufferParameters(1, textureCount));
 		
 		_direct3D->GetDeviceContext()->PSSetShaderResources(0, textureCount, textureArray);
 	}
