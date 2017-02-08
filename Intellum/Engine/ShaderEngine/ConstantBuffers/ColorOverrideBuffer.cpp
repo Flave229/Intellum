@@ -32,7 +32,7 @@ void ColorOverrideBuffer::Initialise()
 	if (FAILED(result)) throw Exception("Failed to create the buffer for the color description");
 }
 
-void ColorOverrideBuffer::SetShaderParameters(int bufferIndex, XMMATRIX worldMatrix, XMMATRIX projectionMatrix, XMMATRIX viewMatrix, bool colorEnabled, XMFLOAT4 colorOverload)
+void ColorOverrideBuffer::SetShaderParameters(ShaderParameters parameters)
 {
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
 	HRESULT result = _direct3D->GetDeviceContext()->Map(_buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
@@ -40,10 +40,10 @@ void ColorOverrideBuffer::SetShaderParameters(int bufferIndex, XMMATRIX worldMat
 
 	Buffer* colorDataPtr = static_cast<Buffer*>(mappedResource.pData);
 
-	if (colorEnabled)
+	if (parameters.ColorOverloadEnabled)
 	{
 		colorDataPtr->colorOverloadEnabled = 1.0f;
-		colorDataPtr->colorOverload = colorOverload;
+		colorDataPtr->colorOverload = parameters.ColorOverload;
 	}
 	else
 	{
@@ -54,5 +54,5 @@ void ColorOverrideBuffer::SetShaderParameters(int bufferIndex, XMMATRIX worldMat
 	colorDataPtr->padding = XMFLOAT3(0.0f, 0.0f, 0.0f);
 
 	_direct3D->GetDeviceContext()->Unmap(_buffer, 0);
-	_direct3D->GetDeviceContext()->PSSetConstantBuffers(bufferIndex, 1, &_buffer);
+	_direct3D->GetDeviceContext()->PSSetConstantBuffers(parameters.BufferIndex, 1, &_buffer);
 }

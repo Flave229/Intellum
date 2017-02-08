@@ -32,7 +32,7 @@ void CameraBuffer::Initialise()
 	if (FAILED(result)) throw Exception("Failed to create the buffer for the camera description");
 }
 
-void CameraBuffer::SetShaderParameters(int bufferIndex, XMMATRIX worldMatrix, XMMATRIX projectionMatrix, XMMATRIX viewMatrix, bool colorEnabled, XMFLOAT4 colorOverload)
+void CameraBuffer::SetShaderParameters(ShaderParameters parameters)
 {
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
 	HRESULT result = _direct3D->GetDeviceContext()->Map(_buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
@@ -43,5 +43,5 @@ void CameraBuffer::SetShaderParameters(int bufferIndex, XMMATRIX worldMatrix, XM
 	cameraDataPtr->padding = 0.0f;
 
 	_direct3D->GetDeviceContext()->Unmap(_buffer, 0);
-	_direct3D->GetDeviceContext()->VSSetConstantBuffers(bufferIndex, 1, &_buffer);
+	_direct3D->GetDeviceContext()->VSSetConstantBuffers(parameters.BufferIndex, 1, &_buffer);
 }

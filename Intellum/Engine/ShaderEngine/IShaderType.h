@@ -15,6 +15,7 @@
 #include "ConstantBuffers/CameraBuffer.h"
 #include "ConstantBuffers/LightBuffer.h"
 #include "ConstantBuffers/ColorOverrideBuffer.h"
+#include "ShaderParameters/ShaderParameterConstructor.h"
 
 using namespace DirectX;
 

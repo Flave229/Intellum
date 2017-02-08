@@ -32,7 +32,7 @@ void LightBuffer::Initialise()
 	if (FAILED(result)) throw Exception("Failed to create the buffer for the light description");
 }
 
-void LightBuffer::SetShaderParameters(int bufferIndex, XMMATRIX worldMatrix, XMMATRIX projectionMatrix, XMMATRIX viewMatrix, bool colorEnabled, XMFLOAT4 colorOverload)
+void LightBuffer::SetShaderParameters(ShaderParameters parameters)
 {
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
 	HRESULT result = _direct3D->GetDeviceContext()->Map(_buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
@@ -46,5 +46,5 @@ void LightBuffer::SetShaderParameters(int bufferIndex, XMMATRIX worldMatrix, XMM
 	lightDataPtr->specularPower = _light->GetSpecularPower();
 
 	_direct3D->GetDeviceContext()->Unmap(_buffer, 0);
-	_direct3D->GetDeviceContext()->PSSetConstantBuffers(bufferIndex, 1, &_buffer);
+	_direct3D->GetDeviceContext()->PSSetConstantBuffers(parameters.BufferIndex, 1, &_buffer);
 }

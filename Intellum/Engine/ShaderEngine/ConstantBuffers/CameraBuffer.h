@@ -25,5 +25,5 @@ public:
 	
 	void Shutdown() override;
 
-	void SetShaderParameters(int bufferIndex, XMMATRIX worldMatrix = XMMATRIX(), XMMATRIX projectionMatrix = XMMATRIX(), XMMATRIX viewMatrix = XMMATRIX(), bool colorEnabled = false, XMFLOAT4 colorOverload = XMFLOAT4()) override;
+	void SetShaderParameters(ShaderParameters parameters) override;
 };

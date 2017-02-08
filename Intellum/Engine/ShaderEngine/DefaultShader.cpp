@@ -187,10 +187,10 @@ void DefaultShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectio
 {
 	try
 	{
-		_matrixBuffer->SetShaderParameters(0, worldMatrix, projectionMatrix, _camera->GetViewMatrix());
-		_cameraBuffer->SetShaderParameters(1);
-		_lightBuffer->SetShaderParameters(0);
-
+		_matrixBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructMatrixBufferParameters(0, worldMatrix, projectionMatrix, _camera->GetViewMatrix()));
+		_cameraBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructDefaultBufferParameters(1));
+		_lightBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructDefaultBufferParameters(0));
+		
 		_direct3D->GetDeviceContext()->PSSetShaderResources(0, textureCount, textureArray);
 	}
 	catch(Exception& exception)

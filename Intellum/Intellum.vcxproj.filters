@@ -154,6 +154,9 @@
     <ClCompile Include="Engine\ShaderEngine\ConstantBuffers\ColorOverrideBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\ShaderEngine\ShaderParameters\ShaderParameterConstructor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DXSystem.h">
@@ -286,6 +289,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\ShaderEngine\ConstantBuffers\ColorOverrideBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ShaderEngine\ShaderParameters\ShaderParameters.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ShaderEngine\ShaderParameters\ShaderParameterConstructor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

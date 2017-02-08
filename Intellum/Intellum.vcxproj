@@ -193,6 +193,7 @@
     <ClCompile Include="Engine\Object\Transform.cpp" />
     <ClCompile Include="Engine\Object\SceneObject.cpp" />
     <ClCompile Include="Engine\ShaderEngine\ConstantBuffers\MatrixBuffer.cpp" />
+    <ClCompile Include="Engine\ShaderEngine\ShaderParameters\ShaderParameterConstructor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\ShaderEngine\ConstantBuffers\ColorOverrideBuffer.h" />
@@ -205,6 +206,7 @@
     <ClInclude Include="Engine\Input\ControlType.h" />
     <ClInclude Include="Engine\ShaderEngine\ConstantBuffers\CameraBuffer.h" />
     <ClInclude Include="Engine\ShaderEngine\ConstantBuffers\LightBuffer.h" />
+    <ClInclude Include="Engine\ShaderEngine\ShaderParameters\ShaderParameters.h" />
     <ClInclude Include="Engine\SystemMetrics\Cpu.h" />
     <ClInclude Include="Engine\ShaderEngine\DefaultShader.h" />
     <ClInclude Include="Engine\DxComponents\DepthStencil.h" />
@@ -239,6 +241,7 @@
     <ClInclude Include="Engine\Object\Transform.h" />
     <ClInclude Include="Engine\Object\SceneObject.h" />
     <ClInclude Include="Engine\ShaderEngine\ConstantBuffers\MatrixBuffer.h" />
+    <ClInclude Include="Engine\ShaderEngine\ShaderParameters\ShaderParameterConstructor.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="data\models\Cube.txt">

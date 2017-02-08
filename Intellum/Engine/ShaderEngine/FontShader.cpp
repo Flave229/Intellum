@@ -193,9 +193,9 @@ void FontShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectionMa
 {
 	try
 	{
-		_matrixBuffer->SetShaderParameters(0, worldMatrix, projectionMatrix, _viewMatrix);
-		_cameraBuffer->SetShaderParameters(1);
-		_colorBuffer->SetShaderParameters(0, XMMATRIX(), XMMATRIX(), XMMATRIX(), _colorOverloadEnabled, _colorOverload);
+		_matrixBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructMatrixBufferParameters(0, worldMatrix, projectionMatrix, _viewMatrix));
+		_cameraBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructDefaultBufferParameters(1));
+		_colorBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructColorOverloadBufferParameters(0, _colorOverload, _colorOverloadEnabled));
 
 		SetTextureBuffer(1, textureCount);
 

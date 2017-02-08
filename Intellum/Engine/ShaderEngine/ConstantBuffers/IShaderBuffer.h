@@ -1,5 +1,6 @@
 #pragma once
 #include "../../DirectX3D.h"
+#include "../ShaderParameters/ShaderParameters.h"
 
 class IShaderBuffer
 {
@@ -13,6 +14,5 @@ public:
 	virtual void Initialise() = 0;
 	virtual void Shutdown() = 0;
 
-	virtual void SetShaderParameters(int bufferIndex, XMMATRIX worldMatrix = XMMATRIX(), XMMATRIX projectionMatrix = XMMATRIX(), XMMATRIX viewMatrix = XMMATRIX(), bool colorEnabled = false, XMFLOAT4 colorOverload = XMFLOAT4()) = 0;
+	virtual void SetShaderParameters(ShaderParameters parameters) = 0;
 };
-
