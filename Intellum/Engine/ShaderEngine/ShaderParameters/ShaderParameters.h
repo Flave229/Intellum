@@ -14,4 +14,6 @@ public:
 
 	bool ColorOverloadEnabled;
 	XMFLOAT4 ColorOverload;
+
+	int TextureCount;
 };

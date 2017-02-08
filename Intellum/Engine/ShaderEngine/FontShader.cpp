@@ -93,18 +93,7 @@ void FontShader::InitialiseShader(HWND hwnd, WCHAR* vsFilename, WCHAR* psFilenam
 		_matrixBuffer = new MatrixBuffer(_direct3D);
 		_cameraBuffer = new CameraBuffer(_direct3D, _camera);
 		_colorBuffer = new ColorOverrideBuffer(_direct3D);
-
-		// Texture Buffer Description
-		D3D11_BUFFER_DESC textureBufferDesc;
-		textureBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-		textureBufferDesc.ByteWidth = sizeof(TextureBuffer);
-		textureBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-		textureBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-		textureBufferDesc.MiscFlags = 0;
-		textureBufferDesc.StructureByteStride = 0;
-
-		result = _direct3D->GetDevice()->CreateBuffer(&textureBufferDesc, nullptr, &_textureBuffer);
-		if (FAILED(result)) throw Exception("Failed to create the buffer for the texture description");
+		_textureBuffer = new TextureBuffer(_direct3D);
 
 		// Sampler State Description
 		D3D11_SAMPLER_DESC samplerDesc;
@@ -196,8 +185,7 @@ void FontShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectionMa
 		_matrixBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructMatrixBufferParameters(0, worldMatrix, projectionMatrix, _viewMatrix));
 		_cameraBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructDefaultBufferParameters(1));
 		_colorBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructColorOverloadBufferParameters(0, _colorOverload, _colorOverloadEnabled));
-
-		SetTextureBuffer(1, textureCount);
+		_textureBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructTextureBufferParameters(1, textureCount));
 
 		_direct3D->GetDeviceContext()->PSSetShaderResources(0, textureCount, textureArray);
 	}
@@ -209,20 +197,6 @@ void FontShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectionMa
 	{
 		throw Exception("Error when setting Shader Parameters in Font Shader: ");
 	}
-}
-
-void FontShader::SetTextureBuffer(unsigned int bufferNumber, int textureCount) const
-{
-	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	HRESULT result = _direct3D->GetDeviceContext()->Map(_textureBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-	if (FAILED(result)) throw Exception("Failed to map texture buffer to the Device Context.");
-
-	TextureBuffer* textureData = static_cast<TextureBuffer*>(mappedResource.pData);
-
-	textureData->texturesIncluded = textureCount;
-
-	_direct3D->GetDeviceContext()->Unmap(_textureBuffer, 0);
-	_direct3D->GetDeviceContext()->PSSetConstantBuffers(bufferNumber, 1, &_textureBuffer);
 }
 
 void FontShader::RenderShader(int indexCount)

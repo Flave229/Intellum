@@ -36,3 +36,12 @@ ShaderParameters ShaderParameterConstructor::ConstructColorOverloadBufferParamet
 
 	return shaderParameters;
 }
+
+ShaderParameters ShaderParameterConstructor::ConstructTextureBufferParameters(int bufferIndex, int textureCount)
+{
+	ShaderParameters shaderParameters;
+	shaderParameters.BufferIndex = bufferIndex;
+	shaderParameters.TextureCount = textureCount;
+
+	return shaderParameters;
+}

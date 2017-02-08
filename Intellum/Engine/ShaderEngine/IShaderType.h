@@ -15,6 +15,7 @@
 #include "ConstantBuffers/CameraBuffer.h"
 #include "ConstantBuffers/LightBuffer.h"
 #include "ConstantBuffers/ColorOverrideBuffer.h"
+#include "ConstantBuffers/TextureBuffer.h"
 #include "ShaderParameters/ShaderParameterConstructor.h"
 
 using namespace DirectX;
@@ -35,8 +36,7 @@ protected:
 	IShaderBuffer* _cameraBuffer;
 	IShaderBuffer* _lightBuffer;
 	IShaderBuffer* _colorBuffer;
-
-	ID3D11Buffer* _textureBuffer;
+	IShaderBuffer* _textureBuffer;
 
 public:
 	IShaderType(DirectX3D* direct3D, Camera* camera, Light* light) : _direct3D(direct3D), _camera(camera), _light(light) {};

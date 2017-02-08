@@ -6,27 +6,11 @@ using namespace std;
 
 class FontShader : public IShaderType
 {
-	struct ColorBuffer
-	{
-		float colorOverloadEnabled;
-		XMFLOAT3 padding;
-		XMFLOAT4 colorOverload;
-	};
-
-	struct TextureBuffer
-	{
-		float texturesIncluded;
-		XMFLOAT3 padding;
-	};
-
 private:
 	XMMATRIX _viewMatrix;
 
 	bool _colorOverloadEnabled;
 	XMFLOAT4 _colorOverload;
-
-private:
-	void SetTextureBuffer(unsigned bufferNumber, int textureCount) const;
 
 public:
 	FontShader(DirectX3D* direct3D, Camera* camera, Light* light);
