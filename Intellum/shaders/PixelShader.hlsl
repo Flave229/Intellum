@@ -1,4 +1,4 @@
-Texture2D shaderTexture[2];
+Texture2D shaderTexture[5];
 SamplerState SampleType;
 
 cbuffer LightBuffer
@@ -13,7 +13,7 @@ cbuffer LightBuffer
 cbuffer TextureBuffer
 {
     float textureCount;
-    float3 padding2;
+    float3 padding;
 };
 
 struct PixelInputType
@@ -25,11 +25,13 @@ struct PixelInputType
 };
 
 float4 DefaultPixelShader(PixelInputType input) : SV_TARGET
-{    
+{
     float4 textureColor = shaderTexture[0].Sample(SampleType, input.tex);
 
-    if (textureCount > 1)
-        textureColor *= shaderTexture[1].Sample(SampleType, input.tex) * 2.0;
+    for (int i = 1; i < textureCount; i++)
+    {
+        textureColor *= shaderTexture[i].Sample(SampleType, input.tex) * 2.0f;
+    }
 
 	float3 lightDir = -lightDirection;
 	float lightIntensity = saturate(dot(input.normal, lightDir));

@@ -26,7 +26,7 @@ private:
 	ID3D11DeviceContext* _deviceContext;
 
 	ID3D11Texture2D* _texture;
-	ID3D11ShaderResourceView* _textureView[2];
+	ID3D11ShaderResourceView* _textureView[10];
 	int _textureCount;
 
 private:

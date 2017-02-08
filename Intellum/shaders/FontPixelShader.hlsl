@@ -1,4 +1,4 @@
-Texture2D shaderTexture[2];
+Texture2D shaderTexture[10];
 SamplerState SampleType;
 
 cbuffer ColorBuffer
@@ -25,8 +25,10 @@ float4 FontPixelShader(PixelInputType input) : SV_TARGET
 {
     float4 textureColor = shaderTexture[0].Sample(SampleType, input.tex);
 
-    if (textureCount > 1)
-        textureColor *= shaderTexture[1].Sample(SampleType, input.tex) * 2.0;
+    for (int i = 1; i < textureCount; i++)
+    {
+        textureColor *= shaderTexture[i].Sample(SampleType, input.tex) * 2.0f;
+    }
 
     if (colorOverloadEnabled == 1.0f)
     {
