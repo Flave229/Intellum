@@ -26,23 +26,21 @@ private:
 	ID3D11DeviceContext* _deviceContext;
 
 	ID3D11Texture2D* _texture;
-	ID3D11ShaderResourceView* _textureView[10];
-	int _textureCount;
+	ID3D11ShaderResourceView* _textureView;
 
 private:
-	void Initialise(vector<char*> filenames);
+	void Initialise(char* filename);
 
 	D3D11_TEXTURE2D_DESC SetupAndReturnDX11TextureDescription(Box textureBox);
 	static D3D11_SHADER_RESOURCE_VIEW_DESC SetupDX11ShaderResourceViewDescription(D3D11_TEXTURE2D_DESC textureDescription);
 
 public:
-	Texture(ID3D11Device* device, ID3D11DeviceContext* deviceContext, vector<char*> filenames);
+	Texture(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* filename);
 	~Texture();
 
 	void Shutdown();
 
-	ID3D11ShaderResourceView** GetTextures();
-	int GetTextureCount() const;
+	ID3D11ShaderResourceView* GetTexture() const;
 };
 
 #endif

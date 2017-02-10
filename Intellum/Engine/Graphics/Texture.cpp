@@ -1,41 +1,32 @@
 #include "Texture.h"
 
-Texture::Texture(ID3D11Device* device, ID3D11DeviceContext* deviceContext, vector<char*> filenames): _device(device), _deviceContext(deviceContext), _texture(nullptr)
+Texture::Texture(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* filename): _device(device), _deviceContext(deviceContext), _texture(nullptr), _textureView(nullptr)
 {
-	_textureView[0] = nullptr;
-	_textureView[1] = nullptr;
-	_textureCount = filenames.size();
-	Initialise(filenames);
+	Initialise(filename);
 }
 
 Texture::~Texture()
 {
 }
 
-void Texture::Initialise(vector<char*> filenames)
+void Texture::Initialise(char* filename)
 {
-	for(int i = 0; i < filenames.size(); i++)
-	{
-		if (sizeof _textureView / sizeof _textureView[0] < i)
-			break;
+	TargaData targaData = TargaLoader::LoadTarga(filename);
+	D3D11_TEXTURE2D_DESC textureDescription = SetupAndReturnDX11TextureDescription(targaData.ImageSize);
 
-		TargaData targaData = TargaLoader::LoadTarga(filenames.at(i));
-		D3D11_TEXTURE2D_DESC textureDescription = SetupAndReturnDX11TextureDescription(targaData.ImageSize);
-
-		unsigned int rowPitch = targaData.ImageSize.Width * 4 * sizeof(unsigned char);
-		_deviceContext->UpdateSubresource(_texture, 0, nullptr, targaData.ImageData, rowPitch, 0);
+	unsigned int rowPitch = targaData.ImageSize.Width * 4 * sizeof(unsigned char);
+	_deviceContext->UpdateSubresource(_texture, 0, nullptr, targaData.ImageData, rowPitch, 0);
 		
-		D3D11_SHADER_RESOURCE_VIEW_DESC shaderDescription = SetupDX11ShaderResourceViewDescription(textureDescription);
-		HRESULT hResult = _device->CreateShaderResourceView(_texture, &shaderDescription, &_textureView[i]);
+	D3D11_SHADER_RESOURCE_VIEW_DESC shaderDescription = SetupDX11ShaderResourceViewDescription(textureDescription);
+	HRESULT hResult = _device->CreateShaderResourceView(_texture, &shaderDescription, &_textureView);
 
-		if (FAILED(hResult))
-			throw Exception("Failed to create the Shader Resource View");
+	if (FAILED(hResult))
+		throw Exception("Failed to create the Shader Resource View");
 
-		_deviceContext->GenerateMips(_textureView[i]);
+	_deviceContext->GenerateMips(_textureView);
 
-		delete[] targaData.ImageData;
-		targaData.ImageData = nullptr;
-	}
+	delete[] targaData.ImageData;
+	targaData.ImageData = nullptr;
 }
 
 D3D11_TEXTURE2D_DESC Texture::SetupAndReturnDX11TextureDescription(Box textureBox)
@@ -74,16 +65,10 @@ D3D11_SHADER_RESOURCE_VIEW_DESC Texture::SetupDX11ShaderResourceViewDescription(
 
 void Texture::Shutdown()
 {
-	if(_textureView)
+	if (_textureView)
 	{
-		for (int i = 0; i < sizeof _textureView / sizeof _textureView[0]; i++)
-		{
-			if (_textureView[i])
-			{
-				_textureView[i]->Release();
-				_textureView[i] = nullptr;
-			}
-		}
+		_textureView->Release();
+		_textureView = nullptr;
 	}
 
 	if(_texture)
@@ -93,12 +78,7 @@ void Texture::Shutdown()
 	}
 }
 
-ID3D11ShaderResourceView** Texture::GetTextures()
+ID3D11ShaderResourceView* Texture::GetTexture() const
 {
 	return _textureView;
-}
-
-int Texture::GetTextureCount() const
-{
-	return _textureCount;
 }

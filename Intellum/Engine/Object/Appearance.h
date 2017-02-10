@@ -16,27 +16,19 @@ using namespace std;
 
 class Appearance
 {
-// Member Level Variables
 private:
 	DirectX3D* _direct3D;
 
 	Geometry* _geometry;
-	Texture* _texture;
+	vector<Texture*> _textures;
 
-// Function Declarations
 private:
 	void Initialise(vector<char*> textureFilenames, char* modelFilename);
 
-	void ShutdownBuffers();
-	void RenderBuffers() const;
-
 	void LoadTextures(vector<char*> filenames);
-	void ReleaseTexture();
-
 	void LoadModel(char* filename) const;
 public:
 	Appearance(DirectX3D* direct3D, vector<char*> textureFilenames, char* modelFilename);
-	Appearance(const Appearance& other);
 	~Appearance();
 
 	void Shutdown();
@@ -44,7 +36,8 @@ public:
 
 	int GetIndexCount() const;
 
-	Texture* GetTexture() const;
+	vector<ID3D11ShaderResourceView*> GetTextures() const;
+	int GetTextureCount() const;
 };
 
 #endif

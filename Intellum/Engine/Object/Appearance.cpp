@@ -1,12 +1,8 @@
 #include "Appearance.h"
 
-Appearance::Appearance(DirectX3D* direct3D, vector<char*> textureFilenames, char* modelFilename) : _direct3D(direct3D), _geometry(new Geometry), _texture(nullptr)
+Appearance::Appearance(DirectX3D* direct3D, vector<char*> textureFilenames, char* modelFilename) : _direct3D(direct3D), _geometry(new Geometry)
 {
 	Initialise(textureFilenames, modelFilename);
-}
-
-Appearance::Appearance(const Appearance& other) : _direct3D(other._direct3D), _geometry(other._geometry), _texture(other._texture)
-{
 }
 
 Appearance::~Appearance()
@@ -21,28 +17,15 @@ void Appearance::Initialise(vector<char*> textureFilenames, char* modelFilename)
 
 void Appearance::Shutdown()
 {
-	ReleaseTexture();
-	ShutdownBuffers();
-}
+	for (unsigned long long i = _textures.size(); i > 0; i--)
+	{
+		_textures.back()->Shutdown();
+		_textures.pop_back();
+	}
 
-void Appearance::Render() const
-{
-	RenderBuffers();
-}
+	_textures.clear();
 
-int Appearance::GetIndexCount() const
-{
-	return _geometry->IndexCount;
-}
-
-Texture* Appearance::GetTexture() const
-{
-	return _texture;
-}
-
-void Appearance::ShutdownBuffers()
-{
-	if(_geometry)
+	if (_geometry)
 	{
 		_geometry->Shutdown();
 		delete _geometry;
@@ -50,7 +33,7 @@ void Appearance::ShutdownBuffers()
 	}
 }
 
-void Appearance::RenderBuffers() const
+void Appearance::Render() const
 {
 	ID3D11DeviceContext* deviceContext = _direct3D->GetDeviceContext();
 	deviceContext->IASetVertexBuffers(0, 1, &_geometry->VertexBuffer, &_geometry->VBStride, &_geometry->VBOffset);
@@ -60,26 +43,14 @@ void Appearance::RenderBuffers() const
 
 void Appearance::LoadTextures(vector<char*> filenames)
 {
-	_texture = new Texture(_direct3D->GetDevice(), _direct3D->GetDeviceContext(), filenames);
-
-	if (!_texture)
+	for (char* filename : filenames)
 	{
-		string message = "Failed to load one or all of the following textures: '";
-		for (int i = 0; i < filenames.size(); i++)
-		{
-			message += "\t'" + string(filenames.at(i)) + "\n'";
-		}
-		throw Exception(message);
-	}
-}
+		Texture* texture = new Texture(_direct3D->GetDevice(), _direct3D->GetDeviceContext(), filename);
 
-void Appearance::ReleaseTexture()
-{
-	if (_texture)
-	{
-		_texture->Shutdown();
-		delete _texture;
-		_texture = nullptr;
+		if (texture == nullptr)
+			throw Exception("Failed to load the following texture: \t'" + string(filename) + "'\n");
+
+		_textures.push_back(texture);
 	}
 }
 
@@ -88,4 +59,26 @@ void Appearance::LoadModel(char* filename) const
 	*_geometry = OBJLoader::Load(filename, _direct3D->GetDevice());
 	if (!_geometry)
 		throw Exception("Failed to load the model at: '" + string(filename) + "'");
+}
+
+int Appearance::GetIndexCount() const
+{
+	return _geometry->IndexCount;
+}
+
+vector<ID3D11ShaderResourceView*> Appearance::GetTextures() const
+{
+	vector<ID3D11ShaderResourceView*> textureViews;
+
+	for (Texture* texture : _textures)
+	{
+		textureViews.push_back(texture->GetTexture());
+	}
+
+	return textureViews;
+}
+
+int Appearance::GetTextureCount() const
+{
+	return _textures.size();
 }

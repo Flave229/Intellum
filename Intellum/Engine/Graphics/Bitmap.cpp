@@ -1,14 +1,9 @@
 #include "Bitmap.h"
 
-Bitmap::Bitmap(DirectX3D* direct3D, IShaderType* shader, Box screenSize, Box bitmapBox, vector<char*> textureFilenames) : _direct3D(direct3D), _vertexBuffer(nullptr), _indexBuffer(nullptr), _vertexCount(0), _indexCount(0), _screenSize(Box(0, 0)), _bitmapSize(Box(0, 0)), _previousPosition(XMFLOAT2(0, 0)), _shader(shader), _texture(nullptr)
+Bitmap::Bitmap(DirectX3D* direct3D, IShaderType* shader, Box screenSize, Box bitmapBox, vector<char*> textureFilenames) : _direct3D(direct3D), _vertexBuffer(nullptr), _indexBuffer(nullptr), _vertexCount(0), _indexCount(0), _screenSize(Box(0, 0)), _bitmapSize(Box(0, 0)), _previousPosition(XMFLOAT2(0, 0)), _shader(shader)
 {
 	Initialise(screenSize, bitmapBox, textureFilenames);
 }
-
-Bitmap::Bitmap(const Bitmap& other) : _direct3D(other._direct3D), _vertexBuffer(other._vertexBuffer), _indexBuffer(other._indexBuffer), _vertexCount(other._vertexCount), _indexCount(other._indexCount), _screenSize(other._screenSize), _bitmapSize(other._bitmapSize), _previousPosition(other._previousPosition), _shader(other._shader), _texture(other._texture)
-{
-}
-
 
 Bitmap::~Bitmap()
 {
@@ -105,7 +100,7 @@ void Bitmap::Render()
 	XMMATRIX worldMatrix = _direct3D->GetWorldMatrix();
 	XMMATRIX orthoMatrix = _direct3D->GetOrthoMatrix();
 
-	_shader->Render(GetIndexCount(), worldMatrix, orthoMatrix, GetTexture(), _texture->GetTextureCount());
+	_shader->Render(GetIndexCount(), worldMatrix, orthoMatrix, GetTextures(), _textures.size());
 }
 
 int Bitmap::GetIndexCount() const
@@ -113,9 +108,16 @@ int Bitmap::GetIndexCount() const
 	return _indexCount;
 }
 
-ID3D11ShaderResourceView** Bitmap::GetTexture() const
+vector<ID3D11ShaderResourceView*> Bitmap::GetTextures() const
 {
-	return _texture->GetTextures();
+	vector<ID3D11ShaderResourceView*> textureViews;
+
+	for (Texture* texture : _textures)
+	{
+		textureViews.push_back(texture->GetTexture());
+	}
+
+	return textureViews;
 }
 
 void Bitmap::ShutdownBuffers()
@@ -186,7 +188,7 @@ void Bitmap::UpdateBuffers(XMFLOAT2 position, Box bitmapSize)
 	vertices = nullptr;
 }
 
-void Bitmap::RenderBuffers()
+void Bitmap::RenderBuffers() const
 {
 	unsigned int stride = sizeof(Vertex);
 	unsigned int offset = 0;
@@ -199,25 +201,24 @@ void Bitmap::RenderBuffers()
 
 void Bitmap::LoadTextures(vector<char*> filenames)
 {
-	_texture = new Texture(_direct3D->GetDevice(), _direct3D->GetDeviceContext(), filenames);
-
-	if (!_texture)
+	for (char* filename : filenames)
 	{
-		string message = "Failed to load one or all of the following textures: '";
-		for (int i = 0; i < filenames.size(); i++)
-		{
-			message += "\t'" + string(filenames.at(i)) + "\n'";
-		}
-		throw Exception(message);
+		Texture* texture = new Texture(_direct3D->GetDevice(), _direct3D->GetDeviceContext(), filename);
+
+		if (texture == nullptr)
+			throw Exception("Failed to load the following texture: \t'" + string(filename) + "'\n");
+
+		_textures.push_back(texture);
 	}
 }
 
 void Bitmap::ReleaseTexture()
 {
-	if (_texture)
+	for (unsigned long long i = _textures.size(); i > 0; i--)
 	{
-		_texture->Shutdown();
-		delete _texture;
-		_texture = nullptr;
+		_textures.back()->Shutdown();
+		_textures.pop_back();
 	}
+
+	_textures.clear();
 }
