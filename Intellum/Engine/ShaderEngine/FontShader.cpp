@@ -210,7 +210,6 @@ void FontShader::RenderShader(int indexCount)
 	_direct3D->GetDeviceContext()->DrawIndexed(indexCount, 0, 0);
 }
 
-
 void FontShader::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, WCHAR* shaderFileName)
 {
 	char* compileErrors;

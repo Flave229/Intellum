@@ -183,7 +183,7 @@
     <ClCompile Include="Engine\Input\InputControl.cpp" />
     <ClCompile Include="loaders\OBJLoader.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Engine\Object\Appearance.cpp" />
+    <ClCompile Include="Engine\Object\Appearance\Appearance.cpp" />
     <ClCompile Include="Engine\DxComponents\Rasterizer.cpp" />
     <ClCompile Include="Engine\ShaderEngine\ShaderController.cpp" />
     <ClCompile Include="DXSystem.cpp" />
@@ -195,8 +195,11 @@
     <ClCompile Include="Engine\Object\SceneObject.cpp" />
     <ClCompile Include="Engine\ShaderEngine\ConstantBuffers\MatrixBuffer.cpp" />
     <ClCompile Include="Engine\ShaderEngine\ShaderParameters\ShaderParameterConstructor.cpp" />
+    <ClCompile Include="Engine\Object\Appearance\UIAppearance.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Graphics\Structures\Vertex.h" />
+    <ClInclude Include="Engine\Object\Appearance\IAppearance.h" />
     <ClInclude Include="Engine\ShaderEngine\ConstantBuffers\ColorOverrideBuffer.h" />
     <ClInclude Include="Common\Constants.h" />
     <ClInclude Include="Engine\Graphics\Bitmap.h" />
@@ -232,7 +235,7 @@
     <ClInclude Include="Engine\ShaderEngine\ConstantBuffers\IShaderBuffer.h" />
     <ClInclude Include="loaders\models\TargaData.h" />
     <ClInclude Include="loaders\OBJLoader.h" />
-    <ClInclude Include="Engine\Object\Appearance.h" />
+    <ClInclude Include="Engine\Object\Appearance\Appearance.h" />
     <ClInclude Include="Engine\DxComponents\Rasterizer.h" />
     <ClInclude Include="Engine\ShaderEngine\ShaderController.h" />
     <ClInclude Include="DXSystem.h" />
@@ -244,6 +247,7 @@
     <ClInclude Include="Engine\Object\SceneObject.h" />
     <ClInclude Include="Engine\ShaderEngine\ConstantBuffers\MatrixBuffer.h" />
     <ClInclude Include="Engine\ShaderEngine\ShaderParameters\ShaderParameterConstructor.h" />
+    <ClInclude Include="Engine\Object\Appearance\UIAppearance.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="data\models\Cube.txt">

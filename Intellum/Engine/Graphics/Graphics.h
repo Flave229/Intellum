@@ -12,7 +12,6 @@
 #include "../FontEngine/FontEngine.h"
 #include "../SystemMetrics/FramesPerSecond.h"
 #include "../SystemMetrics/Cpu.h"
-#include "../Object/Appearance.h"
 #include "../Object/SceneObject.h"
 #include "../Handlers/ObjectHandler.h"
 #include "../../Common/Constants.h"
@@ -26,6 +25,8 @@ private:
 	FramesPerSecond* _framesPerSecond;
 	Cpu* _cpu;
 	
+	Box* _screenSize;
+
 	ShaderController* _shaderController;
 	ObjectHandler* _objectHandler;
 
@@ -34,10 +35,9 @@ private:
 	Bitmap* _bitmap;
 
 private:
-	void Initialise(Input* input, Box screenSize, HWND hwnd);
+	void Initialise(Input* input, HWND hwnd);
 public:
-	Graphics(Input* input, Box screenSize, HWND hwnd, FramesPerSecond* framesPerSecond, Cpu* cpu);
-	Graphics(const Graphics& other);
+	Graphics(Input* input, Box* screenSize, HWND hwnd, FramesPerSecond* framesPerSecond, Cpu* cpu);
 	~Graphics();
 
 	void Shutdown();

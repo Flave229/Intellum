@@ -6,55 +6,34 @@
 #include "../../Engine/ShaderEngine/IShaderType.h"
 #include "../../Engine/ShaderEngine/DefaultShader.h"
 #include "../../Engine/DirectX3D.h"
+#include "../../common/Vertex.h"
 #include "Texture.h"
 #include "Light.h"
-#include "../Object/Appearance.h"
+#include "../Object/Appearance/IAppearance.h"
 
 using namespace DirectX;
 
 class Bitmap
 {
 private:
-	struct Vertex
-	{
-		XMFLOAT3 position;
-		XMFLOAT2 texture;
-	};
-
-private:
 	DirectX3D* _direct3D;
-
-	ID3D11Buffer* _vertexBuffer;
-	ID3D11Buffer* _indexBuffer;
-	int _vertexCount;
-	int _indexCount;
-
-	Box _screenSize;
-	Box _bitmapSize;
-	XMFLOAT2 _previousPosition;
-
 	IShaderType* _shader;
-	vector<Texture*> _textures;
+	IAppearance* _appearance;
 
+	Box* _screenSize;
+	Box* _bitmapSize;
+	XMFLOAT2* _previousPosition;
+	
 private:
-	void Initialise(Box screenSize, Box bitmapBox, vector<char*> textureFilenames);
-	void InitialiseBuffers();
-	void LoadTextures(vector<char*> filenames);
-
 	void UpdateBuffers(XMFLOAT2 position, Box bitmapSize);
-	void RenderBuffers() const;
-
-	void ShutdownBuffers();
-	void ReleaseTexture();
 public:
-	Bitmap(DirectX3D* direct3D, IShaderType* shader, Box screenSize, Box bitmapBox, vector<char*> textureFilenames);
+	Bitmap(DirectX3D* direct3D, IShaderType* shader, IAppearance* appearance, Box* screenSize, Box* bitmapBox, XMFLOAT2* position);
 	~Bitmap();
 
 	void Shutdown();
 
 	void Update(XMFLOAT2 position, Box bitmapSize);
-	void Render();
+	void Render() const;
 
-	int GetIndexCount() const;
-	vector<ID3D11ShaderResourceView*> GetTextures() const;
+	IAppearance* GetAppearance() const;
 };

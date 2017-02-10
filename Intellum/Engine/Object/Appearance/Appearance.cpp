@@ -5,10 +5,6 @@ Appearance::Appearance(DirectX3D* direct3D, vector<char*> textureFilenames, char
 	Initialise(textureFilenames, modelFilename);
 }
 
-Appearance::~Appearance()
-{
-}
-
 void Appearance::Initialise(vector<char*> textureFilenames, char* modelFilename)
 {
 	LoadModel(modelFilename);
@@ -39,6 +35,10 @@ void Appearance::Render() const
 	deviceContext->IASetVertexBuffers(0, 1, &_geometry->VertexBuffer, &_geometry->VBStride, &_geometry->VBOffset);
 	deviceContext->IASetIndexBuffer(_geometry->IndexBuffer, DXGI_FORMAT_R16_UINT, 0);
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+}
+
+void Appearance::Update()
+{
 }
 
 void Appearance::LoadTextures(vector<char*> filenames)

@@ -1,6 +1,6 @@
 #pragma once
 #include "Transform.h"
-#include "Appearance.h"
+#include "Appearance/Appearance.h"
 #include "../ShaderEngine/IShaderType.h"
 #include "../Camera/Frustrum.h"
 
