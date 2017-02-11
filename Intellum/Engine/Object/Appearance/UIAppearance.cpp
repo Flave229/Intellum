@@ -170,11 +170,6 @@ int UIAppearance::GetIndexCount() const
 	return _indexCount;
 }
 
-int UIAppearance::GetTextureCount() const
-{
-	return _textures.size();
-}
-
 vector<ID3D11ShaderResourceView*> UIAppearance::GetTextures() const
 {
 	vector<ID3D11ShaderResourceView*> textureViews;

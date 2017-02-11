@@ -29,5 +29,5 @@ void Bitmap::Render() const
 	XMMATRIX worldMatrix = _direct3D->GetWorldMatrix();
 	XMMATRIX orthoMatrix = _direct3D->GetOrthoMatrix();
 
-	_shader->Render(_appearance->GetIndexCount(), worldMatrix, orthoMatrix, _appearance->GetTextures(), _appearance->GetTextureCount());
+	_shader->Render(_appearance->GetIndexCount(), worldMatrix, orthoMatrix, _appearance->GetTextures(), nullptr);
 }

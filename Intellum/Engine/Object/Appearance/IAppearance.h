@@ -17,6 +17,5 @@ public:
 	virtual void LoadTextures(vector<char*> textureFiles, char* lightMapFile) = 0;
 
 	virtual int GetIndexCount() const = 0;
-	virtual int GetTextureCount() const = 0;
 	virtual vector<ID3D11ShaderResourceView*> GetTextures() const = 0;
 };

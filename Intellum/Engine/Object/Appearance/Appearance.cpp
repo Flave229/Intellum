@@ -71,8 +71,3 @@ vector<ID3D11ShaderResourceView*> Appearance::GetTextures() const
 
 	return textureViews;
 }
-
-int Appearance::GetTextureCount() const
-{
-	return _textures.size();
-}

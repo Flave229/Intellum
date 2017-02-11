@@ -17,7 +17,7 @@ void SceneObject::Render() const
 {
 	_appearance->Render();
 
-	_shader->Render(_appearance->GetIndexCount(), _transform->GetTransformation(), _direct3D->GetProjectionMatrix(), _appearance->GetTextures(), _appearance->GetTextureCount());
+	_shader->Render(_appearance->GetIndexCount(), _transform->GetTransformation(), _direct3D->GetProjectionMatrix(), _appearance->GetTextures(), nullptr);
 }
 
 Transform* SceneObject::GetTransform() const

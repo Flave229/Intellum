@@ -36,6 +36,5 @@ public:
 	void Update(XMFLOAT2 position, Box bitmapSize) override;
 
 	int GetIndexCount() const override;
-	int GetTextureCount() const override;
 	vector<ID3D11ShaderResourceView*> GetTextures() const override;
 };

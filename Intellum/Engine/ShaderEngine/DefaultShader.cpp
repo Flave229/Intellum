@@ -177,23 +177,23 @@ void DefaultShader::Shutdown()
 	}
 }
 
-void DefaultShader::Render(int indexCount, XMMATRIX worldMatrix, XMMATRIX projectionMatrix, vector<ID3D11ShaderResourceView*> textureArray, int textureCount)
+void DefaultShader::Render(int indexCount, XMMATRIX worldMatrix, XMMATRIX projectionMatrix, vector<ID3D11ShaderResourceView*> textureArray, ID3D11ShaderResourceView* lightMap)
 {
-	SetShaderParameters(worldMatrix, projectionMatrix, textureArray, textureCount);
+	SetShaderParameters(worldMatrix, projectionMatrix, textureArray, lightMap);
 
 	RenderShader(indexCount);
 }
 
-void DefaultShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectionMatrix, vector<ID3D11ShaderResourceView*> textureArray, int textureCount)
+void DefaultShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectionMatrix, vector<ID3D11ShaderResourceView*> textureArray, ID3D11ShaderResourceView* lightMap)
 {
 	try
 	{
 		_matrixBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructMatrixBufferParameters(0, worldMatrix, projectionMatrix, _camera->GetViewMatrix()));
 		_cameraBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructDefaultBufferParameters(1));
 		_lightBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructDefaultBufferParameters(0));
-		_textureBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructTextureBufferParameters(1, textureCount));
+		_textureBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructTextureBufferParameters(1, textureArray.size()));
 		
-		_direct3D->GetDeviceContext()->PSSetShaderResources(0, textureCount, &textureArray.at(0));
+		_direct3D->GetDeviceContext()->PSSetShaderResources(0, textureArray.size(), &textureArray.at(0));
 	}
 	catch(Exception& exception)
 	{

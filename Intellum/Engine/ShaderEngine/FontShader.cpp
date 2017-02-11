@@ -1,6 +1,6 @@
 #include "FontShader.h"
 
-FontShader::FontShader(DirectX3D* direct3D, Camera* camera, Light* light) : IShaderType(direct3D, camera, light)
+FontShader::FontShader(DirectX3D* direct3D, Camera* camera, Light* light) : IShaderType(direct3D, camera, light), _colorOverloadEnabled(false)
 {
 }
 
@@ -171,20 +171,22 @@ void FontShader::Shutdown()
 	}
 }
 
-void FontShader::Render(int indexCount, XMMATRIX worldMatrix, XMMATRIX projectionMatrix, vector<ID3D11ShaderResourceView*> textureArray, int textureCount)
+void FontShader::Render(int indexCount, XMMATRIX worldMatrix, XMMATRIX projectionMatrix, vector<ID3D11ShaderResourceView*> textureArray, ID3D11ShaderResourceView* lightMap)
 {
-	SetShaderParameters(worldMatrix, projectionMatrix, textureArray, textureCount);
+	SetShaderParameters(worldMatrix, projectionMatrix, textureArray, lightMap);
 
 	RenderShader(indexCount);
 }
 
-void FontShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectionMatrix, vector<ID3D11ShaderResourceView*> textureArray, int textureCount)
+void FontShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectionMatrix, vector<ID3D11ShaderResourceView*> textureArray, ID3D11ShaderResourceView* lightMap)
 {
 	try
 	{
 		_matrixBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructMatrixBufferParameters(0, worldMatrix, projectionMatrix, _viewMatrix));
 		_cameraBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructDefaultBufferParameters(1));
 		_colorBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructColorOverloadBufferParameters(0, _colorOverload, _colorOverloadEnabled));
+
+		int textureCount = textureArray.size();
 		_textureBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructTextureBufferParameters(1, textureCount));
 
 		_direct3D->GetDeviceContext()->PSSetShaderResources(0, textureCount, &textureArray.at(0));
