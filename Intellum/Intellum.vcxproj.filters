@@ -321,6 +321,9 @@
     <ClInclude Include="Engine\Object\Appearance\Texture\CreateTexture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\ShaderEngine\ShaderResources.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="shaders\PixelShader.hlsl">

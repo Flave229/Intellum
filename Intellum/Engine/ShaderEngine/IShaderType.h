@@ -4,9 +4,6 @@
 #include <d3dcompiler.h>
 #include <DirectXMath.h>
 #include <string>
-#include <d3d11.h>
-#include <d3dcompiler.h>
-#include <DirectXMath.h>
 #include <fstream>
 #include "../Graphics/Light.h"
 #include "../DirectX3D.h"
@@ -17,6 +14,7 @@
 #include "ConstantBuffers/ColorOverrideBuffer.h"
 #include "ConstantBuffers/TextureBuffer.h"
 #include "ShaderParameters/ShaderParameterConstructor.h"
+#include "ShaderResources.h"
 
 using namespace DirectX;
 
@@ -46,9 +44,9 @@ public:
 	virtual void InitialiseShader(HWND hwnd, WCHAR* vsFilename, WCHAR* psFilename) = 0;
 	virtual void Shutdown() = 0;
 
-	virtual void SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectionMatrix, vector<ID3D11ShaderResourceView*> textureArray, ID3D11ShaderResourceView* lightMap) = 0;
+	virtual void SetShaderParameters(ShaderResources shaderResources, XMMATRIX worldMatrix, XMMATRIX projectionMatrix) = 0;
 
-	virtual void Render(int indexCount, XMMATRIX worldMatrix, XMMATRIX projectionMatrix, vector<ID3D11ShaderResourceView*> textureArray, ID3D11ShaderResourceView* lightMap) = 0;
+	virtual void Render(int indexCount, ShaderResources shaderResources, XMMATRIX worldMatrix, XMMATRIX projectionMatrix) = 0;
 
 	virtual void RenderShader(int indexCount) = 0;
 	

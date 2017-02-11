@@ -137,18 +137,21 @@ void DefaultShader::Shutdown()
 	if (_matrixBuffer)
 	{
 		_matrixBuffer->Shutdown();
+		delete _matrixBuffer;
 		_matrixBuffer = nullptr;
 	}
 
 	if (_cameraBuffer)
 	{
 		_cameraBuffer->Shutdown();
+		delete _cameraBuffer;
 		_cameraBuffer = nullptr;
 	}
 
 	if (_lightBuffer)
 	{
 		_lightBuffer->Shutdown();
+		delete _lightBuffer;
 		_lightBuffer = nullptr;
 	}
 
@@ -177,13 +180,13 @@ void DefaultShader::Shutdown()
 	}
 }
 
-void DefaultShader::Render(int indexCount, XMMATRIX worldMatrix, XMMATRIX projectionMatrix, vector<ID3D11ShaderResourceView*> textureArray, ID3D11ShaderResourceView* lightMap)
+void DefaultShader::Render(int indexCount, ShaderResources shaderResources, XMMATRIX worldMatrix, XMMATRIX projectionMatrix)
 {
-	SetShaderParameters(worldMatrix, projectionMatrix, textureArray, lightMap);
+	SetShaderParameters(shaderResources, worldMatrix, projectionMatrix);
 	RenderShader(indexCount);
 }
 
-void DefaultShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectionMatrix, vector<ID3D11ShaderResourceView*> textureArray, ID3D11ShaderResourceView* lightMap)
+void DefaultShader::SetShaderParameters(ShaderResources shaderResources, XMMATRIX worldMatrix, XMMATRIX projectionMatrix)
 {
 	try
 	{
@@ -192,16 +195,16 @@ void DefaultShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectio
 		_lightBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructDefaultBufferParameters(0));
 
 		bool lightMapEnabled = false;
-		if (lightMap != nullptr)
+		if (shaderResources.lightMap != nullptr)
 			lightMapEnabled = true;
 
-		int textureCount = static_cast<int>(textureArray.size());
+		int textureCount = static_cast<int>(shaderResources.textureArray.size());
 		_textureBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructTextureBufferParameters(1, textureCount, lightMapEnabled));
 		
-		_direct3D->GetDeviceContext()->PSSetShaderResources(0, textureCount, &textureArray.at(0));
+		_direct3D->GetDeviceContext()->PSSetShaderResources(0, textureCount, &shaderResources.textureArray.at(0));
 
 		if (lightMapEnabled)
-			_direct3D->GetDeviceContext()->PSSetShaderResources(1, 1, &lightMap);
+			_direct3D->GetDeviceContext()->PSSetShaderResources(1, 1, &shaderResources.lightMap);
 	}
 	catch(Exception& exception)
 	{

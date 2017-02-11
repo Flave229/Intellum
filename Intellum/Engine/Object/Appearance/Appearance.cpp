@@ -27,6 +27,13 @@ void Appearance::Shutdown()
 		delete _geometry;
 		_geometry = nullptr;
 	}
+
+	if (_lightMap)
+	{
+		_lightMap->Shutdown();
+		delete _lightMap;
+		_lightMap = nullptr;
+	}
 }
 
 void Appearance::Render() const

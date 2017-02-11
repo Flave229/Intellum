@@ -171,14 +171,14 @@ void FontShader::Shutdown()
 	}
 }
 
-void FontShader::Render(int indexCount, XMMATRIX worldMatrix, XMMATRIX projectionMatrix, vector<ID3D11ShaderResourceView*> textureArray, ID3D11ShaderResourceView* lightMap)
+void FontShader::Render(int indexCount, ShaderResources shaderResources, XMMATRIX worldMatrix, XMMATRIX projectionMatrix)
 {
-	SetShaderParameters(worldMatrix, projectionMatrix, textureArray, lightMap);
+	SetShaderParameters(shaderResources, worldMatrix, projectionMatrix);
 
 	RenderShader(indexCount);
 }
 
-void FontShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectionMatrix, vector<ID3D11ShaderResourceView*> textureArray, ID3D11ShaderResourceView* lightMap)
+void FontShader::SetShaderParameters(ShaderResources shaderResources, XMMATRIX worldMatrix, XMMATRIX projectionMatrix)
 {
 	try
 	{
@@ -187,16 +187,16 @@ void FontShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectionMa
 		_colorBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructColorOverloadBufferParameters(0, _colorOverload, _colorOverloadEnabled));
 
 		bool lightMapEnabled = false;
-		if (lightMap != nullptr)
+		if (shaderResources.lightMap != nullptr)
 			lightMapEnabled = true;
 
-		int textureCount = static_cast<int>(textureArray.size());
+		int textureCount = static_cast<int>(shaderResources.textureArray.size());
 		_textureBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructTextureBufferParameters(1, textureCount, lightMapEnabled));
 
-		_direct3D->GetDeviceContext()->PSSetShaderResources(0, textureCount, &textureArray.at(0));
+		_direct3D->GetDeviceContext()->PSSetShaderResources(0, textureCount, &shaderResources.textureArray.at(0));
 
 		if (lightMapEnabled)
-			_direct3D->GetDeviceContext()->PSSetShaderResources(10, 1, &lightMap);
+			_direct3D->GetDeviceContext()->PSSetShaderResources(10, 1, &shaderResources.lightMap);
 	}
 	catch (Exception& exception)
 	{

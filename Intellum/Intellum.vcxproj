@@ -250,6 +250,7 @@
     <ClInclude Include="Engine\ShaderEngine\ConstantBuffers\MatrixBuffer.h" />
     <ClInclude Include="Engine\ShaderEngine\ShaderParameters\ShaderParameterConstructor.h" />
     <ClInclude Include="Engine\Object\Appearance\UIAppearance.h" />
+    <ClInclude Include="Engine\ShaderEngine\ShaderResources.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="data\models\Cube.txt">
