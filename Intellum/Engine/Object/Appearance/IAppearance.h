@@ -11,7 +11,7 @@ public:
 	virtual void Shutdown() = 0;
 	virtual void Render() const = 0;
 
-	virtual void Update() = 0;
+	virtual void Update(XMFLOAT2 position, Box bitmapSize) = 0;
 
 	virtual void LoadTextures(vector<char*> filenames) = 0;
 

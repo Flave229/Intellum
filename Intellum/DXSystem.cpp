@@ -18,14 +18,14 @@ void DXSystem::Initialise()
 {
 	try
 	{
-		Box* screenSize = new Box(1280, 720);
+		Box screenSize = Box(1280, 720);
 
-		InitialiseWindows(*screenSize);
+		InitialiseWindows(screenSize);
 
 		_framesPerSecond = new FramesPerSecond();
 		_cpu = new Cpu();
 
-		_input = new Input(_hInstance, _hwnd, *screenSize);
+		_input = new Input(_hInstance, _hwnd, screenSize);
 		_graphics = new Graphics(_input, screenSize, _hwnd, _framesPerSecond, _cpu);
 	}
 	catch(Exception& exception)

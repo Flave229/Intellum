@@ -19,21 +19,13 @@ private:
 	DirectX3D* _direct3D;
 	IShaderType* _shader;
 	IAppearance* _appearance;
-
-	Box* _screenSize;
-	Box* _bitmapSize;
-	XMFLOAT2* _previousPosition;
 	
-private:
-	void UpdateBuffers(XMFLOAT2 position, Box bitmapSize);
 public:
-	Bitmap(DirectX3D* direct3D, IShaderType* shader, IAppearance* appearance, Box* screenSize, Box* bitmapBox, XMFLOAT2* position);
+	Bitmap(DirectX3D* direct3D, IShaderType* shader, IAppearance* appearance);
 	~Bitmap();
 
 	void Shutdown();
 
-	void Update(XMFLOAT2 position, Box bitmapSize);
+	void Update(XMFLOAT2 position, Box bitmapSize) const;
 	void Render() const;
-
-	IAppearance* GetAppearance() const;
 };

@@ -1,19 +1,19 @@
 #include "Graphics.h"
 
-Graphics::Graphics(Input* input, Box* screenSize, HWND hwnd, FramesPerSecond* framesPerSecond, Cpu* cpu) : _direct3D(nullptr), _fontEngine(nullptr), _framesPerSecond(framesPerSecond), _cpu(cpu), _screenSize(screenSize), _shaderController(nullptr), _objectHandler(nullptr), _camera(nullptr), _light(nullptr), _bitmap(nullptr)
+Graphics::Graphics(Input* input, Box screenSize, HWND hwnd, FramesPerSecond* framesPerSecond, Cpu* cpu) : _direct3D(nullptr), _fontEngine(nullptr), _framesPerSecond(framesPerSecond), _cpu(cpu), _shaderController(nullptr), _objectHandler(nullptr), _camera(nullptr), _light(nullptr), _bitmap(nullptr)
 {
-	Initialise(input, hwnd);
+	Initialise(input, screenSize, hwnd);
 }
 
 Graphics::~Graphics()
 {
 }
 
-void Graphics::Initialise(Input* input, HWND hwnd)
+void Graphics::Initialise(Input* input, Box screenSize, HWND hwnd)
 {
 	try
 	{
-		_direct3D = new DirectX3D(*_screenSize, VSYNC_ENABLED, hwnd, FULL_SCREEN, SCREEN_DEPTH, SCREEN_NEAR);
+		_direct3D = new DirectX3D(screenSize, VSYNC_ENABLED, hwnd, FULL_SCREEN, SCREEN_DEPTH, SCREEN_NEAR);
 		if (!_direct3D) throw Exception("Failed to create a DirectX3D object.");
 		
 		_camera = new Camera(new Frustrum(_direct3D), new Transform(_direct3D), input);
@@ -33,10 +33,8 @@ void Graphics::Initialise(Input* input, HWND hwnd)
 		_objectHandler = new ObjectHandler(_direct3D, _shaderController, _camera->GetFrustrum());
 		if (!_objectHandler) throw Exception("Failed to create the object handler.");
 		
-		Box* bitmapSize = new Box(256, 256);
-		XMFLOAT2* position = new XMFLOAT2(-1, -1);
-		UIAppearance* uiAppearance = new UIAppearance(_direct3D, _screenSize, bitmapSize, position, vector<char*> { "data/images/dirt.tga", "data/images/josh.tga", "data/images/stone.tga" });
-		_bitmap = new Bitmap(_direct3D, _shaderController->GetShader(SHADER_FONT), uiAppearance, _screenSize, bitmapSize, position);
+		UIAppearance* uiAppearance = new UIAppearance(_direct3D, screenSize, Box(256, 256), vector<char*> { "data/images/dirt.tga", "data/images/josh.tga", "data/images/stone.tga" });
+		_bitmap = new Bitmap(_direct3D, _shaderController->GetShader(SHADER_FONT), uiAppearance);
 		if (!_bitmap) throw Exception("Failed to create the bitmap.");
 
 		_light->SetAmbientColor(XMFLOAT4(0.15f, 0.15f, 0.15f, 1.0f));
@@ -48,7 +46,7 @@ void Graphics::Initialise(Input* input, HWND hwnd)
 		_fontEngine = new FontEngine(_direct3D, _direct3D->GetDevice(), _direct3D->GetDeviceContext(), _shaderController->GetShader(SHADER_FONT));
 		if (!_fontEngine) throw Exception("Failed to create the Font Engine.");
 
-		result = _fontEngine->SearchForAvaliableFonts(_screenSize);
+		result = _fontEngine->SearchForAvaliableFonts(screenSize);
 		if (!result) throw Exception("Could not initialise Font Engine.");
 	}
 	catch(Exception& exception)
@@ -102,12 +100,6 @@ void Graphics::Shutdown()
 		_bitmap->Shutdown();
 		delete _bitmap;
 		_bitmap = nullptr;
-	}
-
-	if (_screenSize)
-	{
-		delete _screenSize;
-		_screenSize = nullptr;
 	}
 }
 

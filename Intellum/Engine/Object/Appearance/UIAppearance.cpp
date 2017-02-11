@@ -1,6 +1,6 @@
 #include "UIAppearance.h"
 
-UIAppearance::UIAppearance(DirectX3D* direct3D, Box* screenSize, Box* bitmapSize, XMFLOAT2* position, vector<char*> textureFilenames) : _direct3D(direct3D), _vertexBuffer(nullptr), _indexBuffer(nullptr), _vertexCount(0), _indexCount(0), _screenSize(screenSize), _bitmapSize(bitmapSize), _previousPosition(position)
+UIAppearance::UIAppearance(DirectX3D* direct3D, Box screenSize, Box bitmapSize, vector<char*> textureFilenames) : _direct3D(direct3D), _vertexBuffer(nullptr), _indexBuffer(nullptr), _vertexCount(0), _indexCount(0), _screenSize(screenSize), _bitmapSize(bitmapSize), _previousPosition(XMFLOAT2(-1, -1))
 {
 	Initialise(textureFilenames);
 }
@@ -121,13 +121,22 @@ void UIAppearance::Render() const
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 
-void UIAppearance::Update()
+void UIAppearance::Update(XMFLOAT2 position, Box bitmapSize)
 {
-	float left = ((_screenSize->Width / 2) * -1) + (_previousPosition->x);
-	float right = left + _bitmapSize->Width;
+	if ((position.x == static_cast<int>(_previousPosition.x)) && (position.y == static_cast<int>(_previousPosition.y)) 
+		&& (bitmapSize.Width == _bitmapSize.Width) && (bitmapSize.Height == _bitmapSize.Height))
+	{
+		return;
+	}
 
-	float top = (_screenSize->Height / 2) - _previousPosition->y;
-	float bottom = top - _bitmapSize->Height;
+	_previousPosition = position;
+	_bitmapSize = bitmapSize;
+
+	float left = ((_screenSize.Width / 2) * -1) + (_previousPosition.x);
+	float right = left + _bitmapSize.Width;
+
+	float top = (_screenSize.Height / 2) - _previousPosition.y;
+	float bottom = top - _bitmapSize.Height;
 
 	Vertex* vertices = new Vertex[_vertexCount];
 	if (!vertices) throw Exception("Failed to initialise vertices for bitmap");

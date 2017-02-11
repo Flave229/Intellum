@@ -8,7 +8,7 @@ FontEngine::~FontEngine()
 {
 }
 
-bool FontEngine::SearchForAvaliableFonts(Box* screenSize)
+bool FontEngine::SearchForAvaliableFonts(Box screenSize)
 {
 	try
 	{
@@ -156,7 +156,7 @@ vector<string> FontEngine::ValidatePotentialFonts(vector<string> potentialFonts)
 	return validatedFonts;
 }
 
-bool FontEngine::CreateFonts(vector<string> fontFiles, Box* screenSize)
+bool FontEngine::CreateFonts(vector<string> fontFiles, Box screenSize)
 {
 	try
 	{
@@ -180,7 +180,7 @@ bool FontEngine::CreateFonts(vector<string> fontFiles, Box* screenSize)
 	}
 }
 
-vector<Character*> FontEngine::GetCharactersFromFontFolder(string filePath, Box* screenSize)
+vector<Character*> FontEngine::GetCharactersFromFontFolder(string filePath, Box screenSize)
 {
 	try
 	{
@@ -217,14 +217,12 @@ bool FontEngine::CheckCharacterExists(string filePath)
 	return true;
 }
 
-Character* FontEngine::CreateCharacterFromFontFolder(string filePath, string name, string unicode, Box* screenSize)
+Character* FontEngine::CreateCharacterFromFontFolder(string filePath, string name, string unicode, Box screenSize)
 {
 	try
 	{
-		Box* bitmapSize = new Box(64, 128);
-		XMFLOAT2* position = new XMFLOAT2(-1, -1);
-		UIAppearance* uiAppearance = new UIAppearance(_direct3D, screenSize, bitmapSize, position, vector<char*> { &(filePath + "/" + unicode + ".tga")[0u] });
-		Bitmap* texture = new Bitmap(_direct3D, _shader, uiAppearance, screenSize, bitmapSize, position);
+		UIAppearance* uiAppearance = new UIAppearance(_direct3D, screenSize, Box(64, 128), vector<char*> { &(filePath + "/" + unicode + ".tga")[0u] });
+		Bitmap* texture = new Bitmap(_direct3D, _shader, uiAppearance);
 		if (!texture) throw Exception("Failed to create the letter " + name + " for the font located at: " + filePath + ".");
 
 		Character* character = new Character(name, unicode, texture);

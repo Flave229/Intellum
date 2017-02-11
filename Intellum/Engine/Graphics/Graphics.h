@@ -1,5 +1,4 @@
-#ifndef _GRAPHICS_H_
-#define _GRAPHICS_H_
+#pragma once
 
 #include "../Camera/Camera.h"
 #include "../ShaderEngine/ShaderController.h"
@@ -24,8 +23,6 @@ private:
 	FontEngine* _fontEngine;
 	FramesPerSecond* _framesPerSecond;
 	Cpu* _cpu;
-	
-	Box* _screenSize;
 
 	ShaderController* _shaderController;
 	ObjectHandler* _objectHandler;
@@ -35,14 +32,12 @@ private:
 	Bitmap* _bitmap;
 
 private:
-	void Initialise(Input* input, HWND hwnd);
+	void Initialise(Input* input, Box screenSize, HWND hwnd);
 public:
-	Graphics(Input* input, Box* screenSize, HWND hwnd, FramesPerSecond* framesPerSecond, Cpu* cpu);
+	Graphics(Input* input, Box screenSize, HWND hwnd, FramesPerSecond* framesPerSecond, Cpu* cpu);
 	~Graphics();
 
 	void Shutdown();
 	void Update(float delta) const;
 	void Render(XMFLOAT2 mousePoint) const;
 };
-
-#endif

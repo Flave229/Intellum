@@ -32,7 +32,7 @@ public:
 	void Shutdown() override;
 	void Render() const override;
 
-	void Update() override;
+	void Update(XMFLOAT2 position, Box bitmapSize) override;
 
 	int GetIndexCount() const override;
 	int GetTextureCount() const override;

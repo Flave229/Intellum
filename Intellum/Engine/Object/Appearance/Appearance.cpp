@@ -37,8 +37,9 @@ void Appearance::Render() const
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 
-void Appearance::Update()
+void Appearance::Update(XMFLOAT2 position, Box bitmapSize)
 {
+	throw Exception("Update method not implemented in the Appearance Class");
 }
 
 void Appearance::LoadTextures(vector<char*> filenames)

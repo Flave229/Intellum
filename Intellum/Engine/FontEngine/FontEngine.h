@@ -30,10 +30,10 @@ private:
 	vector<string> GetPotentialFonts();
 	vector<string> ValidatePotentialFonts(vector<string> potentialFonts);
 
-	bool CreateFonts(vector<string> fontFiles, Box* screenSize);
-	vector<Character*> GetCharactersFromFontFolder(string filePath, Box* screenSize);
+	bool CreateFonts(vector<string> fontFiles, Box screenSize);
+	vector<Character*> GetCharactersFromFontFolder(string filePath, Box screenSize);
 	bool CheckCharacterExists(string filePath);
-	Character* CreateCharacterFromFontFolder(string filePath, string name, string unicode, Box* screenSize);
+	Character* CreateCharacterFromFontFolder(string filePath, string name, string unicode, Box screenSize);
 
 	vector<Character*> StringToCharacterTextureList(string font, string input);
 public:
@@ -42,7 +42,7 @@ public:
 
 	void Update(XMFLOAT2 position, string font, string input, XMFLOAT4 textColor, int fontSize);
 	
-	bool SearchForAvaliableFonts(Box* screenSize);
+	bool SearchForAvaliableFonts(Box screenSize);
 
 	Font* GetFont(string font);
 	bool CheckFontExists(string font);

@@ -12,9 +12,9 @@ private:
 	int _vertexCount;
 	int _indexCount;
 
-	Box* _screenSize;
-	Box* _bitmapSize;
-	XMFLOAT2* _previousPosition;
+	Box _screenSize;
+	Box _bitmapSize;
+	XMFLOAT2 _previousPosition;
 
 	vector<Texture*> _textures;
 
@@ -24,13 +24,13 @@ private:
 	void LoadTextures(vector<char*> filenames) override;
 
 public:
-	UIAppearance(DirectX3D* direct3D, Box* screenSize, Box* bitmapSize, XMFLOAT2* position, vector<char*> texturefilenames);
+	UIAppearance(DirectX3D* direct3D, Box screenSize, Box bitmapSize, vector<char*> texturefilenames);
 	~UIAppearance() override = default;;
 	
 	void Shutdown() override;
 	void Render() const override;
 
-	void Update() override;
+	void Update(XMFLOAT2 position, Box bitmapSize) override;
 	
 	int GetIndexCount() const override;
 	int GetTextureCount() const override;
