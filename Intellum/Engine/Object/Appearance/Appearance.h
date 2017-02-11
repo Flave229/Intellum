@@ -19,14 +19,15 @@ private:
 
 	Geometry* _geometry;
 	vector<Texture*> _textures;
+	Texture* _lightMap;
 
 private:
-	void Initialise(vector<char*> textureFilenames, char* modelFilename);
-	void LoadTextures(vector<char*> filenames) override;
+	void Initialise(vector<char*> textureFiles, char* lightMapFile, char* modelFilename);
+	void LoadTextures(vector<char*> textureFiles, char* lightMapFile) override;
 	void LoadModel(char* filename) const;
 
 public:
-	Appearance(DirectX3D* direct3D, vector<char*> textureFilenames, char* modelFilename);
+	Appearance(DirectX3D* direct3D, vector<char*> textureFiles, char* lightMapFile, char* modelFilename);
 	~Appearance() override = default;
 
 	void Shutdown() override;

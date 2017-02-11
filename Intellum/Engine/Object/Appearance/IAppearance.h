@@ -1,6 +1,7 @@
 #pragma once
 #include "../../ShaderEngine/FontShader.h"
-#include "../../Graphics/Texture.h"
+#include "Texture/Texture.h"
+#include "Texture/CreateTexture.h"
 
 class IAppearance
 {
@@ -13,7 +14,7 @@ public:
 
 	virtual void Update(XMFLOAT2 position, Box bitmapSize) = 0;
 
-	virtual void LoadTextures(vector<char*> filenames) = 0;
+	virtual void LoadTextures(vector<char*> textureFiles, char* lightMapFile) = 0;
 
 	virtual int GetIndexCount() const = 0;
 	virtual int GetTextureCount() const = 0;

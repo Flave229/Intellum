@@ -155,6 +155,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Object\Appearance\Texture\CreateTexture.cpp" />
     <ClCompile Include="Engine\ShaderEngine\ConstantBuffers\ColorOverrideBuffer.cpp" />
     <ClCompile Include="Engine\Graphics\Bitmap.cpp" />
     <ClCompile Include="Engine\Camera\Camera.cpp" />
@@ -188,7 +189,7 @@
     <ClCompile Include="Engine\ShaderEngine\ShaderController.cpp" />
     <ClCompile Include="DXSystem.cpp" />
     <ClCompile Include="loaders\TargaLoader.cpp" />
-    <ClCompile Include="Engine\Graphics\Texture.cpp" />
+    <ClCompile Include="Engine\Object\Appearance\Texture\Texture.cpp" />
     <ClCompile Include="Engine\FontEngine\UnicodeDictionary.cpp" />
     <ClCompile Include="Engine\Handlers\ObjectHandler.cpp" />
     <ClCompile Include="Engine\Object\Transform.cpp" />
@@ -198,6 +199,7 @@
     <ClCompile Include="Engine\Object\Appearance\UIAppearance.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Object\Appearance\Texture\CreateTexture.h" />
     <ClInclude Include="Engine\Graphics\Structures\Vertex.h" />
     <ClInclude Include="Engine\Object\Appearance\IAppearance.h" />
     <ClInclude Include="Engine\ShaderEngine\ConstantBuffers\ColorOverrideBuffer.h" />
@@ -240,7 +242,7 @@
     <ClInclude Include="Engine\ShaderEngine\ShaderController.h" />
     <ClInclude Include="DXSystem.h" />
     <ClInclude Include="loaders\TargaLoader.h" />
-    <ClInclude Include="Engine\Graphics\Texture.h" />
+    <ClInclude Include="Engine\Object\Appearance\Texture\Texture.h" />
     <ClInclude Include="Engine\FontEngine\UnicodeDictionary.h" />
     <ClInclude Include="Engine\Handlers\ObjectHandler.h" />
     <ClInclude Include="Engine\Object\Transform.h" />

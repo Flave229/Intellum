@@ -1,14 +1,14 @@
 #include "Appearance.h"
 
-Appearance::Appearance(DirectX3D* direct3D, vector<char*> textureFilenames, char* modelFilename) : _direct3D(direct3D), _geometry(new Geometry)
+Appearance::Appearance(DirectX3D* direct3D, vector<char*> textureFilenames, char* lightMapFile, char* modelFilename) : _direct3D(direct3D), _geometry(new Geometry)
 {
-	Initialise(textureFilenames, modelFilename);
+	Initialise(textureFilenames, lightMapFile, modelFilename);
 }
 
-void Appearance::Initialise(vector<char*> textureFilenames, char* modelFilename)
+void Appearance::Initialise(vector<char*> textureFilenames, char* lightMapFile, char* modelFilename)
 {
 	LoadModel(modelFilename);
-	LoadTextures(textureFilenames);
+	LoadTextures(textureFilenames, lightMapFile);
 }
 
 void Appearance::Shutdown()
@@ -42,17 +42,10 @@ void Appearance::Update(XMFLOAT2 position, Box bitmapSize)
 	throw Exception("Update method not implemented in the Appearance Class");
 }
 
-void Appearance::LoadTextures(vector<char*> filenames)
+void Appearance::LoadTextures(vector<char*> textureFiles, char* lightMapFile)
 {
-	for (char* filename : filenames)
-	{
-		Texture* texture = new Texture(_direct3D->GetDevice(), _direct3D->GetDeviceContext(), filename);
-
-		if (texture == nullptr)
-			throw Exception("Failed to load the following texture: \t'" + string(filename) + "'\n");
-
-		_textures.push_back(texture);
-	}
+	_textures = CreateTexture::ListFrom(_direct3D, textureFiles);
+	_lightMap = CreateTexture::From(_direct3D, lightMapFile);
 }
 
 void Appearance::LoadModel(char* filename) const

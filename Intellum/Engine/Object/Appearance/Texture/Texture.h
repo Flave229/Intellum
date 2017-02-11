@@ -4,9 +4,9 @@
 #include <d3d11.h>
 #include <stdio.h>
 
-#include "../../ErrorHandling/Exception.h"
-#include "../../Loaders/TargaLoader.h"
-#include "../../Common/Box.h"
+#include "../../../../ErrorHandling/Exception.h"
+#include "../../../../Loaders/TargaLoader.h"
+#include "../../../../common/Box.h"
 
 using namespace std;
 

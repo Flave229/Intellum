@@ -1,8 +1,8 @@
 #include "UIAppearance.h"
 
-UIAppearance::UIAppearance(DirectX3D* direct3D, Box screenSize, Box bitmapSize, vector<char*> textureFilenames) : _direct3D(direct3D), _vertexBuffer(nullptr), _indexBuffer(nullptr), _vertexCount(0), _indexCount(0), _screenSize(screenSize), _bitmapSize(bitmapSize), _previousPosition(XMFLOAT2(-1, -1))
+UIAppearance::UIAppearance(DirectX3D* direct3D, Box screenSize, Box bitmapSize, vector<char*> textureFiles, char* lightMapFile) : _direct3D(direct3D), _vertexBuffer(nullptr), _indexBuffer(nullptr), _vertexCount(0), _indexCount(0), _screenSize(screenSize), _bitmapSize(bitmapSize), _previousPosition(XMFLOAT2(-1, -1))
 {
-	Initialise(textureFilenames);
+	Initialise(textureFiles, lightMapFile);
 }
 
 void UIAppearance::Shutdown()
@@ -28,10 +28,10 @@ void UIAppearance::Shutdown()
 	_textures.clear();
 }
 
-void UIAppearance::Initialise(vector<char*> texturefilenames)
+void UIAppearance::Initialise(vector<char*> textureFiles, char* lightMapFile)
 {
 	InitialiseBuffers();
-	LoadTextures(texturefilenames);
+	LoadTextures(textureFiles, lightMapFile);
 }
 
 void UIAppearance::InitialiseBuffers()
@@ -97,17 +97,9 @@ void UIAppearance::InitialiseBuffers()
 	indices = nullptr;
 }
 
-void UIAppearance::LoadTextures(vector<char*> filenames)
+void UIAppearance::LoadTextures(vector<char*> textureFiles, char* lightMapFile)
 {
-	for (char* filename : filenames)
-	{
-		Texture* texture = new Texture(_direct3D->GetDevice(), _direct3D->GetDeviceContext(), filename);
-
-		if (texture == nullptr)
-			throw Exception("Failed to load the following texture: \t'" + string(filename) + "'\n");
-
-		_textures.push_back(texture);
-	}
+	_textures = CreateTexture::ListFrom(_direct3D, textureFiles);
 }
 
 void UIAppearance::Render() const

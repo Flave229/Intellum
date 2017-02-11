@@ -19,12 +19,12 @@ private:
 	vector<Texture*> _textures;
 
 private:
-	void Initialise(vector<char*> texturefilenames);
+	void Initialise(vector<char*> textureFiles, char* lightMapFile);
 	void InitialiseBuffers();
-	void LoadTextures(vector<char*> filenames) override;
+	void LoadTextures(vector<char*> filenames, char* lightMapFile) override;
 
 public:
-	UIAppearance(DirectX3D* direct3D, Box screenSize, Box bitmapSize, vector<char*> texturefilenames);
+	UIAppearance(DirectX3D* direct3D, Box screenSize, Box bitmapSize, vector<char*> textureFiles, char* lightMapFile);
 	~UIAppearance() override = default;;
 	
 	void Shutdown() override;

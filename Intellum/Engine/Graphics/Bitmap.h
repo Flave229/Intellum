@@ -1,14 +1,9 @@
 #pragma once
 
-#include <d3d11.h>
 #include <DirectXMath.h>
 
 #include "../../Engine/ShaderEngine/IShaderType.h"
-#include "../../Engine/ShaderEngine/DefaultShader.h"
 #include "../../Engine/DirectX3D.h"
-#include "../../common/Vertex.h"
-#include "Texture.h"
-#include "Light.h"
 #include "../Object/Appearance/IAppearance.h"
 
 using namespace DirectX;
