@@ -26,6 +26,13 @@ void UIAppearance::Shutdown()
 	}
 
 	_textures.clear();
+
+	if (_lightMap != nullptr)
+	{
+		_lightMap->Shutdown();
+		delete _lightMap;
+		_lightMap = nullptr;
+	}
 }
 
 void UIAppearance::Initialise(vector<char*> textureFiles, char* lightMapFile)
@@ -100,6 +107,7 @@ void UIAppearance::InitialiseBuffers()
 void UIAppearance::LoadTextures(vector<char*> textureFiles, char* lightMapFile)
 {
 	_textures = CreateTexture::ListFrom(_direct3D, textureFiles);
+	_lightMap = CreateTexture::From(_direct3D, lightMapFile);
 }
 
 void UIAppearance::Render() const
@@ -180,4 +188,12 @@ vector<ID3D11ShaderResourceView*> UIAppearance::GetTextures() const
 	}
 
 	return textureViews;
+}
+
+ID3D11ShaderResourceView* UIAppearance::GetLightMap() const
+{
+	if (_lightMap != nullptr)
+		return _lightMap->GetTexture();
+
+	return nullptr;
 }

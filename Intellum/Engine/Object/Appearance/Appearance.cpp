@@ -71,3 +71,11 @@ vector<ID3D11ShaderResourceView*> Appearance::GetTextures() const
 
 	return textureViews;
 }
+
+ID3D11ShaderResourceView* Appearance::GetLightMap() const
+{
+	if (_lightMap != nullptr)
+		return _lightMap->GetTexture();
+
+	return nullptr;
+}

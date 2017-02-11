@@ -37,4 +37,5 @@ public:
 
 	int GetIndexCount() const override;
 	vector<ID3D11ShaderResourceView*> GetTextures() const override;
+	ID3D11ShaderResourceView* GetLightMap() const override;
 };

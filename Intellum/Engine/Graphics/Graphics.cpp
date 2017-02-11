@@ -33,7 +33,7 @@ void Graphics::Initialise(Input* input, Box screenSize, HWND hwnd)
 		_objectHandler = new ObjectHandler(_direct3D, _shaderController, _camera->GetFrustrum());
 		if (!_objectHandler) throw Exception("Failed to create the object handler.");
 		
-		UIAppearance* uiAppearance = new UIAppearance(_direct3D, screenSize, Box(256, 256), vector<char*> { "data/images/dirt.tga", "data/images/josh.tga", "data/images/stone.tga" }, "");
+		UIAppearance* uiAppearance = new UIAppearance(_direct3D, screenSize, Box(256, 256), vector<char*> { "data/images/dirt.tga", "data/images/josh.tga", "data/images/stone.tga" }, "data/images/basic_light_map.tga");
 		_bitmap = new Bitmap(_direct3D, _shaderController->GetShader(SHADER_FONT), uiAppearance);
 		if (!_bitmap) throw Exception("Failed to create the bitmap.");
 
@@ -111,7 +111,7 @@ void Graphics::Update(float delta) const
 		_objectHandler->Update(delta);
 		_bitmap->Update(XMFLOAT2(50, 150), Box(256, 256));
 	}
-	catch (Exception& exception)
+	catch (Exception& exception) 
 	{
 		throw Exception("Frame failed to render.", exception);
 	}

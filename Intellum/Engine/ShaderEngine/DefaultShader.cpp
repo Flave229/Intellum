@@ -191,9 +191,18 @@ void DefaultShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectio
 		_matrixBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructMatrixBufferParameters(0, worldMatrix, projectionMatrix, _camera->GetViewMatrix()));
 		_cameraBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructDefaultBufferParameters(1));
 		_lightBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructDefaultBufferParameters(0));
-		_textureBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructTextureBufferParameters(1, textureArray.size()));
+
+		bool lightMapEnabled = false;
+		if (lightMap != nullptr)
+			lightMapEnabled = true;
+
+		int textureCount = textureArray.size();
+		_textureBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructTextureBufferParameters(1, textureCount, lightMapEnabled));
 		
-		_direct3D->GetDeviceContext()->PSSetShaderResources(0, textureArray.size(), &textureArray.at(0));
+		_direct3D->GetDeviceContext()->PSSetShaderResources(0, textureCount, &textureArray.at(0));
+
+		if (lightMapEnabled)
+			_direct3D->GetDeviceContext()->PSSetShaderResources(1, 1, &lightMap);
 	}
 	catch(Exception& exception)
 	{

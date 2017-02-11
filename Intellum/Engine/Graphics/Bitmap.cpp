@@ -29,5 +29,10 @@ void Bitmap::Render() const
 	XMMATRIX worldMatrix = _direct3D->GetWorldMatrix();
 	XMMATRIX orthoMatrix = _direct3D->GetOrthoMatrix();
 
-	_shader->Render(_appearance->GetIndexCount(), worldMatrix, orthoMatrix, _appearance->GetTextures(), nullptr);
+	ID3D11ShaderResourceView* lightMap = nullptr;
+
+	if (_appearance != nullptr)
+		lightMap = _appearance->GetLightMap();
+
+	_shader->Render(_appearance->GetIndexCount(), worldMatrix, orthoMatrix, _appearance->GetTextures(), lightMap);
 }

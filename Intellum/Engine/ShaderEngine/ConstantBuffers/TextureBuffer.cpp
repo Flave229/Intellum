@@ -42,6 +42,11 @@ void TextureBuffer::SetShaderParameters(ShaderParameters parameters)
 
 	textureData->texturesIncluded = parameters.TextureCount;
 
+	if (parameters.LightMapEnabled)
+		textureData->lightMapEnabled = 1.0f;
+	else
+		textureData->lightMapEnabled = 0.0f;
+
 	_direct3D->GetDeviceContext()->Unmap(_buffer, 0);
 	_direct3D->GetDeviceContext()->PSSetConstantBuffers(parameters.BufferIndex, 1, &_buffer);
 }

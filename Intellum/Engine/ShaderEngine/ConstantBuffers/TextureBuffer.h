@@ -10,7 +10,8 @@ private:
 	struct Buffer
 	{
 		float texturesIncluded;
-		XMFLOAT3 padding;
+		float lightMapEnabled;
+		XMFLOAT2 padding;
 	};
 
 	ID3D11Buffer* _buffer;

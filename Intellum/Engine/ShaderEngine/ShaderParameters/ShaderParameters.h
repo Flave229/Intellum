@@ -16,4 +16,6 @@ public:
 	XMFLOAT4 ColorOverload;
 
 	int TextureCount;
+
+	bool LightMapEnabled;
 };

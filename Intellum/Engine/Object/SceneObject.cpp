@@ -17,7 +17,12 @@ void SceneObject::Render() const
 {
 	_appearance->Render();
 
-	_shader->Render(_appearance->GetIndexCount(), _transform->GetTransformation(), _direct3D->GetProjectionMatrix(), _appearance->GetTextures(), nullptr);
+	ID3D11ShaderResourceView* lightMap = nullptr;
+
+	if (_appearance != nullptr)
+		lightMap = _appearance->GetLightMap();
+
+	_shader->Render(_appearance->GetIndexCount(), _transform->GetTransformation(), _direct3D->GetProjectionMatrix(), _appearance->GetTextures(), lightMap);
 }
 
 Transform* SceneObject::GetTransform() const

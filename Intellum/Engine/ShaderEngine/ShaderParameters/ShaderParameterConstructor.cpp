@@ -37,11 +37,12 @@ ShaderParameters ShaderParameterConstructor::ConstructColorOverloadBufferParamet
 	return shaderParameters;
 }
 
-ShaderParameters ShaderParameterConstructor::ConstructTextureBufferParameters(int bufferIndex, int textureCount)
+ShaderParameters ShaderParameterConstructor::ConstructTextureBufferParameters(int bufferIndex, int textureCount, bool lightMapEnabled)
 {
 	ShaderParameters shaderParameters;
 	shaderParameters.BufferIndex = bufferIndex;
 	shaderParameters.TextureCount = textureCount;
+	shaderParameters.LightMapEnabled = lightMapEnabled;
 
 	return shaderParameters;
 }

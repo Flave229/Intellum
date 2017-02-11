@@ -17,6 +17,7 @@ private:
 	XMFLOAT2 _previousPosition;
 
 	vector<Texture*> _textures;
+	Texture* _lightMap;
 
 private:
 	void Initialise(vector<char*> textureFiles, char* lightMapFile);
@@ -34,4 +35,5 @@ public:
 	
 	int GetIndexCount() const override;
 	vector<ID3D11ShaderResourceView*> GetTextures() const override;
+	ID3D11ShaderResourceView* GetLightMap() const override;
 };

@@ -186,10 +186,17 @@ void FontShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectionMa
 		_cameraBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructDefaultBufferParameters(1));
 		_colorBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructColorOverloadBufferParameters(0, _colorOverload, _colorOverloadEnabled));
 
+		bool lightMapEnabled = false;
+		if (lightMap != nullptr)
+			lightMapEnabled = true;
+
 		int textureCount = textureArray.size();
-		_textureBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructTextureBufferParameters(1, textureCount));
+		_textureBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructTextureBufferParameters(1, textureCount, lightMapEnabled));
 
 		_direct3D->GetDeviceContext()->PSSetShaderResources(0, textureCount, &textureArray.at(0));
+
+		if (lightMapEnabled)
+			_direct3D->GetDeviceContext()->PSSetShaderResources(10, 1, &lightMap);
 	}
 	catch (Exception& exception)
 	{

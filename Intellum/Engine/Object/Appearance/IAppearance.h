@@ -18,4 +18,5 @@ public:
 
 	virtual int GetIndexCount() const = 0;
 	virtual vector<ID3D11ShaderResourceView*> GetTextures() const = 0;
+	virtual ID3D11ShaderResourceView* GetLightMap() const = 0;
 };
