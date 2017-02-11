@@ -180,7 +180,6 @@ void DefaultShader::Shutdown()
 void DefaultShader::Render(int indexCount, XMMATRIX worldMatrix, XMMATRIX projectionMatrix, vector<ID3D11ShaderResourceView*> textureArray, ID3D11ShaderResourceView* lightMap)
 {
 	SetShaderParameters(worldMatrix, projectionMatrix, textureArray, lightMap);
-
 	RenderShader(indexCount);
 }
 

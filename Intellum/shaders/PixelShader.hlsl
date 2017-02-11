@@ -1,4 +1,5 @@
-Texture2D shaderTexture[5];
+Texture2D shaderTexture[10];
+Texture2D lightMap;
 SamplerState SampleType;
 
 cbuffer LightBuffer
@@ -13,7 +14,8 @@ cbuffer LightBuffer
 cbuffer TextureBuffer
 {
     float textureCount;
-    float3 padding;
+    float lightMapEnabled;
+    float2 padding;
 };
 
 struct PixelInputType
@@ -50,6 +52,10 @@ float4 DefaultPixelShader(PixelInputType input) : SV_TARGET
 	}
 
     color = color * textureColor;
+    
+    if (lightMapEnabled)
+        color *= lightMap.Sample(SampleType, input.tex);
+
 	color = saturate(color + specular);
 
 	return color;
