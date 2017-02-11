@@ -66,6 +66,6 @@ void Rasterizer::CreateRasterizerState(ID3D11RasterizerState* rasterizerState, D
 	rasterizerDescription.ScissorEnable = false;
 	rasterizerDescription.SlopeScaledDepthBias = 0.0f;
 
-	bool result = _device->CreateRasterizerState(&rasterizerDescription, &rasterizerState);
+	HRESULT result = _device->CreateRasterizerState(&rasterizerDescription, &rasterizerState);
 	if (FAILED(result)) throw Exception("Failed to create the rasterizer state");
 }

@@ -21,8 +21,8 @@ void DepthStencil::Initialise(Box screenSize)
 
 	ZeroMemory(&depthBufferDesc, sizeof(depthBufferDesc));
 
-	depthBufferDesc.Width = screenSize.Width;
-	depthBufferDesc.Height = screenSize.Height;
+	depthBufferDesc.Width = static_cast<UINT>(screenSize.Width);
+	depthBufferDesc.Height = static_cast<UINT>(screenSize.Height);
 	depthBufferDesc.MipLevels = static_cast<UINT>(1);
 	depthBufferDesc.ArraySize = static_cast<UINT>(1);
 	depthBufferDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
