@@ -16,10 +16,6 @@ Rasterizer::~Rasterizer()
 
 void Rasterizer::Initialise()
 {
-	HRESULT result;
-	D3D11_RASTERIZER_DESC defaultDesc;
-	D3D11_RASTERIZER_DESC wireframeDesc;
-
 	CreateRasterizerState(_defaultState, D3D11_FILL_SOLID);
 	CreateRasterizerState(_wireframeState, D3D11_FILL_WIREFRAME);
 

@@ -210,7 +210,7 @@ bool FontEngine::CheckCharacterExists(string filePath)
 {
 	FILE* file;
 
-	bool error = fopen_s(&file, filePath.c_str(), "rb");
+	int error = fopen_s(&file, filePath.c_str(), "rb");
 	if (error != 0) return false;
 
 	fclose(file);

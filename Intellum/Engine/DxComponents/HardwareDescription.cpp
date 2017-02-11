@@ -49,7 +49,7 @@ void HardwareDescription::Initialise(int screenWidth, int screenHeight)
 		if (FAILED(result)) throw Exception("Failed to find a suitable configuration for the current GPU and Monitor combination.");
 
 		// Search all display modes for one that matches the set screen width and height
-		for (int i = 0; i < numModes; i++)
+		for (int i = 0; i < static_cast<int>(numModes); i++)
 		{
 			if (displayModeList[i].Width == static_cast<int>(screenWidth))
 			{

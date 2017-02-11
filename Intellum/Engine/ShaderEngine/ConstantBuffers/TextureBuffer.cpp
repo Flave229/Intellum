@@ -40,7 +40,7 @@ void TextureBuffer::SetShaderParameters(ShaderParameters parameters)
 
 	Buffer* textureData = static_cast<Buffer*>(mappedResource.pData);
 
-	textureData->texturesIncluded = parameters.TextureCount;
+	textureData->texturesIncluded = static_cast<float>(parameters.TextureCount);
 
 	if (parameters.LightMapEnabled)
 		textureData->lightMapEnabled = 1.0f;

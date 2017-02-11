@@ -81,7 +81,7 @@ unsigned char* TargaLoader::ReverseTargaData(unsigned char* rawTargaData, int im
 	int j = 0;
 	float width = imageSize.Width;
 	float height = imageSize.Height;
-	int k = (width * height * 4) - (width * 4);
+	int k = static_cast<int>((width * height * 4) - (width * 4));
 
 	for (j = 0; j < height; j++)
 	{

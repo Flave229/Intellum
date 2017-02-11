@@ -124,7 +124,7 @@ void DefaultShader::InitialiseShader(HWND hwnd, WCHAR* vsFilename, WCHAR* psFile
 	}
 	catch(Exception& exception)
 	{
-		throw Exception("And error occured initialising the Default Shader");
+		throw Exception("And error occured initialising the Default Shader", exception);
 	}
 	catch(...)
 	{
@@ -195,7 +195,7 @@ void DefaultShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectio
 		if (lightMap != nullptr)
 			lightMapEnabled = true;
 
-		int textureCount = textureArray.size();
+		int textureCount = static_cast<int>(textureArray.size());
 		_textureBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructTextureBufferParameters(1, textureCount, lightMapEnabled));
 		
 		_direct3D->GetDeviceContext()->PSSetShaderResources(0, textureCount, &textureArray.at(0));

@@ -17,26 +17,23 @@ DepthStencil::~DepthStencil()
 
 void DepthStencil::Initialise(Box screenSize)
 {
-	HRESULT result;
 	D3D11_TEXTURE2D_DESC depthBufferDesc;
-	D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
-	D3D11_DEPTH_STENCIL_DESC depthDisabledStencilDesc;
 
 	ZeroMemory(&depthBufferDesc, sizeof(depthBufferDesc));
 
 	depthBufferDesc.Width = screenSize.Width;
 	depthBufferDesc.Height = screenSize.Height;
-	depthBufferDesc.MipLevels = 1;
-	depthBufferDesc.ArraySize = 1;
+	depthBufferDesc.MipLevels = static_cast<UINT>(1);
+	depthBufferDesc.ArraySize = static_cast<UINT>(1);
 	depthBufferDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-	depthBufferDesc.SampleDesc.Count = 1;
-	depthBufferDesc.SampleDesc.Quality = 0;
+	depthBufferDesc.SampleDesc.Count = static_cast<UINT>(1);
+	depthBufferDesc.SampleDesc.Quality = static_cast<UINT>(0);
 	depthBufferDesc.Usage = D3D11_USAGE_DEFAULT;
 	depthBufferDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
-	depthBufferDesc.CPUAccessFlags = 0;
-	depthBufferDesc.MiscFlags = 0;
+	depthBufferDesc.CPUAccessFlags = static_cast<UINT>(0);
+	depthBufferDesc.MiscFlags = static_cast<UINT>(0);
 
-	result = _device->CreateTexture2D(&depthBufferDesc, nullptr, &_depthStencilBuffer);
+	HRESULT result = _device->CreateTexture2D(&depthBufferDesc, nullptr, &_depthStencilBuffer);
 	if (FAILED(result)) throw Exception("Failed to create the Depth Stencil Buffer");
 
 	CreateDepthStencil(_depthStencilState, true);
@@ -126,6 +123,6 @@ void DepthStencil::CreateDepthStencil(ID3D11DepthStencilState* depthStencil, boo
 	depthStencilDescription.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
 	depthStencilDescription.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
 
-	bool result = _device->CreateDepthStencilState(&depthStencilDescription, &depthStencil);
+	HRESULT result = _device->CreateDepthStencilState(&depthStencilDescription, &depthStencil);
 	if (FAILED(result)) throw Exception("Failed to create the Depth Stencil State");
 }

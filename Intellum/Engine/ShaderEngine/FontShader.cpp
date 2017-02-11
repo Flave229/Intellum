@@ -118,7 +118,7 @@ void FontShader::InitialiseShader(HWND hwnd, WCHAR* vsFilename, WCHAR* psFilenam
 	}
 	catch (Exception& exception)
 	{
-		throw Exception("And error occured initialising the Font Shader");
+		throw Exception("And error occured initialising the Font Shader", exception);
 	}
 	catch (...)
 	{
@@ -190,7 +190,7 @@ void FontShader::SetShaderParameters(XMMATRIX worldMatrix, XMMATRIX projectionMa
 		if (lightMap != nullptr)
 			lightMapEnabled = true;
 
-		int textureCount = textureArray.size();
+		int textureCount = static_cast<int>(textureArray.size());
 		_textureBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructTextureBufferParameters(1, textureCount, lightMapEnabled));
 
 		_direct3D->GetDeviceContext()->PSSetShaderResources(0, textureCount, &textureArray.at(0));

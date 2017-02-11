@@ -14,7 +14,7 @@ void Texture::Initialise(char* filename)
 	TargaData targaData = TargaLoader::LoadTarga(filename);
 	D3D11_TEXTURE2D_DESC textureDescription = SetupAndReturnDX11TextureDescription(targaData.ImageSize);
 
-	unsigned int rowPitch = targaData.ImageSize.Width * 4 * sizeof(unsigned char);
+	unsigned int rowPitch = static_cast<unsigned int>(targaData.ImageSize.Width * 4 * sizeof(unsigned char));
 	_deviceContext->UpdateSubresource(_texture, 0, nullptr, targaData.ImageData, rowPitch, 0);
 		
 	D3D11_SHADER_RESOURCE_VIEW_DESC shaderDescription = SetupDX11ShaderResourceViewDescription(textureDescription);
