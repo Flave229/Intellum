@@ -190,8 +190,12 @@ void FontShader::SetShaderParameters(ShaderResources shaderResources, XMMATRIX w
 		if (shaderResources.lightMap != nullptr)
 			lightMapEnabled = true;
 
+		bool bumpMapEnabled = false;
+		if (shaderResources.bumpMap != nullptr)
+			bumpMapEnabled = true;
+
 		int textureCount = static_cast<int>(shaderResources.textureArray.size());
-		_textureBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructTextureBufferParameters(1, textureCount, lightMapEnabled));
+		_textureBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructTextureBufferParameters(1, textureCount, lightMapEnabled, bumpMapEnabled));
 
 		_direct3D->GetDeviceContext()->PSSetShaderResources(0, textureCount, &shaderResources.textureArray.at(0));
 

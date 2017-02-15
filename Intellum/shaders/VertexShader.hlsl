@@ -16,14 +16,18 @@ struct VertexInputType
 	float4 position : POSITION;
 	float2 tex : TEXCOORD0;
 	float3 normal : NORMAL;
+    float3 tangent : TANGENT;
+    float3 binormal : BINORMAL;
 };
 
 struct VertexOutputType
 {
 	float4 position : SV_POSITION;
 	float2 tex : TEXCOORD0;
-	float3 normal : NORMAL;
-	float3 viewDirection : TEXCOORD1;
+    float3 normal : NORMAL;
+    float3 tangent : TANGENT;
+    float3 binormal : BINORMAL;
+    float3 viewDirection : TEXCOORD1;
 };
 
 VertexOutputType DefaultVertexShader(VertexInputType input)
@@ -45,6 +49,12 @@ VertexOutputType DefaultVertexShader(VertexInputType input)
 
 	output.viewDirection = cameraPosition.xyz - worldPosition.xyz;
 	output.viewDirection = normalize(output.viewDirection);
+
+    output.tangent = mul(input.tangent, (float3x3) worldMatrix);
+    output.tangent = normalize(output.tangent);
+
+    output.binormal = mul(input.binormal, (float3x3) worldMatrix);
+    output.binormal = normalize(output.binormal);
 
 	return output;
 }

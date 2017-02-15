@@ -18,4 +18,5 @@ public:
 	int TextureCount;
 
 	bool LightMapEnabled;
+	bool BufferMapEnabled;
 };
