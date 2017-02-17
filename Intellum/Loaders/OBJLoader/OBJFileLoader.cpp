@@ -4,9 +4,9 @@ OBJFileLoader::OBJFileLoader()
 {
 }
 
-Geometry OBJFileLoader::Load(char* filename, std::fstream* binaryFile, ID3D11Device* pd3dDevice, bool invertTexCoords)
+Geometry OBJFileLoader::Load(char* filename, fstream* binaryFile, ID3D11Device* pd3dDevice, bool invertTexCoords)
 {
-	std::ifstream inFile;
+	ifstream inFile;
 	inFile.open(filename);
 
 	if (!inFile.good())
@@ -14,19 +14,7 @@ Geometry OBJFileLoader::Load(char* filename, std::fstream* binaryFile, ID3D11Dev
 		return Geometry();
 	}
 
-	//Vectors to store the vertex positions, normals and texture coordinates. Need to use vectors since they're resizeable and we have
-	//no way of knowing ahead of time how large these meshes will be
-	std::vector<XMFLOAT3> verts;
-	std::vector<XMFLOAT3> normals;
-	std::vector<XMFLOAT2> texCoords;
-
-	//DirectX uses 1 index buffer, OBJ is optimized for storage and not rendering and so uses 3 smaller index buffers.....great...
-	//We'll have to merge this into 1 index buffer which we'll do after loading in all of the required data.
-	std::vector<unsigned short> vertIndices;
-	std::vector<unsigned short> normalIndices;
-	std::vector<unsigned short> textureIndices;
-
-	std::string input;
+	string input;
 
 	XMFLOAT3 vert;
 	XMFLOAT2 texCoord;
@@ -34,32 +22,33 @@ Geometry OBJFileLoader::Load(char* filename, std::fstream* binaryFile, ID3D11Dev
 	unsigned short vInd[3]; //indices for the vertex position
 	unsigned short tInd[3]; //indices for the texture coordinate
 	unsigned short nInd[3]; //indices for the normal
-	std::string beforeFirstSlash;
-	std::string afterFirstSlash;
-	std::string afterSecondSlash;
+	string beforeFirstSlash;
+	string afterFirstSlash;
+	string afterSecondSlash;
 
-	ConstructGeometryDataFrom(&inFile, invertTexCoords, &verts, &normals, &texCoords, &vertIndices, &normalIndices, &textureIndices);
+	OBJGeometryData geometryData = ConstructGeometryDataFrom(&inFile, invertTexCoords);
 
 					//Get vectors to be of same size, ready for singular indexing
-	std::vector<XMFLOAT3> expandedVertices;
-	std::vector<XMFLOAT3> expandedNormals;
-	std::vector<XMFLOAT2> expandedTexCoords;
-	unsigned long long numIndices = vertIndices.size();
+	vector<XMFLOAT3> expandedVertices;
+	vector<XMFLOAT3> expandedNormals;
+	vector<XMFLOAT2> expandedTexCoords;
+	unsigned long long numIndices = geometryData.IndexData["Vertices"].size();
 	for (unsigned int i = 0; i < numIndices; i++)
 	{
-		expandedVertices.push_back(verts[vertIndices[i]]);
-		expandedTexCoords.push_back(texCoords[textureIndices[i]]);
-		expandedNormals.push_back(normals[normalIndices[i]]);
+		expandedVertices.push_back(geometryData.VertexData["Vertices"][geometryData.IndexData["Vertices"][i]]);
+		XMFLOAT3 textureCoordinates = geometryData.VertexData["TextureCoordinates"][geometryData.IndexData["TextureCoordinates"][i]];
+		expandedTexCoords.push_back(XMFLOAT2(textureCoordinates.x, textureCoordinates.y));
+		expandedNormals.push_back(geometryData.VertexData["Normals"][geometryData.IndexData["Normals"][i]]);
 	}
 
 	//Now to (finally) form the final vertex, texture coord, normal list and single index buffer using the above expanded vectors
-	std::vector<unsigned short> meshIndices;
+	vector<unsigned short> meshIndices;
 	meshIndices.reserve(numIndices);
-	std::vector<XMFLOAT3> meshVertices;
+	vector<XMFLOAT3> meshVertices;
 	meshVertices.reserve(expandedVertices.size());
-	std::vector<XMFLOAT3> meshNormals;
+	vector<XMFLOAT3> meshNormals;
 	meshNormals.reserve(expandedNormals.size());
-	std::vector<XMFLOAT2> meshTexCoords;
+	vector<XMFLOAT2> meshTexCoords;
 	meshTexCoords.reserve(expandedTexCoords.size());
 
 	CreateIndices(expandedVertices, expandedTexCoords, expandedNormals, meshIndices, meshVertices, meshTexCoords, meshNormals);
@@ -134,22 +123,33 @@ Geometry OBJFileLoader::Load(char* filename, std::fstream* binaryFile, ID3D11Dev
 	return meshData;
 }
 
-void OBJFileLoader::ConstructGeometryDataFrom(std::ifstream* inFile, bool invertTexCoords, std::vector<XMFLOAT3>* verts, std::vector<XMFLOAT3>* normals, std::vector<XMFLOAT2>* texCoords, std::vector<unsigned short>* vertIndices, std::vector<unsigned short>* normalIndices, std::vector<unsigned short>* textureIndices)
+OBJGeometryData OBJFileLoader::ConstructGeometryDataFrom(ifstream* inFile, bool invertTexCoords)
 {
-	std::string input;
+	OBJGeometryData geometryData;
+	geometryData.VertexData = map<string, vector<XMFLOAT3>>
+	{
+		{"Vertices", vector<XMFLOAT3>()},
+		{"Normals", vector<XMFLOAT3>()},
+		{"TextureCoordinates", vector<XMFLOAT3>()}
+	};
+	geometryData.IndexData = map<string, vector<unsigned short>>
+	{
+		{ "Vertices", vector<unsigned short>() },
+		{ "Normals", vector<unsigned short>() },
+		{ "TextureCoordinates", vector<unsigned short>() }
+	};
+
+	string input;
 	XMFLOAT3 vert;
 	XMFLOAT2 texCoord;
 	XMFLOAT3 normal;
-	unsigned short vInd[3];
-	unsigned short tInd[3];
-	unsigned short nInd[3];
-	std::string beforeFirstSlash;
-	std::string afterFirstSlash;
-	std::string afterSecondSlash;
+	unsigned short vertexIndex[3];
+	unsigned short textureIndex[3];
+	unsigned short normalIndex[3];
 
 	while (!inFile->eof())
 	{
-		*inFile >> input; //Get the next input from the file
+		*inFile >> input;
 
 		if (input.compare(OBJFileType::Vertex()) == 0)
 		{
@@ -157,7 +157,7 @@ void OBJFileLoader::ConstructGeometryDataFrom(std::ifstream* inFile, bool invert
 			*inFile >> vert.y;
 			*inFile >> vert.z;
 
-			verts->push_back(vert);
+			geometryData.VertexData["Vertices"].push_back(vert);
 		}
 		else if (input.compare(OBJFileType::Texture()) == 0)
 		{
@@ -166,7 +166,7 @@ void OBJFileLoader::ConstructGeometryDataFrom(std::ifstream* inFile, bool invert
 
 			if (invertTexCoords) texCoord.y = 1.0f - texCoord.y;
 
-			texCoords->push_back(texCoord);
+			geometryData.VertexData["TextureCoordinates"].push_back(XMFLOAT3(texCoord.x, texCoord.y, 0.0f));
 		}
 		else if (input.compare(OBJFileType::Normal()) == 0)
 		{
@@ -174,46 +174,45 @@ void OBJFileLoader::ConstructGeometryDataFrom(std::ifstream* inFile, bool invert
 			*inFile >> normal.y;
 			*inFile >> normal.z;
 
-			normals->push_back(normal);
+			geometryData.VertexData["Normals"].push_back(normal);
 		}
 		else if (input.compare(OBJFileType::Face()) == 0)
 		{
 			for (int i = 0; i < 3; ++i)
 			{
 				*inFile >> input;
-				unsigned long long slash = input.find("/"); //Find first forward slash
-				unsigned long long secondSlash = input.find("/", slash + 1); //Find second forward slash
+				unsigned long long slash = input.find("/");
+				unsigned long long secondSlash = input.find("/", slash + 1); 
 
-																			 //Extract from string
-				beforeFirstSlash = input.substr(0, slash); //The vertex position index
-				afterFirstSlash = input.substr(slash + 1, secondSlash - slash - 1); //The texture coordinate index
-				afterSecondSlash = input.substr(secondSlash + 1); //The normal index
+				string beforeFirstSlash = input.substr(0, slash);
+				string afterFirstSlash = input.substr(slash + 1, secondSlash - slash - 1);
+				string afterSecondSlash = input.substr(secondSlash + 1);
 
-																  //Parse into int
-				vInd[i] = static_cast<unsigned short>(atoi(beforeFirstSlash.c_str())); //atoi = "ASCII to int"
-				tInd[i] = static_cast<unsigned short>(atoi(afterFirstSlash.c_str()));
-				nInd[i] = static_cast<unsigned short>(atoi(afterSecondSlash.c_str()));
+				vertexIndex[i] = static_cast<unsigned short>(atoi(beforeFirstSlash.c_str()));
+				textureIndex[i] = static_cast<unsigned short>(atoi(afterFirstSlash.c_str()));
+				normalIndex[i] = static_cast<unsigned short>(atoi(afterSecondSlash.c_str()));
 			}
 
-			//Place into vectors
 			for (int i = 0; i < 3; ++i)
 			{
-				vertIndices->push_back(vInd[i] - 1);		//Minus 1 from each as these as OBJ indexes start from 1 whereas C++ arrays start from 0
-				textureIndices->push_back(tInd[i] - 1);	//which is really annoying. Apart from Lua and SQL, there's not much else that has indexing 
-				normalIndices->push_back(nInd[i] - 1);	//starting at 1. So many more languages index from 0, the .OBJ people screwed up there.
+				geometryData.IndexData["Vertices"].push_back(vertexIndex[i] - 1);
+				geometryData.IndexData["TextureCoordinates"].push_back(textureIndex[i] - 1);
+				geometryData.IndexData["Normals"].push_back(normalIndex[i] - 1);
 			}
 		}
 	}
 
 	inFile->close();
+
+	return geometryData;
 }
 
-void OBJFileLoader::CreateIndices(const std::vector<XMFLOAT3>& inVertices, const std::vector<XMFLOAT2>& inTexCoords, const std::vector<XMFLOAT3>& inNormals, std::vector<unsigned short>& outIndices, std::vector<XMFLOAT3>& outVertices, std::vector<XMFLOAT2>& outTexCoords, std::vector<XMFLOAT3>& outNormals)
+void OBJFileLoader::CreateIndices(const vector<XMFLOAT3>& inVertices, const vector<XMFLOAT2>& inTexCoords, const vector<XMFLOAT3>& inNormals, vector<unsigned short>& outIndices, vector<XMFLOAT3>& outVertices, vector<XMFLOAT2>& outTexCoords, vector<XMFLOAT3>& outNormals)
 {
 	//Mapping from an already-existing Vertex to its corresponding index
-	std::map<Vertex, unsigned short> vertToIndexMap;
+	map<Vertex, unsigned short> vertToIndexMap;
 
-	std::pair<Vertex, unsigned short> pair;
+	pair<Vertex, unsigned short> pair;
 
 	unsigned long long numVertices = inVertices.size();
 	for (int i = 0; i < numVertices; ++i)
@@ -243,7 +242,7 @@ void OBJFileLoader::CreateIndices(const std::vector<XMFLOAT3>& inVertices, const
 	}
 }
 
-bool OBJFileLoader::FindSimilarVertex(const Vertex& vertex, std::map<Vertex, unsigned short>& vertToIndexMap, unsigned short& index)
+bool OBJFileLoader::FindSimilarVertex(const Vertex& vertex, map<Vertex, unsigned short>& vertToIndexMap, unsigned short& index)
 {
 	auto it = vertToIndexMap.find(vertex);
 	if (it == vertToIndexMap.end())

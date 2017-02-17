@@ -237,6 +237,7 @@
     <ClInclude Include="Engine\Input\ControlMappings.h" />
     <ClInclude Include="Engine\Input\InputControl.h" />
     <ClInclude Include="Engine\ShaderEngine\ConstantBuffers\IShaderBuffer.h" />
+    <ClInclude Include="Loaders\models\OBJGeometryData.h" />
     <ClInclude Include="Loaders\OBJLoader\IOBJLoader.h" />
     <ClInclude Include="Loaders\OBJLoader\OBJBinaryLoader.h" />
     <ClInclude Include="loaders\models\TargaData.h" />
