@@ -38,65 +38,7 @@ Geometry OBJFileLoader::Load(char* filename, std::fstream* binaryFile, ID3D11Dev
 	std::string afterFirstSlash;
 	std::string afterSecondSlash;
 
-	while (!inFile.eof()) //While we have yet to reach the end of the file...
-	{
-		inFile >> input; //Get the next input from the file
-
-							//Check what type of input it was, we are only interested in vertex positions, texture coordinates, normals and indices, nothing else
-		if (input.compare("v") == 0) //Vertex position
-		{
-			inFile >> vert.x;
-			inFile >> vert.y;
-			inFile >> vert.z;
-
-			verts.push_back(vert);
-		}
-		else if (input.compare("vt") == 0) //Texture coordinate
-		{
-			inFile >> texCoord.x;
-			inFile >> texCoord.y;
-
-			if (invertTexCoords) texCoord.y = 1.0f - texCoord.y;
-
-			texCoords.push_back(texCoord);
-		}
-		else if (input.compare("vn") == 0) //Normal
-		{
-			inFile >> normal.x;
-			inFile >> normal.y;
-			inFile >> normal.z;
-
-			normals.push_back(normal);
-		}
-		else if (input.compare("f") == 0) //Face
-		{
-			for (int i = 0; i < 3; ++i)
-			{
-				inFile >> input;
-				unsigned long long slash = input.find("/"); //Find first forward slash
-				unsigned long long secondSlash = input.find("/", slash + 1); //Find second forward slash
-
-																				//Extract from string
-				beforeFirstSlash = input.substr(0, slash); //The vertex position index
-				afterFirstSlash = input.substr(slash + 1, secondSlash - slash - 1); //The texture coordinate index
-				afterSecondSlash = input.substr(secondSlash + 1); //The normal index
-
-																	//Parse into int
-				vInd[i] = static_cast<unsigned short>(atoi(beforeFirstSlash.c_str())); //atoi = "ASCII to int"
-				tInd[i] = static_cast<unsigned short>(atoi(afterFirstSlash.c_str()));
-				nInd[i] = static_cast<unsigned short>(atoi(afterSecondSlash.c_str()));
-			}
-
-			//Place into vectors
-			for (int i = 0; i < 3; ++i)
-			{
-				vertIndices.push_back(vInd[i] - 1);		//Minus 1 from each as these as OBJ indexes start from 1 whereas C++ arrays start from 0
-				textureIndices.push_back(tInd[i] - 1);	//which is really annoying. Apart from Lua and SQL, there's not much else that has indexing 
-				normalIndices.push_back(nInd[i] - 1);	//starting at 1. So many more languages index from 0, the .OBJ people screwed up there.
-			}
-		}
-	}
-	inFile.close(); //Finished with input file now, all the data we need has now been loaded in
+	ConstructGeometryDataFrom(&inFile, invertTexCoords, &verts, &normals, &texCoords, &vertIndices, &normalIndices, &textureIndices);
 
 					//Get vectors to be of same size, ready for singular indexing
 	std::vector<XMFLOAT3> expandedVertices;
@@ -190,6 +132,80 @@ Geometry OBJFileLoader::Load(char* filename, std::fstream* binaryFile, ID3D11Dev
 	delete[] finalVerts;
 
 	return meshData;
+}
+
+void OBJFileLoader::ConstructGeometryDataFrom(std::ifstream* inFile, bool invertTexCoords, std::vector<XMFLOAT3>* verts, std::vector<XMFLOAT3>* normals, std::vector<XMFLOAT2>* texCoords, std::vector<unsigned short>* vertIndices, std::vector<unsigned short>* normalIndices, std::vector<unsigned short>* textureIndices)
+{
+	std::string input;
+	XMFLOAT3 vert;
+	XMFLOAT2 texCoord;
+	XMFLOAT3 normal;
+	unsigned short vInd[3];
+	unsigned short tInd[3];
+	unsigned short nInd[3];
+	std::string beforeFirstSlash;
+	std::string afterFirstSlash;
+	std::string afterSecondSlash;
+
+	while (!inFile->eof())
+	{
+		*inFile >> input; //Get the next input from the file
+
+		if (input.compare(OBJFileType::Vertex()) == 0)
+		{
+			*inFile >> vert.x;
+			*inFile >> vert.y;
+			*inFile >> vert.z;
+
+			verts->push_back(vert);
+		}
+		else if (input.compare(OBJFileType::Texture()) == 0)
+		{
+			*inFile >> texCoord.x;
+			*inFile >> texCoord.y;
+
+			if (invertTexCoords) texCoord.y = 1.0f - texCoord.y;
+
+			texCoords->push_back(texCoord);
+		}
+		else if (input.compare(OBJFileType::Normal()) == 0)
+		{
+			*inFile >> normal.x;
+			*inFile >> normal.y;
+			*inFile >> normal.z;
+
+			normals->push_back(normal);
+		}
+		else if (input.compare(OBJFileType::Face()) == 0)
+		{
+			for (int i = 0; i < 3; ++i)
+			{
+				*inFile >> input;
+				unsigned long long slash = input.find("/"); //Find first forward slash
+				unsigned long long secondSlash = input.find("/", slash + 1); //Find second forward slash
+
+																			 //Extract from string
+				beforeFirstSlash = input.substr(0, slash); //The vertex position index
+				afterFirstSlash = input.substr(slash + 1, secondSlash - slash - 1); //The texture coordinate index
+				afterSecondSlash = input.substr(secondSlash + 1); //The normal index
+
+																  //Parse into int
+				vInd[i] = static_cast<unsigned short>(atoi(beforeFirstSlash.c_str())); //atoi = "ASCII to int"
+				tInd[i] = static_cast<unsigned short>(atoi(afterFirstSlash.c_str()));
+				nInd[i] = static_cast<unsigned short>(atoi(afterSecondSlash.c_str()));
+			}
+
+			//Place into vectors
+			for (int i = 0; i < 3; ++i)
+			{
+				vertIndices->push_back(vInd[i] - 1);		//Minus 1 from each as these as OBJ indexes start from 1 whereas C++ arrays start from 0
+				textureIndices->push_back(tInd[i] - 1);	//which is really annoying. Apart from Lua and SQL, there's not much else that has indexing 
+				normalIndices->push_back(nInd[i] - 1);	//starting at 1. So many more languages index from 0, the .OBJ people screwed up there.
+			}
+		}
+	}
+
+	inFile->close();
 }
 
 void OBJFileLoader::CreateIndices(const std::vector<XMFLOAT3>& inVertices, const std::vector<XMFLOAT2>& inTexCoords, const std::vector<XMFLOAT3>& inNormals, std::vector<unsigned short>& outIndices, std::vector<XMFLOAT3>& outVertices, std::vector<XMFLOAT2>& outTexCoords, std::vector<XMFLOAT3>& outNormals)
