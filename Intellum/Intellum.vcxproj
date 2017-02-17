@@ -182,7 +182,9 @@
     <ClCompile Include="Engine\Graphics\Light.cpp" />
     <ClCompile Include="Engine\Input\ControlMappings.cpp" />
     <ClCompile Include="Engine\Input\InputControl.cpp" />
+    <ClCompile Include="Loaders\OBJLoader\OBJBinaryLoader.cpp" />
     <ClCompile Include="loaders\OBJLoader.cpp" />
+    <ClCompile Include="Loaders\OBJLoader\OBJFileLoader.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\Object\Appearance\Appearance.cpp" />
     <ClCompile Include="Engine\DxComponents\Rasterizer.cpp" />
@@ -235,6 +237,8 @@
     <ClInclude Include="Engine\Input\ControlMappings.h" />
     <ClInclude Include="Engine\Input\InputControl.h" />
     <ClInclude Include="Engine\ShaderEngine\ConstantBuffers\IShaderBuffer.h" />
+    <ClInclude Include="Loaders\OBJLoader\IOBJLoader.h" />
+    <ClInclude Include="Loaders\OBJLoader\OBJBinaryLoader.h" />
     <ClInclude Include="loaders\models\TargaData.h" />
     <ClInclude Include="loaders\OBJLoader.h" />
     <ClInclude Include="Engine\Object\Appearance\Appearance.h" />
@@ -251,6 +255,7 @@
     <ClInclude Include="Engine\ShaderEngine\ShaderParameters\ShaderParameterConstructor.h" />
     <ClInclude Include="Engine\Object\Appearance\UIAppearance.h" />
     <ClInclude Include="Engine\ShaderEngine\ShaderResources.h" />
+    <ClInclude Include="Loaders\OBJLoader\OBJFileLoader.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="data\models\Cube.txt">

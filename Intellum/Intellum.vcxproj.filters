@@ -166,6 +166,12 @@
     <ClCompile Include="Engine\Object\Appearance\Texture\CreateTexture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Loaders\OBJLoader\OBJFileLoader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Loaders\OBJLoader\OBJBinaryLoader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DXSystem.h">
@@ -322,6 +328,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\ShaderEngine\ShaderResources.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Loaders\OBJLoader\IOBJLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Loaders\OBJLoader\OBJFileLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Loaders\OBJLoader\OBJBinaryLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

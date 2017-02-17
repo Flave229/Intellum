@@ -1,0 +1,10 @@
+#pragma once
+#include "../../common/Geometry.h"
+#include "../../common/Vertex.h"
+
+class IOBJLoader
+{
+public:
+	virtual ~IOBJLoader() {}
+	virtual Geometry Load(char* filename, std::fstream* binaryFile, ID3D11Device* pd3dDevice, bool invertTexCoords) = 0;
+};
