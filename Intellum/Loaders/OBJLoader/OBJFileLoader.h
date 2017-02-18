@@ -5,6 +5,7 @@
 #include <map>
 #include "IOBJLoader.h"
 #include "../models/OBJGeometryData.h"
+#include "../../ErrorHandling/Exception.h"
 
 class OBJFileType
 {
@@ -22,7 +23,7 @@ public:
 class OBJFileLoader : public IOBJLoader
 {
 private:
-	OBJGeometryData ConstructGeometryDataFrom(std::ifstream* inFile, bool invertTexCoords);
+	OBJGeometryData ConstructGeometryDataFrom(char* fileName, bool invertTexCoords);
 	
 	static void CreateIndices(const std::vector<XMFLOAT3>& inVertices, const std::vector<XMFLOAT2>& inTexCoords, const std::vector<XMFLOAT3>& inNormals, std::vector<unsigned short>& outIndices, std::vector<XMFLOAT3>& outVertices, std::vector<XMFLOAT2>& outTexCoords, std::vector<XMFLOAT3>& outNormals);
 	static bool FindSimilarVertex(const Vertex& vertex, std::map<Vertex, unsigned short>& vertToIndexMap, unsigned short& index);
