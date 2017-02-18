@@ -23,11 +23,13 @@ public:
 class OBJFileLoader : public IOBJLoader
 {
 private:
-	OBJGeometryData ConstructGeometryDataFrom(char* fileName, bool invertTexCoords);
-	OBJGeometryData ConstructExpandedGeometryDataFrom(OBJGeometryData geometryData);
+	static OBJGeometryData BuildGeometryDataFrom(char* fileName, bool invertTexCoords);
+	static OBJGeometryData BuildExpandedGeometryDataFrom(OBJGeometryData geometryData);
 	
 	static OBJGeometryData CreateIndices(OBJGeometryData geometryData);
 	static bool FindSimilarVertex(const Vertex& vertex, std::map<Vertex, unsigned short>& vertToIndexMap, unsigned short& index);
+
+	Vertex* BuildVertexObjectFrom(OBJGeometryData geometryData);
 public:
 	OBJFileLoader();
 	~OBJFileLoader() override = default;

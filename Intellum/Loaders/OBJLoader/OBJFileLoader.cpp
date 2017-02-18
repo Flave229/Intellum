@@ -9,20 +9,11 @@ Geometry OBJFileLoader::Load(char* filename, fstream* binaryFile, ID3D11Device* 
 	try
 	{
 		string input;
-		OBJGeometryData geometryData = ConstructGeometryDataFrom(filename, invertTexCoords);
-		geometryData = ConstructExpandedGeometryDataFrom(geometryData);
+		OBJGeometryData geometryData = BuildGeometryDataFrom(filename, invertTexCoords);
+		geometryData = BuildExpandedGeometryDataFrom(geometryData);
 		geometryData = CreateIndices(geometryData);
 
-		//Turn data from vector form to arrays
-		Vertex* finalVerts = new Vertex[geometryData.VertexData[VERTICES].size()];
-		unsigned long long numMeshVertices = geometryData.VertexData[VERTICES].size();
-		for (unsigned int i = 0; i < numMeshVertices; ++i)
-		{
-			finalVerts[i].position = geometryData.VertexData[VERTICES][i];
-			finalVerts[i].normal = geometryData.VertexData[NORMALS][i];
-			XMFLOAT3 textureCoordinates = geometryData.VertexData[TEXTURECOORDINATES][i];
-			finalVerts[i].texture = XMFLOAT2(textureCoordinates.x, textureCoordinates.y);
-		}
+		Vertex* finalVerts = BuildVertexObjectFrom(geometryData);
 
 		//Put data into vertex and index buffers, then pass the relevant data to the MeshData object.
 		//The rest of the code will hopefully look familiar to you, as it's similar to whats in your InitVertexBuffer and InitIndexBuffer methods
@@ -55,6 +46,7 @@ Geometry OBJFileLoader::Load(char* filename, fstream* binaryFile, ID3D11Device* 
 
 		//Output data into binary file, the next time you run this function, the binary file will exist and will load that instead which is much quicker than parsing into vectors
 		//std::ofstream outbin(std::string(filename).append("Binary").c_str(), std::ios::out | std::ios::binary);
+		unsigned long long numMeshVertices = geometryData.VertexData[VERTICES].size();
 		binaryFile->write(reinterpret_cast<char*>(&numMeshVertices), sizeof(unsigned int));
 		binaryFile->write(reinterpret_cast<char*>(&numMeshIndices), sizeof(unsigned int));
 		binaryFile->write(reinterpret_cast<char*>(finalVerts), sizeof(Vertex) * numMeshVertices);
@@ -88,7 +80,7 @@ Geometry OBJFileLoader::Load(char* filename, fstream* binaryFile, ID3D11Device* 
 	}
 }
 
-OBJGeometryData OBJFileLoader::ConstructGeometryDataFrom(char* fileName, bool invertTexCoords)
+OBJGeometryData OBJFileLoader::BuildGeometryDataFrom(char* fileName, bool invertTexCoords)
 {
 	ifstream inFile;
 	inFile.open(fileName);
@@ -179,7 +171,7 @@ OBJGeometryData OBJFileLoader::ConstructGeometryDataFrom(char* fileName, bool in
 	return geometryData;
 }
 
-OBJGeometryData OBJFileLoader::ConstructExpandedGeometryDataFrom(OBJGeometryData geometryData)
+OBJGeometryData OBJFileLoader::BuildExpandedGeometryDataFrom(OBJGeometryData geometryData)
 {
 	OBJGeometryData expandedGeometryData;
 	expandedGeometryData.VertexData = map<OBJDataType, vector<XMFLOAT3>>
@@ -257,4 +249,19 @@ bool OBJFileLoader::FindSimilarVertex(const Vertex& vertex, map<Vertex, unsigned
 		index = it->second;
 		return true;
 	}
+}
+
+Vertex* OBJFileLoader::BuildVertexObjectFrom(OBJGeometryData geometryData)
+{
+	Vertex* finalVerts = new Vertex[geometryData.VertexData[VERTICES].size()];
+
+	for (unsigned int i = 0; i < geometryData.VertexData[VERTICES].size(); i++)
+	{
+		finalVerts[i].position = geometryData.VertexData[VERTICES][i];
+		finalVerts[i].normal = geometryData.VertexData[NORMALS][i];
+		XMFLOAT3 textureCoordinates = geometryData.VertexData[TEXTURECOORDINATES][i];
+		finalVerts[i].texture = XMFLOAT2(textureCoordinates.x, textureCoordinates.y);
+	}
+
+	return finalVerts;
 }
