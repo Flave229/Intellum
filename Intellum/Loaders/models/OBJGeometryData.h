@@ -5,9 +5,16 @@
 using namespace std;
 using namespace DirectX;
 
+enum OBJDataType
+{
+	VERTICES,
+	NORMALS,
+	TEXTURECOORDINATES
+};
+
 class OBJGeometryData
 {
 public:
-	map<string, vector<XMFLOAT3>> VertexData;
-	map<string, vector<unsigned short>> IndexData;
+	map<OBJDataType, vector<XMFLOAT3>> VertexData;
+	map<OBJDataType, vector<unsigned short>> IndexData;
 };
