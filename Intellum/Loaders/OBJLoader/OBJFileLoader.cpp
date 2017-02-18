@@ -10,42 +10,19 @@ Geometry OBJFileLoader::Load(char* filename, fstream* binaryFile, ID3D11Device* 
 	{
 		string input;
 		OBJGeometryData geometryData = ConstructGeometryDataFrom(filename, invertTexCoords);
+		geometryData = ConstructExpandedGeometryDataFrom(geometryData);
+		geometryData = CreateIndices(geometryData);
 
-						//Get vectors to be of same size, ready for singular indexing
-		vector<XMFLOAT3> expandedVertices;
-		vector<XMFLOAT3> expandedNormals;
-		vector<XMFLOAT2> expandedTexCoords;
-		unsigned long long numIndices = geometryData.IndexData["Vertices"].size();
-		for (unsigned int i = 0; i < numIndices; i++)
-		{
-			expandedVertices.push_back(geometryData.VertexData["Vertices"][geometryData.IndexData["Vertices"][i]]);
-			XMFLOAT3 textureCoordinates = geometryData.VertexData["TextureCoordinates"][geometryData.IndexData["TextureCoordinates"][i]];
-			expandedTexCoords.push_back(XMFLOAT2(textureCoordinates.x, textureCoordinates.y));
-			expandedNormals.push_back(geometryData.VertexData["Normals"][geometryData.IndexData["Normals"][i]]);
-		}
-
-		//Now to (finally) form the final vertex, texture coord, normal list and single index buffer using the above expanded vectors
-		vector<unsigned short> meshIndices;
-		meshIndices.reserve(numIndices);
-		vector<XMFLOAT3> meshVertices;
-		meshVertices.reserve(expandedVertices.size());
-		vector<XMFLOAT3> meshNormals;
-		meshNormals.reserve(expandedNormals.size());
-		vector<XMFLOAT2> meshTexCoords;
-		meshTexCoords.reserve(expandedTexCoords.size());
-
-		CreateIndices(expandedVertices, expandedTexCoords, expandedNormals, meshIndices, meshVertices, meshTexCoords, meshNormals);
-
-		Geometry meshData;
 
 		//Turn data from vector form to arrays
-		Vertex* finalVerts = new Vertex[meshVertices.size()];
-		unsigned long long numMeshVertices = meshVertices.size();
+		Vertex* finalVerts = new Vertex[geometryData.VertexData["Vertices"].size()];
+		unsigned long long numMeshVertices = geometryData.VertexData["Vertices"].size();
 		for (unsigned int i = 0; i < numMeshVertices; ++i)
 		{
-			finalVerts[i].position = meshVertices[i];
-			finalVerts[i].normal = meshNormals[i];
-			finalVerts[i].texture = meshTexCoords[i];
+			finalVerts[i].position = geometryData.VertexData["Vertices"][i];
+			finalVerts[i].normal = geometryData.VertexData["Normals"][i];
+			XMFLOAT3 textureCoordinates = geometryData.VertexData["TextureCoordinates"][i];
+			finalVerts[i].texture = XMFLOAT2(textureCoordinates.x, textureCoordinates.y);
 		}
 
 		//Put data into vertex and index buffers, then pass the relevant data to the MeshData object.
@@ -55,7 +32,7 @@ Geometry OBJFileLoader::Load(char* filename, fstream* binaryFile, ID3D11Device* 
 		D3D11_BUFFER_DESC bd;
 		ZeroMemory(&bd, sizeof(bd));
 		bd.Usage = D3D11_USAGE_DEFAULT;
-		bd.ByteWidth = sizeof(Vertex) * static_cast<UINT>(meshVertices.size());
+		bd.ByteWidth = sizeof(Vertex) * static_cast<UINT>(geometryData.VertexData["Vertices"].size());
 		bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 		bd.CPUAccessFlags = 0;
 
@@ -65,15 +42,16 @@ Geometry OBJFileLoader::Load(char* filename, fstream* binaryFile, ID3D11Device* 
 
 		pd3dDevice->CreateBuffer(&bd, &InitData, &vertexBuffer);
 
+		Geometry meshData;
 		meshData.VertexBuffer = vertexBuffer;
 		meshData.VBOffset = 0;
 		meshData.VBStride = sizeof(Vertex);
 
-		unsigned short* indicesArray = new unsigned short[meshIndices.size()];
-		unsigned long long numMeshIndices = meshIndices.size();
+		unsigned short* indicesArray = new unsigned short[geometryData.IndexData["Vertices"].size()];
+		unsigned long long numMeshIndices = geometryData.IndexData["Vertices"].size();
 		for (unsigned int i = 0; i < numMeshIndices; ++i)
 		{
-			indicesArray[i] = meshIndices[i];
+			indicesArray[i] = geometryData.IndexData["Vertices"][i];
 		}
 
 		//Output data into binary file, the next time you run this function, the binary file will exist and will load that instead which is much quicker than parsing into vectors
@@ -88,7 +66,7 @@ Geometry OBJFileLoader::Load(char* filename, fstream* binaryFile, ID3D11Device* 
 
 		ZeroMemory(&bd, sizeof(bd));
 		bd.Usage = D3D11_USAGE_DEFAULT;
-		bd.ByteWidth = sizeof(WORD) * static_cast<UINT>(meshIndices.size());
+		bd.ByteWidth = sizeof(WORD) * static_cast<UINT>(geometryData.IndexData["Vertices"].size());
 		bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
 		bd.CPUAccessFlags = 0;
 
@@ -96,7 +74,7 @@ Geometry OBJFileLoader::Load(char* filename, fstream* binaryFile, ID3D11Device* 
 		InitData.pSysMem = indicesArray;
 		pd3dDevice->CreateBuffer(&bd, &InitData, &indexBuffer);
 
-		meshData.IndexCount = static_cast<UINT>(meshIndices.size());
+		meshData.IndexCount = static_cast<UINT>(geometryData.IndexData["Vertices"].size());
 		meshData.IndexBuffer = indexBuffer;
 
 		//This data has now been sent over to the GPU so we can delete this CPU-side stuff
@@ -199,43 +177,73 @@ OBJGeometryData OBJFileLoader::ConstructGeometryDataFrom(char* fileName, bool in
 	}
 
 	inFile.close();
-
 	return geometryData;
 }
 
-void OBJFileLoader::CreateIndices(const vector<XMFLOAT3>& inVertices, const vector<XMFLOAT2>& inTexCoords, const vector<XMFLOAT3>& inNormals, vector<unsigned short>& outIndices, vector<XMFLOAT3>& outVertices, vector<XMFLOAT2>& outTexCoords, vector<XMFLOAT3>& outNormals)
+OBJGeometryData OBJFileLoader::ConstructExpandedGeometryDataFrom(OBJGeometryData geometryData)
 {
-	//Mapping from an already-existing Vertex to its corresponding index
+	OBJGeometryData expandedGeometryData;
+	expandedGeometryData.VertexData = map<string, vector<XMFLOAT3>>
+	{
+		{ "Vertices", vector<XMFLOAT3>() },
+		{ "Normals", vector<XMFLOAT3>() },
+		{ "TextureCoordinates", vector<XMFLOAT3>() }
+	};
+	expandedGeometryData.IndexData = map<string, vector<unsigned short>>
+	{
+		{ "Vertices", geometryData.IndexData["Vertices"] }
+	};
+
+	for (unsigned int i = 0; i < geometryData.IndexData["Vertices"].size(); i++)
+	{
+		expandedGeometryData.VertexData["Vertices"].push_back(geometryData.VertexData["Vertices"][geometryData.IndexData["Vertices"][i]]);
+		expandedGeometryData.VertexData["TextureCoordinates"].push_back(geometryData.VertexData["TextureCoordinates"][geometryData.IndexData["TextureCoordinates"][i]]);
+		expandedGeometryData.VertexData["Normals"].push_back(geometryData.VertexData["Normals"][geometryData.IndexData["Normals"][i]]);
+	}
+
+	return expandedGeometryData;
+}
+
+OBJGeometryData OBJFileLoader::CreateIndices(OBJGeometryData geometryData)
+{
+	OBJGeometryData indexedGeometryData;
+	indexedGeometryData.IndexData = map<string, vector<unsigned short>>
+	{
+		{ "Vertices", vector<unsigned short>(geometryData.IndexData["Vertices"].size()) }
+	};
+	indexedGeometryData.VertexData = map<string, vector<XMFLOAT3>>
+	{
+		{ "Vertices", vector<XMFLOAT3>(geometryData.VertexData["Vertices"].size()) },
+		{ "Normals", vector<XMFLOAT3>(geometryData.VertexData["Normals"].size()) },
+		{ "TextureCoordinates", vector<XMFLOAT3>(geometryData.VertexData["TextureCoordinates"].size()) }
+	};
+
 	map<Vertex, unsigned short> vertToIndexMap;
 
-	pair<Vertex, unsigned short> pair;
-
-	unsigned long long numVertices = inVertices.size();
-	for (int i = 0; i < numVertices; ++i)
+	for (int i = 0; i < geometryData.VertexData["Vertices"].size(); ++i)
 	{
-		Vertex vertex = { inVertices[i],  inTexCoords[i], inNormals[i] };
+		XMFLOAT3 textureCoordinates = geometryData.VertexData["TextureCoordinates"][i];
+		Vertex vertex = { geometryData.VertexData["Vertices"][i], XMFLOAT2(textureCoordinates.x, textureCoordinates.y), geometryData.VertexData["Normals"][i] };
 
 		unsigned short index;
-		bool found = FindSimilarVertex(vertex, vertToIndexMap, index); //See if a vertex already exists in the buffer that has the same attributes as this one
-		if (found) //if found, re-use it's index for the index buffer
+		if (FindSimilarVertex(vertex, vertToIndexMap, index))
 		{
-			outIndices.push_back(index);
+			indexedGeometryData.IndexData["Vertices"].push_back(index);
 		}
-		else //if not found, add it to the buffer
+		else
 		{
-			outVertices.push_back(vertex.position);
-			outTexCoords.push_back(vertex.texture);
-			outNormals.push_back(vertex.normal);
+			indexedGeometryData.VertexData["Vertices"].push_back(vertex.position);
+			indexedGeometryData.VertexData["TextureCoordinates"].push_back(XMFLOAT3(vertex.texture.x, vertex.texture.y, 0.0f));
+			indexedGeometryData.VertexData["Normals"].push_back(vertex.normal);
 
-			unsigned short newIndex = static_cast<unsigned short>(outVertices.size()) - 1;
-			outIndices.push_back(newIndex);
+			unsigned short newIndex = static_cast<unsigned short>(indexedGeometryData.VertexData["Vertices"].size()) - 1;
+			indexedGeometryData.IndexData["Vertices"].push_back(newIndex);
 
-			//Add it to the map
-			pair.first = vertex;
-			pair.second = newIndex;
-			vertToIndexMap.insert(pair);
+			vertToIndexMap.insert(pair<Vertex, unsigned short>(vertex, newIndex));
 		}
 	}
+
+	return indexedGeometryData;
 }
 
 bool OBJFileLoader::FindSimilarVertex(const Vertex& vertex, map<Vertex, unsigned short>& vertToIndexMap, unsigned short& index)

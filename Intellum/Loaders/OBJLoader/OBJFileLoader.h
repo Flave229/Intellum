@@ -24,8 +24,9 @@ class OBJFileLoader : public IOBJLoader
 {
 private:
 	OBJGeometryData ConstructGeometryDataFrom(char* fileName, bool invertTexCoords);
+	OBJGeometryData ConstructExpandedGeometryDataFrom(OBJGeometryData geometryData);
 	
-	static void CreateIndices(const std::vector<XMFLOAT3>& inVertices, const std::vector<XMFLOAT2>& inTexCoords, const std::vector<XMFLOAT3>& inNormals, std::vector<unsigned short>& outIndices, std::vector<XMFLOAT3>& outVertices, std::vector<XMFLOAT2>& outTexCoords, std::vector<XMFLOAT3>& outNormals);
+	static OBJGeometryData CreateIndices(OBJGeometryData geometryData);
 	static bool FindSimilarVertex(const Vertex& vertex, std::map<Vertex, unsigned short>& vertToIndexMap, unsigned short& index);
 public:
 	OBJFileLoader();
