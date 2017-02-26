@@ -12,6 +12,9 @@ Texture* CreateTexture::From(DirectX3D* direct3D, char* fileName)
 {
 	try
 	{
+		if (string(fileName) == "")
+			return nullptr;
+
 		return new Texture(direct3D->GetDevice(), direct3D->GetDeviceContext(), fileName);
 	}
 	catch(Exception&)
