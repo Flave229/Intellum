@@ -25,22 +25,14 @@ Geometry OBJFileLoader::Load(char* filename, fstream* binaryFile, ID3D11Device* 
 
 		ID3D11Buffer* indexBuffer = CreateIndexBuffer(pd3dDevice, indexCount, indicesArray);
 
+		CreateBinaryFileForObject(binaryFile, finalVerts, indicesArray, vertexCount, indexCount);
+
 		Geometry meshData;
 		meshData.VertexBuffer = vertexBuffer;
 		meshData.VBOffset = 0;
 		meshData.VBStride = sizeof(Vertex);
 		meshData.IndexCount = static_cast<UINT>(indexCount);
 		meshData.IndexBuffer = indexBuffer;
-
-		//Output data into binary file, the next time you run this function, the binary file will exist and will load that instead which is much quicker than parsing into vectors
-		//std::ofstream outbin(std::string(filename).append("Binary").c_str(), std::ios::out | std::ios::binary);
-		binaryFile->write(reinterpret_cast<char*>(&vertexCount), sizeof(unsigned int));
-		binaryFile->write(reinterpret_cast<char*>(&indexCount), sizeof(unsigned int));
-		binaryFile->write(reinterpret_cast<char*>(finalVerts), sizeof(Vertex) * vertexCount);
-		binaryFile->write(reinterpret_cast<char*>(indicesArray), sizeof(unsigned short) * indexCount);
-		binaryFile->close();
-
-		//This data has now been sent over to the GPU so we can delete this CPU-side stuff
 		delete[] indicesArray;
 		delete[] finalVerts;
 
@@ -272,4 +264,13 @@ ID3D11Buffer* OBJFileLoader::CreateIndexBuffer(ID3D11Device* pd3dDevice, unsigne
 	ID3D11Buffer* indexBuffer;
 	pd3dDevice->CreateBuffer(&bd, &InitData, &indexBuffer);
 	return indexBuffer;
+}
+
+void OBJFileLoader::CreateBinaryFileForObject(fstream* binaryFile, Vertex* vertices, unsigned short* indicesArray, unsigned long long vertexCount, unsigned long long indexCount)
+{
+	binaryFile->write(reinterpret_cast<char*>(&vertexCount), sizeof(unsigned int));
+	binaryFile->write(reinterpret_cast<char*>(&indexCount), sizeof(unsigned int));
+	binaryFile->write(reinterpret_cast<char*>(vertices), sizeof(Vertex) * vertexCount);
+	binaryFile->write(reinterpret_cast<char*>(indicesArray), sizeof(unsigned short) * indexCount);
+	binaryFile->close();
 }
