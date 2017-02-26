@@ -31,10 +31,11 @@ private:
 
 	static Vertex* BuildVertexObjectFrom(OBJGeometryData geometryData);
 
-	static ID3D11Buffer* CreateVertexBuffer(ID3D11Device* pd3dDevice, OBJGeometryData geometryData, Vertex* finalVerts);
+	static ID3D11Buffer* CreateVertexBuffer(ID3D11Device* pd3dDevice, unsigned long long vertexCount, Vertex* finalVerts);
+	static ID3D11Buffer* CreateIndexBuffer(ID3D11Device* pd3dDevice, unsigned long long indicesCount, unsigned short* indicesArray);
 public:
 	OBJFileLoader();
 	~OBJFileLoader() override = default;
-
+		
 	Geometry Load(char* filename, fstream* binaryFile, ID3D11Device* pd3dDevice, bool invertTexCoords) override;
 };

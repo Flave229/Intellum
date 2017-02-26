@@ -13,45 +13,32 @@ Geometry OBJFileLoader::Load(char* filename, fstream* binaryFile, ID3D11Device* 
 		geometryData = CreateIndices(geometryData);
 		Vertex* finalVerts = BuildVertexObjectFrom(geometryData);
 
-		ID3D11Buffer* vertexBuffer = CreateVertexBuffer(pd3dDevice, geometryData, finalVerts);
+		unsigned long long vertexCount = geometryData.VertexData[VERTICES].size();
+		ID3D11Buffer* vertexBuffer = CreateVertexBuffer(pd3dDevice, vertexCount, finalVerts);
+
+		unsigned long long indexCount = geometryData.IndexData[VERTICES].size();
+		unsigned short* indicesArray = new unsigned short[indexCount];
+		for (unsigned int i = 0; i < indexCount; ++i)
+		{
+			indicesArray[i] = geometryData.IndexData[VERTICES][i];
+		}
+
+		ID3D11Buffer* indexBuffer = CreateIndexBuffer(pd3dDevice, indexCount, indicesArray);
 
 		Geometry meshData;
 		meshData.VertexBuffer = vertexBuffer;
 		meshData.VBOffset = 0;
 		meshData.VBStride = sizeof(Vertex);
-
-		unsigned short* indicesArray = new unsigned short[geometryData.IndexData[VERTICES].size()];
-		unsigned long long numMeshIndices = geometryData.IndexData[VERTICES].size();
-		for (unsigned int i = 0; i < numMeshIndices; ++i)
-		{
-			indicesArray[i] = geometryData.IndexData[VERTICES][i];
-		}
+		meshData.IndexCount = static_cast<UINT>(indexCount);
+		meshData.IndexBuffer = indexBuffer;
 
 		//Output data into binary file, the next time you run this function, the binary file will exist and will load that instead which is much quicker than parsing into vectors
 		//std::ofstream outbin(std::string(filename).append("Binary").c_str(), std::ios::out | std::ios::binary);
-		unsigned long long numMeshVertices = geometryData.VertexData[VERTICES].size();
-		binaryFile->write(reinterpret_cast<char*>(&numMeshVertices), sizeof(unsigned int));
-		binaryFile->write(reinterpret_cast<char*>(&numMeshIndices), sizeof(unsigned int));
-		binaryFile->write(reinterpret_cast<char*>(finalVerts), sizeof(Vertex) * numMeshVertices);
-		binaryFile->write(reinterpret_cast<char*>(indicesArray), sizeof(unsigned short) * numMeshIndices);
+		binaryFile->write(reinterpret_cast<char*>(&vertexCount), sizeof(unsigned int));
+		binaryFile->write(reinterpret_cast<char*>(&indexCount), sizeof(unsigned int));
+		binaryFile->write(reinterpret_cast<char*>(finalVerts), sizeof(Vertex) * vertexCount);
+		binaryFile->write(reinterpret_cast<char*>(indicesArray), sizeof(unsigned short) * indexCount);
 		binaryFile->close();
-
-		ID3D11Buffer* indexBuffer;
-
-		D3D11_BUFFER_DESC bd;
-		ZeroMemory(&bd, sizeof(bd));
-		bd.Usage = D3D11_USAGE_DEFAULT;
-		bd.ByteWidth = sizeof(WORD) * static_cast<UINT>(geometryData.IndexData[VERTICES].size());
-		bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
-		bd.CPUAccessFlags = 0;
-
-		D3D11_SUBRESOURCE_DATA InitData;
-		ZeroMemory(&InitData, sizeof(InitData));
-		InitData.pSysMem = indicesArray;
-		pd3dDevice->CreateBuffer(&bd, &InitData, &indexBuffer);
-
-		meshData.IndexCount = static_cast<UINT>(geometryData.IndexData[VERTICES].size());
-		meshData.IndexBuffer = indexBuffer;
 
 		//This data has now been sent over to the GPU so we can delete this CPU-side stuff
 		delete[] indicesArray;
@@ -251,12 +238,12 @@ Vertex* OBJFileLoader::BuildVertexObjectFrom(OBJGeometryData geometryData)
 	return finalVerts;
 }
 
-ID3D11Buffer* OBJFileLoader::CreateVertexBuffer(ID3D11Device* pd3dDevice, OBJGeometryData geometryData, Vertex* finalVerts)
+ID3D11Buffer* OBJFileLoader::CreateVertexBuffer(ID3D11Device* pd3dDevice, unsigned long long vertexCount, Vertex* finalVerts)
 {
 	D3D11_BUFFER_DESC bd;
 	ZeroMemory(&bd, sizeof(bd));
 	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.ByteWidth = sizeof(Vertex) * static_cast<UINT>(geometryData.VertexData[VERTICES].size());
+	bd.ByteWidth = sizeof(Vertex) * static_cast<UINT>(vertexCount);
 	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	bd.CPUAccessFlags = 0;
 
@@ -267,4 +254,22 @@ ID3D11Buffer* OBJFileLoader::CreateVertexBuffer(ID3D11Device* pd3dDevice, OBJGeo
 	ID3D11Buffer* vertexBuffer;
 	pd3dDevice->CreateBuffer(&bd, &InitData, &vertexBuffer);
 	return vertexBuffer;
+}
+
+ID3D11Buffer* OBJFileLoader::CreateIndexBuffer(ID3D11Device* pd3dDevice, unsigned long long indicesCount, unsigned short* indicesArray)
+{
+	D3D11_BUFFER_DESC bd;
+	ZeroMemory(&bd, sizeof(bd));
+	bd.Usage = D3D11_USAGE_DEFAULT;
+	bd.ByteWidth = sizeof(WORD) * static_cast<UINT>(indicesCount);
+	bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	bd.CPUAccessFlags = 0;
+
+	D3D11_SUBRESOURCE_DATA InitData;
+	ZeroMemory(&InitData, sizeof(InitData));
+	InitData.pSysMem = indicesArray;
+
+	ID3D11Buffer* indexBuffer;
+	pd3dDevice->CreateBuffer(&bd, &InitData, &indexBuffer);
+	return indexBuffer;
 }
