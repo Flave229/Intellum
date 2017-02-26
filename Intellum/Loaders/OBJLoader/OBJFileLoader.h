@@ -14,10 +14,10 @@ private:
 	~OBJFileType() {}
 
 public:
-	static std::string Vertex() { return "v"; }
-	static std::string Texture() { return "vt"; }
-	static std::string Normal() { return "vn"; }
-	static std::string Face() { return "f"; }
+	static string Vertex() { return "v"; }
+	static string Texture() { return "vt"; }
+	static string Normal() { return "vn"; }
+	static string Face() { return "f"; }
 };
 
 class OBJFileLoader : public IOBJLoader
@@ -27,12 +27,14 @@ private:
 	static OBJGeometryData BuildExpandedGeometryDataFrom(OBJGeometryData geometryData);
 	
 	static OBJGeometryData CreateIndices(OBJGeometryData geometryData);
-	static bool FindSimilarVertex(const Vertex& vertex, std::map<Vertex, unsigned short>& vertToIndexMap, unsigned short& index);
+	static bool FindSimilarVertex(const Vertex& vertex, map<Vertex, unsigned short>& vertToIndexMap, unsigned short& index);
 
-	Vertex* BuildVertexObjectFrom(OBJGeometryData geometryData);
+	static Vertex* BuildVertexObjectFrom(OBJGeometryData geometryData);
+
+	static ID3D11Buffer* CreateVertexBuffer(ID3D11Device* pd3dDevice, OBJGeometryData geometryData, Vertex* finalVerts);
 public:
 	OBJFileLoader();
 	~OBJFileLoader() override = default;
 
-	Geometry Load(char* filename, std::fstream* binaryFile, ID3D11Device* pd3dDevice, bool invertTexCoords) override;
+	Geometry Load(char* filename, fstream* binaryFile, ID3D11Device* pd3dDevice, bool invertTexCoords) override;
 };

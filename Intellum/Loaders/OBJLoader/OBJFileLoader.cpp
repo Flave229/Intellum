@@ -8,29 +8,12 @@ Geometry OBJFileLoader::Load(char* filename, fstream* binaryFile, ID3D11Device* 
 {
 	try
 	{
-		string input;
 		OBJGeometryData geometryData = BuildGeometryDataFrom(filename, invertTexCoords);
 		geometryData = BuildExpandedGeometryDataFrom(geometryData);
 		geometryData = CreateIndices(geometryData);
-
 		Vertex* finalVerts = BuildVertexObjectFrom(geometryData);
 
-		//Put data into vertex and index buffers, then pass the relevant data to the MeshData object.
-		//The rest of the code will hopefully look familiar to you, as it's similar to whats in your InitVertexBuffer and InitIndexBuffer methods
-		ID3D11Buffer* vertexBuffer;
-
-		D3D11_BUFFER_DESC bd;
-		ZeroMemory(&bd, sizeof(bd));
-		bd.Usage = D3D11_USAGE_DEFAULT;
-		bd.ByteWidth = sizeof(Vertex) * static_cast<UINT>(geometryData.VertexData[VERTICES].size());
-		bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-		bd.CPUAccessFlags = 0;
-
-		D3D11_SUBRESOURCE_DATA InitData;
-		ZeroMemory(&InitData, sizeof(InitData));
-		InitData.pSysMem = finalVerts;
-
-		pd3dDevice->CreateBuffer(&bd, &InitData, &vertexBuffer);
+		ID3D11Buffer* vertexBuffer = CreateVertexBuffer(pd3dDevice, geometryData, finalVerts);
 
 		Geometry meshData;
 		meshData.VertexBuffer = vertexBuffer;
@@ -55,12 +38,14 @@ Geometry OBJFileLoader::Load(char* filename, fstream* binaryFile, ID3D11Device* 
 
 		ID3D11Buffer* indexBuffer;
 
+		D3D11_BUFFER_DESC bd;
 		ZeroMemory(&bd, sizeof(bd));
 		bd.Usage = D3D11_USAGE_DEFAULT;
 		bd.ByteWidth = sizeof(WORD) * static_cast<UINT>(geometryData.IndexData[VERTICES].size());
 		bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
 		bd.CPUAccessFlags = 0;
 
+		D3D11_SUBRESOURCE_DATA InitData;
 		ZeroMemory(&InitData, sizeof(InitData));
 		InitData.pSysMem = indicesArray;
 		pd3dDevice->CreateBuffer(&bd, &InitData, &indexBuffer);
@@ -264,4 +249,22 @@ Vertex* OBJFileLoader::BuildVertexObjectFrom(OBJGeometryData geometryData)
 	}
 
 	return finalVerts;
+}
+
+ID3D11Buffer* OBJFileLoader::CreateVertexBuffer(ID3D11Device* pd3dDevice, OBJGeometryData geometryData, Vertex* finalVerts)
+{
+	D3D11_BUFFER_DESC bd;
+	ZeroMemory(&bd, sizeof(bd));
+	bd.Usage = D3D11_USAGE_DEFAULT;
+	bd.ByteWidth = sizeof(Vertex) * static_cast<UINT>(geometryData.VertexData[VERTICES].size());
+	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	bd.CPUAccessFlags = 0;
+
+	D3D11_SUBRESOURCE_DATA InitData;
+	ZeroMemory(&InitData, sizeof(InitData));
+	InitData.pSysMem = finalVerts;
+
+	ID3D11Buffer* vertexBuffer;
+	pd3dDevice->CreateBuffer(&bd, &InitData, &vertexBuffer);
+	return vertexBuffer;
 }
