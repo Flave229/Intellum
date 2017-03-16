@@ -172,6 +172,9 @@
     <ClCompile Include="Engine\Objects\SceneObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Objects\Appearance\GridAppearance.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DXSystem.h">
@@ -340,6 +343,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Objects\SceneObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Objects\Appearance\GridAppearance.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

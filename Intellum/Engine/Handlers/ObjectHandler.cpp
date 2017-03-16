@@ -29,6 +29,17 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 
 		_objectList.push_back(object);
 	}
+
+	Transform* transform = new Transform(direct3D);
+	if (!transform) throw Exception("Failed to create a Transform object.");
+
+	Appearance* appearance = new Appearance(direct3D, vector<char*> { "data/images/stone.tga", "data/images/dirt.tga" }, "", "data/models/sphere.obj");
+	if (!appearance) throw Exception("Failed to create a Appearance object.");
+
+	SceneObject* object = new SceneObject(direct3D, transform, appearance, shaderController->GetShader(SHADER_DEFAULT));
+	if (!object) throw Exception("Failed to create a object.");
+
+	_objectList.push_back(object);
 }
 
 void ObjectHandler::Shutdown()

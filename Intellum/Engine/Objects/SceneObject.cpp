@@ -4,10 +4,6 @@ SceneObject::SceneObject(DirectX3D* direct3D, Transform* transform, Appearance* 
 {
 }
 
-SceneObject::~SceneObject()
-{
-}
-
 void SceneObject::Update(float delta)
 {
 	_transform->Update(delta);

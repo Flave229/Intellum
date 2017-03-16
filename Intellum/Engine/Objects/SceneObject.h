@@ -14,7 +14,7 @@ private:
 	Appearance* _appearance;
 public:
 	SceneObject(DirectX3D* direct3D, Transform* transform, Appearance* appearance, IShaderType* shader);
-	~SceneObject();
+	~SceneObject() = default;
 
 	void Update(float delta) override;
 	void Render() override;
