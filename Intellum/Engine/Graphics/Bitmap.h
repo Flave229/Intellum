@@ -4,7 +4,7 @@
 
 #include "../../Engine/ShaderEngine/IShaderType.h"
 #include "../../Engine/DirectX3D.h"
-#include "../Object/Appearance/IAppearance.h"
+#include "../Objects/Appearance/IAppearance.h"
 
 using namespace DirectX;
 

@@ -118,12 +118,6 @@
     <ClCompile Include="Engine\Camera\Frustrum.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Object\SceneObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Object\Transform.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Handlers\ObjectHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -154,22 +148,28 @@
     <ClCompile Include="Engine\ShaderEngine\ConstantBuffers\TextureBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Object\Appearance\Appearance.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Object\Appearance\UIAppearance.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Object\Appearance\Texture\Texture.cpp">
-      <Filter>Source Files\ObjectData</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Object\Appearance\Texture\CreateTexture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Loaders\OBJLoader\OBJFileLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Loaders\OBJLoader\OBJBinaryLoader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Objects\Appearance\Texture\CreateTexture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Objects\Appearance\Texture\Texture.cpp">
+      <Filter>Source Files\ObjectData</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Objects\Appearance\Appearance.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Objects\Appearance\UIAppearance.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Objects\Transform\Transform.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Objects\SceneObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -258,12 +258,6 @@
     <ClInclude Include="Engine\Camera\Frustrum.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Object\SceneObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Object\Transform.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Handlers\ObjectHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -309,22 +303,7 @@
     <ClInclude Include="Engine\ShaderEngine\ConstantBuffers\TextureBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Object\Appearance\Appearance.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Object\Appearance\IAppearance.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Graphics\Structures\Vertex.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Object\Appearance\UIAppearance.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Object\Appearance\Texture\Texture.h">
-      <Filter>Header Files\ObjectData</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Object\Appearance\Texture\CreateTexture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\ShaderEngine\ShaderResources.h">
@@ -340,6 +319,27 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Loaders\models\OBJGeometryData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Objects\Appearance\Texture\CreateTexture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Objects\Appearance\Texture\Texture.h">
+      <Filter>Header Files\ObjectData</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Objects\Appearance\Appearance.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Objects\Appearance\IAppearance.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Objects\Appearance\UIAppearance.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Objects\Transform\Transform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Objects\SceneObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

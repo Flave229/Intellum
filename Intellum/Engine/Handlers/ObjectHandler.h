@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <vector>
-#include "../Object/SceneObject.h"
+#include "../Objects/SceneObject.h"
 #include "../ShaderEngine/ShaderController.h"
 
 using namespace DirectX;

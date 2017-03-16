@@ -2,7 +2,7 @@
 #define _CAMERA_H_
 
 #include <DirectXMath.h>
-#include "../Object/Transform.h"
+#include "../Objects/Transform/Transform.h"
 #include "Frustrum.h"
 #include "../../Common/Constants.h"
 #include "../Input/Input.h"

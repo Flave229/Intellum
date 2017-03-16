@@ -9,7 +9,7 @@
 #include "../ShaderEngine/IShaderType.h"
 #include "../ShaderEngine/FontShader.h"
 #include "../DirectX3D.h"
-#include "../Object/Appearance/UIAppearance.h"
+#include "../Objects/Appearance/UIAppearance.h"
 
 using namespace std;
 

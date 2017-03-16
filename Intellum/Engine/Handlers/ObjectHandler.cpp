@@ -29,8 +29,6 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 
 		_objectList.push_back(object);
 	}
-
-
 }
 
 void ObjectHandler::Shutdown()
