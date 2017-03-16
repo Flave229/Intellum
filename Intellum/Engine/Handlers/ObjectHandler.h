@@ -14,7 +14,7 @@ class ObjectHandler
 {
 private:
 	Frustrum* _frustrum;
-	vector<SceneObject*> _objectList;
+	vector<ISceneObject*> _objectList;
 
 	int _renderCount;
 

@@ -1,10 +1,10 @@
 #pragma once
-#include "Transform.h"
 #include "Appearance/Appearance.h"
 #include "../ShaderEngine/IShaderType.h"
 #include "../Camera/Frustrum.h"
+#include "ISceneObject.h"
 
-class SceneObject
+class SceneObject : public ISceneObject
 {
 private:
 	DirectX3D* _direct3D;
@@ -16,10 +16,10 @@ public:
 	SceneObject(DirectX3D* direct3D, Transform* transform, Appearance* appearance, IShaderType* shader);
 	~SceneObject();
 
-	void Update(float delta) const;
-	void Render() const;
+	void Update(float delta) override;
+	void Render() override;
 
-	Transform* GetTransform() const;
+	Transform* GetTransform() override;
 
-	void Shutdown();
+	void Shutdown() override;
 };

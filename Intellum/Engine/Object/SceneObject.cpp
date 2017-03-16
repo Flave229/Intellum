@@ -8,12 +8,12 @@ SceneObject::~SceneObject()
 {
 }
 
-void SceneObject::Update(float delta) const
+void SceneObject::Update(float delta)
 {
 	_transform->Update(delta);
 }
 
-void SceneObject::Render() const
+void SceneObject::Render()
 {
 	_appearance->Render();
 
@@ -24,7 +24,7 @@ void SceneObject::Render() const
 	_shader->Render(_appearance->GetIndexCount(), shaderResources, _transform->GetTransformation(), _direct3D->GetProjectionMatrix());
 }
 
-Transform* SceneObject::GetTransform() const
+Transform* SceneObject::GetTransform()
 {
 	return _transform;
 }
