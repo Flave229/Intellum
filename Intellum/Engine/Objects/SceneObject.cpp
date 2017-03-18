@@ -1,6 +1,6 @@
 #include "SceneObject.h"
 
-SceneObject::SceneObject(DirectX3D* direct3D, Transform* transform, Appearance* appearance, IShaderType* shader) : _direct3D(direct3D), _shader(shader), _transform(transform), _appearance(appearance)
+SceneObject::SceneObject(DirectX3D* direct3D, Transform* transform, IAppearance* appearance, IShaderType* shader) : _direct3D(direct3D), _shader(shader), _transform(transform), _appearance(appearance)
 {
 }
 

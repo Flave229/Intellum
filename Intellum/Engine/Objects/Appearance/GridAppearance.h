@@ -1,6 +1,7 @@
 #pragma once
 #include "IAppearance.h"
 #include "../../../common/Geometry.h"
+#include "../../../common/Vertex.h"
 
 class GridAppearance : public IAppearance
 {
@@ -15,6 +16,8 @@ private:
 	void LoadTextures(vector<char*> textureFiles, char* lightMapFile) override;
 	void GenerateModel();
 
+	ID3D11Buffer* CreateVertexBuffer(unsigned long long vertexCount, Vertex* finalVerts) const;
+	ID3D11Buffer* CreateIndexBuffer(int indexCount, unsigned short* indices) const;
 public:
 	GridAppearance(DirectX3D* direct3D, vector<char*> textureFiles, char* lightMapFile);
 	~GridAppearance() override = default;

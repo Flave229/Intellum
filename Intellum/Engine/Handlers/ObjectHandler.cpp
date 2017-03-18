@@ -1,4 +1,5 @@
 #include "ObjectHandler.h"
+#include "../Objects/Appearance/GridAppearance.h"
 
 ObjectHandler::ObjectHandler(DirectX3D* direct3D, ShaderController* shaderController, Frustrum* frustrum) : _frustrum(frustrum)
 {
@@ -21,7 +22,7 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 		transform->SetPosition(XMFLOAT3(((static_cast<float>(rand()) / RAND_MAX) * 30.0f) - 15.0f, ((static_cast<float>(rand()) / RAND_MAX) * 10.0f) - 5.0f, ((static_cast<float>(rand()) / RAND_MAX) * 30.0f) - 15.0f));
 		transform->SetAngularVelocity(XMFLOAT3(0.0f, (static_cast<float>(rand()) / RAND_MAX * 5.0f - 2.5f) * static_cast<float>(XM_PI), 0.0f));
 
-		Appearance* appearance = new Appearance(direct3D, vector<char*> { "data/images/stone.tga", "data/images/dirt.tga" }, "", "data/models/sphere.obj");
+		IAppearance* appearance = new Appearance(direct3D, vector<char*> { "data/images/stone.tga", "data/images/dirt.tga" }, "", "data/models/sphere.obj");
 		if (!appearance) throw Exception("Failed to create a Appearance object.");
 
 		SceneObject* object = new SceneObject(direct3D, transform, appearance, shaderController->GetShader(SHADER_DEFAULT));
@@ -33,8 +34,8 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	Transform* transform = new Transform(direct3D);
 	if (!transform) throw Exception("Failed to create a Transform object.");
 
-	Appearance* appearance = new Appearance(direct3D, vector<char*> { "data/images/stone.tga", "data/images/dirt.tga" }, "", "data/models/sphere.obj");
-	if (!appearance) throw Exception("Failed to create a Appearance object.");
+	IAppearance* appearance = new GridAppearance(direct3D, vector<char*> { "data/images/stone.tga", "data/images/dirt.tga" }, "");
+	if (!appearance) throw Exception("Failed to create a Appearance for the grid.");
 
 	SceneObject* object = new SceneObject(direct3D, transform, appearance, shaderController->GetShader(SHADER_DEFAULT));
 	if (!object) throw Exception("Failed to create a object.");

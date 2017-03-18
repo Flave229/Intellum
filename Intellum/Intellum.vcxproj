@@ -203,7 +203,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Objects\Appearance\Texture\CreateTexture.h" />
-    <ClInclude Include="Engine\Graphics\Structures\Vertex.h" />
     <ClInclude Include="Engine\Objects\Appearance\IAppearance.h" />
     <ClInclude Include="Engine\ShaderEngine\ConstantBuffers\ColorOverrideBuffer.h" />
     <ClInclude Include="Common\Constants.h" />
