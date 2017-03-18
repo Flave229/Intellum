@@ -1,5 +1,4 @@
-#ifndef _DIRECTX3D_H_
-#define  _DIRECTX3D_H_
+#pragma once
 
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "dxgi.lib")
@@ -11,6 +10,7 @@
 #include "DxComponents/DepthStencil.h"
 #include "DxComponents/Rasterizer.h"
 #include "../common/Box.h"
+#include "Input/Input.h"
 
 using namespace DirectX;
 
@@ -30,31 +30,29 @@ private:
 	HardwareDescription* _hardware;
 	DepthStencil* _depthStencil;
 	Rasterizer* _rasterizer;
-
+	float _rasterizerToggleCooldown;
+	Input* _input;
 private: 
 	void Initialise(Box screenSize, bool vsync, HWND hwnd, bool fullscreen, float screenDepth, float screenNear);
 
 public:
-	DirectX3D(Box screenSize, bool vsync, HWND hwnd, bool fullscreen, float screenDepth, float screenNear);
-	DirectX3D(const DirectX3D& other);
+	DirectX3D(Input* input, Box screenSize, bool vsync, HWND hwnd, bool fullscreen, float screenDepth, float screenNear);
 	~DirectX3D();
 
 	void Shutdown();
-	
+	void Update(float delta);
 	void BeginScene(XMFLOAT4 color);
-	void EndScene();
+	void EndScene() const;
 
-	ID3D11Device* GetDevice();
-	ID3D11DeviceContext* GetDeviceContext();
+	ID3D11Device* GetDevice() const;
+	ID3D11DeviceContext* GetDeviceContext() const;
 
 	XMMATRIX GetProjectionMatrix() const;
 	XMMATRIX GetWorldMatrix() const;
 	XMMATRIX GetOrthoMatrix() const;
 
-	void GetVideoCardInfo(char* cardname, int& memory);
+	void GetVideoCardInfo(char* cardname, int& memory) const;
 
-	void TurnZBufferOn();
-	void TurnZBufferOff();
+	void TurnZBufferOn() const;
+	void TurnZBufferOff() const;
 };
-
-#endif

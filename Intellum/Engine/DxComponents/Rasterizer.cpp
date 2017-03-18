@@ -1,13 +1,9 @@
 #include "Rasterizer.h"
 #include "../../ErrorHandling/Exception.h"
 
-Rasterizer::Rasterizer(ID3D11Device* device, ID3D11DeviceContext* deviceContext): _device(device), _deviceContext(deviceContext), _defaultState(nullptr), _wireframeState(nullptr)
+Rasterizer::Rasterizer(ID3D11Device* device, ID3D11DeviceContext* deviceContext): _device(device), _deviceContext(deviceContext), _rasterizerState(map<D3D11_FILL_MODE, ID3D11RasterizerState*>())
 {
 	Initialise();
-}
-
-Rasterizer::Rasterizer(const Rasterizer& other): _device(other._device), _deviceContext(other._deviceContext), _defaultState(other._defaultState), _wireframeState(other._wireframeState)
-{
 }
 
 Rasterizer::~Rasterizer()
@@ -16,42 +12,44 @@ Rasterizer::~Rasterizer()
 
 void Rasterizer::Initialise()
 {
-	CreateRasterizerState(_defaultState, D3D11_FILL_SOLID);
-	CreateRasterizerState(_wireframeState, D3D11_FILL_WIREFRAME);
+	CreateRasterizerState(D3D11_FILL_SOLID);
+	CreateRasterizerState(D3D11_FILL_WIREFRAME);
 
-	_deviceContext->RSSetState(_defaultState);
+	SetRasterizerState(D3D11_FILL_SOLID);
 }
 
 void Rasterizer::Shutdown()
 {
-	if (_defaultState)
+	map<D3D11_FILL_MODE, ID3D11RasterizerState*>::iterator iterator;
+	for (iterator = _rasterizerState.begin(); iterator != _rasterizerState.end(); ++iterator)
 	{
-		_defaultState->Release();
-		_defaultState = nullptr;
-	}
-	if (_wireframeState)
-	{
-		_wireframeState->Release();
-		_wireframeState = nullptr;
+		delete iterator->second;
+		iterator->second = nullptr;
 	}
 }
 
-void Rasterizer::SetStencilType(ID3D11DeviceContext* deviceContext, RasterizerStateType rasterizerState) const
+void Rasterizer::SetRasterizerState(D3D11_FILL_MODE rasterizerState)
 {
-	switch (rasterizerState)
+	_deviceContext->RSSetState(_rasterizerState[rasterizerState]);
+	_currentState = rasterizerState;
+}
+
+void Rasterizer::ToggleRasterizerState()
+{
+	switch (_currentState)
 	{
-	case RASTERIZER_STATE_DEFAULT:
-		deviceContext->RSSetState(_defaultState);
+	case D3D11_FILL_SOLID:
+		SetRasterizerState(D3D11_FILL_WIREFRAME);
 		break;
-	case RASTERIZER_STATE_WIREFRAME:
-		deviceContext->RSSetState(_wireframeState);
+	case D3D11_FILL_WIREFRAME:
+		SetRasterizerState(D3D11_FILL_SOLID);
 	default:
-		deviceContext->RSSetState(_defaultState);
+		SetRasterizerState(D3D11_FILL_SOLID);
 		break;
 	}
 }
 
-void Rasterizer::CreateRasterizerState(ID3D11RasterizerState* rasterizerState, D3D11_FILL_MODE fillMode)
+void Rasterizer::CreateRasterizerState(D3D11_FILL_MODE fillMode)
 {
 	D3D11_RASTERIZER_DESC rasterizerDescription;
 
@@ -66,6 +64,9 @@ void Rasterizer::CreateRasterizerState(ID3D11RasterizerState* rasterizerState, D
 	rasterizerDescription.ScissorEnable = false;
 	rasterizerDescription.SlopeScaledDepthBias = 0.0f;
 
+	ID3D11RasterizerState* rasterizerState;
 	HRESULT result = _device->CreateRasterizerState(&rasterizerDescription, &rasterizerState);
 	if (FAILED(result)) throw Exception("Failed to create the rasterizer state");
+
+	_rasterizerState.insert(pair<D3D11_FILL_MODE, ID3D11RasterizerState*>(fillMode, rasterizerState));
 }

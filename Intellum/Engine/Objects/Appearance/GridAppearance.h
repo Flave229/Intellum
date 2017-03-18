@@ -14,7 +14,7 @@ private:
 private:
 	void Initialise(vector<char*> textureFiles, char* lightMapFile);
 	void LoadTextures(vector<char*> textureFiles, char* lightMapFile) override;
-	void GenerateModel();
+	void GenerateModel() const;
 
 	ID3D11Buffer* CreateVertexBuffer(unsigned long long vertexCount, Vertex* finalVerts) const;
 	ID3D11Buffer* CreateIndexBuffer(int indexCount, unsigned short* indices) const;

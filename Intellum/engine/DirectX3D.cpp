@@ -1,15 +1,10 @@
 #include "DirectX3D.h"
 #include "../ErrorHandling/Exception.h"
 
-DirectX3D::DirectX3D(Box screenSize, bool vsync, HWND hwnd, bool fullscreen, float screenDepth, float screenNear)
-	: _vsyncEnabled(false), _swapChain(nullptr), _device(nullptr), _deviceContext(nullptr), _renderTargetView(nullptr), _depthStencilView(nullptr), _hardware(nullptr), _depthStencil(nullptr), _rasterizer(nullptr)
+DirectX3D::DirectX3D(Input* input, Box screenSize, bool vsync, HWND hwnd, bool fullscreen, float screenDepth, float screenNear)
+	: _vsyncEnabled(false), _swapChain(nullptr), _device(nullptr), _deviceContext(nullptr), _renderTargetView(nullptr), _depthStencilView(nullptr), _hardware(nullptr), _depthStencil(nullptr), _rasterizer(nullptr), _input(input), _rasterizerToggleCooldown(0)
 {
 	Initialise(screenSize, vsync, hwnd, fullscreen, screenDepth, screenNear);
-}
-
-DirectX3D::DirectX3D(const DirectX3D& other)  
-	: _vsyncEnabled(other._vsyncEnabled), _swapChain(other._swapChain), _device(other._device), _deviceContext(other._deviceContext), _renderTargetView(other._renderTargetView), _depthStencilView(other._depthStencilView), _hardware(nullptr), _depthStencil(other._depthStencil), _rasterizer(other._rasterizer)
-{
 }
 
 DirectX3D::~DirectX3D()
@@ -163,6 +158,20 @@ void DirectX3D::Shutdown()
 	}
 }
 
+void DirectX3D::Update(float delta)
+{
+	if (_rasterizerToggleCooldown > 0)
+	{
+		_rasterizerToggleCooldown -= delta;
+		return;
+	}
+
+	if (_input->IsControlPressed(TOGGLE_RASTERIZER_STATE))
+	{
+		_rasterizer->ToggleRasterizerState();
+		_rasterizerToggleCooldown = 0.2;
+	}
+}
 
 void DirectX3D::BeginScene(XMFLOAT4 color)
 {
@@ -177,17 +186,17 @@ void DirectX3D::BeginScene(XMFLOAT4 color)
 	_deviceContext->ClearDepthStencilView(_depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 }
 
-void DirectX3D::EndScene()
+void DirectX3D::EndScene() const
 {
 	_swapChain->Present(_vsyncEnabled ? 1 : 0, 0);
 }
 
-ID3D11Device* DirectX3D::GetDevice()
+ID3D11Device* DirectX3D::GetDevice() const
 {
 	return _device;
 }
 
-ID3D11DeviceContext* DirectX3D::GetDeviceContext()
+ID3D11DeviceContext* DirectX3D::GetDeviceContext() const
 {
 	return _deviceContext;
 }
@@ -207,13 +216,13 @@ XMMATRIX DirectX3D::GetOrthoMatrix() const
 	return _orthoMatrix;
 }
 
-void DirectX3D::GetVideoCardInfo(char* cardname, int& memory)
+void DirectX3D::GetVideoCardInfo(char* cardname, int& memory) const
 {
 	_hardware->GetVideoCardDescription(cardname);
 	_hardware->MapVideoCardMemoryInto(memory);
 }
 
-void DirectX3D::TurnZBufferOn()
+void DirectX3D::TurnZBufferOn() const
 {
 	try
 	{
@@ -225,7 +234,7 @@ void DirectX3D::TurnZBufferOn()
 	}
 }
 
-void DirectX3D::TurnZBufferOff()
+void DirectX3D::TurnZBufferOff() const
 {
 	try
 	{
