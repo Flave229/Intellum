@@ -45,14 +45,26 @@ void GridAppearance::LoadTextures(vector<char*> textureFiles, char* lightMapFile
 
 void GridAppearance::GenerateModel(Box gridSize, XMFLOAT2 cellCount) const
 {
+	vector<Vertex> vertices = BuildVertexList(gridSize, cellCount);
+	vector<unsigned short> indices = BuildIndexList(cellCount);
+
+	_geometry->VertexBuffer = CreateVertexBuffer(vertices.size(), &vertices[0]);
+	_geometry->IndexBuffer = CreateIndexBuffer(indices.size(), &indices[0]);
+	_geometry->VBOffset = 0;
+	_geometry->VBStride = sizeof(Vertex);
+	_geometry->IndexCount = static_cast<UINT>(indices.size());
+}
+
+vector<Vertex> GridAppearance::BuildVertexList(Box gridSize, XMFLOAT2 cellCount)
+{
 	int halfWidth = gridSize.Width / 2;
 	int halfDepth = gridSize.Height / 2;
 	XMFLOAT2 cellSize = XMFLOAT2(gridSize.Width / cellCount.x, gridSize.Height / cellCount.y);
 
 	vector<Vertex> vertices = vector<Vertex>();
-	for(int row = 0; row <= cellCount.x; row++)
+	for (int row = 0; row <= cellCount.x; row++)
 	{
-		for(int column = 0; column <= cellCount.y; column++)
+		for (int column = 0; column <= cellCount.y; column++)
 		{
 			Vertex vertex;
 			vertex.position = XMFLOAT3(column * cellSize.x - halfWidth, 0, row * cellSize.y - halfDepth);
@@ -62,10 +74,15 @@ void GridAppearance::GenerateModel(Box gridSize, XMFLOAT2 cellCount) const
 		}
 	}
 
+	return vertices;
+}
+
+vector<unsigned short> GridAppearance::BuildIndexList(XMFLOAT2 cellCount)
+{
 	vector<unsigned short> indices = vector<unsigned short>();
 	for (int row = 0; row < cellCount.x; row++)
 	{
-		for(int column = 0; column < cellCount.y; column++)
+		for (int column = 0; column < cellCount.y; column++)
 		{
 			unsigned short topLeftIndex = row * (cellCount.y + 1) + column;
 			unsigned short topRightIndex = topLeftIndex + 1;
@@ -81,14 +98,7 @@ void GridAppearance::GenerateModel(Box gridSize, XMFLOAT2 cellCount) const
 		}
 	}
 
-	ID3D11Buffer* vertexBuffer = CreateVertexBuffer(vertices.size(), &vertices[0]);
-	ID3D11Buffer* indexBuffer = CreateIndexBuffer(indices.size(), &indices[0]);
-
-	_geometry->VertexBuffer = vertexBuffer;
-	_geometry->IndexBuffer = indexBuffer;
-	_geometry->VBOffset = 0;
-	_geometry->VBStride = sizeof(Vertex);
-	_geometry->IndexCount = static_cast<UINT>(indices.size());
+	return indices;
 }
 
 ID3D11Buffer* GridAppearance::CreateVertexBuffer(unsigned long long vertexCount, Vertex* finalVerts) const

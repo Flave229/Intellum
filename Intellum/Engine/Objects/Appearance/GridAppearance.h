@@ -14,7 +14,10 @@ private:
 private:
 	void Initialise(vector<char*> textureFiles, char* lightMapFile, Box gridSize, XMFLOAT2 cellCount);
 	void LoadTextures(vector<char*> textureFiles, char* lightMapFile) override;
+
 	void GenerateModel(Box gridSize, XMFLOAT2 cellCount) const;
+	static vector<Vertex> BuildVertexList(Box gridSize, XMFLOAT2 cellCount);
+	static vector<unsigned short> BuildIndexList(XMFLOAT2 cellCount);
 
 	ID3D11Buffer* CreateVertexBuffer(unsigned long long vertexCount, Vertex* finalVerts) const;
 	ID3D11Buffer* CreateIndexBuffer(int indexCount, unsigned short* indices) const;
