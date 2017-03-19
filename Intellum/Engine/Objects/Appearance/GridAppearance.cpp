@@ -1,8 +1,8 @@
 #include "GridAppearance.h"
 
-GridAppearance::GridAppearance(DirectX3D* direct3D, vector<char*> textureFiles, char* lightMapFile, Box gridSize) : _direct3D(direct3D), _geometry(new Geometry)
+GridAppearance::GridAppearance(DirectX3D* direct3D, vector<char*> textureFiles, char* lightMapFile, Box gridSize, XMFLOAT2 cellCount) : _direct3D(direct3D), _geometry(new Geometry)
 {
-	Initialise(textureFiles, lightMapFile, gridSize);
+	Initialise(textureFiles, lightMapFile, gridSize, cellCount);
 }
 
 void GridAppearance::Shutdown()
@@ -30,9 +30,9 @@ void GridAppearance::Shutdown()
 	}
 }
 
-void GridAppearance::Initialise(vector<char*> textureFilenames, char* lightMapFile, Box gridSize)
+void GridAppearance::Initialise(vector<char*> textureFilenames, char* lightMapFile, Box gridSize, XMFLOAT2 cellCount)
 {
-	GenerateModel(gridSize);
+	GenerateModel(gridSize, cellCount);
 	LoadTextures(textureFilenames, lightMapFile);
 }
 
@@ -43,49 +43,52 @@ void GridAppearance::LoadTextures(vector<char*> textureFiles, char* lightMapFile
 	_lightMap = CreateTexture::From(_direct3D, lightMapFile);
 }
 
-void GridAppearance::GenerateModel(Box gridSize) const
+void GridAppearance::GenerateModel(Box gridSize, XMFLOAT2 cellCount) const
 {
 	int halfWidth = gridSize.Width / 2;
 	int halfDepth = gridSize.Height / 2;
+	XMFLOAT2 cellSize = XMFLOAT2(gridSize.Width / cellCount.x, gridSize.Height / cellCount.y);
 
-	Vertex* vertices = new Vertex[4];
-	vertices[0].position = XMFLOAT3(halfWidth, 0, halfDepth);
-	vertices[0].texture = XMFLOAT2(1, 1);
-	vertices[0].normal = XMFLOAT3(0, 1, 0);
+	vector<Vertex> vertices = vector<Vertex>();
+	for(int row = 0; row <= cellCount.x; row++)
+	{
+		for(int column = 0; column <= cellCount.y; column++)
+		{
+			Vertex vertex;
+			vertex.position = XMFLOAT3(column * cellSize.x - halfWidth, 0, row * cellSize.y - halfDepth);
+			vertex.texture = XMFLOAT2(cellCount.x / gridSize.Width, cellCount.y / gridSize.Height);
+			vertex.normal = XMFLOAT3(0, 1, 0);
+			vertices.push_back(vertex);
+		}
+	}
 
-	vertices[1].position = XMFLOAT3(halfWidth, 0, -halfDepth);
-	vertices[1].texture = XMFLOAT2(1, -1);
-	vertices[1].normal = XMFLOAT3(0, 1, 0);
+	vector<unsigned short> indices = vector<unsigned short>();
+	for (int row = 0; row < cellCount.x; row++)
+	{
+		for(int column = 0; column < cellCount.y; column++)
+		{
+			unsigned short topLeftIndex = row * (cellCount.y + 1) + column;
+			unsigned short topRightIndex = topLeftIndex + 1;
+			unsigned short bottomLeftIndex = topLeftIndex + cellCount.y + 1;
+			unsigned short bottomRightIndex = topLeftIndex + cellCount.y + 2;
 
-	vertices[2].position = XMFLOAT3(-halfWidth, 0, halfDepth);
-	vertices[2].texture = XMFLOAT2(-1, 1);
-	vertices[2].normal = XMFLOAT3(0, 1, 0);
+			indices.push_back(topLeftIndex);
+			indices.push_back(bottomRightIndex);
+			indices.push_back(topRightIndex);
+			indices.push_back(topLeftIndex);
+			indices.push_back(bottomLeftIndex);
+			indices.push_back(bottomRightIndex);
+		}
+	}
 
-	vertices[3].position = XMFLOAT3(-halfWidth, 0, -halfDepth);
-	vertices[3].texture = XMFLOAT2(-1, -1);
-	vertices[3].normal = XMFLOAT3(0, 1, 0);
-
-	ID3D11Buffer* vertexBuffer = CreateVertexBuffer(4, vertices);
-
-	int indexCount = 6;
-	unsigned short* indices = new unsigned short[indexCount];
-	indices[0] = 0;
-	indices[1] = 1;
-	indices[2] = 2;
-	indices[3] = 1;
-	indices[4] = 3;
-	indices[5] = 2;
-
-	ID3D11Buffer* indexBuffer = CreateIndexBuffer(indexCount, indices);
+	ID3D11Buffer* vertexBuffer = CreateVertexBuffer(vertices.size(), &vertices[0]);
+	ID3D11Buffer* indexBuffer = CreateIndexBuffer(indices.size(), &indices[0]);
 
 	_geometry->VertexBuffer = vertexBuffer;
 	_geometry->IndexBuffer = indexBuffer;
 	_geometry->VBOffset = 0;
 	_geometry->VBStride = sizeof(Vertex);
-	_geometry->IndexCount = static_cast<UINT>(indexCount);
-
-	delete[] vertices;
-	delete[] indices;
+	_geometry->IndexCount = static_cast<UINT>(indices.size());
 }
 
 ID3D11Buffer* GridAppearance::CreateVertexBuffer(unsigned long long vertexCount, Vertex* finalVerts) const
