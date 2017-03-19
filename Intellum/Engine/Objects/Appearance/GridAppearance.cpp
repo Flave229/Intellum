@@ -68,7 +68,7 @@ vector<Vertex> GridAppearance::BuildVertexList(Box gridSize, XMFLOAT2 cellCount)
 		{
 			Vertex vertex;
 			vertex.position = XMFLOAT3(column * cellSize.x - halfWidth, 0, row * cellSize.y - halfDepth);
-			vertex.texture = XMFLOAT2(cellCount.x / gridSize.Width, cellCount.y / gridSize.Height);
+			vertex.texture = XMFLOAT2(row * (cellCount.x / gridSize.Width), column * (cellCount.y / gridSize.Height));
 			vertex.normal = XMFLOAT3(0, 1, 0);
 			vertices.push_back(vertex);
 		}
