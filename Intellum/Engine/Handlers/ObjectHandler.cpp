@@ -34,7 +34,7 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	Transform* transform = new Transform(direct3D);
 	if (!transform) throw Exception("Failed to create a Transform object.");
 
-	IAppearance* appearance = new GridAppearance(direct3D, vector<char*> { "data/images/stone.tga", "data/images/dirt.tga" }, "");
+	IAppearance* appearance = new GridAppearance(direct3D, vector<char*> { "data/images/stone.tga", "data/images/dirt.tga" }, "", Box(40, 40));
 	if (!appearance) throw Exception("Failed to create a Appearance for the grid.");
 
 	SceneObject* object = new SceneObject(direct3D, transform, appearance, shaderController->GetShader(SHADER_DEFAULT));

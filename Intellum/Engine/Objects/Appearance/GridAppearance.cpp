@@ -1,8 +1,8 @@
 #include "GridAppearance.h"
 
-GridAppearance::GridAppearance(DirectX3D* direct3D, vector<char*> textureFiles, char* lightMapFile) : _direct3D(direct3D), _geometry(new Geometry)
+GridAppearance::GridAppearance(DirectX3D* direct3D, vector<char*> textureFiles, char* lightMapFile, Box gridSize) : _direct3D(direct3D), _geometry(new Geometry)
 {
-	Initialise(textureFiles, lightMapFile);
+	Initialise(textureFiles, lightMapFile, gridSize);
 }
 
 void GridAppearance::Shutdown()
@@ -30,9 +30,9 @@ void GridAppearance::Shutdown()
 	}
 }
 
-void GridAppearance::Initialise(vector<char*> textureFilenames, char* lightMapFile)
+void GridAppearance::Initialise(vector<char*> textureFilenames, char* lightMapFile, Box gridSize)
 {
-	GenerateModel();
+	GenerateModel(gridSize);
 	LoadTextures(textureFilenames, lightMapFile);
 }
 
@@ -43,22 +43,25 @@ void GridAppearance::LoadTextures(vector<char*> textureFiles, char* lightMapFile
 	_lightMap = CreateTexture::From(_direct3D, lightMapFile);
 }
 
-void GridAppearance::GenerateModel() const
+void GridAppearance::GenerateModel(Box gridSize) const
 {
+	int halfWidth = gridSize.Width / 2;
+	int halfDepth = gridSize.Height / 2;
+
 	Vertex* vertices = new Vertex[4];
-	vertices[0].position = XMFLOAT3(10, 0, 10);
+	vertices[0].position = XMFLOAT3(halfWidth, 0, halfDepth);
 	vertices[0].texture = XMFLOAT2(1, 1);
 	vertices[0].normal = XMFLOAT3(0, 1, 0);
 
-	vertices[1].position = XMFLOAT3(10, 0, -10);
+	vertices[1].position = XMFLOAT3(halfWidth, 0, -halfDepth);
 	vertices[1].texture = XMFLOAT2(1, -1);
 	vertices[1].normal = XMFLOAT3(0, 1, 0);
 
-	vertices[2].position = XMFLOAT3(-10, 0, 10);
+	vertices[2].position = XMFLOAT3(-halfWidth, 0, halfDepth);
 	vertices[2].texture = XMFLOAT2(-1, 1);
 	vertices[2].normal = XMFLOAT3(0, 1, 0);
 
-	vertices[3].position = XMFLOAT3(-10, 0, -10);
+	vertices[3].position = XMFLOAT3(-halfWidth, 0, -halfDepth);
 	vertices[3].texture = XMFLOAT2(-1, -1);
 	vertices[3].normal = XMFLOAT3(0, 1, 0);
 

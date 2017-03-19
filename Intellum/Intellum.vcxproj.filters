@@ -237,9 +237,6 @@
     <ClInclude Include="loaders\TargaLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="common\Box.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="common\Geometry.h">
       <Filter>Common</Filter>
     </ClInclude>
@@ -343,6 +340,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Objects\Appearance\GridAppearance.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\Box.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

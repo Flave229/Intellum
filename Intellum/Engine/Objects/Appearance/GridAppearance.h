@@ -12,14 +12,14 @@ private:
 	Texture* _lightMap;
 
 private:
-	void Initialise(vector<char*> textureFiles, char* lightMapFile);
+	void Initialise(vector<char*> textureFiles, char* lightMapFile, Box gridSize);
 	void LoadTextures(vector<char*> textureFiles, char* lightMapFile) override;
-	void GenerateModel() const;
+	void GenerateModel(Box gridSize) const;
 
 	ID3D11Buffer* CreateVertexBuffer(unsigned long long vertexCount, Vertex* finalVerts) const;
 	ID3D11Buffer* CreateIndexBuffer(int indexCount, unsigned short* indices) const;
 public:
-	GridAppearance(DirectX3D* direct3D, vector<char*> textureFiles, char* lightMapFile);
+	GridAppearance(DirectX3D* direct3D, vector<char*> textureFiles, char* lightMapFile, Box gridSize);
 	~GridAppearance() override = default;
 
 	void Shutdown() override;
