@@ -168,7 +168,7 @@ void DirectX3D::Update(float delta)
 
 	if (_input->IsControlPressed(TOGGLE_RASTERIZER_STATE))
 	{
-		_rasterizer->ToggleRasterizerState();
+		_rasterizer->ToggleFillMode();
 		_rasterizerToggleCooldown = 0.2;
 	}
 }

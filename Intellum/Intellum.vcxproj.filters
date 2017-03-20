@@ -64,9 +64,6 @@
     <ClCompile Include="Engine\DxComponents\HardwareDescription.cpp">
       <Filter>Engine\DX11Components</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\DxComponents\Rasterizer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\FontEngine\Character.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -175,6 +172,9 @@
     <ClCompile Include="Engine\Objects\Appearance\GridAppearance.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\DxComponents\Rasterizer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DXSystem.h">
@@ -191,9 +191,6 @@
     </ClInclude>
     <ClInclude Include="Engine\DxComponents\HardwareDescription.h">
       <Filter>Engine\DX11Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\DxComponents\Rasterizer.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\FontEngine\Character.h">
       <Filter>Header Files</Filter>
@@ -343,6 +340,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="common\Box.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\DxComponents\Rasterizer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
