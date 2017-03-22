@@ -15,7 +15,7 @@ public:
 		: AppearanceComponent(Geometry(), vector<Texture*>(), nullptr) {}
 
 	AppearanceComponent(Geometry model, vector<Texture*> textures, Texture* lightMap) 
-		: IComponent("Appearance"), Model(model), Textures(textures), LightMap(lightMap), BumpMap(nullptr) {}
+		: IComponent(APPEARANCE), Model(model), Textures(textures), LightMap(lightMap), BumpMap(nullptr) {}
 
 	~AppearanceComponent() override = default;
 };

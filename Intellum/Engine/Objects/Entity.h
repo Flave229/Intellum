@@ -18,6 +18,6 @@ public:
 	~Entity();
 
 	void AddComponent(IComponent* component);
-	void RemoveComponent(string componentName); 
-	IComponent* GetComponent(string componentName);
+	void RemoveComponent(ComponentType component);
+	IComponent* GetComponent(ComponentType component);
 };

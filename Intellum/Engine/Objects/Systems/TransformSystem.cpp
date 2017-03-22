@@ -13,7 +13,7 @@ void TransformSystem::Update(vector<Entity*> entities, float delta)
 {
 	for (Entity* entity : entities)
 	{
-		IComponent* component = entity->GetComponent("Transform");
+		IComponent* component = entity->GetComponent(TRANSFORM);
 		
 		if (component != nullptr)
 		{

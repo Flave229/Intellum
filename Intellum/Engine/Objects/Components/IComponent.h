@@ -2,10 +2,16 @@
 #include <string>
 #include <DirectXMath.h>
 
+enum ComponentType
+{
+	APPEARANCE,
+	TRANSFORM
+};
+
 class IComponent
 {
 public:
-	std::string Name;
-	IComponent(std::string name) : Name(name) {}
+	ComponentType Name;
+	IComponent(ComponentType component) : Name(component) {}
 	virtual ~IComponent() {}
 };

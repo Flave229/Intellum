@@ -21,11 +21,11 @@ void Entity::AddComponent(IComponent* component)
 	_components.push_back(component);
 }
 
-void Entity::RemoveComponent(string componentName)
+void Entity::RemoveComponent(ComponentType component)
 {
 	for (int i = 0; i < _components.size(); i++)
 	{
-		if (_components.at(i)->Name != componentName)
+		if (_components.at(i)->Name != component)
 			continue;
 
 		_components.erase(_components.begin() + i);
@@ -33,11 +33,11 @@ void Entity::RemoveComponent(string componentName)
 	}
 }
 
-IComponent* Entity::GetComponent(string componentName)
+IComponent* Entity::GetComponent(ComponentType component)
 {
 	for (int i = 0; i < _components.size(); i++)
 	{
-		if (_components.at(i)->Name != componentName)
+		if (_components.at(i)->Name != component)
 			continue;
 
 		return _components.at(i);

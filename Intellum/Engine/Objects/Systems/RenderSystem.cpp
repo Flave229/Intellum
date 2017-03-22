@@ -173,14 +173,14 @@ void RenderSystem::Update(vector<Entity*> entities, float delta)
 {
 	for (Entity* entity : entities)
 	{
-		IComponent* component = entity->GetComponent("Appearance");
+		IComponent* component = entity->GetComponent(APPEARANCE);
 
 		if (component == nullptr)
 			continue;
 
 		AppearanceComponent* appearance = static_cast<AppearanceComponent*>(component);
 
-		component = entity->GetComponent("Transform");
+		component = entity->GetComponent(TRANSFORM);
 
 		if (component == nullptr)
 			continue;
