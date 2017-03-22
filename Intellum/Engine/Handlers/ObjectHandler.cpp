@@ -77,11 +77,11 @@ void ObjectHandler::Render()
 	_renderCount = 0;
 	for (int i = 0; i < _objectList.size(); i++)
 	{
-		//if (_frustrum->CheckSphereInsideFrustrum(_objectList.at(i)->GetTransform()->GetPosition(), 0.5f))
-		//{
+		if (_frustrum->CheckSphereInsideFrustrum(_objectList.at(i)->GetTransform()->GetPosition(), 0.5f))
+		{
 			_renderCount++;
 			_objectList.at(i)->Render();
-		//}
+		}
 	}
 }
 
