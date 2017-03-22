@@ -23,7 +23,7 @@ private:
 
 private:
 	void Initialise(vector<char*> textureFiles, char* lightMapFile, char* modelFilename);
-	void LoadTextures(vector<char*> textureFiles, char* lightMapFile) override;
+	void LoadTextures(vector<char*> textureFiles, char* lightMapFile);
 	void LoadModel(char* filename) const;
 
 public:

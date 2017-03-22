@@ -22,7 +22,7 @@ private:
 private:
 	void Initialise(vector<char*> textureFiles, char* lightMapFile);
 	void InitialiseBuffers();
-	void LoadTextures(vector<char*> filenames, char* lightMapFile) override;
+	void LoadTextures(vector<char*> filenames, char* lightMapFile);
 
 public:
 	UIAppearance(DirectX3D* direct3D, Box screenSize, Box bitmapSize, vector<char*> textureFiles, char* lightMapFile);

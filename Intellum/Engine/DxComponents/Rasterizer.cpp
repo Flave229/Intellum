@@ -13,8 +13,8 @@ void Rasterizer::Initialise()
 {
 	CreateRasterizerState(D3D11_FILL_SOLID, D3D11_CULL_BACK);
 	CreateRasterizerState(D3D11_FILL_WIREFRAME, D3D11_CULL_BACK);
-	CreateRasterizerState(D3D11_FILL_SOLID, D3D11_CULL_FRONT);
-	CreateRasterizerState(D3D11_FILL_WIREFRAME, D3D11_CULL_FRONT);
+	CreateRasterizerState(D3D11_FILL_SOLID, D3D11_CULL_NONE);
+	CreateRasterizerState(D3D11_FILL_WIREFRAME, D3D11_CULL_NONE);
 
 	SetRasterizerState(D3D11_FILL_SOLID, D3D11_CULL_BACK);
 }
@@ -37,7 +37,7 @@ void Rasterizer::Shutdown()
 void Rasterizer::SetRasterizerState(D3D11_FILL_MODE fillMode, D3D11_CULL_MODE cullMode)
 {
 	if (_currentFillMode == fillMode && _currentCullMode == cullMode)
-		return
+		return;
 
 	_deviceContext->RSSetState(_rasterizerState[fillMode][cullMode]);
 	_currentFillMode = fillMode;
@@ -74,7 +74,7 @@ void Rasterizer::CreateRasterizerState(D3D11_FILL_MODE fillMode, D3D11_CULL_MODE
 	D3D11_RASTERIZER_DESC rasterizerDescription;
 
 	rasterizerDescription.AntialiasedLineEnable = false;
-	rasterizerDescription.CullMode = D3D11_CULL_BACK;
+	rasterizerDescription.CullMode = cullMode;
 	rasterizerDescription.DepthBias = 0;
 	rasterizerDescription.DepthBiasClamp = 0.0f;
 	rasterizerDescription.DepthClipEnable = true;

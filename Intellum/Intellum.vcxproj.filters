@@ -175,6 +175,9 @@
     <ClCompile Include="Engine\DxComponents\Rasterizer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Objects\Appearance\SkyBoxAppearance.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DXSystem.h">
@@ -343,6 +346,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\DxComponents\Rasterizer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Objects\Appearance\SkyBoxAppearance.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

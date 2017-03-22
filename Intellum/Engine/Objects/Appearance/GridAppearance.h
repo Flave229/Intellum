@@ -13,7 +13,7 @@ private:
 
 private:
 	void Initialise(vector<char*> textureFiles, char* lightMapFile, Box gridSize, XMFLOAT2 cellCount);
-	void LoadTextures(vector<char*> textureFiles, char* lightMapFile) override;
+	void LoadTextures(vector<char*> textureFiles, char* lightMapFile);
 
 	void GenerateModel(Box gridSize, XMFLOAT2 cellCount) const;
 	static vector<Vertex> BuildVertexList(Box gridSize, XMFLOAT2 cellCount);

@@ -1,5 +1,6 @@
 #include "ObjectHandler.h"
 #include "../Objects/Appearance/GridAppearance.h"
+#include "../Objects/Appearance/SkyBoxAppearance.h"
 
 ObjectHandler::ObjectHandler(DirectX3D* direct3D, ShaderController* shaderController, Frustrum* frustrum) : _frustrum(frustrum)
 {
@@ -39,8 +40,17 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 
 	SceneObject* object = new SceneObject(direct3D, transform, appearance, shaderController->GetShader(SHADER_DEFAULT));
 	if (!object) throw Exception("Failed to create a object.");
-
 	_objectList.push_back(object);
+	
+	Transform* transformSkybox = new Transform(direct3D);
+	if (!transformSkybox) throw Exception("Failed to create a Transform object.");
+
+	IAppearance* appearanceSkybox = new SkyBoxAppearance(direct3D, vector<char*> { "data/images/stone.tga" }, "data/models/sphere.obj");
+	if (!appearanceSkybox) throw Exception("Failed to create a Appearance for the grid.");
+
+	SceneObject* objectSkybox = new SceneObject(direct3D, transformSkybox, appearanceSkybox, shaderController->GetShader(SHADER_DEFAULT));
+	if (!objectSkybox) throw Exception("Failed to create a object.");
+	_objectList.push_back(objectSkybox);
 }
 
 void ObjectHandler::Shutdown()
@@ -67,11 +77,11 @@ void ObjectHandler::Render()
 	_renderCount = 0;
 	for (int i = 0; i < _objectList.size(); i++)
 	{
-		if (_frustrum->CheckSphereInsideFrustrum(_objectList.at(i)->GetTransform()->GetPosition(), 0.5f))
-		{
+		//if (_frustrum->CheckSphereInsideFrustrum(_objectList.at(i)->GetTransform()->GetPosition(), 0.5f))
+		//{
 			_renderCount++;
 			_objectList.at(i)->Render();
-		}
+		//}
 	}
 }
 
