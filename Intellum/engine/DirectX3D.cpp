@@ -201,6 +201,11 @@ ID3D11DeviceContext* DirectX3D::GetDeviceContext() const
 	return _deviceContext;
 }
 
+Rasterizer* DirectX3D::GetRasterizer() const
+{
+	return _rasterizer;
+}
+
 XMMATRIX DirectX3D::GetProjectionMatrix() const
 {
 	return _projectionMatrix;

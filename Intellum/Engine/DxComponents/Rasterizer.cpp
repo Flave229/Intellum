@@ -44,6 +44,16 @@ void Rasterizer::SetRasterizerState(D3D11_FILL_MODE fillMode, D3D11_CULL_MODE cu
 	_currentCullMode = cullMode;
 }
 
+void Rasterizer::SetRasterizerFillMode(D3D11_FILL_MODE fillMode)
+{
+	SetRasterizerState(fillMode, _currentCullMode);
+}
+
+void Rasterizer::SetRasterizerCullMode(D3D11_CULL_MODE cullMode)
+{
+	SetRasterizerState(_currentFillMode, cullMode);
+}
+
 void Rasterizer::ToggleFillMode()
 {
 	switch (_currentFillMode)

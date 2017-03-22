@@ -38,6 +38,8 @@ void Appearance::Shutdown()
 
 void Appearance::Render() const
 {
+	_direct3D->GetRasterizer()->SetRasterizerCullMode(D3D11_CULL_BACK);
+
 	ID3D11DeviceContext* deviceContext = _direct3D->GetDeviceContext();
 	deviceContext->IASetVertexBuffers(0, 1, &_geometry->VertexBuffer, &_geometry->VBStride, &_geometry->VBOffset);
 	deviceContext->IASetIndexBuffer(_geometry->IndexBuffer, DXGI_FORMAT_R16_UINT, 0);

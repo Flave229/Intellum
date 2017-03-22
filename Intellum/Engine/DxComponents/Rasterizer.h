@@ -24,5 +24,7 @@ public:
 	void Shutdown();
 
 	void SetRasterizerState(D3D11_FILL_MODE fillMode, D3D11_CULL_MODE cullMode);
+	void SetRasterizerFillMode(D3D11_FILL_MODE fillMode);
+	void SetRasterizerCullMode(D3D11_CULL_MODE cullMode);
 	void ToggleFillMode();
 };

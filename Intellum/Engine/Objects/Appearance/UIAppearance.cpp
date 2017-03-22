@@ -112,6 +112,8 @@ void UIAppearance::LoadTextures(vector<char*> textureFiles, char* lightMapFile)
 
 void UIAppearance::Render() const
 {
+	_direct3D->GetRasterizer()->SetRasterizerCullMode(D3D11_CULL_BACK);
+
 	unsigned int stride = sizeof(Vertex);
 	unsigned int offset = 0;
 
