@@ -36,6 +36,9 @@ void Rasterizer::Shutdown()
 
 void Rasterizer::SetRasterizerState(D3D11_FILL_MODE fillMode, D3D11_CULL_MODE cullMode)
 {
+	if (_currentFillMode == fillMode && _currentCullMode == cullMode)
+		return
+
 	_deviceContext->RSSetState(_rasterizerState[fillMode][cullMode]);
 	_currentFillMode = fillMode;
 	_currentCullMode = cullMode;
