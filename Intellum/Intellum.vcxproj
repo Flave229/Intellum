@@ -167,6 +167,7 @@
     <ClCompile Include="Engine\DxComponents\DepthStencil.cpp" />
     <ClCompile Include="engine\DirectX3D.cpp" />
     <ClCompile Include="engine\GameTimer.cpp" />
+    <ClCompile Include="Engine\Objects\Entity.cpp" />
     <ClCompile Include="ErrorHandling\Exception.cpp" />
     <ClCompile Include="Engine\FontEngine\FontEngine.cpp">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</CompileAsManaged>
@@ -201,10 +202,14 @@
     <ClCompile Include="Engine\ShaderEngine\ShaderParameters\ShaderParameterConstructor.cpp" />
     <ClCompile Include="Engine\Objects\Appearance\UIAppearance.cpp" />
     <ClCompile Include="Engine\Objects\Appearance\SkyBoxAppearance.cpp" />
+    <ClCompile Include="Engine\Objects\Components\TransformComponent.cpp" />
+    <ClCompile Include="Engine\Objects\Systems\TransformSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Objects\Appearance\Texture\CreateTexture.h" />
     <ClInclude Include="Engine\Objects\Appearance\IAppearance.h" />
+    <ClInclude Include="Engine\Objects\Components\IComponent.h" />
+    <ClInclude Include="Engine\Objects\ISceneObject.h" />
     <ClInclude Include="Engine\ShaderEngine\ConstantBuffers\ColorOverrideBuffer.h" />
     <ClInclude Include="Common\Constants.h" />
     <ClInclude Include="Engine\Graphics\Bitmap.h" />
@@ -223,6 +228,7 @@
     <ClInclude Include="engine\DirectX3D.h" />
     <ClInclude Include="engine\GameTimer.h" />
     <ClInclude Include="common\Geometry.h" />
+    <ClInclude Include="Engine\Objects\Entity.h" />
     <ClInclude Include="ErrorHandling\Exception.h" />
     <ClInclude Include="Engine\FontEngine\FontEngine.h" />
     <ClInclude Include="Engine\FontEngine\Font.h" />
@@ -260,6 +266,8 @@
     <ClInclude Include="Engine\ShaderEngine\ShaderResources.h" />
     <ClInclude Include="Loaders\OBJLoader\OBJFileLoader.h" />
     <ClInclude Include="Engine\Objects\Appearance\SkyBoxAppearance.h" />
+    <ClInclude Include="Engine\Objects\Components\TransformComponent.h" />
+    <ClInclude Include="Engine\Objects\Systems\TransformSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="data\models\Cube.txt">

@@ -6,6 +6,8 @@
 #include <vector>
 #include "../Objects/SceneObject.h"
 #include "../ShaderEngine/ShaderController.h"
+#include "../Objects/Entity.h"
+#include "../Objects/Systems/TransformSystem.h"
 
 using namespace DirectX;
 using namespace std;
@@ -17,6 +19,9 @@ private:
 	vector<ISceneObject*> _objectList;
 
 	int _renderCount;
+
+	vector<Entity*> _entitySpike;
+	TransformSystem* _transformSystem;
 
 	void InitialiseObjects(DirectX3D* direct3D, ShaderController* shaderController);
 public:

@@ -1,6 +1,8 @@
 #include "ObjectHandler.h"
 #include "../Objects/Appearance/GridAppearance.h"
 #include "../Objects/Appearance/SkyBoxAppearance.h"
+#include "../Objects/Entity.h"
+#include "../Objects/Components/TransformComponent.h"
 
 ObjectHandler::ObjectHandler(DirectX3D* direct3D, ShaderController* shaderController, Frustrum* frustrum) : _frustrum(frustrum)
 {
@@ -14,6 +16,12 @@ ObjectHandler::~ObjectHandler()
 void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* shaderController)
 {
 	srand(static_cast<unsigned int>(time(nullptr)));
+
+	_transformSystem = new TransformSystem(direct3D);
+
+	_entitySpike.push_back(new Entity());
+	IComponent* transformComponent = new TransformComponent(XMFLOAT3(0, 10, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(1, 1, 1));
+	_entitySpike.at(0)->AddComponent(transformComponent);
 
 	for(int i = 0; i < 25; i++)
 	{
@@ -71,6 +79,8 @@ void ObjectHandler::Update(float delta)
 	{
 		_objectList.at(i)->Update(delta);
 	}
+
+	_transformSystem->Update(_entitySpike, delta);
 }
 
 void ObjectHandler::Render()
