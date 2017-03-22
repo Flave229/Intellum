@@ -3,25 +3,32 @@
 #include "../Objects/Appearance/SkyBoxAppearance.h"
 #include "../Objects/Entity.h"
 #include "../Objects/Components/TransformComponent.h"
+#include "../Objects/Components/AppearanceComponent.h"
+#include "../Objects/Systems/RenderSystem.h"
 
-ObjectHandler::ObjectHandler(DirectX3D* direct3D, ShaderController* shaderController, Frustrum* frustrum) : _frustrum(frustrum)
+ObjectHandler::ObjectHandler(DirectX3D* direct3D, ShaderController* shaderController, Frustrum* frustrum, HWND hwnd, Camera* camera, Light* light) : _frustrum(frustrum)
 {
-	InitialiseObjects(direct3D, shaderController);
+	InitialiseObjects(direct3D, shaderController, hwnd, camera, light);
 }
 
 ObjectHandler::~ObjectHandler()
 {
 }
 
-void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* shaderController)
+void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* shaderController, HWND hwnd, Camera* camera, Light* light)
 {
 	srand(static_cast<unsigned int>(time(nullptr)));
 
 	_transformSystem = new TransformSystem(direct3D);
+	_renderSystem = new RenderSystem(direct3D, hwnd, camera, light);
 
 	_entitySpike.push_back(new Entity());
 	IComponent* transformComponent = new TransformComponent(XMFLOAT3(0, 10, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(1, 1, 1));
 	_entitySpike.at(0)->AddComponent(transformComponent);
+
+	Geometry modelData = OBJLoader::Load("data/models/sphere.obj", direct3D->GetDevice());
+	IComponent* appearanceComponent = new AppearanceComponent(modelData, CreateTexture::ListFrom(direct3D, { "data/images/stone.tga", "data/images/dirt.tga" }), nullptr);
+	_entitySpike.at(0)->AddComponent(appearanceComponent);
 
 	for(int i = 0; i < 25; i++)
 	{
@@ -85,6 +92,7 @@ void ObjectHandler::Update(float delta)
 
 void ObjectHandler::Render()
 {
+	_renderSystem->Update(_entitySpike, 0);
 	_renderCount = 0;
 	for (int i = 0; i < _objectList.size(); i++)
 	{

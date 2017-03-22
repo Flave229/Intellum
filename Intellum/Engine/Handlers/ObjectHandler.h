@@ -8,6 +8,7 @@
 #include "../ShaderEngine/ShaderController.h"
 #include "../Objects/Entity.h"
 #include "../Objects/Systems/TransformSystem.h"
+#include "../Objects/Systems/RenderSystem.h"
 
 using namespace DirectX;
 using namespace std;
@@ -22,10 +23,10 @@ private:
 
 	vector<Entity*> _entitySpike;
 	TransformSystem* _transformSystem;
-
-	void InitialiseObjects(DirectX3D* direct3D, ShaderController* shaderController);
+	RenderSystem* _renderSystem;
+	void InitialiseObjects(DirectX3D* direct3D, ShaderController* shaderController, HWND hwnd, Camera* camera, Light* light);
 public:
-	ObjectHandler(DirectX3D* direct3D, ShaderController* shaderController, Frustrum* frustrum);
+	ObjectHandler(DirectX3D* direct3D, ShaderController* shaderController, Frustrum* frustrum, HWND hwnd, Camera* camera, Light* light);
 	~ObjectHandler();
 
 	void Shutdown();

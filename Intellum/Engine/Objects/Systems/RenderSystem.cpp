@@ -1,19 +1,15 @@
-#include "DefaultShader.h"
+#include "RenderSystem.h"
 
-DefaultShader::DefaultShader(DirectX3D* direct3D, Camera* camera, Light* light) : IShaderType(direct3D, camera, light)
+RenderSystem::RenderSystem(DirectX3D* direct3D, HWND hwnd, Camera* camera, Light* light): _direct3D(direct3D), _camera(camera), _light(light)
+{
+	Initialise(hwnd, L"shaders/VertexShader.hlsl", L"shaders/PixelShader.hlsl");
+}
+
+void RenderSystem::Shutdown()
 {
 }
 
-DefaultShader::~DefaultShader()
-{
-}
-
-void DefaultShader::Initialise(HWND hwnd)
-{
-	InitialiseShader(hwnd, L"shaders/VertexShader.hlsl", L"shaders/PixelShader.hlsl");
-}
-
-void DefaultShader::InitialiseShader(HWND hwnd, WCHAR* vsFilename, WCHAR* psFilename)
+void RenderSystem::Initialise(HWND hwnd, WCHAR* vsFilename, WCHAR* psFilename)
 {
 	try
 	{
@@ -138,119 +134,17 @@ void DefaultShader::InitialiseShader(HWND hwnd, WCHAR* vsFilename, WCHAR* psFile
 		result = _direct3D->GetDevice()->CreateSamplerState(&samplerDesc, &_sampleState);
 		if (FAILED(result)) throw Exception("Failed to create the sampler state");
 	}
-	catch(Exception& exception)
+	catch (Exception& exception)
 	{
 		throw Exception("And error occured initialising the Default Shader", exception);
 	}
-	catch(...)
+	catch (...)
 	{
 		throw Exception("And error occured initialising the Default Shader");
 	}
 }
 
-void DefaultShader::Shutdown()
-{
-	if (_matrixBuffer)
-	{
-		_matrixBuffer->Shutdown();
-		delete _matrixBuffer;
-		_matrixBuffer = nullptr;
-	}
-
-	if (_cameraBuffer)
-	{
-		_cameraBuffer->Shutdown();
-		delete _cameraBuffer;
-		_cameraBuffer = nullptr;
-	}
-
-	if (_lightBuffer)
-	{
-		_lightBuffer->Shutdown();
-		delete _lightBuffer;
-		_lightBuffer = nullptr;
-	}
-
-	if (_layout)
-	{
-		_layout->Release();
-		_layout = nullptr;
-	}
-
-	if (_pixelShader)
-	{
-		_pixelShader->Release();
-		_pixelShader = nullptr;
-	}
-
-	if (_vertexShader)
-	{
-		_vertexShader->Release();
-		_vertexShader = nullptr;
-	}
-
-	if (_sampleState)
-	{
-		_sampleState->Release();
-		_sampleState = nullptr;
-	}
-}
-
-void DefaultShader::Render(int indexCount, ShaderResources shaderResources, XMMATRIX worldMatrix, XMMATRIX projectionMatrix)
-{
-	SetShaderParameters(shaderResources, worldMatrix, projectionMatrix);
-	RenderShader(indexCount);
-}
-
-void DefaultShader::SetShaderParameters(ShaderResources shaderResources, XMMATRIX worldMatrix, XMMATRIX projectionMatrix)
-{
-	try
-	{
-		_matrixBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructMatrixBufferParameters(0, worldMatrix, projectionMatrix, _camera->GetViewMatrix()));
-		_cameraBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructDefaultBufferParameters(1));
-		_lightBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructDefaultBufferParameters(0));
-
-		bool lightMapEnabled = false;
-		if (shaderResources.lightMap != nullptr)
-			lightMapEnabled = true;
-
-		bool bumpMapEnabled = false;
-		if (shaderResources.bumpMap != nullptr)
-			bumpMapEnabled = true;
-
-		int textureCount = static_cast<int>(shaderResources.textureArray.size());
-		_textureBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructTextureBufferParameters(1, textureCount, lightMapEnabled, bumpMapEnabled));
-		
-		_direct3D->GetDeviceContext()->PSSetShaderResources(0, textureCount, &shaderResources.textureArray.at(0));
-
-		if (lightMapEnabled)
-			_direct3D->GetDeviceContext()->PSSetShaderResources(11, 1, &shaderResources.lightMap);
-		
-		if (bumpMapEnabled)
-			_direct3D->GetDeviceContext()->PSSetShaderResources(12, 1, &shaderResources.bumpMap);
-	}
-	catch(Exception& exception)
-	{
-		throw Exception("Error when setting Shader Parameters in Default Shader: ", exception);
-	}
-	catch (...)
-	{
-		throw Exception("Error when setting Shader Parameters in Default Shader: ");
-	}
-}
-
-void DefaultShader::RenderShader(int indexCount)
-{
-	_direct3D->GetDeviceContext()->IASetInputLayout(_layout);
-
-	_direct3D->GetDeviceContext()->VSSetShader(_vertexShader, nullptr, 0);
-	_direct3D->GetDeviceContext()->PSSetShader(_pixelShader, nullptr, 0);
-
-	_direct3D->GetDeviceContext()->PSSetSamplers(0, 1, &_sampleState);
-	_direct3D->GetDeviceContext()->DrawIndexed(indexCount, 0, 0);
-}
-
-void DefaultShader::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, WCHAR* shaderFileName)
+void RenderSystem::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, WCHAR* shaderFileName)
 {
 	char* compileErrors;
 	unsigned long long bufferSize;
@@ -273,4 +167,104 @@ void DefaultShader::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd
 	errorMessage = nullptr;
 
 	MessageBox(hwnd, L"Error compiling shader. Check shader-error.txt for message.", shaderFileName, MB_OK);
+}
+
+void RenderSystem::Update(vector<Entity*> entities, float delta)
+{
+	for (Entity* entity : entities)
+	{
+		IComponent* component = entity->GetComponent("Appearance");
+
+		if (component == nullptr)
+			continue;
+
+		AppearanceComponent* appearance = static_cast<AppearanceComponent*>(component);
+
+		component = entity->GetComponent("Transform");
+
+		if (component == nullptr)
+			continue;
+
+		TransformComponent* transform = static_cast<TransformComponent*>(component);
+
+		BuildBufferInformation(appearance);
+		SetShaderParameters(appearance, transform);
+		RenderShader(appearance->Model.IndexCount);
+	}
+}
+
+void RenderSystem::BuildBufferInformation(AppearanceComponent* appearance) const
+{
+	_direct3D->GetRasterizer()->SetRasterizerCullMode(D3D11_CULL_BACK);
+
+	ID3D11DeviceContext* deviceContext = _direct3D->GetDeviceContext();
+	deviceContext->IASetVertexBuffers(0, 1, &appearance->Model.VertexBuffer, &appearance->Model.VBStride, &appearance->Model.VBOffset);
+	deviceContext->IASetIndexBuffer(appearance->Model.IndexBuffer, DXGI_FORMAT_R16_UINT, 0);
+	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+}
+
+void RenderSystem::SetShaderParameters(AppearanceComponent* appearance, TransformComponent* transform) const
+{
+	try
+	{
+		_matrixBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructMatrixBufferParameters(0, transform->Transformation, _direct3D->GetProjectionMatrix(), _camera->GetViewMatrix()));
+		_cameraBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructDefaultBufferParameters(1));
+		_lightBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructDefaultBufferParameters(0));
+
+		bool lightMapEnabled = false;
+		if (appearance->LightMap != nullptr)
+			lightMapEnabled = true;
+
+		bool bumpMapEnabled = false;
+		if (appearance->BumpMap != nullptr)
+			bumpMapEnabled = true;
+
+		int textureCount = static_cast<int>(appearance->Textures.size());
+		_textureBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructTextureBufferParameters(1, textureCount, lightMapEnabled, bumpMapEnabled));
+
+		_direct3D->GetDeviceContext()->PSSetShaderResources(0, textureCount, &ExtractResourceViewsFrom(appearance->Textures).at(0));
+
+		if (lightMapEnabled)
+		{
+			ID3D11ShaderResourceView* lightMap = appearance->LightMap->GetTexture();
+			_direct3D->GetDeviceContext()->PSSetShaderResources(11, 1, &lightMap);
+		}
+
+		if (bumpMapEnabled)
+		{
+			ID3D11ShaderResourceView* bumpMap = appearance->BumpMap->GetTexture();
+			_direct3D->GetDeviceContext()->PSSetShaderResources(12, 1, &bumpMap);
+		}
+	}
+	catch (Exception& exception)
+	{
+		throw Exception("Error when setting Shader Parameters in Default Shader: ", exception);
+	}
+	catch (...)
+	{
+		throw Exception("Error when setting Shader Parameters in Default Shader: ");
+	}
+}
+
+vector<ID3D11ShaderResourceView*> RenderSystem::ExtractResourceViewsFrom(vector<Texture*> textures)
+{
+	vector<ID3D11ShaderResourceView*> textureViews;
+
+	for (Texture* texture : textures)
+	{
+		textureViews.push_back(texture->GetTexture());
+	}
+
+	return textureViews;
+}
+
+void RenderSystem::RenderShader(int indexCount)
+{
+	_direct3D->GetDeviceContext()->IASetInputLayout(_layout);
+
+	_direct3D->GetDeviceContext()->VSSetShader(_vertexShader, nullptr, 0);
+	_direct3D->GetDeviceContext()->PSSetShader(_pixelShader, nullptr, 0);
+
+	_direct3D->GetDeviceContext()->PSSetSamplers(0, 1, &_sampleState);
+	_direct3D->GetDeviceContext()->DrawIndexed(indexCount, 0, 0);
 }

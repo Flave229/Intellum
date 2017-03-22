@@ -202,14 +202,16 @@
     <ClCompile Include="Engine\ShaderEngine\ShaderParameters\ShaderParameterConstructor.cpp" />
     <ClCompile Include="Engine\Objects\Appearance\UIAppearance.cpp" />
     <ClCompile Include="Engine\Objects\Appearance\SkyBoxAppearance.cpp" />
-    <ClCompile Include="Engine\Objects\Components\TransformComponent.cpp" />
     <ClCompile Include="Engine\Objects\Systems\TransformSystem.cpp" />
+    <ClCompile Include="Engine\Objects\Systems\RenderSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Objects\Components\AppearanceComponent.h" />
     <ClInclude Include="Engine\Objects\Appearance\Texture\CreateTexture.h" />
     <ClInclude Include="Engine\Objects\Appearance\IAppearance.h" />
     <ClInclude Include="Engine\Objects\Components\IComponent.h" />
     <ClInclude Include="Engine\Objects\ISceneObject.h" />
+    <ClInclude Include="Engine\Objects\Systems\ISystem.h" />
     <ClInclude Include="Engine\ShaderEngine\ConstantBuffers\ColorOverrideBuffer.h" />
     <ClInclude Include="Common\Constants.h" />
     <ClInclude Include="Engine\Graphics\Bitmap.h" />
@@ -268,6 +270,7 @@
     <ClInclude Include="Engine\Objects\Appearance\SkyBoxAppearance.h" />
     <ClInclude Include="Engine\Objects\Components\TransformComponent.h" />
     <ClInclude Include="Engine\Objects\Systems\TransformSystem.h" />
+    <ClInclude Include="Engine\Objects\Systems\RenderSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="data\models\Cube.txt">

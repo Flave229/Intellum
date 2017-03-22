@@ -5,11 +5,11 @@ TransformSystem::TransformSystem(DirectX3D* direct3D) : _direct3D(direct3D)
 {
 }
 
-TransformSystem::~TransformSystem()
+void TransformSystem::Shutdown()
 {
 }
 
-void TransformSystem::Update(vector<Entity*> entities, float delta) const
+void TransformSystem::Update(vector<Entity*> entities, float delta)
 {
 	for (Entity* entity : entities)
 	{

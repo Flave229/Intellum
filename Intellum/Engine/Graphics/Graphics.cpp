@@ -30,7 +30,7 @@ void Graphics::Initialise(Input* input, Box screenSize, HWND hwnd)
 		bool result = _shaderController->Initialise(hwnd, _camera, _light);
 		if (!_shaderController) throw Exception("Failed to create the shader controller.");
 
-		_objectHandler = new ObjectHandler(_direct3D, _shaderController, _camera->GetFrustrum());
+		_objectHandler = new ObjectHandler(_direct3D, _shaderController, _camera->GetFrustrum(), hwnd, _camera, _light);
 		if (!_objectHandler) throw Exception("Failed to create the object handler.");
 		
 		UIAppearance* uiAppearance = new UIAppearance(_direct3D, screenSize, Box(256, 256), vector<char*> { "data/images/dirt.tga", "data/images/josh.tga", "data/images/stone.tga" }, "data/images/basic_light_map.tga");

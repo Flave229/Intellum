@@ -2,8 +2,9 @@
 #include <vector>
 #include "../../DirectX3D.h"
 #include "../Entity.h"
+#include "ISystem.h"
 
-class TransformSystem
+class TransformSystem : public ISystem
 {
 private:
 	DirectX3D* _direct3D;
@@ -13,7 +14,8 @@ private:
 	static float CapRotationRange(float rotation);
 public:
 	TransformSystem(DirectX3D* direct3D);
-	~TransformSystem();
-
-	void Update(vector<Entity*> entities, float delta) const;
+	~TransformSystem() override = default;
+	void Shutdown() override;
+	
+	void Update(vector<Entity*> entities, float delta) override;
 };
