@@ -1,10 +1,6 @@
 #include "Transform.h"
 
-Transform::Transform(DirectX3D* direct3D) : _direct3D(direct3D), _position(XMFLOAT3(0.0f, 0.0f, 0.0f)), _rotation(XMFLOAT3(0.0f, 0.0f, 0.0f))
-{
-}
-
-Transform::Transform(const Transform& other) : _direct3D(other._direct3D), _transformation(other._transformation), _position(other._position), _rotation(other._rotation)
+Transform::Transform(DirectX3D* direct3D) : _direct3D(direct3D), _position(XMFLOAT3(0.0f, 0.0f, 0.0f)), _rotation(XMFLOAT3(0.0f, 0.0f, 0.0f)), _scale(XMFLOAT3(1.0f, 1.0f, 1.0f))
 {
 }
 
@@ -19,6 +15,7 @@ void Transform::Update(float delta)
 	UpdatePosition(delta);
 	UpdateRotation(delta);
 
+	transformation *= XMMatrixScaling(_scale.x, _scale.y, _scale.z);
 	transformation *= XMMatrixRotationRollPitchYaw(_rotation.x, _rotation.y, _rotation.z);
 	transformation *= XMMatrixTranslation(_position.x, _position.y, _position.z);
 
@@ -40,6 +37,16 @@ void Transform::UpdateRotation(float delta)
 XMMATRIX& Transform::GetTransformation()
 {
 	return _transformation;
+}
+
+void Transform::SetScale(XMFLOAT3 scale)
+{
+	_scale = scale;
+}
+
+XMFLOAT3& Transform::GetScale()
+{
+	return _scale;
 }
 
 void Transform::SetPosition(XMFLOAT3 position)

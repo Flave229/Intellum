@@ -11,6 +11,7 @@ private:
 	XMMATRIX _transformation;
 
 	XMFLOAT3 _position;
+	XMFLOAT3 _scale;
 	XMFLOAT3 _rotation;
 
 	XMFLOAT3 _velocity;
@@ -22,13 +23,15 @@ private:
 
 public:
 	Transform(DirectX3D* direct3D);
-	Transform(const Transform& other);
 	~Transform();
 
 	void Update(float delta);
 	
 	XMMATRIX& GetTransformation();
-	
+
+	void SetScale(XMFLOAT3 scale);
+	XMFLOAT3& GetScale();
+
 	void SetPosition(XMFLOAT3 position);
 	XMFLOAT3& GetPosition();
 

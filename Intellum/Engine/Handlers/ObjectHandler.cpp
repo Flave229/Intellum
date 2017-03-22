@@ -44,6 +44,7 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	
 	Transform* transformSkybox = new Transform(direct3D);
 	if (!transformSkybox) throw Exception("Failed to create a Transform object.");
+	transformSkybox->SetScale(XMFLOAT3(1000, 1000, 1000));
 
 	IAppearance* appearanceSkybox = new SkyBoxAppearance(direct3D, vector<char*> { "data/images/stone.tga" }, "data/models/sphere.obj");
 	if (!appearanceSkybox) throw Exception("Failed to create a Appearance for the grid.");
@@ -77,7 +78,7 @@ void ObjectHandler::Render()
 	_renderCount = 0;
 	for (int i = 0; i < _objectList.size(); i++)
 	{
-		if (_frustrum->CheckSphereInsideFrustrum(_objectList.at(i)->GetTransform()->GetPosition(), 0.5f))
+		if (_frustrum->CheckSphereInsideFrustrum(_objectList.at(i)->GetTransform()->GetPosition(), 0.5f * _objectList.at(i)->GetTransform()->GetScale().x))
 		{
 			_renderCount++;
 			_objectList.at(i)->Render();
