@@ -171,6 +171,10 @@ void RenderSystem::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd,
 
 void RenderSystem::Update(vector<Entity*> entities, float delta)
 {
+}
+
+void RenderSystem::Render(vector<Entity*> entities)
+{
 	for (Entity* entity : entities)
 	{
 		IComponent* component = entity->GetComponent(APPEARANCE);

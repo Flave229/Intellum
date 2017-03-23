@@ -32,6 +32,10 @@ void TransformSystem::Update(vector<Entity*> entities, float delta)
 	}
 }
 
+void TransformSystem::Render(vector<Entity*> entities)
+{
+}
+
 void TransformSystem::UpdatePosition(XMFLOAT3& position, XMFLOAT3 velocity, float delta)
 {
 	position.x += velocity.x * delta;

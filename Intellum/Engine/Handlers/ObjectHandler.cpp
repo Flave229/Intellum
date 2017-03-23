@@ -23,7 +23,8 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	_renderSystem = new RenderSystem(direct3D, hwnd, camera, light);
 
 	_entitySpike.push_back(new Entity());
-	IComponent* transformComponent = new TransformComponent(XMFLOAT3(0, 10, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(1, 1, 1));
+	TransformComponent* transformComponent = new TransformComponent(XMFLOAT3(0, 10, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(1, 1, 1));
+	transformComponent->AngularVelocity = XMFLOAT3(0.0f, (static_cast<float>(rand()) / RAND_MAX * 5.0f - 2.5f) * static_cast<float>(XM_PI), 0.0f);
 	_entitySpike.at(0)->AddComponent(transformComponent);
 
 	Geometry modelData = OBJLoader::Load("data/models/sphere.obj", direct3D->GetDevice());
@@ -92,7 +93,7 @@ void ObjectHandler::Update(float delta)
 
 void ObjectHandler::Render()
 {
-	_renderSystem->Update(_entitySpike, 0);
+	_renderSystem->Render(_entitySpike);
 	_renderCount = 0;
 	for (int i = 0; i < _objectList.size(); i++)
 	{
