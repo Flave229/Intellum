@@ -9,14 +9,33 @@ ObjectHandler::~ObjectHandler()
 {
 }
 
+void ObjectHandler::Shutdown()
+{
+	for (unsigned long long i = _entityList.size(); i > 0; i--)
+	{
+		_entityList.back()->Shutdown();
+		_entityList.pop_back();
+	}
+
+	_entityList.clear();
+
+	for (unsigned long long i = _systemList.size(); i > 0; i--)
+	{
+		_systemList.back()->Shutdown();
+		_systemList.pop_back();
+	}
+
+	_systemList.clear();
+}
+
 void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* shaderController, HWND hwnd, Camera* camera, Light* light)
 {
 	srand(static_cast<unsigned int>(time(nullptr)));
 
 	GeometryBuilder geometryBuilder = GeometryBuilder(direct3D->GetDevice());
 
-	_transformSystem = new TransformSystem(direct3D);
-	_renderSystem = new RenderSystem(direct3D, hwnd, camera, light);
+	_systemList.push_back(new TransformSystem(direct3D));
+	_systemList.push_back(new RenderSystem(direct3D, hwnd, camera, light));
 
 	for(int i = 0; i < 25; i++)
 	{
@@ -57,25 +76,20 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	_entityList.push_back(skyBox);
 }
 
-void ObjectHandler::Shutdown()
-{
-	for (unsigned long long i = _entityList.size(); i > 0; i--)
-	{
-		_entityList.back()->Shutdown();
-		_entityList.pop_back();
-	}
-
-	_entityList.clear();
-}
-
 void ObjectHandler::Update(float delta)
 {
-	_transformSystem->Update(_entityList, delta);
+	for (ISystem* system : _systemList)
+	{
+		system->Update(_entityList, delta);
+	}
 }
 
 void ObjectHandler::Render()
 {
-	_renderSystem->Render(_entityList);
+	for (ISystem* system : _systemList)
+	{
+		system->Render(_entityList);
+	}
 	_renderCount = 0;
 }
 

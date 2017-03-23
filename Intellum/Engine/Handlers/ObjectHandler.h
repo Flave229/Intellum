@@ -27,8 +27,7 @@ private:
 	int _renderCount;
 
 	vector<Entity*> _entityList;
-	TransformSystem* _transformSystem;
-	RenderSystem* _renderSystem;
+	vector<ISystem*> _systemList;
 	void InitialiseObjects(DirectX3D* direct3D, ShaderController* shaderController, HWND hwnd, Camera* camera, Light* light);
 public:
 	ObjectHandler(DirectX3D* direct3D, ShaderController* shaderController, Frustrum* frustrum, HWND hwnd, Camera* camera, Light* light);
