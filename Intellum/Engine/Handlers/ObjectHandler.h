@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <time.h>
 #include <vector>
-#include "../Objects/SceneObject.h"
 #include "../ShaderEngine/ShaderController.h"
 #include "../Objects/Entity.h"
 #include "../Objects/Systems/TransformSystem.h"
@@ -14,6 +13,8 @@
 #include "../Objects/Components/AppearanceComponent.h"
 #include "../Objects/Systems/RenderSystem.h"
 #include "../Objects/Appearance/Geometry/GeometryBuilder.h"
+#include "../Objects/Components/RasterizerComponent.h"
+#include "../Objects/Appearance/Texture/CreateTexture.h"
 
 using namespace DirectX;
 using namespace std;
@@ -22,7 +23,6 @@ class ObjectHandler
 {
 private:
 	Frustrum* _frustrum;
-	vector<ISceneObject*> _OLD_objectList;
 
 	int _renderCount;
 

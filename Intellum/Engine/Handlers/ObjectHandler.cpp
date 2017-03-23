@@ -1,5 +1,4 @@
 #include "ObjectHandler.h"
-#include "../Objects/Components/RasterizerComponent.h"
 
 ObjectHandler::ObjectHandler(DirectX3D* direct3D, ShaderController* shaderController, Frustrum* frustrum, HWND hwnd, Camera* camera, Light* light) : _frustrum(frustrum)
 {
@@ -67,23 +66,10 @@ void ObjectHandler::Shutdown()
 	}
 
 	_entityList.clear();
-
-	for (unsigned long long i = _OLD_objectList.size(); i > 0 ; i--)
-	{
-		_OLD_objectList.back()->Shutdown();
-		_OLD_objectList.pop_back();
-	}
-
-	_OLD_objectList.clear();
 }
 
 void ObjectHandler::Update(float delta)
 {
-	for(int i = 0; i < _OLD_objectList.size(); i++)
-	{
-		_OLD_objectList.at(i)->Update(delta);
-	}
-
 	_transformSystem->Update(_entityList, delta);
 }
 
@@ -91,14 +77,6 @@ void ObjectHandler::Render()
 {
 	_renderSystem->Render(_entityList);
 	_renderCount = 0;
-	for (int i = 0; i < _OLD_objectList.size(); i++)
-	{
-		if (_frustrum->CheckSphereInsideFrustrum(_OLD_objectList.at(i)->GetTransform()->GetPosition(), 0.5f * _OLD_objectList.at(i)->GetTransform()->GetScale().x))
-		{
-			_renderCount++;
-			_OLD_objectList.at(i)->Render();
-		}
-	}
 }
 
 int ObjectHandler::GetRenderedModelCount() const

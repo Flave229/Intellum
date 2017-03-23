@@ -11,7 +11,6 @@
 #include "../FontEngine/FontEngine.h"
 #include "../SystemMetrics/FramesPerSecond.h"
 #include "../SystemMetrics/Cpu.h"
-#include "../Objects/SceneObject.h"
 #include "../Handlers/ObjectHandler.h"
 #include "../../Common/Constants.h"
 

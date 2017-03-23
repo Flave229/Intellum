@@ -197,7 +197,6 @@
     <ClCompile Include="Engine\FontEngine\UnicodeDictionary.cpp" />
     <ClCompile Include="Engine\Handlers\ObjectHandler.cpp" />
     <ClCompile Include="Engine\Objects\Transform\Transform.cpp" />
-    <ClCompile Include="Engine\Objects\SceneObject.cpp" />
     <ClCompile Include="Engine\ShaderEngine\ConstantBuffers\MatrixBuffer.cpp" />
     <ClCompile Include="Engine\ShaderEngine\ShaderParameters\ShaderParameterConstructor.cpp" />
     <ClCompile Include="Engine\Objects\Appearance\UIAppearance.cpp" />
@@ -261,7 +260,6 @@
     <ClInclude Include="Engine\FontEngine\UnicodeDictionary.h" />
     <ClInclude Include="Engine\Handlers\ObjectHandler.h" />
     <ClInclude Include="Engine\Objects\Transform\Transform.h" />
-    <ClInclude Include="Engine\Objects\SceneObject.h" />
     <ClInclude Include="Engine\ShaderEngine\ConstantBuffers\MatrixBuffer.h" />
     <ClInclude Include="Engine\ShaderEngine\ShaderParameters\ShaderParameterConstructor.h" />
     <ClInclude Include="Engine\Objects\Appearance\UIAppearance.h" />
