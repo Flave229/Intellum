@@ -2,9 +2,9 @@
 #include <d3d11.h>
 #include <vector>
 #include <DirectXMath.h>
-#include "../../../../common/Vertex.h"
-#include "../../../../common/Box.h"
-#include "../../../../common/Geometry.h"
+#include "../../../common/Vertex.h"
+#include "../../../common/Box.h"
+#include "Geometry.h"
 
 using namespace std;
 using namespace DirectX;

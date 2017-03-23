@@ -1,5 +1,5 @@
 #pragma once
-#include "../../../common/Geometry.h"
+#include "../Geometry/Geometry.h"
 #include "../Appearance/Texture/Texture.h"
 #include "IComponent.h"
 

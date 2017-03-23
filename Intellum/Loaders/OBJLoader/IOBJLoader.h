@@ -1,5 +1,5 @@
 #pragma once
-#include "../../common/Geometry.h"
+#include "../../Engine/Objects/Geometry/Geometry.h"
 #include "../../common/Vertex.h"
 
 class IOBJLoader

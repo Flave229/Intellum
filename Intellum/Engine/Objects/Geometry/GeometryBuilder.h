@@ -1,7 +1,6 @@
 #pragma once
-#include "../../../DirectX3D.h"
-#include "../../../../common/Geometry.h"
-#include "../../../../loaders/OBJLoader.h"
+#include "../../DirectX3D.h"
+#include "../../../loaders/OBJLoader.h"
 #include "GridBuilder.h"
 
 class GeometryBuilder

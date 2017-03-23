@@ -13,7 +13,6 @@
 #include "OBJLoader/IOBJLoader.h"
 #include "OBJLoader/OBJFileLoader.h"
 #include "OBJLoader/OBJBinaryLoader.h"
-#include "../common/Geometry.h"
 #include "../common/Vertex.h"
 
 using namespace DirectX;

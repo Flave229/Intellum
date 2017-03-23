@@ -175,10 +175,10 @@
     <ClCompile Include="Engine\Objects\Systems\RenderSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Objects\Appearance\Geometry\GeometryBuilder.cpp">
+    <ClCompile Include="Engine\Objects\Geometry\GeometryBuilder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Objects\Appearance\Geometry\GridBuilder.cpp">
+    <ClCompile Include="Engine\Objects\Geometry\GridBuilder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -239,9 +239,6 @@
     </ClInclude>
     <ClInclude Include="loaders\TargaLoader.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="common\Geometry.h">
-      <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="common\Vertex.h">
       <Filter>Header Files</Filter>
@@ -366,12 +363,6 @@
     <ClInclude Include="Engine\Objects\Systems\RenderSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Objects\Appearance\Geometry\GeometryBuilder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Objects\Appearance\Geometry\GridBuilder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Objects\Components\RasterizerComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -383,6 +374,15 @@
     </ClInclude>
     <ClInclude Include="Engine\Camera\FrustrumCullingType.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Objects\Geometry\GeometryBuilder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Objects\Geometry\GridBuilder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Objects\Geometry\Geometry.h">
+      <Filter>Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

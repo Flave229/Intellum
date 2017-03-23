@@ -183,8 +183,8 @@
     <ClCompile Include="Engine\Graphics\Light.cpp" />
     <ClCompile Include="Engine\Input\ControlMappings.cpp" />
     <ClCompile Include="Engine\Input\InputControl.cpp" />
-    <ClCompile Include="Engine\Objects\Appearance\Geometry\GeometryBuilder.cpp" />
-    <ClCompile Include="Engine\Objects\Appearance\Geometry\GridBuilder.cpp" />
+    <ClCompile Include="Engine\Objects\Geometry\GeometryBuilder.cpp" />
+    <ClCompile Include="Engine\Objects\Geometry\GridBuilder.cpp" />
     <ClCompile Include="Loaders\OBJLoader\OBJBinaryLoader.cpp" />
     <ClCompile Include="loaders\OBJLoader.cpp" />
     <ClCompile Include="Loaders\OBJLoader\OBJFileLoader.cpp" />
@@ -231,7 +231,7 @@
     <ClInclude Include="Engine\DxComponents\DepthStencil.h" />
     <ClInclude Include="engine\DirectX3D.h" />
     <ClInclude Include="engine\GameTimer.h" />
-    <ClInclude Include="common\Geometry.h" />
+    <ClInclude Include="Engine\Objects\Geometry\Geometry.h" />
     <ClInclude Include="Engine\Objects\Entity.h" />
     <ClInclude Include="ErrorHandling\Exception.h" />
     <ClInclude Include="Engine\FontEngine\FontEngine.h" />
@@ -248,8 +248,8 @@
     <ClInclude Include="Engine\Input\ControlMappings.h" />
     <ClInclude Include="Engine\Input\InputControl.h" />
     <ClInclude Include="Engine\ShaderEngine\ConstantBuffers\IShaderBuffer.h" />
-    <ClInclude Include="Engine\Objects\Appearance\Geometry\GeometryBuilder.h" />
-    <ClInclude Include="Engine\Objects\Appearance\Geometry\GridBuilder.h" />
+    <ClInclude Include="Engine\Objects\Geometry\GeometryBuilder.h" />
+    <ClInclude Include="Engine\Objects\Geometry\GridBuilder.h" />
     <ClInclude Include="Loaders\models\OBJGeometryData.h" />
     <ClInclude Include="Loaders\OBJLoader\IOBJLoader.h" />
     <ClInclude Include="Loaders\OBJLoader\OBJBinaryLoader.h" />

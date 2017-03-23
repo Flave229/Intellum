@@ -12,7 +12,7 @@
 #include "../Objects/Components/TransformComponent.h"
 #include "../Objects/Components/AppearanceComponent.h"
 #include "../Objects/Systems/RenderSystem.h"
-#include "../Objects/Appearance/Geometry/GeometryBuilder.h"
+#include "../Objects/Geometry/GeometryBuilder.h"
 #include "../Objects/Components/RasterizerComponent.h"
 #include "../Objects/Appearance/Texture/CreateTexture.h"
 #include "../Objects/Systems/SystemType.h"
