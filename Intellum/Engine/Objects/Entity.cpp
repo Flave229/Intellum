@@ -10,6 +10,17 @@ Entity::~Entity()
 {
 }
 
+void Entity::Shutdown()
+{
+	for (unsigned long long i = _components.size(); i > 0; i--)
+	{
+		_components.back()->Shutdown();
+		_components.pop_back();
+	}
+
+	_components.clear();
+}
+
 void Entity::Initialise()
 {
 	GUID id;

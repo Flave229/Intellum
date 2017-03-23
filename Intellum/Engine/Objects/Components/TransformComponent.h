@@ -24,4 +24,6 @@ public:
 		: IComponent(TRANSFORM), Position(position), Rotation(rotation), Scale(scale), Velocity(0, 0, 0), AngularVelocity(0, 0, 0) {}
 
 	~TransformComponent() override = default;
+
+	void Shutdown() override {}
 };

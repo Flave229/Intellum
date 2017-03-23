@@ -17,11 +17,11 @@ class ObjectHandler
 {
 private:
 	Frustrum* _frustrum;
-	vector<ISceneObject*> _objectList;
+	vector<ISceneObject*> _OLD_objectList;
 
 	int _renderCount;
 
-	vector<Entity*> _entitySpike;
+	vector<Entity*> _entityList;
 	TransformSystem* _transformSystem;
 	RenderSystem* _renderSystem;
 	void InitialiseObjects(DirectX3D* direct3D, ShaderController* shaderController, HWND hwnd, Camera* camera, Light* light);

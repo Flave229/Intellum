@@ -17,6 +17,8 @@ public:
 	Entity();
 	~Entity();
 
+	void Shutdown();
+
 	void AddComponent(IComponent* component);
 	void RemoveComponent(ComponentType component);
 	IComponent* GetComponent(ComponentType component);

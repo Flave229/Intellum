@@ -14,4 +14,6 @@ public:
 	ComponentType Name;
 	IComponent(ComponentType component) : Name(component) {}
 	virtual ~IComponent() {}
+
+	virtual void Shutdown() = 0;
 };
