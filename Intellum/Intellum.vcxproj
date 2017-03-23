@@ -189,7 +189,6 @@
     <ClCompile Include="loaders\OBJLoader.cpp" />
     <ClCompile Include="Loaders\OBJLoader\OBJFileLoader.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Engine\Objects\Appearance\Appearance.cpp" />
     <ClCompile Include="Engine\DxComponents\Rasterizer.cpp" />
     <ClCompile Include="Engine\ShaderEngine\ShaderController.cpp" />
     <ClCompile Include="DXSystem.cpp" />
@@ -254,7 +253,6 @@
     <ClInclude Include="Loaders\OBJLoader\OBJBinaryLoader.h" />
     <ClInclude Include="loaders\models\TargaData.h" />
     <ClInclude Include="loaders\OBJLoader.h" />
-    <ClInclude Include="Engine\Objects\Appearance\Appearance.h" />
     <ClInclude Include="Engine\DxComponents\Rasterizer.h" />
     <ClInclude Include="Engine\ShaderEngine\ShaderController.h" />
     <ClInclude Include="DXSystem.h" />

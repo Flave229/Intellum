@@ -1,8 +1,8 @@
 #pragma once
-#include "Appearance/Appearance.h"
 #include "../ShaderEngine/IShaderType.h"
 #include "../Camera/Frustrum.h"
 #include "ISceneObject.h"
+#include "Appearance/IAppearance.h"
 
 class SceneObject : public ISceneObject
 {

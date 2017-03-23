@@ -157,9 +157,6 @@
     <ClCompile Include="Engine\Objects\Appearance\Texture\Texture.cpp">
       <Filter>Source Files\ObjectData</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Objects\Appearance\Appearance.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Objects\Appearance\UIAppearance.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -332,9 +329,6 @@
     </ClInclude>
     <ClInclude Include="Engine\Objects\Appearance\Texture\Texture.h">
       <Filter>Header Files\ObjectData</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Objects\Appearance\Appearance.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Objects\Appearance\IAppearance.h">
       <Filter>Header Files</Filter>
