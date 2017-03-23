@@ -1,4 +1,5 @@
 #include "ObjectHandler.h"
+#include "../Objects/Components/RasterizerComponent.h"
 
 ObjectHandler::ObjectHandler(DirectX3D* direct3D, ShaderController* shaderController, Frustrum* frustrum, HWND hwnd, Camera* camera, Light* light) : _frustrum(frustrum)
 {
@@ -21,8 +22,8 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	for(int i = 0; i < 25; i++)
 	{
 		Entity* entity = new Entity();
-		XMFLOAT3 position = XMFLOAT3(((static_cast<float>(rand()) / RAND_MAX) * 30.0f) - 15.0f, ((static_cast<float>(rand()) / RAND_MAX) * 10.0f) - 5.0f, ((static_cast<float>(rand()) / RAND_MAX) * 30.0f) - 15.0f);
-		TransformComponent* transformComponent = new TransformComponent(position, XMFLOAT3(0, 0, 0), XMFLOAT3(1, 1, 1));
+		TransformComponent* transformComponent = new TransformComponent();
+		transformComponent->Position = XMFLOAT3(((static_cast<float>(rand()) / RAND_MAX) * 30.0f) - 15.0f, ((static_cast<float>(rand()) / RAND_MAX) * 10.0f) - 5.0f, ((static_cast<float>(rand()) / RAND_MAX) * 30.0f) - 15.0f);
 		transformComponent->AngularVelocity = XMFLOAT3(0.0f, (static_cast<float>(rand()) / RAND_MAX * 5.0f - 2.5f) * static_cast<float>(XM_PI), 0.0f);
 		entity->AddComponent(transformComponent);
 
@@ -41,16 +42,20 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 
 	_entityList.push_back(entity);
 	
-	Transform* transformSkybox = new Transform(direct3D);
-	if (!transformSkybox) throw Exception("Failed to create a Transform object.");
-	transformSkybox->SetScale(XMFLOAT3(1000, 1000, 1000));
+	Entity* skyBox = new Entity();
 
-	IAppearance* appearanceSkybox = new SkyBoxAppearance(direct3D, vector<char*> { "data/images/stone.tga" }, "data/models/sphere.obj");
-	if (!appearanceSkybox) throw Exception("Failed to create a Appearance for the grid.");
+	TransformComponent* transform = new TransformComponent();
+	transform->Scale = XMFLOAT3(1000, 1000, 1000);
+	skyBox->AddComponent(transform);
 
-	SceneObject* objectSkybox = new SceneObject(direct3D, transformSkybox, appearanceSkybox, shaderController->GetShader(SHADER_DEFAULT));
-	if (!objectSkybox) throw Exception("Failed to create a object.");
-	_OLD_objectList.push_back(objectSkybox);
+	RasterizerComponent* rasterizer = new RasterizerComponent();
+	rasterizer->CullMode = D3D11_CULL_FRONT;
+	skyBox->AddComponent(rasterizer);
+
+	Geometry skyBoxModel = geometryBuilder.FromFile("data/models/sphere.obj");
+	skyBox->AddComponent(new AppearanceComponent(skyBoxModel, CreateTexture::ListFrom(direct3D, { "data/images/stone.tga" }), nullptr));
+
+	_entityList.push_back(skyBox);
 }
 
 void ObjectHandler::Shutdown()

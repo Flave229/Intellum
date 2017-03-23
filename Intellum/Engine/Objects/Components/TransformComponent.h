@@ -18,10 +18,7 @@ public:
 	XMFLOAT3 AngularVelocity;
 
 	TransformComponent() 
-		: TransformComponent(XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(1, 1, 1)) {}
-
-	TransformComponent(XMFLOAT3 position, XMFLOAT3 rotation, XMFLOAT3 scale) 
-		: IComponent(TRANSFORM), Position(position), Rotation(rotation), Scale(scale), Velocity(0, 0, 0), AngularVelocity(0, 0, 0) {}
+		: IComponent(TRANSFORM), Position(0, 0, 0), Rotation(0, 0, 0), Scale(1, 1, 1), Velocity(0, 0, 0), AngularVelocity(0, 0, 0) {}
 
 	~TransformComponent() override = default;
 

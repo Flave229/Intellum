@@ -33,7 +33,7 @@ private:
 	void Initialise(HWND hwnd, WCHAR* vsFilename, WCHAR* psFilename); 
 	void OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, WCHAR* shaderFileName);
 
-	void BuildBufferInformation(AppearanceComponent* appearance) const;
+	void BuildBufferInformation(Entity* entity, AppearanceComponent* appearance) const;
 	void SetShaderParameters(AppearanceComponent* appearance, TransformComponent* transform) const;
 	static vector<ID3D11ShaderResourceView*> ExtractResourceViewsFrom(vector<Texture*> textures); 
 	void RenderShader(int indexCount);

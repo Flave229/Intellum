@@ -5,7 +5,8 @@
 enum ComponentType
 {
 	APPEARANCE,
-	TRANSFORM
+	TRANSFORM,
+	RASTERIZER
 };
 
 class IComponent

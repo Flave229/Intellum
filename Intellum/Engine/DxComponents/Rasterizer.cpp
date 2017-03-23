@@ -13,6 +13,8 @@ void Rasterizer::Initialise()
 {
 	CreateRasterizerState(D3D11_FILL_SOLID, D3D11_CULL_BACK);
 	CreateRasterizerState(D3D11_FILL_WIREFRAME, D3D11_CULL_BACK);
+	CreateRasterizerState(D3D11_FILL_SOLID, D3D11_CULL_FRONT);
+	CreateRasterizerState(D3D11_FILL_WIREFRAME, D3D11_CULL_FRONT);
 	CreateRasterizerState(D3D11_FILL_SOLID, D3D11_CULL_NONE);
 	CreateRasterizerState(D3D11_FILL_WIREFRAME, D3D11_CULL_NONE);
 

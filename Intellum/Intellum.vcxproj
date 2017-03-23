@@ -211,6 +211,7 @@
     <ClInclude Include="Engine\Objects\Appearance\Texture\CreateTexture.h" />
     <ClInclude Include="Engine\Objects\Appearance\IAppearance.h" />
     <ClInclude Include="Engine\Objects\Components\IComponent.h" />
+    <ClInclude Include="Engine\Objects\Components\RasterizerComponent.h" />
     <ClInclude Include="Engine\Objects\ISceneObject.h" />
     <ClInclude Include="Engine\Objects\Systems\ISystem.h" />
     <ClInclude Include="Engine\ShaderEngine\ConstantBuffers\ColorOverrideBuffer.h" />

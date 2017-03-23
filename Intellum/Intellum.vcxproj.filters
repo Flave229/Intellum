@@ -390,6 +390,9 @@
     <ClInclude Include="Engine\Objects\Appearance\Geometry\GridBuilder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Objects\Components\RasterizerComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="shaders\PixelShader.hlsl">

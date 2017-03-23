@@ -1,4 +1,5 @@
 #include "RenderSystem.h"
+#include "../Components/RasterizerComponent.h"
 
 RenderSystem::RenderSystem(DirectX3D* direct3D, HWND hwnd, Camera* camera, Light* light): _direct3D(direct3D), _camera(camera), _light(light)
 {
@@ -191,15 +192,20 @@ void RenderSystem::Render(vector<Entity*> entities)
 
 		TransformComponent* transform = static_cast<TransformComponent*>(component);
 
-		BuildBufferInformation(appearance);
+		BuildBufferInformation(entity, appearance);
 		SetShaderParameters(appearance, transform);
 		RenderShader(appearance->Model.IndexCount);
 	}
 }
 
-void RenderSystem::BuildBufferInformation(AppearanceComponent* appearance) const
+void RenderSystem::BuildBufferInformation(Entity* entity, AppearanceComponent* appearance) const
 {
-	_direct3D->GetRasterizer()->SetRasterizerCullMode(D3D11_CULL_BACK);
+	IComponent* component = entity->GetComponent(RASTERIZER);
+
+	if (component == nullptr)
+		_direct3D->GetRasterizer()->SetRasterizerCullMode(D3D11_CULL_BACK);
+	else
+		_direct3D->GetRasterizer()->SetRasterizerCullMode(static_cast<RasterizerComponent*>(component)->CullMode);
 
 	ID3D11DeviceContext* deviceContext = _direct3D->GetDeviceContext();
 	deviceContext->IASetVertexBuffers(0, 1, &appearance->Model.VertexBuffer, &appearance->Model.VBStride, &appearance->Model.VBOffset);
