@@ -183,7 +183,8 @@
     <ClCompile Include="Engine\Graphics\Light.cpp" />
     <ClCompile Include="Engine\Input\ControlMappings.cpp" />
     <ClCompile Include="Engine\Input\InputControl.cpp" />
-    <ClCompile Include="Engine\Objects\Appearance\GridAppearance.cpp" />
+    <ClCompile Include="Engine\Objects\Appearance\Geometry\GeometryBuilder.cpp" />
+    <ClCompile Include="Engine\Objects\Appearance\Geometry\GridBuilder.cpp" />
     <ClCompile Include="Loaders\OBJLoader\OBJBinaryLoader.cpp" />
     <ClCompile Include="loaders\OBJLoader.cpp" />
     <ClCompile Include="Loaders\OBJLoader\OBJFileLoader.cpp" />
@@ -246,7 +247,8 @@
     <ClInclude Include="Engine\Input\ControlMappings.h" />
     <ClInclude Include="Engine\Input\InputControl.h" />
     <ClInclude Include="Engine\ShaderEngine\ConstantBuffers\IShaderBuffer.h" />
-    <ClInclude Include="Engine\Objects\Appearance\GridAppearance.h" />
+    <ClInclude Include="Engine\Objects\Appearance\Geometry\GeometryBuilder.h" />
+    <ClInclude Include="Engine\Objects\Appearance\Geometry\GridBuilder.h" />
     <ClInclude Include="Loaders\models\OBJGeometryData.h" />
     <ClInclude Include="Loaders\OBJLoader\IOBJLoader.h" />
     <ClInclude Include="Loaders\OBJLoader\OBJBinaryLoader.h" />

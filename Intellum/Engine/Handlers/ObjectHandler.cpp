@@ -1,10 +1,4 @@
 #include "ObjectHandler.h"
-#include "../Objects/Appearance/GridAppearance.h"
-#include "../Objects/Appearance/SkyBoxAppearance.h"
-#include "../Objects/Entity.h"
-#include "../Objects/Components/TransformComponent.h"
-#include "../Objects/Components/AppearanceComponent.h"
-#include "../Objects/Systems/RenderSystem.h"
 
 ObjectHandler::ObjectHandler(DirectX3D* direct3D, ShaderController* shaderController, Frustrum* frustrum, HWND hwnd, Camera* camera, Light* light) : _frustrum(frustrum)
 {
@@ -19,6 +13,8 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 {
 	srand(static_cast<unsigned int>(time(nullptr)));
 
+	GeometryBuilder geometryBuilder = GeometryBuilder(direct3D->GetDevice());
+
 	_transformSystem = new TransformSystem(direct3D);
 	_renderSystem = new RenderSystem(direct3D, hwnd, camera, light);
 
@@ -30,22 +26,20 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 		transformComponent->AngularVelocity = XMFLOAT3(0.0f, (static_cast<float>(rand()) / RAND_MAX * 5.0f - 2.5f) * static_cast<float>(XM_PI), 0.0f);
 		entity->AddComponent(transformComponent);
 
-		Geometry modelData = OBJLoader::Load("data/models/sphere.obj", direct3D->GetDevice());
+		Geometry modelData = geometryBuilder.FromFile("data/models/sphere.obj");
 		IComponent* appearanceComponent = new AppearanceComponent(modelData, CreateTexture::ListFrom(direct3D, { "data/images/stone.tga", "data/images/dirt.tga" }), nullptr);
 		entity->AddComponent(appearanceComponent);
 
 		_entityList.push_back(entity);
 	}
 
-	Transform* transform = new Transform(direct3D);
-	if (!transform) throw Exception("Failed to create a Transform object.");
+	Entity* entity = new Entity();
+	entity->AddComponent(new TransformComponent());
 
-	IAppearance* appearance = new GridAppearance(direct3D, vector<char*> { "data/images/stone.tga", "data/images/dirt.tga" }, "", Box(100, 100), XMFLOAT2(10, 10));
-	if (!appearance) throw Exception("Failed to create a Appearance for the grid.");
+	Geometry modelData = geometryBuilder.ForGrid(Box(100, 100), XMFLOAT2(10, 10));
+	entity->AddComponent(new AppearanceComponent(modelData, CreateTexture::ListFrom(direct3D, { "data/images/stone.tga", "data/images/dirt.tga" }), nullptr));
 
-	SceneObject* object = new SceneObject(direct3D, transform, appearance, shaderController->GetShader(SHADER_DEFAULT));
-	if (!object) throw Exception("Failed to create a object.");
-	_OLD_objectList.push_back(object);
+	_entityList.push_back(entity);
 	
 	Transform* transformSkybox = new Transform(direct3D);
 	if (!transformSkybox) throw Exception("Failed to create a Transform object.");
