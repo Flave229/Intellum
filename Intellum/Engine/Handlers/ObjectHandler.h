@@ -15,6 +15,7 @@
 #include "../Objects/Appearance/Geometry/GeometryBuilder.h"
 #include "../Objects/Components/RasterizerComponent.h"
 #include "../Objects/Appearance/Texture/CreateTexture.h"
+#include "../Objects/Systems/SystemType.h"
 
 using namespace DirectX;
 using namespace std;
@@ -24,10 +25,8 @@ class ObjectHandler
 private:
 	Frustrum* _frustrum;
 
-	int _renderCount;
-
 	vector<Entity*> _entityList;
-	vector<ISystem*> _systemList;
+	map<SystemType, ISystem*> _systemList;
 	void InitialiseObjects(DirectX3D* direct3D, ShaderController* shaderController, HWND hwnd, Camera* camera, Light* light);
 public:
 	ObjectHandler(DirectX3D* direct3D, ShaderController* shaderController, Frustrum* frustrum, HWND hwnd, Camera* camera, Light* light);
@@ -38,5 +37,5 @@ public:
 	void Update(float delta);
 	void Render();
 
-	int GetRenderedModelCount() const;
+	int GetRenderedModelCount();
 };

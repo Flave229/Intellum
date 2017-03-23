@@ -30,13 +30,15 @@ private:
 	ID3D11InputLayout* _layout;
 	ID3D11SamplerState* _sampleState;
 
+	int _renderCount;
+
 	void Initialise(HWND hwnd, WCHAR* vsFilename, WCHAR* psFilename); 
 	void OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, WCHAR* shaderFileName);
 
 	void BuildBufferInformation(Entity* entity, AppearanceComponent* appearance) const;
 	void SetShaderParameters(AppearanceComponent* appearance, TransformComponent* transform) const;
 	static vector<ID3D11ShaderResourceView*> ExtractResourceViewsFrom(vector<Texture*> textures); 
-	void RenderShader(int indexCount);
+	void RenderShader(int indexCount) const;
 public:
 	RenderSystem(DirectX3D* direct3D, HWND hwnd, Camera* camera, Light* light);
 	~RenderSystem() override = default;
@@ -44,4 +46,6 @@ public:
 
 	void Update(vector<Entity*> entities, float delta) override;
 	void Render(vector<Entity*> entities) override;
+
+	int RenderCount() const;
 };

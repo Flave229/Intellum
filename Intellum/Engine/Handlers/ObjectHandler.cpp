@@ -19,10 +19,12 @@ void ObjectHandler::Shutdown()
 
 	_entityList.clear();
 
-	for (unsigned long long i = _systemList.size(); i > 0; i--)
+	map<SystemType, ISystem*>::iterator iterator;
+	for (iterator = _systemList.begin(); iterator != _systemList.end(); ++iterator)
 	{
-		_systemList.back()->Shutdown();
-		_systemList.pop_back();
+		iterator->second->Shutdown();
+		delete iterator->second;
+		iterator->second = nullptr;
 	}
 
 	_systemList.clear();
@@ -34,8 +36,8 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 
 	GeometryBuilder geometryBuilder = GeometryBuilder(direct3D->GetDevice());
 
-	_systemList.push_back(new TransformSystem(direct3D));
-	_systemList.push_back(new RenderSystem(direct3D, hwnd, camera, light));
+	_systemList[TRANSFORM_SYSTEM] = new TransformSystem(direct3D);
+	_systemList[RENDER_SYSTEM] = new RenderSystem(direct3D, hwnd, camera, light);
 
 	for(int i = 0; i < 25; i++)
 	{
@@ -78,22 +80,23 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 
 void ObjectHandler::Update(float delta)
 {
-	for (ISystem* system : _systemList)
+	map<SystemType, ISystem*>::iterator iterator;
+	for (iterator = _systemList.begin(); iterator != _systemList.end(); ++iterator)
 	{
-		system->Update(_entityList, delta);
+		iterator->second->Update(_entityList, delta);
 	}
 }
 
 void ObjectHandler::Render()
 {
-	for (ISystem* system : _systemList)
+	map<SystemType, ISystem*>::iterator iterator;
+	for (iterator = _systemList.begin(); iterator != _systemList.end(); ++iterator)
 	{
-		system->Render(_entityList);
+		iterator->second->Render(_entityList);
 	}
-	_renderCount = 0;
 }
 
-int ObjectHandler::GetRenderedModelCount() const
+int ObjectHandler::GetRenderedModelCount()
 {
-	return _renderCount;
+	return static_cast<RenderSystem*>(_systemList[RENDER_SYSTEM])->RenderCount();
 }

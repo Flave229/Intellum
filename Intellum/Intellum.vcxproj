@@ -211,6 +211,7 @@
     <ClInclude Include="Engine\Objects\Components\RasterizerComponent.h" />
     <ClInclude Include="Engine\Objects\ISceneObject.h" />
     <ClInclude Include="Engine\Objects\Systems\ISystem.h" />
+    <ClInclude Include="Engine\Objects\Systems\SystemType.h" />
     <ClInclude Include="Engine\ShaderEngine\ConstantBuffers\ColorOverrideBuffer.h" />
     <ClInclude Include="Common\Constants.h" />
     <ClInclude Include="Engine\Graphics\Bitmap.h" />

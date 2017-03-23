@@ -172,6 +172,7 @@ void RenderSystem::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd,
 
 void RenderSystem::Update(vector<Entity*> entities, float delta)
 {
+	_renderCount = 0;
 }
 
 void RenderSystem::Render(vector<Entity*> entities)
@@ -195,6 +196,8 @@ void RenderSystem::Render(vector<Entity*> entities)
 		BuildBufferInformation(entity, appearance);
 		SetShaderParameters(appearance, transform);
 		RenderShader(appearance->Model.IndexCount);
+
+		_renderCount++;
 	}
 }
 
@@ -268,7 +271,7 @@ vector<ID3D11ShaderResourceView*> RenderSystem::ExtractResourceViewsFrom(vector<
 	return textureViews;
 }
 
-void RenderSystem::RenderShader(int indexCount)
+void RenderSystem::RenderShader(int indexCount) const
 {
 	_direct3D->GetDeviceContext()->IASetInputLayout(_layout);
 
@@ -277,4 +280,9 @@ void RenderSystem::RenderShader(int indexCount)
 
 	_direct3D->GetDeviceContext()->PSSetSamplers(0, 1, &_sampleState);
 	_direct3D->GetDeviceContext()->DrawIndexed(indexCount, 0, 0);
+}
+
+int RenderSystem::RenderCount() const
+{
+	return _renderCount;
 }

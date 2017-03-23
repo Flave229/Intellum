@@ -128,6 +128,8 @@ void Graphics::Render(XMFLOAT2 mousePoint) const
 	{
 		_direct3D->BeginScene(XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f));
 
+		_objectHandler->Render();
+
 		_direct3D->TurnZBufferOff();
 
 		_bitmap->Render();
@@ -140,8 +142,6 @@ void Graphics::Render(XMFLOAT2 mousePoint) const
 
 		_direct3D->TurnZBufferOn();
 		 
-		_objectHandler->Render();
-
 		_direct3D->EndScene();
 	}
 	catch(Exception& exception)
