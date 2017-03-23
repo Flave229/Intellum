@@ -9,7 +9,6 @@
 #include "../Objects/Entity.h"
 #include "../Objects/Systems/TransformSystem.h"
 #include "../Objects/Systems/RenderSystem.h"
-#include "../Objects/Appearance/SkyBoxAppearance.h"
 #include "../Objects/Entity.h"
 #include "../Objects/Components/TransformComponent.h"
 #include "../Objects/Components/AppearanceComponent.h"

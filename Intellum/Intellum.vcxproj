@@ -202,7 +202,6 @@
     <ClCompile Include="Engine\ShaderEngine\ConstantBuffers\MatrixBuffer.cpp" />
     <ClCompile Include="Engine\ShaderEngine\ShaderParameters\ShaderParameterConstructor.cpp" />
     <ClCompile Include="Engine\Objects\Appearance\UIAppearance.cpp" />
-    <ClCompile Include="Engine\Objects\Appearance\SkyBoxAppearance.cpp" />
     <ClCompile Include="Engine\Objects\Systems\TransformSystem.cpp" />
     <ClCompile Include="Engine\Objects\Systems\RenderSystem.cpp" />
   </ItemGroup>
@@ -270,7 +269,6 @@
     <ClInclude Include="Engine\Objects\Appearance\UIAppearance.h" />
     <ClInclude Include="Engine\ShaderEngine\ShaderResources.h" />
     <ClInclude Include="Loaders\OBJLoader\OBJFileLoader.h" />
-    <ClInclude Include="Engine\Objects\Appearance\SkyBoxAppearance.h" />
     <ClInclude Include="Engine\Objects\Components\TransformComponent.h" />
     <ClInclude Include="Engine\Objects\Systems\TransformSystem.h" />
     <ClInclude Include="Engine\Objects\Systems\RenderSystem.h" />
