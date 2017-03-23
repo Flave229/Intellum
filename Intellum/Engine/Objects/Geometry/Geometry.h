@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include <d3d11.h>
+#include "../../../loaders/models/OBJGeometryData.h"
 
 struct Geometry
 {
@@ -13,9 +14,7 @@ struct Geometry
 	UINT VertexCount;
 	UINT IndexCount;
 
-	float width;
-	float height;
-	float depth;
+	XMFLOAT3 Size;
 
 	void Shutdown()
 	{

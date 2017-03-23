@@ -90,9 +90,7 @@ Geometry OBJBinaryLoader::Load(char* filename, std::fstream* binaryFile, ID3D11D
 		}
 	}
 
-	meshData.width = highestX - lowestX;
-	meshData.height = highestY - lowestY;
-	meshData.depth = highestZ - lowestZ;
+	meshData.Size = XMFLOAT3(highestX - lowestX, highestY - lowestY, highestZ - lowestZ);
 	
 	delete[] indices;
 	delete[] finalVerts;

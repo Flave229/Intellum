@@ -33,6 +33,7 @@ Geometry OBJFileLoader::Load(char* filename, fstream* binaryFile, ID3D11Device* 
 		meshData.VBStride = sizeof(Vertex);
 		meshData.IndexCount = static_cast<UINT>(indexCount);
 		meshData.IndexBuffer = indexBuffer;
+		meshData.Size = geometryData.Size;
 		delete[] indicesArray;
 		delete[] finalVerts;
 
@@ -66,6 +67,15 @@ OBJGeometryData OBJFileLoader::BuildGeometryDataFrom(char* fileName, bool invert
 		{ TEXTURECOORDINATES, vector<unsigned short>() }
 	};
 
+
+	bool firstVertex = true;
+	float maxX = 0;
+	float minX = 0;
+	float maxY = 0;
+	float minY = 0;
+	float maxZ = 0;
+	float minZ = 0;
+
 	string input;
 
 	while (!inFile.eof())
@@ -80,6 +90,34 @@ OBJGeometryData OBJFileLoader::BuildGeometryDataFrom(char* fileName, bool invert
 			inFile >> vert.z;
 
 			geometryData.VertexData[VERTICES].push_back(vert);
+
+			if (firstVertex == false)
+			{
+				if (vert.x > maxX)
+					maxX = vert.x;
+				else if (vert.x < minX)
+					minX = vert.x;
+
+				if (vert.y > maxY)
+					maxY = vert.y;
+				else if (vert.y < minY)
+					minY = vert.y;
+
+				if (vert.z > maxZ)
+					maxZ = vert.z;
+				else if (vert.z < minZ)
+					minZ = vert.z;
+			}
+			else
+			{
+				firstVertex = false;
+				maxX = vert.x;
+				minX = vert.x;
+				maxY = vert.y;
+				minY = vert.y;
+				maxZ = vert.z;
+				minZ = vert.z;
+			}
 		}
 		else if (input.compare(OBJFileType::Texture()) == 0)
 		{
@@ -131,6 +169,8 @@ OBJGeometryData OBJFileLoader::BuildGeometryDataFrom(char* fileName, bool invert
 		}
 	}
 
+	geometryData.Size = XMFLOAT3(maxX - minX, maxY - minY, maxZ - minZ);
+
 	inFile.close();
 	return geometryData;
 }
@@ -148,6 +188,7 @@ OBJGeometryData OBJFileLoader::BuildExpandedGeometryDataFrom(OBJGeometryData geo
 	{
 		{ VERTICES, geometryData.IndexData[VERTICES] }
 	};
+	expandedGeometryData.Size = geometryData.Size;
 
 	for (unsigned int i = 0; i < geometryData.IndexData[VERTICES].size(); i++)
 	{
@@ -172,6 +213,7 @@ OBJGeometryData OBJFileLoader::CreateIndices(OBJGeometryData geometryData)
 		{ NORMALS, vector<XMFLOAT3>(geometryData.VertexData[NORMALS].size()) },
 		{ TEXTURECOORDINATES, vector<XMFLOAT3>(geometryData.VertexData[TEXTURECOORDINATES].size()) }
 	};
+	indexedGeometryData.Size = geometryData.Size;
 
 	map<Vertex, unsigned short> vertToIndexMap;
 
