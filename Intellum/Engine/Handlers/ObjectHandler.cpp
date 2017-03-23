@@ -1,6 +1,7 @@
 #include "ObjectHandler.h"
+#include "../Objects/Components/FurstrumCullingComponent.h"
 
-ObjectHandler::ObjectHandler(DirectX3D* direct3D, ShaderController* shaderController, Frustrum* frustrum, HWND hwnd, Camera* camera, Light* light) : _frustrum(frustrum)
+ObjectHandler::ObjectHandler(DirectX3D* direct3D, ShaderController* shaderController, HWND hwnd, Camera* camera, Light* light)
 {
 	InitialiseObjects(direct3D, shaderController, hwnd, camera, light);
 }
@@ -50,6 +51,10 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 		Geometry modelData = geometryBuilder.FromFile("data/models/sphere.obj");
 		IComponent* appearanceComponent = new AppearanceComponent(modelData, CreateTexture::ListFrom(direct3D, { "data/images/stone.tga", "data/images/dirt.tga" }), nullptr);
 		entity->AddComponent(appearanceComponent);
+
+		FrustrumCullingComponent* frustrum = new FrustrumCullingComponent();
+		frustrum->CullingType = FRUSTRUM_CULL_SPHERE;
+		entity->AddComponent(frustrum);
 
 		_entityList.push_back(entity);
 	}

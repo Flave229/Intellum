@@ -6,7 +6,8 @@ enum ComponentType
 {
 	APPEARANCE,
 	TRANSFORM,
-	RASTERIZER
+	RASTERIZER,
+	FRUSTRUM_CULLING
 };
 
 class IComponent

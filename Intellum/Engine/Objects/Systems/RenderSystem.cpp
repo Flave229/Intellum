@@ -1,5 +1,6 @@
 #include "RenderSystem.h"
 #include "../Components/RasterizerComponent.h"
+#include "../Components/FurstrumCullingComponent.h"
 
 RenderSystem::RenderSystem(DirectX3D* direct3D, HWND hwnd, Camera* camera, Light* light): _direct3D(direct3D), _camera(camera), _light(light)
 {
@@ -193,11 +194,40 @@ void RenderSystem::Render(vector<Entity*> entities)
 
 		TransformComponent* transform = static_cast<TransformComponent*>(component);
 
+		if (CheckIfInsideFrustrum(entity, transform) == false)
+			continue;
+
 		BuildBufferInformation(entity, appearance);
 		SetShaderParameters(appearance, transform);
 		RenderShader(appearance->Model.IndexCount);
 
 		_renderCount++;
+	}
+}
+
+bool RenderSystem::CheckIfInsideFrustrum(Entity* entity, TransformComponent* transform)
+{
+	IComponent* component = entity->GetComponent(FRUSTRUM_CULLING);
+
+	if (component == nullptr)
+		return true;
+
+	FrustrumCullingComponent* frustrumCulling = static_cast<FrustrumCullingComponent*>(component);
+
+	Frustrum* frustrum = _camera->GetFrustrum();
+
+	switch (frustrumCulling->CullingType)
+	{
+	case FRUSTRUM_CULL_POINT:
+		return frustrum->CheckPointInsideFrustrum(transform->Position, 0.5f * transform->Scale.x);
+	case FRUSTRUM_CULL_RECTANGLE:
+		return frustrum->CheckRectangleInsideFrustrum(transform->Position, transform->Scale);
+	case FRUSTRUM_CULL_SPHERE:
+		return frustrum->CheckSphereInsideFrustrum(transform->Position, 0.5f * transform->Scale.x);
+	case FRUSTRUM_CULL_SQUARE:
+		return frustrum->CheckCubeInsideFrustrum(transform->Position, 0.5f * transform->Scale.x);
+	default: 
+		return true;
 	}
 }
 

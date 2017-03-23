@@ -29,7 +29,7 @@ private:
 	map<SystemType, ISystem*> _systemList;
 	void InitialiseObjects(DirectX3D* direct3D, ShaderController* shaderController, HWND hwnd, Camera* camera, Light* light);
 public:
-	ObjectHandler(DirectX3D* direct3D, ShaderController* shaderController, Frustrum* frustrum, HWND hwnd, Camera* camera, Light* light);
+	ObjectHandler(DirectX3D* direct3D, ShaderController* shaderController, HWND hwnd, Camera* camera, Light* light);
 	~ObjectHandler();
 
 	void Shutdown();

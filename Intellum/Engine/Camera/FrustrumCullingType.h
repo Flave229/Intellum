@@ -1,0 +1,9 @@
+#pragma once
+
+enum FrustrumCullingType
+{
+	FRUSTRUM_CULL_POINT,
+	FRUSTRUM_CULL_RECTANGLE,
+	FRUSTRUM_CULL_SPHERE,
+	FRUSTRUM_CULL_SQUARE
+};
