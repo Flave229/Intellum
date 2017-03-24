@@ -2,11 +2,13 @@
 #include "../Geometry/Geometry.h"
 #include "../Appearance/Texture/Texture.h"
 #include "IComponent.h"
+#include "../../ShaderEngine/IShaderType.h"
 
 class AppearanceComponent : public IComponent
 {
 public:
 	Geometry Model;
+	IShaderType* Shader;
 	vector<Texture*> Textures;
 	Texture* LightMap;
 	Texture* BumpMap;

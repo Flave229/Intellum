@@ -31,14 +31,9 @@ private:
 	ID3D11SamplerState* _sampleState;
 
 	int _renderCount;
-
-	void Initialise(HWND hwnd, WCHAR* vsFilename, WCHAR* psFilename); 
-	void OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, WCHAR* shaderFileName);
-
+	
 	void BuildBufferInformation(Entity* entity, AppearanceComponent* appearance) const;
-	void SetShaderParameters(AppearanceComponent* appearance, TransformComponent* transform) const;
-	static vector<ID3D11ShaderResourceView*> ExtractResourceViewsFrom(vector<Texture*> textures); 
-	void RenderShader(int indexCount) const;
+	static vector<ID3D11ShaderResourceView*> ExtractResourceViewsFrom(vector<Texture*> textures);
 
 	bool CheckIfInsideFrustrum(Entity* entity, TransformComponent* transform, AppearanceComponent* appearance);
 public:

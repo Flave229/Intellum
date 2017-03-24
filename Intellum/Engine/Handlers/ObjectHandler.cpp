@@ -49,7 +49,8 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 		entity->AddComponent(transformComponent);
 
 		Geometry modelData = geometryBuilder.FromFile("data/models/sphere.obj");
-		IComponent* appearanceComponent = new AppearanceComponent(modelData, CreateTexture::ListFrom(direct3D, { "data/images/stone.tga", "data/images/dirt.tga" }), nullptr);
+		AppearanceComponent* appearanceComponent = new AppearanceComponent(modelData, CreateTexture::ListFrom(direct3D, { "data/images/stone.tga", "data/images/dirt.tga" }), nullptr);
+		appearanceComponent->Shader = shaderController->GetShader(SHADER_DEFAULT);
 		entity->AddComponent(appearanceComponent);
 
 		FrustrumCullingComponent* frustrum = new FrustrumCullingComponent();
@@ -63,7 +64,9 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	entity->AddComponent(new TransformComponent());
 
 	Geometry modelData = geometryBuilder.ForGrid(Box(100, 100), XMFLOAT2(10, 10));
-	entity->AddComponent(new AppearanceComponent(modelData, CreateTexture::ListFrom(direct3D, { "data/images/stone.tga", "data/images/dirt.tga" }), nullptr));
+	AppearanceComponent* appearanceComponent = new AppearanceComponent(modelData, CreateTexture::ListFrom(direct3D, { "data/images/stone.tga", "data/images/dirt.tga" }), nullptr);
+	appearanceComponent->Shader = shaderController->GetShader(SHADER_DEFAULT);
+	entity->AddComponent(appearanceComponent);
 
 	_entityList.push_back(entity);
 	
@@ -78,7 +81,9 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	skyBox->AddComponent(rasterizer);
 
 	Geometry skyBoxModel = geometryBuilder.FromFile("data/models/sphere.obj");
-	skyBox->AddComponent(new AppearanceComponent(skyBoxModel, CreateTexture::ListFrom(direct3D, { "data/images/stone.tga" }), nullptr));
+	AppearanceComponent* skyBoxAppearance = new AppearanceComponent(skyBoxModel, CreateTexture::ListFrom(direct3D, { "data/images/stone.tga" }), nullptr);
+	skyBoxAppearance->Shader = shaderController->GetShader(SHADER_DEFAULT);
+	skyBox->AddComponent(skyBoxAppearance);
 
 	_entityList.push_back(skyBox);
 }
