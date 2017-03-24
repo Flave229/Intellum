@@ -17,18 +17,7 @@ class RenderSystem : public ISystem
 {
 private:
 	DirectX3D* _direct3D;
-	MatrixBuffer* _matrixBuffer;
-	CameraBuffer* _cameraBuffer;
-	LightBuffer* _lightBuffer;
-	TextureBuffer* _textureBuffer;
-
 	Camera* _camera;
-	Light* _light;
-
-	ID3D11VertexShader* _vertexShader;
-	ID3D11PixelShader* _pixelShader;
-	ID3D11InputLayout* _layout;
-	ID3D11SamplerState* _sampleState;
 
 	int _renderCount;
 	
@@ -37,7 +26,7 @@ private:
 
 	bool CheckIfInsideFrustrum(Entity* entity, TransformComponent* transform, AppearanceComponent* appearance);
 public:
-	RenderSystem(DirectX3D* direct3D, HWND hwnd, Camera* camera, Light* light);
+	RenderSystem(DirectX3D* direct3D, HWND hwnd, Camera* camera);
 	~RenderSystem() override = default;
 	void Shutdown() override;
 

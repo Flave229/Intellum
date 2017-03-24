@@ -2,7 +2,7 @@
 #include "../Components/RasterizerComponent.h"
 #include "../Components/FurstrumCullingComponent.h"
 
-RenderSystem::RenderSystem(DirectX3D* direct3D, HWND hwnd, Camera* camera, Light* light): _direct3D(direct3D), _camera(camera), _light(light)
+RenderSystem::RenderSystem(DirectX3D* direct3D, HWND hwnd, Camera* camera): _direct3D(direct3D), _camera(camera)
 {
 }
 
