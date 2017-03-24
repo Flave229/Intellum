@@ -38,7 +38,7 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	GeometryBuilder geometryBuilder = GeometryBuilder(direct3D->GetDevice());
 
 	_systemList[TRANSFORM_SYSTEM] = new TransformSystem(direct3D);
-	_systemList[RENDER_SYSTEM] = new RenderSystem(direct3D, hwnd, camera, light);
+	_systemList[RENDER_SYSTEM] = new RenderSystem(direct3D, hwnd, camera);
 
 	for(int i = 0; i < 25; i++)
 	{
