@@ -40,7 +40,7 @@ private:
 	static vector<ID3D11ShaderResourceView*> ExtractResourceViewsFrom(vector<Texture*> textures); 
 	void RenderShader(int indexCount) const;
 
-	bool CheckIfInsideFrustrum(Entity* entity, TransformComponent* transform);
+	bool CheckIfInsideFrustrum(Entity* entity, TransformComponent* transform, AppearanceComponent* appearance);
 public:
 	RenderSystem(DirectX3D* direct3D, HWND hwnd, Camera* camera, Light* light);
 	~RenderSystem() override = default;

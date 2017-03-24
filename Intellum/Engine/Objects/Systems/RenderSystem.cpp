@@ -194,7 +194,7 @@ void RenderSystem::Render(vector<Entity*> entities)
 
 		TransformComponent* transform = static_cast<TransformComponent*>(component);
 
-		if (CheckIfInsideFrustrum(entity, transform) == false)
+		if (CheckIfInsideFrustrum(entity, transform, appearance) == false)
 			continue;
 
 		BuildBufferInformation(entity, appearance);
@@ -205,7 +205,7 @@ void RenderSystem::Render(vector<Entity*> entities)
 	}
 }
 
-bool RenderSystem::CheckIfInsideFrustrum(Entity* entity, TransformComponent* transform)
+bool RenderSystem::CheckIfInsideFrustrum(Entity* entity, TransformComponent* transform, AppearanceComponent* appearance)
 {
 	IComponent* component = entity->GetComponent(FRUSTRUM_CULLING);
 
@@ -216,16 +216,18 @@ bool RenderSystem::CheckIfInsideFrustrum(Entity* entity, TransformComponent* tra
 
 	Frustrum* frustrum = _camera->GetFrustrum();
 
+	XMFLOAT3 scaledSize = XMFLOAT3(appearance->Model.Size.x * transform->Scale.x, appearance->Model.Size.y * transform->Scale.y, appearance->Model.Size.z * transform->Scale.z);
+
 	switch (frustrumCulling->CullingType)
 	{
 	case FRUSTRUM_CULL_POINT:
-		return frustrum->CheckPointInsideFrustrum(transform->Position, 0.5f * transform->Scale.x);
+		return frustrum->CheckPointInsideFrustrum(transform->Position, 0.0f);
 	case FRUSTRUM_CULL_RECTANGLE:
-		return frustrum->CheckRectangleInsideFrustrum(transform->Position, transform->Scale);
+		return frustrum->CheckRectangleInsideFrustrum(transform->Position, scaledSize);
 	case FRUSTRUM_CULL_SPHERE:
-		return frustrum->CheckSphereInsideFrustrum(transform->Position, 0.5f * transform->Scale.x);
+		return frustrum->CheckSphereInsideFrustrum(transform->Position, 0.5f * scaledSize.x);
 	case FRUSTRUM_CULL_SQUARE:
-		return frustrum->CheckCubeInsideFrustrum(transform->Position, 0.5f * transform->Scale.x);
+		return frustrum->CheckCubeInsideFrustrum(transform->Position, 0.5f * scaledSize.x);
 	default: 
 		return true;
 	}
