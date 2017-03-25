@@ -145,29 +145,40 @@ bool Frustrum::CheckSphereInsideFrustrum(XMFLOAT3 center, float radius) const
 
 bool Frustrum::CheckRectangleInsideFrustrum(XMFLOAT3 center, XMFLOAT3 size) const
 {
-	if (CheckPointInsideFrustrum(XMFLOAT3(center.x - size.x, center.y - size.y, center.z - size.z), 0.0f) == false)
-		return false;
+	size = XMFLOAT3(size.x * 0.5f, size.y * 0.5f, size.z * 0.5f);
+	float radius = 0.0f;
 
-	if (CheckPointInsideFrustrum(XMFLOAT3(center.x + size.x, center.y - size.y, center.z - size.z), 0.0f) == false)
-		return false;
+	if (size.x > size.y && size.x > size.z)
+		radius = size.x;
+	else if (size.y > size.z)
+		radius = size.y;
+	else
+		radius = size.z;
+	
 
-	if (CheckPointInsideFrustrum(XMFLOAT3(center.x - size.x, center.y + size.y, center.z - size.z), 0.0f) == false)
-		return false;
+	if (CheckPointInsideFrustrum(XMFLOAT3(center.x - size.x, center.y - size.y, center.z - size.z), -radius))
+		return true;
 
-	if (CheckPointInsideFrustrum(XMFLOAT3(center.x + size.x, center.y + size.y, center.z - size.z), 0.0f) == false)
-		return false;
+	if (CheckPointInsideFrustrum(XMFLOAT3(center.x + size.x, center.y - size.y, center.z - size.z), -radius))
+		return true;
 
-	if (CheckPointInsideFrustrum(XMFLOAT3(center.x - size.x, center.y - size.y, center.z + size.z), 0.0f) == false)
-		return false;
+	if (CheckPointInsideFrustrum(XMFLOAT3(center.x - size.x, center.y + size.y, center.z - size.z), -radius))
+		return true;
 
-	if (CheckPointInsideFrustrum(XMFLOAT3(center.x + size.x, center.y - size.y, center.z + size.z), 0.0f) == false)
-		return false;
+	if (CheckPointInsideFrustrum(XMFLOAT3(center.x + size.x, center.y + size.y, center.z - size.z), -radius))
+		return true;
 
-	if (CheckPointInsideFrustrum(XMFLOAT3(center.x - size.x, center.y + size.y, center.z + size.z), 0.0f) == false)
-		return false;
+	if (CheckPointInsideFrustrum(XMFLOAT3(center.x - size.x, center.y - size.y, center.z + size.z), -radius))
+		return true;
 
-	if (CheckPointInsideFrustrum(XMFLOAT3(center.x + size.x, center.y + size.y, center.z + size.z), 0.0f) == false)
-		return false;
+	if (CheckPointInsideFrustrum(XMFLOAT3(center.x + size.x, center.y - size.y, center.z + size.z), -radius))
+		return true;
 
-	return true;
+	if (CheckPointInsideFrustrum(XMFLOAT3(center.x - size.x, center.y + size.y, center.z + size.z), -radius))
+		return true;
+
+	if (CheckPointInsideFrustrum(XMFLOAT3(center.x + size.x, center.y + size.y, center.z + size.z), -radius))
+		return true;
+
+	return false;
 }

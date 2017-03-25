@@ -19,6 +19,7 @@ Geometry GridBuilder::Build(Box gridSize, XMFLOAT2 cellCount) const
 	geometry.VBOffset = 0;
 	geometry.VBStride = sizeof(Vertex);
 	geometry.IndexCount = static_cast<UINT>(indices.size());
+	geometry.Size = XMFLOAT3(gridSize.Width, 0.0f, gridSize.Height);
 	return geometry;
 }
 

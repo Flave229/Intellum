@@ -68,6 +68,10 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	appearanceComponent->Shader = shaderController->GetShader(SHADER_DEFAULT);
 	entity->AddComponent(appearanceComponent);
 
+	FrustrumCullingComponent* frustrum = new FrustrumCullingComponent();
+	frustrum->CullingType = FRUSTRUM_CULL_RECTANGLE;
+	entity->AddComponent(frustrum);
+
 	_entityList.push_back(entity);
 	
 	Entity* skyBox = new Entity();
