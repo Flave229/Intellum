@@ -48,8 +48,9 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 		transformComponent->AngularVelocity = XMFLOAT3(0.0f, (static_cast<float>(rand()) / RAND_MAX * 5.0f - 2.5f) * static_cast<float>(XM_PI), 0.0f);
 		entity->AddComponent(transformComponent);
 
-		Geometry modelData = geometryBuilder.FromFile("data/models/sphere.obj");
-		AppearanceComponent* appearanceComponent = new AppearanceComponent(modelData, CreateTexture::ListFrom(direct3D, { "data/images/stone.tga", "data/images/dirt.tga" }), nullptr);
+		AppearanceComponent* appearanceComponent = new AppearanceComponent();
+		appearanceComponent->Model = geometryBuilder.FromFile("data/models/sphere.obj");
+		appearanceComponent->Textures = CreateTexture::ListFrom(direct3D, { "data/images/stone.tga", "data/images/dirt.tga" });
 		appearanceComponent->Shader = shaderController->GetShader(SHADER_DEFAULT);
 		entity->AddComponent(appearanceComponent);
 
@@ -63,8 +64,9 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	Entity* entity = new Entity();
 	entity->AddComponent(new TransformComponent());
 
-	Geometry modelData = geometryBuilder.ForGrid(Box(100, 100), XMFLOAT2(10, 10));
-	AppearanceComponent* appearanceComponent = new AppearanceComponent(modelData, CreateTexture::ListFrom(direct3D, { "data/images/stone.tga", "data/images/dirt.tga" }), nullptr);
+	AppearanceComponent* appearanceComponent = new AppearanceComponent();
+	appearanceComponent->Model = geometryBuilder.ForGrid(Box(100, 100), XMFLOAT2(10, 10));
+	appearanceComponent->Textures = CreateTexture::ListFrom(direct3D, { "data/images/stone.tga", "data/images/dirt.tga" });
 	appearanceComponent->Shader = shaderController->GetShader(SHADER_DEFAULT);
 	entity->AddComponent(appearanceComponent);
 
@@ -84,8 +86,9 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	rasterizer->CullMode = D3D11_CULL_FRONT;
 	skyBox->AddComponent(rasterizer);
 
-	Geometry skyBoxModel = geometryBuilder.FromFile("data/models/sphere.obj");
-	AppearanceComponent* skyBoxAppearance = new AppearanceComponent(skyBoxModel, CreateTexture::ListFrom(direct3D, { "data/images/stone.tga" }), nullptr);
+	AppearanceComponent* skyBoxAppearance = new AppearanceComponent();
+	skyBoxAppearance->Model = geometryBuilder.FromFile("data/models/sphere.obj");
+	skyBoxAppearance->Textures = CreateTexture::ListFrom(direct3D, { "data/images/stone.tga" });
 	skyBoxAppearance->Shader = shaderController->GetShader(SHADER_DEFAULT);
 	skyBox->AddComponent(skyBoxAppearance);
 

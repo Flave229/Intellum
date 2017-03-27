@@ -7,17 +7,15 @@
 class AppearanceComponent : public IComponent
 {
 public:
-	Geometry Model;
 	IShaderType* Shader;
+
+	Geometry Model;
 	vector<Texture*> Textures;
 	Texture* LightMap;
 	Texture* BumpMap;
 
 	AppearanceComponent() 
-		: AppearanceComponent(Geometry(), vector<Texture*>(), nullptr) {}
-
-	AppearanceComponent(Geometry model, vector<Texture*> textures, Texture* lightMap) 
-		: IComponent(APPEARANCE), Model(model), Textures(textures), LightMap(lightMap), BumpMap(nullptr) {}
+		: IComponent(APPEARANCE), Shader(nullptr), Model(Geometry()), Textures(vector<Texture*>()), LightMap(nullptr), BumpMap(nullptr) {}
 
 	~AppearanceComponent() override = default;
 
