@@ -1,5 +1,5 @@
 #include "ObjectHandler.h"
-#include "../Objects/Components/FurstrumCullingComponent.h"
+#include "../Objects/Systems/UIRenderSystem.h"
 
 ObjectHandler::ObjectHandler(DirectX3D* direct3D, ShaderController* shaderController, HWND hwnd, Camera* camera, Light* light)
 {
@@ -38,6 +38,7 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	GeometryBuilder geometryBuilder = GeometryBuilder(direct3D->GetDevice());
 
 	_systemList[TRANSFORM_SYSTEM] = new TransformSystem(direct3D);
+	_systemList[UI_RENDER_SYSTEM] = new UIRenderSystem(direct3D, shaderController, hwnd, camera, Box(1280, 720));
 	_systemList[RENDER_SYSTEM] = new RenderSystem(direct3D, shaderController, hwnd, camera);
 
 	for(int i = 0; i < 25; i++)
@@ -90,6 +91,17 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	skyBox->AddComponent(skyBoxAppearance);
 
 	_entityList.push_back(skyBox);
+
+	Entity* ui = new Entity();
+
+	UIAppearanceComponent* uiAppearance = new UIAppearanceComponent();
+	uiAppearance->Model = geometryBuilder.ForUI();
+	uiAppearance->Position = XMFLOAT2(200, 150);
+	uiAppearance->BitmapSize = XMFLOAT2(256, 256);
+	uiAppearance->Textures = CreateTexture::ListFrom(direct3D, { "data/images/stone.tga" });
+	ui->AddComponent(uiAppearance);
+
+	_entityList.push_back(ui);
 }
 
 void ObjectHandler::Update(float delta)

@@ -15,4 +15,5 @@ public:
 
 	Geometry FromFile(char* string) const;
 	Geometry ForGrid(Box gridSize, XMFLOAT2 cellCount) const;
+	Geometry ForUI();
 };

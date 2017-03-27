@@ -16,6 +16,8 @@
 #include "../Objects/Components/RasterizerComponent.h"
 #include "../Objects/Appearance/Texture/CreateTexture.h"
 #include "../Objects/Systems/SystemType.h"
+#include "../Objects/Components/FurstrumCullingComponent.h"
+#include "../Objects/Components/UIAppearanceComponent.h"
 
 using namespace DirectX;
 using namespace std;
