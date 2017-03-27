@@ -26,12 +26,10 @@ class ShaderController
 private:
 	DirectX3D* _direct3D;
 
-	IShaderType* _defaultShader;
-	IShaderType* _fontShader;
+	map<ShaderType, IShaderType*> _shaders;
 
 public:
 	ShaderController(DirectX3D* direct3D);
-	ShaderController(const ShaderController&);
 	~ShaderController();
 
 	bool Initialise(HWND hwnd, Camera* camera, Light* light);

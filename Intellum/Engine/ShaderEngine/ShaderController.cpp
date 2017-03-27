@@ -1,10 +1,6 @@
 #include "ShaderController.h"
 
-ShaderController::ShaderController(DirectX3D* direct3D) : _direct3D(direct3D), _defaultShader(nullptr), _fontShader(nullptr)
-{
-}
-
-ShaderController::ShaderController(const ShaderController& other) : _direct3D(other._direct3D), _fontShader(other._fontShader)
+ShaderController::ShaderController(DirectX3D* direct3D) : _direct3D(direct3D), _shaders(map<ShaderType, IShaderType*>())
 {
 }
 
@@ -14,45 +10,33 @@ ShaderController::~ShaderController()
 
 bool ShaderController::Initialise(HWND hwnd, Camera* camera, Light* light)
 {
-	_defaultShader = new DefaultShader(_direct3D, camera, light);
-	if (!_defaultShader) throw Exception("Failed to create the default shader.");
+	_shaders[SHADER_DEFAULT] = new DefaultShader(_direct3D, camera, light);
+	if (!_shaders[SHADER_DEFAULT]) throw Exception("Failed to create the default shader.");
 
-	_defaultShader->Initialise(hwnd);
+	_shaders[SHADER_DEFAULT]->Initialise(hwnd);
 
-	_fontShader = new FontShader(_direct3D, camera, light);
-	if (!_fontShader) throw Exception("Failed to create the font shader.");
+	_shaders[SHADER_UI] = new FontShader(_direct3D, camera, light);
+	if (!_shaders[SHADER_UI]) throw Exception("Failed to create the font shader.");
 
-	_fontShader->Initialise(hwnd);
+	_shaders[SHADER_UI]->Initialise(hwnd);
 
 	return true;
 }
 
 void ShaderController::Shutdown()
 {
-	if (_defaultShader)
+	map<ShaderType, IShaderType*>::iterator iterator;
+	for (iterator = _shaders.begin(); iterator != _shaders.end(); ++iterator)
 	{
-		_defaultShader->Shutdown();
-		delete _defaultShader;
-		_defaultShader = nullptr;
+		iterator->second->Shutdown();
+		delete iterator->second;
+		iterator->second = nullptr;
 	}
 
-	if (_fontShader)
-	{
-		_fontShader->Shutdown();
-		delete _fontShader;
-		_fontShader = nullptr;
-	}
+	_shaders.clear();
 }
 
 IShaderType* ShaderController::GetShader(ShaderType type)
 {
-	switch (type)
-	{
-	case SHADER_DEFAULT:
-		return _defaultShader;
-	case SHADER_UI:
-		return _fontShader;
-	default:
-		return _defaultShader;
-	}
+	return _shaders[type];
 }
