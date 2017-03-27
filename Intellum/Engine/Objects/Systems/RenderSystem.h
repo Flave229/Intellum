@@ -12,12 +12,14 @@
 #include "../../ShaderEngine/ShaderParameters/ShaderParameterConstructor.h"
 #include <d3dcompiler.h>
 #include <fstream>
+#include "../../ShaderEngine/ShaderController.h"
 
 class RenderSystem : public ISystem
 {
 private:
 	DirectX3D* _direct3D;
 	Camera* _camera;
+	ShaderController* _shaderController;
 
 	int _renderCount;
 	
@@ -26,7 +28,7 @@ private:
 
 	bool CheckIfInsideFrustrum(Entity* entity, TransformComponent* transform, AppearanceComponent* appearance);
 public:
-	RenderSystem(DirectX3D* direct3D, HWND hwnd, Camera* camera);
+	RenderSystem(DirectX3D* direct3D, ShaderController* shaderController, HWND hwnd, Camera* camera);
 	~RenderSystem() override = default;
 	void Shutdown() override;
 

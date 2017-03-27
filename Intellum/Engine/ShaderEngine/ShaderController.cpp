@@ -50,7 +50,7 @@ IShaderType* ShaderController::GetShader(ShaderType type)
 	{
 	case SHADER_DEFAULT:
 		return _defaultShader;
-	case SHADER_FONT:
+	case SHADER_UI:
 		return _fontShader;
 	default:
 		return _defaultShader;

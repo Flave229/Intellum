@@ -38,7 +38,7 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	GeometryBuilder geometryBuilder = GeometryBuilder(direct3D->GetDevice());
 
 	_systemList[TRANSFORM_SYSTEM] = new TransformSystem(direct3D);
-	_systemList[RENDER_SYSTEM] = new RenderSystem(direct3D, hwnd, camera);
+	_systemList[RENDER_SYSTEM] = new RenderSystem(direct3D, shaderController, hwnd, camera);
 
 	for(int i = 0; i < 25; i++)
 	{
@@ -51,7 +51,6 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 		AppearanceComponent* appearanceComponent = new AppearanceComponent();
 		appearanceComponent->Model = geometryBuilder.FromFile("data/models/sphere.obj");
 		appearanceComponent->Textures = CreateTexture::ListFrom(direct3D, { "data/images/stone.tga", "data/images/dirt.tga" });
-		appearanceComponent->Shader = shaderController->GetShader(SHADER_DEFAULT);
 		entity->AddComponent(appearanceComponent);
 
 		FrustrumCullingComponent* frustrum = new FrustrumCullingComponent();
@@ -67,7 +66,6 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	AppearanceComponent* appearanceComponent = new AppearanceComponent();
 	appearanceComponent->Model = geometryBuilder.ForGrid(Box(100, 100), XMFLOAT2(10, 10));
 	appearanceComponent->Textures = CreateTexture::ListFrom(direct3D, { "data/images/stone.tga", "data/images/dirt.tga" });
-	appearanceComponent->Shader = shaderController->GetShader(SHADER_DEFAULT);
 	entity->AddComponent(appearanceComponent);
 
 	FrustrumCullingComponent* frustrum = new FrustrumCullingComponent();
@@ -89,7 +87,6 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	AppearanceComponent* skyBoxAppearance = new AppearanceComponent();
 	skyBoxAppearance->Model = geometryBuilder.FromFile("data/models/sphere.obj");
 	skyBoxAppearance->Textures = CreateTexture::ListFrom(direct3D, { "data/images/stone.tga" });
-	skyBoxAppearance->Shader = shaderController->GetShader(SHADER_DEFAULT);
 	skyBox->AddComponent(skyBoxAppearance);
 
 	_entityList.push_back(skyBox);

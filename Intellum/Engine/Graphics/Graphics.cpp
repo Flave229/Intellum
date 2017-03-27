@@ -34,7 +34,7 @@ void Graphics::Initialise(Input* input, Box screenSize, HWND hwnd)
 		if (!_objectHandler) throw Exception("Failed to create the object handler.");
 		
 		UIAppearance* uiAppearance = new UIAppearance(_direct3D, screenSize, Box(256, 256), vector<char*> { "data/images/dirt.tga", "data/images/josh.tga", "data/images/stone.tga" }, "data/images/basic_light_map.tga");
-		_bitmap = new Bitmap(_direct3D, _shaderController->GetShader(SHADER_FONT), uiAppearance);
+		_bitmap = new Bitmap(_direct3D, _shaderController->GetShader(SHADER_UI), uiAppearance);
 		if (!_bitmap) throw Exception("Failed to create the bitmap.");
 
 		_light->SetAmbientColor(XMFLOAT4(0.15f, 0.15f, 0.15f, 1.0f));
@@ -43,7 +43,7 @@ void Graphics::Initialise(Input* input, Box screenSize, HWND hwnd)
 		_light->SetDirection(XMFLOAT3(0.8f, -1.0f, 0.2f));
 		_light->SetSpecularPower(32.0f);
 
-		_fontEngine = new FontEngine(_direct3D, _direct3D->GetDevice(), _direct3D->GetDeviceContext(), _shaderController->GetShader(SHADER_FONT));
+		_fontEngine = new FontEngine(_direct3D, _direct3D->GetDevice(), _direct3D->GetDeviceContext(), _shaderController->GetShader(SHADER_UI));
 		if (!_fontEngine) throw Exception("Failed to create the Font Engine.");
 
 		result = _fontEngine->SearchForAvaliableFonts(screenSize);

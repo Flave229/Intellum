@@ -2,7 +2,7 @@
 #include "../Components/RasterizerComponent.h"
 #include "../Components/FurstrumCullingComponent.h"
 
-RenderSystem::RenderSystem(DirectX3D* direct3D, HWND hwnd, Camera* camera): _direct3D(direct3D), _camera(camera)
+RenderSystem::RenderSystem(DirectX3D* direct3D, ShaderController* shaderController, HWND hwnd, Camera* camera) : _direct3D(direct3D), _camera(camera), _shaderController(shaderController), _renderCount(0)
 {
 }
 
@@ -45,7 +45,8 @@ void RenderSystem::Render(vector<Entity*> entities)
 		if (appearance->LightMap != nullptr)
 			shaderResources.lightMap = appearance->LightMap->GetTexture();
 
-		appearance->Shader->Render(appearance->Model.IndexCount, shaderResources, transform->Transformation, _direct3D->GetProjectionMatrix());
+		IShaderType* shader = _shaderController->GetShader(appearance->ShaderType);
+		shader->Render(appearance->Model.IndexCount, shaderResources, transform->Transformation, _direct3D->GetProjectionMatrix());
 		
 		_renderCount++;
 	}
