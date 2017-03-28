@@ -21,9 +21,6 @@ Geometry GeometryBuilder::ForGrid(Box gridSize, XMFLOAT2 cellCount) const
 Geometry GeometryBuilder::ForUI()
 {
 	Vertex* vertices;
-	unsigned long* indices;
-	D3D11_BUFFER_DESC vertexBufferDesc;
-	D3D11_BUFFER_DESC indexBufferDesc;
 	D3D11_SUBRESOURCE_DATA vertexData;
 	D3D11_SUBRESOURCE_DATA indexData;
 	HRESULT result;
@@ -35,7 +32,7 @@ Geometry GeometryBuilder::ForUI()
 	vertices = new Vertex[geometry.VertexCount];
 	if (!vertices) throw Exception("Failed to initialise the vertex list.");
 
-	indices = new unsigned long[geometry.IndexCount];
+	unsigned short* indices = new unsigned short[geometry.IndexCount];
 	if (!indices) throw Exception("Failed to initialise the index list.");
 
 	memset(vertices, 0, sizeof(Vertex) * geometry.VertexCount);
@@ -46,6 +43,8 @@ Geometry GeometryBuilder::ForUI()
 	}
 
 	// Setup Vertex Buffer Description
+	D3D11_BUFFER_DESC vertexBufferDesc;
+	ZeroMemory(&vertexBufferDesc, sizeof(vertexBufferDesc));
 	vertexBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
 	vertexBufferDesc.ByteWidth = sizeof(Vertex) * geometry.VertexCount;
 	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
@@ -61,8 +60,10 @@ Geometry GeometryBuilder::ForUI()
 	if (FAILED(result)) throw Exception("Failed to create the vertex buffer.");
 
 	// Setup Index Buffer Description
+	D3D11_BUFFER_DESC indexBufferDesc;
+	ZeroMemory(&indexBufferDesc, sizeof(indexBufferDesc));
 	indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	indexBufferDesc.ByteWidth = sizeof(unsigned long) * geometry.IndexCount;
+	indexBufferDesc.ByteWidth = sizeof(WORD) * geometry.IndexCount;
 	indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	indexBufferDesc.CPUAccessFlags = 0;
 	indexBufferDesc.MiscFlags = 0;

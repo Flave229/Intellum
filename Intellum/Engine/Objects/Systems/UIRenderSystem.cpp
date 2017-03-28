@@ -110,7 +110,7 @@ void UIRenderSystem::BuildBufferInformation(Entity* entity, UIAppearanceComponen
 
 	ID3D11DeviceContext* deviceContext = _direct3D->GetDeviceContext();
 	deviceContext->IASetVertexBuffers(0, 1, &appearance->Model.VertexBuffer, &stride, &offset);
-	deviceContext->IASetIndexBuffer(appearance->Model.IndexBuffer, DXGI_FORMAT_R32_UINT, 0);
+	deviceContext->IASetIndexBuffer(appearance->Model.IndexBuffer, DXGI_FORMAT_R16_UINT, 0);
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 
