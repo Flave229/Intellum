@@ -1,6 +1,6 @@
 #include "Graphics.h"
 
-Graphics::Graphics(Input* input, Box screenSize, HWND hwnd, FramesPerSecond* framesPerSecond, Cpu* cpu) : _direct3D(nullptr), _fontEngine(nullptr), _framesPerSecond(framesPerSecond), _cpu(cpu), _shaderController(nullptr), _objectHandler(nullptr), _camera(nullptr), _light(nullptr), _bitmap(nullptr)
+Graphics::Graphics(Input* input, Box screenSize, HWND hwnd, FramesPerSecond* framesPerSecond, Cpu* cpu) : _direct3D(nullptr), _fontEngine(nullptr), _framesPerSecond(framesPerSecond), _cpu(cpu), _shaderController(nullptr), _objectHandler(nullptr), _camera(nullptr), _light(nullptr)
 {
 	Initialise(input, screenSize, hwnd);
 }
@@ -32,10 +32,6 @@ void Graphics::Initialise(Input* input, Box screenSize, HWND hwnd)
 
 		_objectHandler = new ObjectHandler(_direct3D, _shaderController, hwnd, _camera, _light);
 		if (!_objectHandler) throw Exception("Failed to create the object handler.");
-		
-		UIAppearance* uiAppearance = new UIAppearance(_direct3D, screenSize, Box(256, 256), vector<char*> { "data/images/dirt.tga", "data/images/josh.tga", "data/images/stone.tga" }, "data/images/basic_light_map.tga");
-		_bitmap = new Bitmap(_direct3D, _shaderController->GetShader(SHADER_UI), uiAppearance);
-		if (!_bitmap) throw Exception("Failed to create the bitmap.");
 
 		_light->SetAmbientColor(XMFLOAT4(0.15f, 0.15f, 0.15f, 1.0f));
 		_light->SetDiffuseColor(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
@@ -94,13 +90,6 @@ void Graphics::Shutdown()
 		delete _light;
 		_light = nullptr;
 	}
-
-	if (_bitmap)
-	{
-		_bitmap->Shutdown();
-		delete _bitmap;
-		_bitmap = nullptr;
-	}
 }
 
 void Graphics::Update(float delta) const
@@ -110,7 +99,6 @@ void Graphics::Update(float delta) const
 		_direct3D->Update(delta);
 		_camera->Update(delta);
 		_objectHandler->Update(delta);
-		_bitmap->Update(XMFLOAT2(50, 150), Box(256, 256));
 	}
 	catch (Exception& exception) 
 	{
@@ -131,8 +119,6 @@ void Graphics::Render(XMFLOAT2 mousePoint) const
 		_objectHandler->Render();
 
 		_direct3D->TurnZBufferOff();
-
-		_bitmap->Render();
 
 		_fontEngine->Update(XMFLOAT2(50, 600), "Impact", "Victoria Grump", XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 30);
 		_fontEngine->Update(XMFLOAT2(10, 10), "Impact", "Mouse X: " + to_string(static_cast<int>(mousePoint.x)) + "    " + "Mouse Y: " + to_string(static_cast<int>(mousePoint.y)), XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 20);

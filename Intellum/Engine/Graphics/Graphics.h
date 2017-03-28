@@ -28,7 +28,6 @@ private:
 
 	Camera* _camera;
 	Light* _light;
-	Bitmap* _bitmap;
 
 private:
 	void Initialise(Input* input, Box screenSize, HWND hwnd);
