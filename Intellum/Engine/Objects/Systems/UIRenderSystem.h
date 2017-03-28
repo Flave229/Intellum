@@ -2,7 +2,8 @@
 #include "ISystem.h"
 #include "../../ShaderEngine/ShaderController.h"
 #include "../Components/UIAppearanceComponent.h"
-
+#include "../../../common/Vertex.h"
+#include "../Components/UIComponent.h"
 
 class UIRenderSystem : public ISystem
 {

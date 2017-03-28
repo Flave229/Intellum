@@ -1,5 +1,4 @@
 #include "UIRenderSystem.h"
-#include "../../../common/Vertex.h"
 
 UIRenderSystem::UIRenderSystem(DirectX3D* direct3D, ShaderController* shaderController, HWND hwnd, Camera* camera, Box screenSize): _direct3D(direct3D), _camera(camera), _shaderController(shaderController), _screenSize(screenSize)
 {
@@ -21,20 +20,27 @@ void UIRenderSystem::Update(vector<Entity*> entities, float delta)
 
 		UIAppearanceComponent* uiAppearance = static_cast<UIAppearanceComponent*>(component);
 
-		if ((uiAppearance->Position.x == static_cast<int>(uiAppearance->PreviousPosition.x)) && (uiAppearance->Position.y == static_cast<int>(uiAppearance->PreviousPosition.y))
-			&& (uiAppearance->BitmapSize.x == uiAppearance->PreviousBitmapSize.x) && (uiAppearance->BitmapSize.y == uiAppearance->PreviousBitmapSize.y))
+		component = entity->GetComponent(USER_INTERFACE);
+
+		if (component == nullptr)
+			continue;
+
+		UIComponent* ui = static_cast<UIComponent*>(component);
+
+		if ((ui->Position.x == static_cast<int>(ui->PreviousPosition.x)) && (ui->Position.y == static_cast<int>(ui->PreviousPosition.y))
+			&& (ui->BitmapSize.x == ui->PreviousBitmapSize.x) && (ui->BitmapSize.y == ui->PreviousBitmapSize.y))
 		{
 			return;
 		}
 
-		uiAppearance->PreviousPosition = uiAppearance->Position;
-		uiAppearance->PreviousBitmapSize = uiAppearance->BitmapSize;
+		ui->PreviousPosition = ui->Position;
+		ui->PreviousBitmapSize = ui->BitmapSize;
 
-		float left = ((_screenSize.Width / 2) * -1) + (uiAppearance->Position.x);
-		float right = left + uiAppearance->BitmapSize.x;
+		float left = ((_screenSize.Width / 2) * -1) + (ui->Position.x);
+		float right = left + ui->BitmapSize.x;
 
-		float top = (_screenSize.Height / 2) - uiAppearance->Position.y;
-		float bottom = top - uiAppearance->BitmapSize.y;
+		float top = (_screenSize.Height / 2) - ui->Position.y;
+		float bottom = top - ui->BitmapSize.y;
 
 		Vertex* vertices = new Vertex[uiAppearance->Model.VertexCount];
 		if (!vertices) throw Exception("Failed to initialise vertices for bitmap");

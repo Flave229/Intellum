@@ -14,12 +14,6 @@ public:
 	Texture* LightMap;
 	Texture* BumpMap;
 
-	XMFLOAT2 BitmapSize;
-	XMFLOAT2 PreviousBitmapSize;
-
-	XMFLOAT2 Position;
-	XMFLOAT2 PreviousPosition;
-
 	UIAppearanceComponent()
 		: IComponent(UI_APPEARANCE), ShaderType(SHADER_UI), Model(Geometry()), Textures(vector<Texture*>()), LightMap(nullptr), BumpMap(nullptr) { }
 
