@@ -1,4 +1,5 @@
 #include "UIRenderSystem.h"
+#include "../Components/TransformComponent.h"
 
 UIRenderSystem::UIRenderSystem(DirectX3D* direct3D, ShaderController* shaderController, HWND hwnd, Camera* camera, Box screenSize): _direct3D(direct3D), _camera(camera), _shaderController(shaderController), _screenSize(screenSize)
 {
@@ -27,19 +28,26 @@ void UIRenderSystem::Update(vector<Entity*> entities, float delta)
 
 		UIComponent* ui = static_cast<UIComponent*>(component);
 
-		if ((ui->Position.x == static_cast<int>(ui->PreviousPosition.x)) && (ui->Position.y == static_cast<int>(ui->PreviousPosition.y))
+		component = entity->GetComponent(TRANSFORM);
+
+		if (component == nullptr)
+			continue;
+
+		TransformComponent* transform = static_cast<TransformComponent*>(component);
+
+		if ((transform->Position.x == static_cast<int>(ui->PreviousPosition.x)) && (transform->Position.y == static_cast<int>(ui->PreviousPosition.y))
 			&& (ui->BitmapSize.x == ui->PreviousBitmapSize.x) && (ui->BitmapSize.y == ui->PreviousBitmapSize.y))
 		{
 			return;
 		}
 
-		ui->PreviousPosition = ui->Position;
+		ui->PreviousPosition = XMFLOAT2(transform->Position.x, transform->Position.y);
 		ui->PreviousBitmapSize = ui->BitmapSize;
 
-		float left = ((_screenSize.Width / 2) * -1) + (ui->Position.x);
+		float left = ((_screenSize.Width / 2) * -1) + (transform->Position.x);
 		float right = left + ui->BitmapSize.x;
 
-		float top = (_screenSize.Height / 2) - ui->Position.y;
+		float top = (_screenSize.Height / 2) - transform->Position.y;
 		float bottom = top - ui->BitmapSize.y;
 
 		Vertex* vertices = new Vertex[uiAppearance->Model.VertexCount];

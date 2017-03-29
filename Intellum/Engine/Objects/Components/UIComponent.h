@@ -9,7 +9,6 @@ public:
 	XMFLOAT2 BitmapSize;
 	XMFLOAT2 PreviousBitmapSize;
 
-	XMFLOAT2 Position;
 	XMFLOAT2 PreviousPosition;
 
 	UIComponent() : IComponent(USER_INTERFACE) { }

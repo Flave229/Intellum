@@ -100,8 +100,11 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	uiAppearance->LightMap = CreateTexture::From(direct3D, "data/images/basic_light_map.tga");
 	ui->AddComponent(uiAppearance);
 
+	TransformComponent* uiTransform = new TransformComponent();
+	uiTransform->Position = XMFLOAT3(50, 150, 0);
+	ui->AddComponent(uiTransform);
+
 	UIComponent* uiComponent = new UIComponent();
-	uiComponent->Position = XMFLOAT2(50, 150);
 	uiComponent->BitmapSize = XMFLOAT2(256, 256);
 	ui->AddComponent(uiComponent);
 	
