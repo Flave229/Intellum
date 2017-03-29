@@ -1,5 +1,6 @@
 #include "UIRenderSystem.h"
 #include "../Components/TransformComponent.h"
+#include "../Components/AppearanceComponent.h"
 
 UIRenderSystem::UIRenderSystem(DirectX3D* direct3D, ShaderController* shaderController, HWND hwnd, Camera* camera, Box screenSize): _direct3D(direct3D), _camera(camera), _shaderController(shaderController), _screenSize(screenSize)
 {
@@ -14,12 +15,12 @@ void UIRenderSystem::Update(vector<Entity*> entities, float delta)
 {
 	for (Entity* entity : entities)
 	{
-		IComponent* component = entity->GetComponent(UI_APPEARANCE);
+		IComponent* component = entity->GetComponent(APPEARANCE);
 
 		if (component == nullptr)
 			continue;
 
-		UIAppearanceComponent* uiAppearance = static_cast<UIAppearanceComponent*>(component);
+		AppearanceComponent* appearance = static_cast<AppearanceComponent*>(component);
 
 		component = entity->GetComponent(USER_INTERFACE);
 
@@ -50,7 +51,7 @@ void UIRenderSystem::Update(vector<Entity*> entities, float delta)
 		float top = (_screenSize.Height / 2) - transform->Position.y;
 		float bottom = top - ui->BitmapSize.y;
 
-		Vertex* vertices = new Vertex[uiAppearance->Model.VertexCount];
+		Vertex* vertices = new Vertex[appearance->Model.VertexCount];
 		if (!vertices) throw Exception("Failed to initialise vertices for bitmap");
 
 		vertices[0].position = XMFLOAT3(left, top, 0.0f);
@@ -72,14 +73,14 @@ void UIRenderSystem::Update(vector<Entity*> entities, float delta)
 		vertices[5].texture = XMFLOAT2(1.0f, 1.0f);
 
 		D3D11_MAPPED_SUBRESOURCE mappedResource;
-		HRESULT result = _direct3D->GetDeviceContext()->Map(uiAppearance->Model.VertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+		HRESULT result = _direct3D->GetDeviceContext()->Map(appearance->Model.VertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 		if (FAILED(result)) throw Exception("Failed to map vertex buffer to the Device Context");
 
 		Vertex* verticesPtr = static_cast<Vertex*>(mappedResource.pData);
 
-		memcpy(verticesPtr, static_cast<void*>(vertices), (sizeof(Vertex) * uiAppearance->Model.VertexCount));
+		memcpy(verticesPtr, static_cast<void*>(vertices), (sizeof(Vertex) * appearance->Model.VertexCount));
 
-		_direct3D->GetDeviceContext()->Unmap(uiAppearance->Model.VertexBuffer, 0);
+		_direct3D->GetDeviceContext()->Unmap(appearance->Model.VertexBuffer, 0);
 
 		delete[] vertices;
 		vertices = nullptr;
@@ -88,31 +89,6 @@ void UIRenderSystem::Update(vector<Entity*> entities, float delta)
 
 void UIRenderSystem::Render(vector<Entity*> entities)
 {
-	for (Entity* entity : entities)
-	{
-		_direct3D->TurnZBufferOff();
-
-		IComponent* component = entity->GetComponent(UI_APPEARANCE);
-
-		if (component == nullptr)
-			continue;
-
-		UIAppearanceComponent* appearance = static_cast<UIAppearanceComponent*>(component);
-		
-		BuildBufferInformation(entity, appearance);
-
-		ShaderResources shaderResources = ShaderResources();
-		shaderResources.textureArray = ExtractResourceViewsFrom(appearance->Textures);
-		if (appearance->BumpMap != nullptr)
-			shaderResources.bumpMap = appearance->BumpMap->GetTexture();
-		if (appearance->LightMap != nullptr)
-			shaderResources.lightMap = appearance->LightMap->GetTexture();
-
-		IShaderType* shader = _shaderController->GetShader(appearance->ShaderType);
-		shader->Render(appearance->Model.IndexCount, shaderResources, _direct3D->GetWorldMatrix(), _direct3D->GetOrthoMatrix());
-
-		_direct3D->TurnZBufferOn();
-	}
 }
 
 void UIRenderSystem::BuildBufferInformation(Entity* entity, UIAppearanceComponent* appearance) const

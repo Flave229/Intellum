@@ -28,6 +28,8 @@ Geometry GeometryBuilder::ForUI()
 	Geometry geometry;
 	geometry.VertexCount = 6;
 	geometry.IndexCount = geometry.VertexCount;
+	geometry.VBStride = sizeof(Vertex);
+	geometry.VBOffset = 0;
 
 	vertices = new Vertex[geometry.VertexCount];
 	if (!vertices) throw Exception("Failed to initialise the vertex list.");

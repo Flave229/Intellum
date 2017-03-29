@@ -94,7 +94,8 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 
 	Entity* ui = new Entity();
 
-	UIAppearanceComponent* uiAppearance = new UIAppearanceComponent();
+	AppearanceComponent* uiAppearance = new AppearanceComponent();
+	uiAppearance->ShaderType = SHADER_UI;
 	uiAppearance->Model = geometryBuilder.ForUI();
 	uiAppearance->Textures = CreateTexture::ListFrom(direct3D, { "data/images/dirt.tga", "data/images/josh.tga", "data/images/stone.tga" });
 	uiAppearance->LightMap = CreateTexture::From(direct3D, "data/images/basic_light_map.tga");

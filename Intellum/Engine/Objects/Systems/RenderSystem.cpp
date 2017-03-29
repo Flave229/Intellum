@@ -46,7 +46,17 @@ void RenderSystem::Render(vector<Entity*> entities)
 			shaderResources.lightMap = appearance->LightMap->GetTexture();
 
 		IShaderType* shader = _shaderController->GetShader(appearance->ShaderType);
-		shader->Render(appearance->Model.IndexCount, shaderResources, transform->Transformation, _direct3D->GetProjectionMatrix());
+		switch(appearance->ShaderType)
+		{
+		case SHADER_DEFAULT:
+			shader->Render(appearance->Model.IndexCount, shaderResources, transform->Transformation, _direct3D->GetProjectionMatrix());
+			break;
+		case SHADER_UI:
+			shader->Render(appearance->Model.IndexCount, shaderResources, _direct3D->GetWorldMatrix(), _direct3D->GetOrthoMatrix());
+			break;
+		default:
+			shader->Render(appearance->Model.IndexCount, shaderResources, transform->Transformation, _direct3D->GetProjectionMatrix());
+		}
 		
 		_renderCount++;
 	}
@@ -88,6 +98,15 @@ void RenderSystem::BuildBufferInformation(Entity* entity, AppearanceComponent* a
 		_direct3D->GetRasterizer()->SetRasterizerCullMode(D3D11_CULL_BACK);
 	else
 		_direct3D->GetRasterizer()->SetRasterizerCullMode(static_cast<RasterizerComponent*>(component)->CullMode);
+
+	switch (appearance->ShaderType)
+	{
+	case SHADER_UI:
+		_direct3D->TurnZBufferOff();
+		break;
+	default:
+		_direct3D->TurnZBufferOn();
+	}
 
 	ID3D11DeviceContext* deviceContext = _direct3D->GetDeviceContext();
 	deviceContext->IASetVertexBuffers(0, 1, &appearance->Model.VertexBuffer, &appearance->Model.VBStride, &appearance->Model.VBOffset);
