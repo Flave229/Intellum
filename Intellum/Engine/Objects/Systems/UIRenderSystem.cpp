@@ -90,28 +90,3 @@ void UIRenderSystem::Update(vector<Entity*> entities, float delta)
 void UIRenderSystem::Render(vector<Entity*> entities)
 {
 }
-
-void UIRenderSystem::BuildBufferInformation(Entity* entity, UIAppearanceComponent* appearance) const
-{
-	_direct3D->GetRasterizer()->SetRasterizerCullMode(D3D11_CULL_BACK);
-
-	unsigned int stride = sizeof(Vertex);
-	unsigned int offset = 0;
-
-	ID3D11DeviceContext* deviceContext = _direct3D->GetDeviceContext();
-	deviceContext->IASetVertexBuffers(0, 1, &appearance->Model.VertexBuffer, &stride, &offset);
-	deviceContext->IASetIndexBuffer(appearance->Model.IndexBuffer, DXGI_FORMAT_R16_UINT, 0);
-	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-}
-
-vector<ID3D11ShaderResourceView*> UIRenderSystem::ExtractResourceViewsFrom(vector<Texture*> textures)
-{
-	vector<ID3D11ShaderResourceView*> textureViews;
-
-	for (Texture* texture : textures)
-	{
-		textureViews.push_back(texture->GetTexture());
-	}
-
-	return textureViews;
-}

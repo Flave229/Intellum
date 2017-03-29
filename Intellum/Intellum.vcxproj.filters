@@ -390,9 +390,6 @@
     <ClInclude Include="Engine\Objects\Systems\UIRenderSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Objects\Components\UIAppearanceComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Objects\Components\UIComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
