@@ -181,7 +181,7 @@
     <ClCompile Include="Engine\Objects\Geometry\GridBuilder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Objects\Systems\UIRenderSystem.cpp">
+    <ClCompile Include="Engine\Objects\Systems\UISystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -387,10 +387,10 @@
     <ClInclude Include="Engine\Objects\Geometry\Geometry.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Objects\Systems\UIRenderSystem.h">
+    <ClInclude Include="Engine\Objects\Components\UIComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Objects\Components\UIComponent.h">
+    <ClInclude Include="Engine\Objects\Systems\UISystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

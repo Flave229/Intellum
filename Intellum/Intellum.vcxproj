@@ -202,7 +202,7 @@
     <ClCompile Include="Engine\Objects\Appearance\UIAppearance.cpp" />
     <ClCompile Include="Engine\Objects\Systems\TransformSystem.cpp" />
     <ClCompile Include="Engine\Objects\Systems\RenderSystem.cpp" />
-    <ClCompile Include="Engine\Objects\Systems\UIRenderSystem.cpp" />
+    <ClCompile Include="Engine\Objects\Systems\UISystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Camera\FrustrumCullingType.h" />
@@ -273,7 +273,7 @@
     <ClInclude Include="Engine\Objects\Components\TransformComponent.h" />
     <ClInclude Include="Engine\Objects\Systems\TransformSystem.h" />
     <ClInclude Include="Engine\Objects\Systems\RenderSystem.h" />
-    <ClInclude Include="Engine\Objects\Systems\UIRenderSystem.h" />
+    <ClInclude Include="Engine\Objects\Systems\UISystem.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="data\models\Cube.txt">

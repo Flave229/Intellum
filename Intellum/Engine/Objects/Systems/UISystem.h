@@ -4,7 +4,7 @@
 #include "../../../common/Vertex.h"
 #include "../Components/UIComponent.h"
 
-class UIRenderSystem : public ISystem
+class UISystem : public ISystem
 {
 private:
 	Box _screenSize;
@@ -14,8 +14,8 @@ public:
 	Camera* _camera;
 	ShaderController* _shaderController;
 
-	UIRenderSystem(DirectX3D* direct3D, ShaderController* shaderController, HWND hwnd, Camera* camera, Box screenSize);
-	~UIRenderSystem() override = default;
+	UISystem(DirectX3D* direct3D, ShaderController* shaderController, HWND hwnd, Camera* camera, Box screenSize);
+	~UISystem() override = default;
 
 	void Shutdown() override;
 	void Update(vector<Entity*> entities, float delta) override;

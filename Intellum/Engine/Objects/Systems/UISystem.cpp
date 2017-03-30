@@ -1,17 +1,17 @@
-#include "UIRenderSystem.h"
+#include "UISystem.h"
 #include "../Components/TransformComponent.h"
 #include "../Components/AppearanceComponent.h"
 
-UIRenderSystem::UIRenderSystem(DirectX3D* direct3D, ShaderController* shaderController, HWND hwnd, Camera* camera, Box screenSize): _direct3D(direct3D), _camera(camera), _shaderController(shaderController), _screenSize(screenSize)
+UISystem::UISystem(DirectX3D* direct3D, ShaderController* shaderController, HWND hwnd, Camera* camera, Box screenSize): _direct3D(direct3D), _camera(camera), _shaderController(shaderController), _screenSize(screenSize)
 {
 
 }
 
-void UIRenderSystem::Shutdown()
+void UISystem::Shutdown()
 {
 }
 
-void UIRenderSystem::Update(vector<Entity*> entities, float delta)
+void UISystem::Update(vector<Entity*> entities, float delta)
 {
 	for (Entity* entity : entities)
 	{
@@ -87,6 +87,6 @@ void UIRenderSystem::Update(vector<Entity*> entities, float delta)
 	}
 }
 
-void UIRenderSystem::Render(vector<Entity*> entities)
+void UISystem::Render(vector<Entity*> entities)
 {
 }

@@ -116,15 +116,15 @@ void Graphics::Render(XMFLOAT2 mousePoint) const
 	{
 		_direct3D->BeginScene(XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f));
 
-		_objectHandler->Render();
-
-		_direct3D->TurnZBufferOff();
-
 		_fontEngine->Update(XMFLOAT2(50, 600), "Impact", "Victoria Grump", XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 30);
 		_fontEngine->Update(XMFLOAT2(10, 10), "Impact", "Mouse X: " + to_string(static_cast<int>(mousePoint.x)) + "    " + "Mouse Y: " + to_string(static_cast<int>(mousePoint.y)), XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 20);
 		_fontEngine->Update(XMFLOAT2(10, 35), "Impact", "FPS: " + to_string(_framesPerSecond->GetFramesPerSeond()), XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 20);
 		_fontEngine->Update(XMFLOAT2(10, 60), "Impact", "Cpu: " + to_string(_cpu->GetCpuPercentage()) + "%", XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 20);
 		_fontEngine->Update(XMFLOAT2(10, 85), "Impact", "Rendered: " + to_string(_objectHandler->GetRenderedModelCount()), XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 20);
+
+		_objectHandler->Render();
+
+		_direct3D->TurnZBufferOff();
 
 		_direct3D->TurnZBufferOn();
 		 

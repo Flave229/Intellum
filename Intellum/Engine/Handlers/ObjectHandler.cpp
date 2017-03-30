@@ -1,5 +1,5 @@
 #include "ObjectHandler.h"
-#include "../Objects/Systems/UIRenderSystem.h"
+#include "../Objects/Systems/UISystem.h"
 
 ObjectHandler::ObjectHandler(DirectX3D* direct3D, ShaderController* shaderController, HWND hwnd, Camera* camera, Light* light)
 {
@@ -38,7 +38,7 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	GeometryBuilder geometryBuilder = GeometryBuilder(direct3D->GetDevice());
 
 	_systemList[TRANSFORM_SYSTEM] = new TransformSystem(direct3D);
-	_systemList[UI_RENDER_SYSTEM] = new UIRenderSystem(direct3D, shaderController, hwnd, camera, Box(1280, 720));
+	_systemList[UI_RENDER_SYSTEM] = new UISystem(direct3D, shaderController, hwnd, camera, Box(1280, 720));
 	_systemList[RENDER_SYSTEM] = new RenderSystem(direct3D, shaderController, hwnd, camera);
 
 	for(int i = 0; i < 25; i++)
