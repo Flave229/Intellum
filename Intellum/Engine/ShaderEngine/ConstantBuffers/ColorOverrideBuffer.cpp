@@ -41,16 +41,11 @@ void ColorOverrideBuffer::SetShaderParameters(ShaderParameters parameters)
 	Buffer* colorDataPtr = static_cast<Buffer*>(mappedResource.pData);
 
 	if (parameters.ColorOverloadEnabled)
-	{
 		colorDataPtr->colorOverloadEnabled = 1.0f;
-		colorDataPtr->colorOverload = parameters.ColorOverload;
-	}
 	else
-	{
 		colorDataPtr->colorOverloadEnabled = 0.0f;
-		colorDataPtr->colorOverload = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
-	}
 
+	colorDataPtr->colorOverload = parameters.ColorOverload;
 	colorDataPtr->padding = XMFLOAT3(0.0f, 0.0f, 0.0f);
 
 	_direct3D->GetDeviceContext()->Unmap(_buffer, 0);

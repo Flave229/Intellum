@@ -206,6 +206,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Camera\FrustrumCullingType.h" />
+    <ClInclude Include="Engine\Objects\Appearance\ColorOverload.h" />
     <ClInclude Include="Engine\Objects\Components\AppearanceComponent.h" />
     <ClInclude Include="Engine\Objects\Appearance\Texture\CreateTexture.h" />
     <ClInclude Include="Engine\Objects\Appearance\IAppearance.h" />

@@ -184,23 +184,25 @@ void FontShader::SetShaderParameters(ShaderResources shaderResources, XMMATRIX w
 	{
 		_matrixBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructMatrixBufferParameters(0, worldMatrix, projectionMatrix, _viewMatrix));
 		_cameraBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructDefaultBufferParameters(1));
-		_colorBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructColorOverloadBufferParameters(0, _colorOverload, _colorOverloadEnabled));
+		ColorOverload colorOverload = ColorOverload(_colorOverload);
+		colorOverload.Overload = _colorOverloadEnabled;
+		_colorBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructColorOverloadBufferParameters(0, colorOverload));
 
 		bool lightMapEnabled = false;
-		if (shaderResources.lightMap != nullptr)
+		if (shaderResources.LightMap != nullptr)
 			lightMapEnabled = true;
 
 		bool bumpMapEnabled = false;
-		if (shaderResources.bumpMap != nullptr)
+		if (shaderResources.BumpMap != nullptr)
 			bumpMapEnabled = true;
 
-		int textureCount = static_cast<int>(shaderResources.textureArray.size());
+		int textureCount = static_cast<int>(shaderResources.TextureArray.size());
 		_textureBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructTextureBufferParameters(1, textureCount, lightMapEnabled, bumpMapEnabled));
 
-		_direct3D->GetDeviceContext()->PSSetShaderResources(0, textureCount, &shaderResources.textureArray.at(0));
+		_direct3D->GetDeviceContext()->PSSetShaderResources(0, textureCount, &shaderResources.TextureArray.at(0));
 
 		if (lightMapEnabled)
-			_direct3D->GetDeviceContext()->PSSetShaderResources(10, 1, &shaderResources.lightMap);
+			_direct3D->GetDeviceContext()->PSSetShaderResources(10, 1, &shaderResources.LightMap);
 	}
 	catch (Exception& exception)
 	{

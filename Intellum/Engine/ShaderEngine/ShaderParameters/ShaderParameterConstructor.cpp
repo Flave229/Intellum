@@ -1,4 +1,5 @@
 #include "ShaderParameterConstructor.h"
+#include "../../Objects/Appearance/ColorOverload.h"
 
 ShaderParameterConstructor::ShaderParameterConstructor()
 {
@@ -27,12 +28,12 @@ ShaderParameters ShaderParameterConstructor::ConstructMatrixBufferParameters(int
 	return shaderParameters;
 }
 
-ShaderParameters ShaderParameterConstructor::ConstructColorOverloadBufferParameters(int bufferIndex, XMFLOAT4 colorOverload, bool colorOverloadEnabled)
+ShaderParameters ShaderParameterConstructor::ConstructColorOverloadBufferParameters(int bufferIndex, ColorOverload colorOverload)
 {
 	ShaderParameters shaderParameters;
 	shaderParameters.BufferIndex = bufferIndex;
-	shaderParameters.ColorOverload = colorOverload;
-	shaderParameters.ColorOverloadEnabled = colorOverloadEnabled;
+	shaderParameters.ColorOverload = colorOverload.Color;
+	shaderParameters.ColorOverloadEnabled = colorOverload.Overload;
 
 	return shaderParameters;
 }

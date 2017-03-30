@@ -1,5 +1,6 @@
 #include "ObjectHandler.h"
 #include "../Objects/Systems/UISystem.h"
+#include "../Objects/Appearance/ColorOverload.h"
 
 ObjectHandler::ObjectHandler(DirectX3D* direct3D, ShaderController* shaderController, HWND hwnd, Camera* camera, Light* light)
 {
@@ -88,6 +89,7 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	AppearanceComponent* skyBoxAppearance = new AppearanceComponent();
 	skyBoxAppearance->Model = geometryBuilder.FromFile("data/models/sphere.obj");
 	skyBoxAppearance->Textures = CreateTexture::ListFrom(direct3D, { "data/images/stone.tga" });
+	skyBoxAppearance->ColorOverload = ColorOverload(XMFLOAT4(0.49, 0.75, 0.93, 1));
 	skyBox->AddComponent(skyBoxAppearance);
 
 	_entityList.push_back(skyBox);

@@ -118,6 +118,7 @@ void DefaultShader::InitialiseShader(HWND hwnd, WCHAR* vsFilename, WCHAR* psFile
 		_cameraBuffer = new CameraBuffer(_direct3D, _camera);
 		_lightBuffer = new LightBuffer(_direct3D, _light);
 		_textureBuffer = new TextureBuffer(_direct3D);
+		_colorBuffer = new ColorOverrideBuffer(_direct3D);
 
 		// Sampler State Description
 		D3D11_SAMPLER_DESC samplerDesc;
@@ -209,25 +210,26 @@ void DefaultShader::SetShaderParameters(ShaderResources shaderResources, XMMATRI
 		_matrixBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructMatrixBufferParameters(0, worldMatrix, projectionMatrix, _camera->GetViewMatrix()));
 		_cameraBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructDefaultBufferParameters(1));
 		_lightBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructDefaultBufferParameters(0));
+		_colorBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructColorOverloadBufferParameters(2, shaderResources.ColorOverload));
 
 		bool lightMapEnabled = false;
-		if (shaderResources.lightMap != nullptr)
+		if (shaderResources.LightMap != nullptr)
 			lightMapEnabled = true;
 
 		bool bumpMapEnabled = false;
-		if (shaderResources.bumpMap != nullptr)
+		if (shaderResources.BumpMap != nullptr)
 			bumpMapEnabled = true;
 
-		int textureCount = static_cast<int>(shaderResources.textureArray.size());
+		int textureCount = static_cast<int>(shaderResources.TextureArray.size());
 		_textureBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructTextureBufferParameters(1, textureCount, lightMapEnabled, bumpMapEnabled));
 		
-		_direct3D->GetDeviceContext()->PSSetShaderResources(0, textureCount, &shaderResources.textureArray.at(0));
+		_direct3D->GetDeviceContext()->PSSetShaderResources(0, textureCount, &shaderResources.TextureArray.at(0));
 
 		if (lightMapEnabled)
-			_direct3D->GetDeviceContext()->PSSetShaderResources(11, 1, &shaderResources.lightMap);
+			_direct3D->GetDeviceContext()->PSSetShaderResources(11, 1, &shaderResources.LightMap);
 		
 		if (bumpMapEnabled)
-			_direct3D->GetDeviceContext()->PSSetShaderResources(12, 1, &shaderResources.bumpMap);
+			_direct3D->GetDeviceContext()->PSSetShaderResources(12, 1, &shaderResources.BumpMap);
 	}
 	catch(Exception& exception)
 	{

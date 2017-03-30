@@ -3,6 +3,13 @@ Texture2D lightMap;
 Texture2D bumpMap;
 SamplerState SampleType;
 
+cbuffer ColorBuffer
+{
+    float colorOverloadEnabled;
+    float3 padding;
+    float4 colorOverload;
+};
+
 cbuffer LightBuffer
 {
 	float4 ambientColor;
@@ -17,7 +24,7 @@ cbuffer TextureBuffer
     float textureCount;
     float lightMapEnabled;
     float bumpMapEnabled;
-    float padding;
+    float padding2;
 };
 
 struct PixelInputType
