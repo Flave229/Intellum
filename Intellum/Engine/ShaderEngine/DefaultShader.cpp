@@ -222,8 +222,11 @@ void DefaultShader::SetShaderParameters(ShaderResources shaderResources, XMMATRI
 
 		int textureCount = static_cast<int>(shaderResources.TextureArray.size());
 		_textureBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructTextureBufferParameters(1, textureCount, lightMapEnabled, bumpMapEnabled));
-		
-		_direct3D->GetDeviceContext()->PSSetShaderResources(0, textureCount, &shaderResources.TextureArray.at(0));
+
+		if (textureCount > 0)
+		{
+			_direct3D->GetDeviceContext()->PSSetShaderResources(0, textureCount, &shaderResources.TextureArray.at(0));
+		}
 
 		if (lightMapEnabled)
 			_direct3D->GetDeviceContext()->PSSetShaderResources(11, 1, &shaderResources.LightMap);

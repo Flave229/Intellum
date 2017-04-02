@@ -45,7 +45,7 @@ float4 DefaultPixelShader(PixelInputType input) : SV_TARGET
     {
         textureColor *= shaderTexture[i].Sample(SampleType, input.tex) * 2.0f;
     }
-    
+
     if (lightMapEnabled == 1.0f)
         textureColor *= lightMap.Sample(SampleType, input.tex);
 
@@ -69,6 +69,7 @@ float4 DefaultPixelShader(PixelInputType input) : SV_TARGET
         lightIntensity = saturate(dot(input.normal, lightDir));
 
 	float4 color = ambientColor;
+
 	float4 specular = float4(0.0f, 0.0f, 0.0f, 0.0f);
 	float3 reflection;
 	
