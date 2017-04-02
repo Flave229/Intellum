@@ -39,12 +39,13 @@ struct PixelInputType
 
 float4 DefaultPixelShader(PixelInputType input) : SV_TARGET
 {
-    float4 textureColor = shaderTexture[0].Sample(SampleType, input.tex);
+    float4 textureColor = float4(0, 0, 0, 0);
+
+    if (textureCount > 0)
+        textureColor = shaderTexture[0].Sample(SampleType, input.tex);
 
     for (int i = 1; i < textureCount; i++)
-    {
         textureColor *= shaderTexture[i].Sample(SampleType, input.tex) * 2.0f;
-    }
 
     if (lightMapEnabled == 1.0f)
         textureColor *= lightMap.Sample(SampleType, input.tex);
