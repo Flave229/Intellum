@@ -88,7 +88,7 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 
 	AppearanceComponent* skyBoxAppearance = new AppearanceComponent();
 	skyBoxAppearance->Model = geometryBuilder.FromFile("data/models/sphere.obj");
-	skyBoxAppearance->ColorOverload = ColorOverload(XMFLOAT4(0.49, 0.75, 0.93, 1));
+	skyBoxAppearance->Color = ColorOverload(XMFLOAT4(0.49, 0.75, 0.93, 1));
 	skyBox->AddComponent(skyBoxAppearance);
 
 	_entityList.push_back(skyBox);

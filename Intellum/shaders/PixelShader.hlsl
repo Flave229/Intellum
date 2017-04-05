@@ -3,28 +3,28 @@ Texture2D lightMap;
 Texture2D bumpMap;
 SamplerState SampleType;
 
-cbuffer ColorBuffer
-{
-    float colorOverloadEnabled;
-    float3 padding;
-    float4 colorOverload;
-};
-
-cbuffer LightBuffer
-{
-	float4 ambientColor;
-	float4 diffuseColor;
-	float3 lightDirection;
-	float specularPower;
-	float4 specularColor;
-};
-
 cbuffer TextureBuffer
 {
     float textureCount;
     float lightMapEnabled;
     float bumpMapEnabled;
     float padding2;
+};
+
+cbuffer LightBuffer
+{
+    float4 ambientColor;
+    float4 diffuseColor;
+    float3 lightDirection;
+    float specularPower;
+    float4 specularColor;
+};
+
+cbuffer ColorBuffer
+{
+    float colorOverloadEnabled;
+    float3 padding;
+    float4 colorOverload;
 };
 
 struct PixelInputType
@@ -83,8 +83,12 @@ float4 DefaultPixelShader(PixelInputType input) : SV_TARGET
 
 		specular = pow(saturate(dot(reflection, input.viewDirection)), specularPower);
 	}
+    
+    if (textureCount > 0)
+        color *= textureColor;
 
-    color = color * textureColor;
+    if (colorOverloadEnabled)
+        color *= colorOverload;
 
 	color = saturate(color + specular);
 

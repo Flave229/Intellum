@@ -14,10 +14,10 @@ public:
 	vector<Texture*> Textures;
 	Texture* LightMap;
 	Texture* BumpMap;
-	ColorOverload ColorOverload;
+	ColorOverload Color;
 
 	AppearanceComponent()
-		: IComponent(APPEARANCE), ShaderType(SHADER_DEFAULT), Model(Geometry()), Textures(vector<Texture*>()), LightMap(nullptr), BumpMap(nullptr)
+		: IComponent(APPEARANCE), ShaderType(SHADER_DEFAULT), Model(Geometry()), Textures(vector<Texture*>()), LightMap(nullptr), BumpMap(nullptr), Color(ColorOverload())
 	{
 	}
 	

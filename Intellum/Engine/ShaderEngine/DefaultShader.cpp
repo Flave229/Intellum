@@ -20,7 +20,7 @@ void DefaultShader::InitialiseShader(HWND hwnd, WCHAR* vsFilename, WCHAR* psFile
 		ID3D10Blob* errorMessage = nullptr;
 
 		ID3D10Blob* vertexShaderBuffer = nullptr;
-		HRESULT result = D3DCompileFromFile(vsFilename, nullptr, nullptr, "DefaultVertexShader", "vs_5_0", D3D10_SHADER_ENABLE_STRICTNESS, 0, &vertexShaderBuffer, &errorMessage);
+		HRESULT result = D3DCompileFromFile(vsFilename, nullptr, nullptr, "DefaultVertexShader", "vs_5_0", D3D10_SHADER_DEBUG /*D3D10_SHADER_ENABLE_STRICTNESS*/, 0, &vertexShaderBuffer, &errorMessage);
 		if (FAILED(result))
 		{
 			if (errorMessage)
@@ -36,7 +36,7 @@ void DefaultShader::InitialiseShader(HWND hwnd, WCHAR* vsFilename, WCHAR* psFile
 		}
 
 		ID3D10Blob* pixelShaderBuffer = nullptr;
-		result = D3DCompileFromFile(psFilename, nullptr, nullptr, "DefaultPixelShader", "ps_5_0", D3D10_SHADER_ENABLE_STRICTNESS, 0, &pixelShaderBuffer, &errorMessage);
+		result = D3DCompileFromFile(psFilename, nullptr, nullptr, "DefaultPixelShader", "ps_5_0", D3D10_SHADER_DEBUG/*D3D10_SHADER_ENABLE_STRICTNESS*/, 0, &pixelShaderBuffer, &errorMessage);
 
 		if (FAILED(result))
 		{
@@ -116,9 +116,9 @@ void DefaultShader::InitialiseShader(HWND hwnd, WCHAR* vsFilename, WCHAR* psFile
 
 		_matrixBuffer = new MatrixBuffer(_direct3D);
 		_cameraBuffer = new CameraBuffer(_direct3D, _camera);
+		_colorBuffer = new ColorOverrideBuffer(_direct3D);
 		_lightBuffer = new LightBuffer(_direct3D, _light);
 		_textureBuffer = new TextureBuffer(_direct3D);
-		_colorBuffer = new ColorOverrideBuffer(_direct3D);
 
 		// Sampler State Description
 		D3D11_SAMPLER_DESC samplerDesc;
@@ -209,8 +209,8 @@ void DefaultShader::SetShaderParameters(ShaderResources shaderResources, XMMATRI
 	{
 		_matrixBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructMatrixBufferParameters(0, worldMatrix, projectionMatrix, _camera->GetViewMatrix()));
 		_cameraBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructDefaultBufferParameters(1));
-		_lightBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructDefaultBufferParameters(0));
 		_colorBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructColorOverloadBufferParameters(2, shaderResources.ColorOverload));
+		_lightBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructDefaultBufferParameters(1));
 
 		bool lightMapEnabled = false;
 		if (shaderResources.LightMap != nullptr)
@@ -221,7 +221,7 @@ void DefaultShader::SetShaderParameters(ShaderResources shaderResources, XMMATRI
 			bumpMapEnabled = true;
 
 		int textureCount = static_cast<int>(shaderResources.TextureArray.size());
-		_textureBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructTextureBufferParameters(1, textureCount, lightMapEnabled, bumpMapEnabled));
+		_textureBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructTextureBufferParameters(0, textureCount, lightMapEnabled, bumpMapEnabled));
 
 		if (textureCount > 0)
 		{
@@ -229,10 +229,10 @@ void DefaultShader::SetShaderParameters(ShaderResources shaderResources, XMMATRI
 		}
 
 		if (lightMapEnabled)
-			_direct3D->GetDeviceContext()->PSSetShaderResources(11, 1, &shaderResources.LightMap);
+			_direct3D->GetDeviceContext()->PSSetShaderResources(10, 1, &shaderResources.LightMap);
 		
 		if (bumpMapEnabled)
-			_direct3D->GetDeviceContext()->PSSetShaderResources(12, 1, &shaderResources.BumpMap);
+			_direct3D->GetDeviceContext()->PSSetShaderResources(11, 1, &shaderResources.BumpMap);
 	}
 	catch(Exception& exception)
 	{

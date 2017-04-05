@@ -39,7 +39,7 @@ void RenderSystem::Render(vector<Entity*> entities)
 		BuildBufferInformation(entity, appearance);
 
 		ShaderResources shaderResources = ShaderResources();
-		shaderResources.ColorOverload = appearance->ColorOverload;
+		shaderResources.ColorOverload = appearance->Color;
 		shaderResources.TextureArray = ExtractResourceViewsFrom(appearance->Textures);
 		if (appearance->BumpMap != nullptr)
 			shaderResources.BumpMap = appearance->BumpMap->GetTexture();
