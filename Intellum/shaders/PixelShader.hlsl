@@ -59,16 +59,14 @@ float3 CalculateBumpNormal(float2 inputTextureCordinates, float3 tangent, float3
 {
     float3 bumpNormal = float3(0.0f, 0.0f, 0.0f);
 
-    if (bumpMapEnabled == 1.0f)
-    {
-        float4 bumpMapTexture = bumpMap.Sample(SampleType, inputTextureCordinates);
-        bumpMapTexture = (bumpMapTexture * 2.0f) - 1.0f;
+    if (bumpMapEnabled == 0.0f)
+        return bumpNormal;
 
-        bumpNormal = (bumpMapTexture.x * tangent) + (bumpMapTexture.y * binormal) + (bumpMapTexture.z * normal);
-        bumpNormal = normalize(bumpNormal);
-    }
+    float4 bumpMapTexture = bumpMap.Sample(SampleType, inputTextureCordinates);
+    bumpMapTexture = (bumpMapTexture * 2.0f) - 1.0f;
 
-    return bumpNormal;
+    bumpNormal = (bumpMapTexture.x * tangent) + (bumpMapTexture.y * binormal) + (bumpMapTexture.z * normal);
+    return normalize(bumpNormal);
 }
 
 float4 CalculateSpecularLight(float3 normal, float3 viewDirection, float3 lightDirection, float lightIntensity)
