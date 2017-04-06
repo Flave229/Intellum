@@ -5,10 +5,6 @@ ColorOverrideBuffer::ColorOverrideBuffer(DirectX3D* direct3D) : IShaderBuffer(di
 	ColorOverrideBuffer::Initialise();
 }
 
-ColorOverrideBuffer::~ColorOverrideBuffer()
-{
-}
-
 void ColorOverrideBuffer::Shutdown()
 {
 	if (_buffer)

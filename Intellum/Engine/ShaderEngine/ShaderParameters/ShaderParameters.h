@@ -19,4 +19,10 @@ public:
 
 	bool LightMapEnabled;
 	bool BufferMapEnabled;
+
+	bool GradientOverloadEnabled;
+	XMFLOAT4 GradientApexOverload;
+	XMFLOAT4 GradientCenterOverload;
+	XMFLOAT3 ApexPosition;
+	XMFLOAT3 CenterPosition;
 };

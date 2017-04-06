@@ -21,7 +21,7 @@ private:
 
 public:
 	MatrixBuffer(DirectX3D* direct3D);
-	~MatrixBuffer();
+	~MatrixBuffer() override = default;
 	
 	void Shutdown() override;
 

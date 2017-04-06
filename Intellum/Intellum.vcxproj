@@ -185,6 +185,7 @@
     <ClCompile Include="Engine\Input\InputControl.cpp" />
     <ClCompile Include="Engine\Objects\Geometry\GeometryBuilder.cpp" />
     <ClCompile Include="Engine\Objects\Geometry\GridBuilder.cpp" />
+    <ClCompile Include="Engine\ShaderEngine\ConstantBuffers\GradientOverloadBuffer.cpp" />
     <ClCompile Include="Loaders\OBJLoader\OBJBinaryLoader.cpp" />
     <ClCompile Include="loaders\OBJLoader.cpp" />
     <ClCompile Include="Loaders\OBJLoader\OBJFileLoader.cpp" />
@@ -253,6 +254,7 @@
     <ClInclude Include="Engine\ShaderEngine\ConstantBuffers\IShaderBuffer.h" />
     <ClInclude Include="Engine\Objects\Geometry\GeometryBuilder.h" />
     <ClInclude Include="Engine\Objects\Geometry\GridBuilder.h" />
+    <ClInclude Include="Engine\ShaderEngine\ConstantBuffers\GradientOverloadBuffer.h" />
     <ClInclude Include="Loaders\models\OBJGeometryData.h" />
     <ClInclude Include="Loaders\OBJLoader\IOBJLoader.h" />
     <ClInclude Include="Loaders\OBJLoader\OBJBinaryLoader.h" />

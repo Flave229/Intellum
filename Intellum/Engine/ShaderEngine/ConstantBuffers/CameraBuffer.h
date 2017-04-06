@@ -21,7 +21,7 @@ private:
 
 public:
 	CameraBuffer(DirectX3D* direct3D, Camera* camera);
-	~CameraBuffer();
+	~CameraBuffer() override = default;
 	
 	void Shutdown() override;
 

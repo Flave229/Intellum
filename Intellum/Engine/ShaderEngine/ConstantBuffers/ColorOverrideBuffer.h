@@ -21,7 +21,7 @@ private:
 
 public:
 	ColorOverrideBuffer(DirectX3D* direct3D);
-	~ColorOverrideBuffer();
+	~ColorOverrideBuffer() override = default;
 
 	void Shutdown() override;
 

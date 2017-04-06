@@ -5,10 +5,6 @@ CameraBuffer::CameraBuffer(DirectX3D* direct3D, Camera* camera) : IShaderBuffer(
 	CameraBuffer::Initialise();
 }
 
-CameraBuffer::~CameraBuffer()
-{
-}
-
 void CameraBuffer::Shutdown()
 {
 	if (_buffer)

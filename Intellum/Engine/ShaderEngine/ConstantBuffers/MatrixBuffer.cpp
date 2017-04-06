@@ -5,10 +5,6 @@ MatrixBuffer::MatrixBuffer(DirectX3D* direct3D) : IShaderBuffer(direct3D), _buff
 	MatrixBuffer::Initialise();
 }
 
-MatrixBuffer::~MatrixBuffer()
-{
-}
-
 void MatrixBuffer::Shutdown()
 {
 	if (_buffer)

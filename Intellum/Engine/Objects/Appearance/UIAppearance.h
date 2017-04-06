@@ -26,7 +26,7 @@ private:
 
 public:
 	UIAppearance(DirectX3D* direct3D, Box screenSize, Box bitmapSize, vector<char*> textureFiles, char* lightMapFile);
-	~UIAppearance() override = default;;
+	~UIAppearance() override = default;
 	
 	void Shutdown() override;
 	void Render() const override;

@@ -5,10 +5,6 @@ LightBuffer::LightBuffer(DirectX3D* direct3D, Light* light) : IShaderBuffer(dire
 	LightBuffer::Initialise();
 }
 
-LightBuffer::~LightBuffer()
-{
-}
-
 void LightBuffer::Shutdown()
 {
 	if (_buffer)

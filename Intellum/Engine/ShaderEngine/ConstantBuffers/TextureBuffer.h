@@ -20,7 +20,7 @@ private:
 
 public:
 	TextureBuffer(DirectX3D* direct3D);
-	~TextureBuffer();
+	~TextureBuffer() override = default;
 
 	void Shutdown() override;
 

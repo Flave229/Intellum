@@ -5,10 +5,6 @@ TextureBuffer::TextureBuffer(DirectX3D* direct3D) : IShaderBuffer(direct3D), _bu
 	TextureBuffer::Initialise();
 }
 
-TextureBuffer::~TextureBuffer()
-{
-}
-
 void TextureBuffer::Shutdown()
 {
 	if (_buffer)

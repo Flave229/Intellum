@@ -184,6 +184,9 @@
     <ClCompile Include="Engine\Objects\Systems\UISystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\ShaderEngine\ConstantBuffers\GradientOverloadBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DXSystem.h">
@@ -394,6 +397,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Objects\Appearance\ColorOverload.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ShaderEngine\ConstantBuffers\GradientOverloadBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

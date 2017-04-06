@@ -24,7 +24,7 @@ private:
 
 public:
 	LightBuffer(DirectX3D* direct3D, Light* light);
-	~LightBuffer();
+	~LightBuffer() override = default;
 	
 	void Shutdown() override;
 
