@@ -42,7 +42,7 @@ void GradientOverloadBuffer::SetShaderParameters(ShaderParameters parameters)
 		gradientDataPointer->gradientOverloadEnabled = 0.0f;
 
 	gradientDataPointer->apexColor = parameters.GradientApexOverload;
-	gradientDataPointer->apexPosition = parameters.ApexPosition;
+	gradientDataPointer->apexPosition = parameters.GradientHeight;
 	gradientDataPointer->centerColor = parameters.GradientCenterOverload;
 	gradientDataPointer->centerPosition = parameters.CenterPosition;
 

@@ -1,4 +1,5 @@
 #include "DefaultShader.h"
+#include "ConstantBuffers/GradientOverloadBuffer.h"
 
 DefaultShader::DefaultShader(DirectX3D* direct3D, Camera* camera, Light* light) : IShaderType(direct3D, camera, light)
 {
@@ -119,6 +120,7 @@ void DefaultShader::InitialiseShader(HWND hwnd, WCHAR* vsFilename, WCHAR* psFile
 		_colorBuffer = new ColorOverrideBuffer(_direct3D);
 		_lightBuffer = new LightBuffer(_direct3D, _light);
 		_textureBuffer = new TextureBuffer(_direct3D);
+		_gradientBuffer = new GradientOverloadBuffer(_direct3D);
 
 		// Sampler State Description
 		D3D11_SAMPLER_DESC samplerDesc;
@@ -211,6 +213,7 @@ void DefaultShader::SetShaderParameters(ShaderResources shaderResources, XMMATRI
 		_cameraBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructDefaultBufferParameters(1));
 		_colorBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructColorOverloadBufferParameters(2, shaderResources.ColorOverload));
 		_lightBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructDefaultBufferParameters(1));
+		_gradientBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructGradientOverloadBufferParameters(3, shaderResources.GradientOverload));
 
 		bool lightMapEnabled = false;
 		if (shaderResources.LightMap != nullptr)

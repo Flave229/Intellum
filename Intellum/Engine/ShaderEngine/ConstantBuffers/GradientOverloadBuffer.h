@@ -8,10 +8,10 @@ private:
 	{
 		XMFLOAT4 apexColor;
 		XMFLOAT4 centerColor;
-		XMFLOAT3 apexPosition;
+		float apexPosition;
 		float gradientOverloadEnabled;
-		XMFLOAT3 centerPosition;
-		float padding2;
+		float centerPosition;
+		float padding;
 	};
 
 	ID3D11Buffer* _buffer;

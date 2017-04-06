@@ -23,6 +23,6 @@ public:
 	bool GradientOverloadEnabled;
 	XMFLOAT4 GradientApexOverload;
 	XMFLOAT4 GradientCenterOverload;
-	XMFLOAT3 ApexPosition;
-	XMFLOAT3 CenterPosition;
+	float GradientHeight;
+	float CenterPosition;
 };

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IShaderType.h"
+#include "ConstantBuffers/GradientOverloadBuffer.h"
 
 using namespace std;
 

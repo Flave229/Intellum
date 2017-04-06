@@ -2,6 +2,7 @@
 #include <vector>
 #include <DirectXMath.h>
 #include "../Objects/Appearance/ColorOverload.h"
+#include "../Objects/Appearance/GradientOverload.h"
 
 using namespace DirectX;
 
@@ -12,4 +13,5 @@ public:
 	ID3D11ShaderResourceView* LightMap;
 	ID3D11ShaderResourceView* BumpMap;
 	ColorOverload ColorOverload;
+	GradientOverload GradientOverload;
 };

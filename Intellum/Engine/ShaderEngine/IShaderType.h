@@ -35,6 +35,7 @@ protected:
 	IShaderBuffer* _lightBuffer;
 	IShaderBuffer* _colorBuffer;
 	IShaderBuffer* _textureBuffer;
+	IShaderBuffer* _gradientBuffer;
 
 public:
 	IShaderType(DirectX3D* direct3D, Camera* camera, Light* light) : _direct3D(direct3D), _camera(camera), _light(light) {};
