@@ -37,29 +37,52 @@ struct PixelInputType
 	float3 viewDirection : TEXCOORD1;
 };
 
-float4 DefaultPixelShader(PixelInputType input) : SV_TARGET
+float4 CalculateTextureColor(float2 inputTextureCordinates)
 {
     float4 textureColor = float4(0, 0, 0, 0);
 
-    if (textureCount > 0)
-        textureColor = shaderTexture[0].Sample(SampleType, input.tex);
+    if (textureCount <= 0)
+        return textureColor;
+    
+    textureColor = shaderTexture[0].Sample(SampleType, inputTextureCordinates);
 
     for (int i = 1; i < textureCount; i++)
-        textureColor *= shaderTexture[i].Sample(SampleType, input.tex) * 2.0f;
+        textureColor *= shaderTexture[i].Sample(SampleType, inputTextureCordinates) * 2.0f;
 
     if (lightMapEnabled == 1.0f)
-        textureColor *= lightMap.Sample(SampleType, input.tex);
+        textureColor *= lightMap.Sample(SampleType, inputTextureCordinates);
 
+    return textureColor;
+}
+
+float3 CalculateBumpNormal(float2 inputTextureCordinates, float3 tangent, float3 binormal, float3 normal)
+{
     float3 bumpNormal = float3(0.0f, 0.0f, 0.0f);
 
     if (bumpMapEnabled == 1.0f)
     {
-        float4 bumpMapTexture = bumpMap.Sample(SampleType, input.tex);
+        float4 bumpMapTexture = bumpMap.Sample(SampleType, inputTextureCordinates);
         bumpMapTexture = (bumpMapTexture * 2.0f) - 1.0f;
 
-        bumpNormal = (bumpMapTexture.x * input.tangent) + (bumpMapTexture.y * input.binormal) + (bumpMapTexture.z * input.normal);
+        bumpNormal = (bumpMapTexture.x * tangent) + (bumpMapTexture.y * binormal) + (bumpMapTexture.z * normal);
         bumpNormal = normalize(bumpNormal);
     }
+
+    return bumpNormal;
+}
+
+float4 CalculateSpecularLight(float3 normal, float3 viewDirection, float3 lightDirection, float lightIntensity)
+{
+    float3 reflection = normalize(2 * lightIntensity * normal - lightDirection);
+
+    return pow(saturate(dot(reflection, viewDirection)), specularPower);
+}
+
+float4 DefaultPixelShader(PixelInputType input) : SV_TARGET
+{
+    float4 textureColor = CalculateTextureColor(input.tex);
+
+    float3 bumpNormal = CalculateBumpNormal(input.tex, input.tangent, input.binormal, input.normal);
 
 	float3 lightDir = -lightDirection;
     float lightIntensity = 0.0f;
@@ -72,17 +95,14 @@ float4 DefaultPixelShader(PixelInputType input) : SV_TARGET
 	float4 color = ambientColor;
 
 	float4 specular = float4(0.0f, 0.0f, 0.0f, 0.0f);
-	float3 reflection;
 	
 	if (lightIntensity > 0.0f)
 	{
 		color += (diffuseColor * lightIntensity);
 		color = saturate(color);
 
-		reflection = normalize(2 * lightIntensity * input.normal - lightDir);
-
-		specular = pow(saturate(dot(reflection, input.viewDirection)), specularPower);
-	}
+        specular = CalculateSpecularLight(input.normal, input.viewDirection, lightDir, lightIntensity);
+    }
     
     if (textureCount > 0)
         color *= textureColor;
