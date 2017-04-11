@@ -211,9 +211,9 @@ void DefaultShader::SetShaderParameters(ShaderResources shaderResources, XMMATRI
 	{
 		_matrixBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructMatrixBufferParameters(0, worldMatrix, projectionMatrix, _camera->GetViewMatrix()));
 		_cameraBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructDefaultBufferParameters(1));
-		_colorBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructColorOverloadBufferParameters(2, shaderResources.ColorOverload));
-		_lightBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructDefaultBufferParameters(1));
-		_gradientBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructGradientOverloadBufferParameters(3, shaderResources.GradientOverload));
+		_colorBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructColorOverloadBufferParameters(4, shaderResources.ColorOverload));
+		_lightBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructDefaultBufferParameters(3));
+		//_gradientBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructGradientOverloadBufferParameters(5, shaderResources.GradientOverload));
 
 		bool lightMapEnabled = false;
 		if (shaderResources.LightMap != nullptr)
@@ -224,7 +224,7 @@ void DefaultShader::SetShaderParameters(ShaderResources shaderResources, XMMATRI
 			bumpMapEnabled = true;
 
 		int textureCount = static_cast<int>(shaderResources.TextureArray.size());
-		_textureBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructTextureBufferParameters(0, textureCount, lightMapEnabled, bumpMapEnabled));
+		_textureBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructTextureBufferParameters(2, textureCount, lightMapEnabled, bumpMapEnabled));
 
 		if (textureCount > 0)
 		{

@@ -3,7 +3,7 @@ Texture2D lightMap;
 Texture2D bumpMap;
 SamplerState SampleType;
 
-cbuffer TextureBuffer
+cbuffer TextureBuffer : register(b2)
 {
     float textureCount;
     float lightMapEnabled;
@@ -11,7 +11,7 @@ cbuffer TextureBuffer
     float padding2;
 };
 
-cbuffer LightBuffer
+cbuffer LightBuffer : register(b3)
 {
     float4 ambientColor;
     float4 diffuseColor;
@@ -20,7 +20,7 @@ cbuffer LightBuffer
     float4 specularColor;
 };
 
-cbuffer ColorBuffer
+cbuffer ColorBuffer : register(b4)
 {
     float colorOverloadEnabled;
     float3 padding;
