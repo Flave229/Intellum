@@ -40,6 +40,9 @@ void RenderSystem::Render(vector<Entity*> entities)
 
 		ShaderResources shaderResources = ShaderResources();
 		shaderResources.ColorOverload = appearance->Color;
+		shaderResources.GradientOverload = appearance->Gradient;
+		shaderResources.GradientOverload.CenterYCordinates = transform->Position.y;
+		shaderResources.GradientOverload.Height = appearance->Model.Size.y;
 		shaderResources.TextureArray = ExtractResourceViewsFrom(appearance->Textures);
 		if (appearance->BumpMap != nullptr)
 			shaderResources.BumpMap = appearance->BumpMap->GetTexture();
