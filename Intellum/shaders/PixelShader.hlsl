@@ -8,7 +8,7 @@ cbuffer TextureBuffer : register(b2)
     float textureCount;
     float lightMapEnabled;
     float bumpMapEnabled;
-    float padding2;
+    float padding;
 };
 
 cbuffer LightBuffer : register(b3)
@@ -23,8 +23,18 @@ cbuffer LightBuffer : register(b3)
 cbuffer ColorBuffer : register(b4)
 {
     float colorOverloadEnabled;
-    float3 padding;
+    float3 padding2;
     float4 colorOverload;
+};
+
+cbuffer GradientBuffer : register(b5)
+{
+    float4 apexColor;
+    float4 centerColor;
+    float apexPosition;
+    float gradientOverloadEnabled;
+    float centerPosition;
+    float padding3;
 };
 
 struct PixelInputType
