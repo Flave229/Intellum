@@ -13,7 +13,8 @@ cbuffer CameraBuffer : register(b1)
 
 struct VertexInputType
 {
-	float4 position : POSITION;
+    float4 position : POSITION;
+    float4 worldPosition : WORLDPOSITION;
 	float2 tex : TEXCOORD0;
 	float3 normal : NORMAL;
     float3 tangent : TANGENT;
@@ -23,6 +24,7 @@ struct VertexInputType
 struct VertexOutputType
 {
 	float4 position : SV_POSITION;
+	float4 worldPosition : WORLD_POSITION;
 	float2 tex : TEXCOORD0;
     float3 normal : NORMAL;
     float3 tangent : TANGENT;
@@ -35,6 +37,8 @@ VertexOutputType DefaultVertexShader(VertexInputType input)
 	VertexOutputType output;
 
 	input.position.w = 1.0f;
+
+    output.worldPosition = input.position;
 
 	output.position = mul(input.position, worldMatrix);
 	output.position = mul(output.position, viewMatrix);

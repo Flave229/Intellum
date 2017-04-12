@@ -63,7 +63,7 @@ void DefaultShader::InitialiseShader(HWND hwnd, WCHAR* vsFilename, WCHAR* psFile
 
 		// Vertex Shader layout description
 		// The setup below NEEDS to match the VertexType structure defined in the shader file, otherwise the bytes of data become missalligned / errors occur
-		D3D11_INPUT_ELEMENT_DESC polygonLayout[5];
+		D3D11_INPUT_ELEMENT_DESC polygonLayout[6];
 		polygonLayout[0].SemanticName = "POSITION";
 		polygonLayout[0].SemanticIndex = 0;
 		polygonLayout[0].Format = DXGI_FORMAT_R32G32B32_FLOAT;
@@ -72,23 +72,23 @@ void DefaultShader::InitialiseShader(HWND hwnd, WCHAR* vsFilename, WCHAR* psFile
 		polygonLayout[0].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 		polygonLayout[0].InstanceDataStepRate = 0;
 
-		polygonLayout[1].SemanticName = "TEXCOORD";
+		polygonLayout[1].SemanticName = "WORLDPOSITION";
 		polygonLayout[1].SemanticIndex = 0;
-		polygonLayout[1].Format = DXGI_FORMAT_R32G32_FLOAT;
+		polygonLayout[1].Format = DXGI_FORMAT_R32G32B32_FLOAT;
 		polygonLayout[1].InputSlot = 0;
-		polygonLayout[1].AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;
+		polygonLayout[1].AlignedByteOffset = 0;
 		polygonLayout[1].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 		polygonLayout[1].InstanceDataStepRate = 0;
 
-		polygonLayout[2].SemanticName = "NORMAL";
+		polygonLayout[2].SemanticName = "TEXCOORD";
 		polygonLayout[2].SemanticIndex = 0;
-		polygonLayout[2].Format = DXGI_FORMAT_R32G32B32_FLOAT;
+		polygonLayout[2].Format = DXGI_FORMAT_R32G32_FLOAT;
 		polygonLayout[2].InputSlot = 0;
 		polygonLayout[2].AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;
 		polygonLayout[2].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 		polygonLayout[2].InstanceDataStepRate = 0;
 
-		polygonLayout[3].SemanticName = "TANGENT";
+		polygonLayout[3].SemanticName = "NORMAL";
 		polygonLayout[3].SemanticIndex = 0;
 		polygonLayout[3].Format = DXGI_FORMAT_R32G32B32_FLOAT;
 		polygonLayout[3].InputSlot = 0;
@@ -96,13 +96,21 @@ void DefaultShader::InitialiseShader(HWND hwnd, WCHAR* vsFilename, WCHAR* psFile
 		polygonLayout[3].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 		polygonLayout[3].InstanceDataStepRate = 0;
 
-		polygonLayout[4].SemanticName = "BINORMAL";
+		polygonLayout[4].SemanticName = "TANGENT";
 		polygonLayout[4].SemanticIndex = 0;
 		polygonLayout[4].Format = DXGI_FORMAT_R32G32B32_FLOAT;
 		polygonLayout[4].InputSlot = 0;
 		polygonLayout[4].AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;
 		polygonLayout[4].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 		polygonLayout[4].InstanceDataStepRate = 0;
+
+		polygonLayout[5].SemanticName = "BINORMAL";
+		polygonLayout[5].SemanticIndex = 0;
+		polygonLayout[5].Format = DXGI_FORMAT_R32G32B32_FLOAT;
+		polygonLayout[5].InputSlot = 0;
+		polygonLayout[5].AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;
+		polygonLayout[5].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+		polygonLayout[5].InstanceDataStepRate = 0;
 
 		unsigned int numElements = sizeof(polygonLayout) / sizeof(polygonLayout[0]);
 

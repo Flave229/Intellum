@@ -39,7 +39,8 @@ cbuffer GradientBuffer : register(b5)
 
 struct PixelInputType
 {
-	float4 position : SV_POSITION;
+    float4 position : SV_POSITION;
+    float4 worldPosition : WORLD_POSITION;
 	float2 tex : TEXCOORD0;
     float3 normal : NORMAL;
     float3 tangent : TANGENT;
@@ -86,6 +87,17 @@ float4 CalculateSpecularLight(float3 normal, float3 viewDirection, float3 lightD
     return pow(saturate(dot(reflection, viewDirection)), specularPower);
 }
 
+float4 CalculateGradientColor(float4 position)
+{
+    float positionY = position.y * 1000.0f;
+    float normalizedHeight = (positionY / apexPosition) + 0.5f;
+
+    if (normalizedHeight < 0.0f)
+        normalizedHeight = 0.0f;
+
+    return lerp(centerColor, apexColor, normalizedHeight);
+}
+
 float4 DefaultPixelShader(PixelInputType input) : SV_TARGET
 {
     float4 textureColor = CalculateTextureColor(input.tex);
@@ -117,6 +129,9 @@ float4 DefaultPixelShader(PixelInputType input) : SV_TARGET
 
     if (colorOverloadEnabled)
         color *= colorOverload;
+
+    if (gradientOverloadEnabled)
+        color = CalculateGradientColor(input.worldPosition);
 
 	color = saturate(color + specular);
 
