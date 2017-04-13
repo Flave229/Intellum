@@ -230,6 +230,7 @@
     <ClInclude Include="Engine\ShaderEngine\ConstantBuffers\CameraBuffer.h" />
     <ClInclude Include="Engine\ShaderEngine\ConstantBuffers\LightBuffer.h" />
     <ClInclude Include="Engine\ShaderEngine\ConstantBuffers\TextureBuffer.h" />
+    <ClInclude Include="Engine\ShaderEngine\ShaderParameters\MatrixShaderParameters.h" />
     <ClInclude Include="Engine\ShaderEngine\ShaderParameters\ShaderParameters.h" />
     <ClInclude Include="Engine\ShaderEngine\ShaderParameters\TextureShaderParameters.h" />
     <ClInclude Include="Engine\SystemMetrics\Cpu.h" />

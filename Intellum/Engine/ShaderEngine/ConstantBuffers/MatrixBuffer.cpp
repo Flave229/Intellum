@@ -49,4 +49,20 @@ void MatrixBuffer::SetShaderParameters(ShaderParameters parameters)
 
 void MatrixBuffer::SetShaderParameters(int bufferIndex, ShaderResources shaderResources)
 {
+	MatrixShaderParameters matrixParameters = shaderResources.MatrixParameters;
+	matrixParameters.WorldMatrix = XMMatrixTranspose(matrixParameters.WorldMatrix);
+	matrixParameters.ViewMatrix = XMMatrixTranspose(matrixParameters.ViewMatrix);
+	matrixParameters.ProjectionMatrix = XMMatrixTranspose(matrixParameters.ProjectionMatrix);
+
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	HRESULT result = _direct3D->GetDeviceContext()->Map(_buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	if (FAILED(result)) throw Exception("Failed to map matrix buffer to the Device Context.");
+
+	ConstantBuffer* matrixDataPtr = static_cast<ConstantBuffer*>(mappedResource.pData);
+	matrixDataPtr->world = matrixParameters.WorldMatrix;
+	matrixDataPtr->view = matrixParameters.ViewMatrix;
+	matrixDataPtr->projection = matrixParameters.ProjectionMatrix;
+
+	_direct3D->GetDeviceContext()->Unmap(_buffer, 0);
+	_direct3D->GetDeviceContext()->VSSetConstantBuffers(bufferIndex, 1, &_buffer);
 }

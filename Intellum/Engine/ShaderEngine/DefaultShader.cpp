@@ -217,7 +217,8 @@ void DefaultShader::SetShaderParameters(ShaderResources shaderResources, XMMATRI
 {
 	try
 	{
-		_matrixBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructMatrixBufferParameters(0, worldMatrix, projectionMatrix, _camera->GetViewMatrix()));
+		shaderResources.MatrixParameters.ViewMatrix = _camera->GetViewMatrix();
+		_matrixBuffer->SetShaderParameters(0, shaderResources);
 		_cameraBuffer->SetShaderParameters(1, shaderResources);
 		_colorBuffer->SetShaderParameters(4, shaderResources);
 		_lightBuffer->SetShaderParameters(3, shaderResources);

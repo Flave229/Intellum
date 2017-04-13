@@ -23,7 +23,7 @@ private:
 
 	int _renderCount;
 
-	static ShaderResources BuildShaderResources(AppearanceComponent* appearance, TransformComponent* transform);
+	ShaderResources BuildShaderResources(AppearanceComponent* appearance, TransformComponent* transform) const;
 	void BuildBufferInformation(Entity* entity, AppearanceComponent* appearance) const;
 	static vector<ID3D11ShaderResourceView*> ExtractResourceViewsFrom(vector<Texture*> textures);
 
