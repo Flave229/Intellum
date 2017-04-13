@@ -41,8 +41,12 @@ void RenderSystem::Render(vector<Entity*> entities)
 		ShaderResources shaderResources = ShaderResources();
 		shaderResources.ColorParameters = appearance->Color;
 		shaderResources.GradientParameters = appearance->Gradient;
-		shaderResources.GradientParameters.CenterYCordinates = transform->Position.y;
-		shaderResources.GradientParameters.Height = (appearance->Model.Size.y / 2) * transform->Scale.y;
+		if (appearance->Gradient.Enabled)
+		{
+			shaderResources.GradientParameters.CenterYCordinates = transform->Position.y;
+			shaderResources.GradientParameters.Height = (appearance->Model.Size.y / 2) * transform->Scale.y;
+		}
+
 		shaderResources.TextureParameters.TextureArray = ExtractResourceViewsFrom(appearance->Textures);
 		if (appearance->BumpMap != nullptr)
 			shaderResources.TextureParameters.BumpMap = appearance->BumpMap->GetTexture();
