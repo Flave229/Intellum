@@ -1,5 +1,4 @@
 #include "ShaderParameterConstructor.h"
-#include "../../Objects/Appearance/ColorShaderParameters.h"
 
 ShaderParameterConstructor::ShaderParameterConstructor()
 {

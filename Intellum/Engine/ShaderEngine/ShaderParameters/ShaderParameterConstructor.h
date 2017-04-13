@@ -1,7 +1,9 @@
 #pragma once
 #include "ShaderParameters.h"
-#include "../../Objects/Appearance/GradientShaderParameters.h"
+#include "ColorShaderParameters.h"
+#include "GradientShaderParameters.h"
 
+class GradientShaderParameters;
 class ColorShaderParameters;
 
 class ShaderParameterConstructor

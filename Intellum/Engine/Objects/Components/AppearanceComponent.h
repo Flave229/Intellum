@@ -3,7 +3,6 @@
 #include "../Appearance/Texture/Texture.h"
 #include "IComponent.h"
 #include "../../ShaderEngine/ShaderController.h"
-#include "../Appearance/ColorShaderParameters.h"
 
 class AppearanceComponent : public IComponent
 {

@@ -207,8 +207,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Camera\FrustrumCullingType.h" />
-    <ClInclude Include="Engine\Objects\Appearance\ColorShaderParameters.h" />
-    <ClInclude Include="Engine\Objects\Appearance\GradientShaderParameters.h" />
+    <ClInclude Include="Engine\ShaderEngine\ShaderParameters\ColorShaderParameters.h" />
+    <ClInclude Include="Engine\ShaderEngine\ShaderParameters\GradientShaderParameters.h" />
     <ClInclude Include="Engine\Objects\Components\AppearanceComponent.h" />
     <ClInclude Include="Engine\Objects\Appearance\Texture\CreateTexture.h" />
     <ClInclude Include="Engine\Objects\Appearance\IAppearance.h" />

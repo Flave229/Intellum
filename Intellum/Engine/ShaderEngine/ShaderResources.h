@@ -1,8 +1,8 @@
 #pragma once
 #include <vector>
 #include <DirectXMath.h>
-#include "../Objects/Appearance/ColorShaderParameters.h"
-#include "../Objects/Appearance/GradientShaderParameters.h"
+#include "ShaderParameters/GradientShaderParameters.h"
+#include "ShaderParameters/ColorShaderParameters.h"
 
 using namespace DirectX;
 
