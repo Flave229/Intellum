@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include <DirectXMath.h>
-#include "../Objects/Appearance/ColorOverload.h"
+#include "../Objects/Appearance/ColorShaderParameters.h"
 #include "../Objects/Appearance/GradientOverload.h"
 
 using namespace DirectX;
@@ -12,6 +12,6 @@ public:
 	std::vector<ID3D11ShaderResourceView*> TextureArray;
 	ID3D11ShaderResourceView* LightMap;
 	ID3D11ShaderResourceView* BumpMap;
-	ColorOverload ColorOverload;
+	ColorShaderParameters ColorOverload;
 	GradientOverload GradientOverload;
 };

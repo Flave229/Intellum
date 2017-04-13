@@ -396,13 +396,13 @@
     <ClInclude Include="Engine\Objects\Systems\UISystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Objects\Appearance\ColorOverload.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\ShaderEngine\ConstantBuffers\GradientOverloadBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Objects\Appearance\GradientOverload.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Objects\Appearance\ColorShaderParameters.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

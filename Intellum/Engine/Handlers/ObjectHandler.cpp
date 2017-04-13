@@ -1,6 +1,5 @@
 #include "ObjectHandler.h"
 #include "../Objects/Systems/UISystem.h"
-#include "../Objects/Appearance/ColorOverload.h"
 
 ObjectHandler::ObjectHandler(DirectX3D* direct3D, ShaderController* shaderController, HWND hwnd, Camera* camera, Light* light)
 {

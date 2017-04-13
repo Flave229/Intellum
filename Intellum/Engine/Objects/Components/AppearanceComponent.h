@@ -3,7 +3,7 @@
 #include "../Appearance/Texture/Texture.h"
 #include "IComponent.h"
 #include "../../ShaderEngine/ShaderController.h"
-#include "../Appearance/ColorOverload.h"
+#include "../Appearance/ColorShaderParameters.h"
 
 class AppearanceComponent : public IComponent
 {
@@ -14,11 +14,11 @@ public:
 	vector<Texture*> Textures;
 	Texture* LightMap;
 	Texture* BumpMap;
-	ColorOverload Color;
+	ColorShaderParameters Color;
 	GradientOverload Gradient;
 
 	AppearanceComponent()
-		: IComponent(APPEARANCE), ShaderType(SHADER_DEFAULT), Model(Geometry()), Textures(vector<Texture*>()), LightMap(nullptr), BumpMap(nullptr), Color(ColorOverload()), Gradient(GradientOverload())
+		: IComponent(APPEARANCE), ShaderType(SHADER_DEFAULT), Model(Geometry()), Textures(vector<Texture*>()), LightMap(nullptr), BumpMap(nullptr), Color(ColorShaderParameters()), Gradient(GradientOverload())
 	{
 	}
 	

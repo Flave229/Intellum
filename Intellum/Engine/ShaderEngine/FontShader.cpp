@@ -184,8 +184,8 @@ void FontShader::SetShaderParameters(ShaderResources shaderResources, XMMATRIX w
 	{
 		_matrixBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructMatrixBufferParameters(0, worldMatrix, projectionMatrix, _viewMatrix));
 		_cameraBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructDefaultBufferParameters(1));
-		ColorOverload colorOverload = ColorOverload(_colorOverload);
-		colorOverload.Overload = _colorOverloadEnabled;
+		ColorShaderParameters colorOverload = ColorShaderParameters(_colorOverload);
+		colorOverload.Enabled = _colorOverloadEnabled;
 		_colorBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructColorOverloadBufferParameters(0, colorOverload));
 
 		bool lightMapEnabled = false;
