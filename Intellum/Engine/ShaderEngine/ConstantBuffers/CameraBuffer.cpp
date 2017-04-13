@@ -44,4 +44,14 @@ void CameraBuffer::SetShaderParameters(ShaderParameters parameters)
 
 void CameraBuffer::SetShaderParameters(int bufferIndex, ShaderResources shaderResources)
 {
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	HRESULT result = _direct3D->GetDeviceContext()->Map(_buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	if (FAILED(result)) throw Exception("Failed to map camera buffer to the Device Context.");
+
+	Buffer* cameraDataPtr = static_cast<Buffer*>(mappedResource.pData);
+	cameraDataPtr->cameraPosition = _camera->GetTransform()->GetPosition();
+	cameraDataPtr->padding = 0.0f;
+
+	_direct3D->GetDeviceContext()->Unmap(_buffer, 0);
+	_direct3D->GetDeviceContext()->VSSetConstantBuffers(bufferIndex, 1, &_buffer);
 }

@@ -218,9 +218,9 @@ void DefaultShader::SetShaderParameters(ShaderResources shaderResources, XMMATRI
 	try
 	{
 		_matrixBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructMatrixBufferParameters(0, worldMatrix, projectionMatrix, _camera->GetViewMatrix()));
-		_cameraBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructDefaultBufferParameters(1));
+		_cameraBuffer->SetShaderParameters(1, shaderResources);
 		_colorBuffer->SetShaderParameters(4, shaderResources);
-		_lightBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructDefaultBufferParameters(3));
+		_lightBuffer->SetShaderParameters(3, shaderResources);
 		_gradientBuffer->SetShaderParameters(5, shaderResources);
 
 		int textureCount = static_cast<int>(shaderResources.TextureParameters.TextureArray.size());
