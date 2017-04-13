@@ -15,10 +15,10 @@ public:
 	Texture* LightMap;
 	Texture* BumpMap;
 	ColorShaderParameters Color;
-	GradientOverload Gradient;
+	GradientShaderParameters Gradient;
 
 	AppearanceComponent()
-		: IComponent(APPEARANCE), ShaderType(SHADER_DEFAULT), Model(Geometry()), Textures(vector<Texture*>()), LightMap(nullptr), BumpMap(nullptr), Color(ColorShaderParameters()), Gradient(GradientOverload())
+		: IComponent(APPEARANCE), ShaderType(SHADER_DEFAULT), Model(Geometry()), Textures(vector<Texture*>()), LightMap(nullptr), BumpMap(nullptr), Color(ColorShaderParameters()), Gradient(GradientShaderParameters())
 	{
 	}
 	

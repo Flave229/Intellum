@@ -49,13 +49,13 @@ ShaderParameters ShaderParameterConstructor::ConstructTextureBufferParameters(in
 	return shaderParameters;
 }
 
-ShaderParameters ShaderParameterConstructor::ConstructGradientOverloadBufferParameters(int bufferIndex, GradientOverload gradientOverload)
+ShaderParameters ShaderParameterConstructor::ConstructGradientOverloadBufferParameters(int bufferIndex, GradientShaderParameters gradientOverload)
 {
 	ShaderParameters shaderParameters;
 	shaderParameters.BufferIndex = bufferIndex;
 	shaderParameters.GradientApexOverload = gradientOverload.ApexColor;
 	shaderParameters.GradientCenterOverload = gradientOverload.CenterColor;
-	shaderParameters.GradientOverloadEnabled = gradientOverload.Overload;
+	shaderParameters.GradientOverloadEnabled = gradientOverload.Enabled;
 	shaderParameters.GradientHeight = gradientOverload.Height;
 	shaderParameters.CenterPosition = gradientOverload.CenterYCordinates;
 

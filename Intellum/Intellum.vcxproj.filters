@@ -399,10 +399,10 @@
     <ClInclude Include="Engine\ShaderEngine\ConstantBuffers\GradientOverloadBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Objects\Appearance\GradientOverload.h">
+    <ClInclude Include="Engine\Objects\Appearance\ColorShaderParameters.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Objects\Appearance\ColorShaderParameters.h">
+    <ClInclude Include="Engine\Objects\Appearance\GradientShaderParameters.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
