@@ -10,6 +10,11 @@
 #include "../ShaderEngine/FontShader.h"
 #include "../DirectX3D.h"
 #include "../Objects/Appearance/UIAppearance.h"
+#include "../Objects/Entity.h"
+#include "../Objects/Components/AppearanceComponent.h"
+#include "../Objects/Components/TransformComponent.h"
+#include "../Objects/Components/UIComponent.h"
+#include "../Objects/Geometry/GeometryBuilder.h"
 
 using namespace std;
 
@@ -41,6 +46,7 @@ public:
 	~FontEngine();
 
 	void Update(XMFLOAT2 position, string font, string input, XMFLOAT4 textColor, int fontSize);
+	vector<Entity*> ConvertTextToEntities(XMFLOAT2 position, string font, string input, XMFLOAT4 textColor, int fontSize);
 	
 	bool SearchForAvaliableFonts(Box screenSize);
 

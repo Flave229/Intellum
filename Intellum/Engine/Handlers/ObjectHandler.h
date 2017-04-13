@@ -17,6 +17,10 @@
 #include "../Objects/Appearance/Texture/CreateTexture.h"
 #include "../Objects/Systems/SystemType.h"
 #include "../Objects/Components/FurstrumCullingComponent.h"
+#include "../Objects/Systems/UISystem.h"
+#include "../Objects/Components/TextComponent.h"
+#include "../FontEngine/FontEngine.h"
+#include "../Objects/Systems/FontSystem.h"
 
 using namespace DirectX;
 using namespace std;
@@ -28,9 +32,9 @@ private:
 
 	vector<Entity*> _entityList;
 	map<SystemType, ISystem*> _systemList;
-	void InitialiseObjects(DirectX3D* direct3D, ShaderController* shaderController, HWND hwnd, Camera* camera, Light* light);
+	void InitialiseObjects(DirectX3D* direct3D, ShaderController* shaderController, FontEngine* fontEngine, HWND hwnd, Camera* camera, Light* light);
 public:
-	ObjectHandler(DirectX3D* direct3D, ShaderController* shaderController, HWND hwnd, Camera* camera, Light* light);
+	ObjectHandler(DirectX3D* direct3D, ShaderController* shaderController, FontEngine* fontEngine, HWND hwnd, Camera* camera, Light* light);
 	~ObjectHandler();
 
 	void Shutdown();

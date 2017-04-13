@@ -49,10 +49,10 @@ void FontEngine::Update(XMFLOAT2 position, string font, string input, XMFLOAT4 t
 
 		for (int i = 0; i < stringAsTexture.size(); i++)
 		{
-			stringAsTexture.at(i)->_texture->Update(XMFLOAT2(position.x + (fontSize * i), position.y), Box(fontSize, fontSize * 2));
-			stringAsTexture.at(i)->_texture->Render();
+			stringAsTexture.at(i)->BitmapTexture->Update(XMFLOAT2(position.x + (fontSize * i), position.y), Box(fontSize, fontSize * 2));
+			stringAsTexture.at(i)->BitmapTexture->Render();
 		}
-
+		
 		((FontShader*)_shader)->SetColorOverload(false);
 	}
 	catch (Exception& exception)
@@ -63,6 +63,56 @@ void FontEngine::Update(XMFLOAT2 position, string font, string input, XMFLOAT4 t
 	{
 		throw Exception("The Font Engine failed to render the requested text: \"" + input + "\"");
 	}
+}
+
+vector<Entity*> FontEngine::ConvertTextToEntities(XMFLOAT2 position, string font, string input, XMFLOAT4 textColor, int fontSize)
+{
+	try
+	{
+		bool result = CheckFontExists(font);
+		if (!result)
+		{
+			font = "Default";
+		}
+
+		vector<Character*> stringAsTexture = StringToCharacterTextureList(font, input);
+		vector<Entity*> stringAsEntities;
+		GeometryBuilder geometryBuilder = GeometryBuilder(_direct3D->GetDevice());
+
+		for (int i = 0; i < stringAsTexture.size(); i++)
+		{
+			Entity* character = new Entity();
+
+			AppearanceComponent* uiAppearance = new AppearanceComponent();
+			uiAppearance->ShaderType = SHADER_UI;
+			uiAppearance->Model = geometryBuilder.ForUI();
+			uiAppearance->Textures = vector<Texture*> { stringAsTexture.at(i)->Texture };
+			uiAppearance->Color = ColorShaderParameters(textColor);
+			character->AddComponent(uiAppearance);
+
+			TransformComponent* uiTransform = new TransformComponent();
+			uiTransform->Position = XMFLOAT3(position.x + (fontSize * i), position.y, 0);
+			character->AddComponent(uiTransform);
+
+			UIComponent* uiComponent = new UIComponent();
+			uiComponent->BitmapSize = XMFLOAT2(fontSize, fontSize * 2);
+			character->AddComponent(uiComponent);
+
+			stringAsEntities.push_back(character);
+		}
+
+		return stringAsEntities;
+	}
+	catch (Exception& exception)
+	{
+		throw Exception("The Font Engine failed to render the requested text: \"" + input + "\"", exception);
+	}
+	catch (...)
+	{
+		throw Exception("The Font Engine failed to render the requested text: \"" + input + "\"");
+	}
+
+	return vector<Entity*>();
 }
 
 Font* FontEngine::GetFont(string font)

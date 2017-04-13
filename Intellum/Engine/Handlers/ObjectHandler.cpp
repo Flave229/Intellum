@@ -1,9 +1,8 @@
 #include "ObjectHandler.h"
-#include "../Objects/Systems/UISystem.h"
 
-ObjectHandler::ObjectHandler(DirectX3D* direct3D, ShaderController* shaderController, HWND hwnd, Camera* camera, Light* light)
+ObjectHandler::ObjectHandler(DirectX3D* direct3D, ShaderController* shaderController, FontEngine* fontEngine, HWND hwnd, Camera* camera, Light* light)
 {
-	InitialiseObjects(direct3D, shaderController, hwnd, camera, light);
+	InitialiseObjects(direct3D, shaderController, fontEngine, hwnd, camera, light);
 }
 
 ObjectHandler::~ObjectHandler()
@@ -31,15 +30,16 @@ void ObjectHandler::Shutdown()
 	_systemList.clear();
 }
 
-void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* shaderController, HWND hwnd, Camera* camera, Light* light)
+void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* shaderController, FontEngine* fontEngine, HWND hwnd, Camera* camera, Light* light)
 {
 	srand(static_cast<unsigned int>(time(nullptr)));
 
 	GeometryBuilder geometryBuilder = GeometryBuilder(direct3D->GetDevice());
 
 	_systemList[TRANSFORM_SYSTEM] = new TransformSystem(direct3D);
-	_systemList[UI_RENDER_SYSTEM] = new UISystem(direct3D, shaderController, hwnd, camera, Box(1280, 720));
+	_systemList[UI_RENDER_SYSTEM] = new UISystem(direct3D, shaderController, hwnd, Box(1280, 720));
 	_systemList[RENDER_SYSTEM] = new RenderSystem(direct3D, shaderController, hwnd, camera);
+	_systemList[FONT_SYSTEM] = new FontSystem(direct3D, shaderController, fontEngine, hwnd, Box(1280, 720));
 
 	for(int i = 0; i < 25; i++)
 	{
@@ -110,6 +110,16 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	ui->AddComponent(uiComponent);
 	
 	_entityList.push_back(ui);
+
+	Entity* text = new Entity();
+	TextComponent* textComponent = new TextComponent();
+	textComponent->Text = "Victoria Grump";
+	textComponent->FontSize = 30;
+	textComponent->FontPosition = XMFLOAT2(50, 600);
+	textComponent->Color = XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f);
+	text->AddComponent(textComponent);
+
+	_entityList.push_back(text);
 }
 
 void ObjectHandler::Update(float delta)

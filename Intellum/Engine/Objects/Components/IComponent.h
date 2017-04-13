@@ -9,7 +9,8 @@ enum ComponentType
 	RASTERIZER,
 	FRUSTRUM_CULLING,
 	UI_APPEARANCE,
-	USER_INTERFACE
+	USER_INTERFACE,
+	TEXT
 };
 
 class IComponent

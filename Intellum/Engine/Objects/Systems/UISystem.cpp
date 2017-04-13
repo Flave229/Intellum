@@ -2,7 +2,7 @@
 #include "../Components/TransformComponent.h"
 #include "../Components/AppearanceComponent.h"
 
-UISystem::UISystem(DirectX3D* direct3D, ShaderController* shaderController, HWND hwnd, Camera* camera, Box screenSize): _direct3D(direct3D), _camera(camera), _shaderController(shaderController), _screenSize(screenSize)
+UISystem::UISystem(DirectX3D* direct3D, ShaderController* shaderController, HWND hwnd, Box screenSize): _direct3D(direct3D), _shaderController(shaderController), _screenSize(screenSize)
 {
 
 }

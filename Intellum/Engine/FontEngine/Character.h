@@ -10,7 +10,8 @@ class Character
 public:
 	string _name;
 	string _unicode;
-	Bitmap* _texture;
+	Bitmap* BitmapTexture;
+	Texture* Texture;
 public:
 	Character(string unicode, Bitmap* texture);
 	Character(string name, string unicode, Bitmap* texture);

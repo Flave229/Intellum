@@ -180,6 +180,11 @@ int UIAppearance::GetIndexCount() const
 	return _indexCount;
 }
 
+Texture* UIAppearance::GetTexture() const
+{
+	return _textures.at(0);
+}
+
 vector<ID3D11ShaderResourceView*> UIAppearance::GetTextures() const
 {
 	vector<ID3D11ShaderResourceView*> textureViews;

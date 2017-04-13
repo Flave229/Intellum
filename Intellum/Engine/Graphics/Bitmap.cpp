@@ -32,3 +32,8 @@ void Bitmap::Render() const
 
 	_shader->Render(_appearance->GetIndexCount(), shaderResources, _direct3D->GetWorldMatrix(), _direct3D->GetOrthoMatrix());
 }
+
+Texture* Bitmap::GetTexture()
+{
+	return _appearance->GetTexture();
+}

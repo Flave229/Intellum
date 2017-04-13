@@ -186,6 +186,7 @@
     <ClCompile Include="Engine\Objects\Geometry\GeometryBuilder.cpp" />
     <ClCompile Include="Engine\Objects\Geometry\GridBuilder.cpp" />
     <ClCompile Include="Engine\ShaderEngine\ConstantBuffers\GradientOverloadBuffer.cpp" />
+    <ClCompile Include="Engine\Objects\Systems\FontSystem.cpp" />
     <ClCompile Include="Loaders\OBJLoader\OBJBinaryLoader.cpp" />
     <ClCompile Include="loaders\OBJLoader.cpp" />
     <ClCompile Include="Loaders\OBJLoader\OBJFileLoader.cpp" />
@@ -207,6 +208,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Camera\FrustrumCullingType.h" />
+    <ClInclude Include="Engine\Objects\Components\TextComponent.h" />
     <ClInclude Include="Engine\ShaderEngine\ShaderParameters\ColorShaderParameters.h" />
     <ClInclude Include="Engine\ShaderEngine\ShaderParameters\GradientShaderParameters.h" />
     <ClInclude Include="Engine\Objects\Components\AppearanceComponent.h" />
@@ -258,6 +260,7 @@
     <ClInclude Include="Engine\Objects\Geometry\GeometryBuilder.h" />
     <ClInclude Include="Engine\Objects\Geometry\GridBuilder.h" />
     <ClInclude Include="Engine\ShaderEngine\ConstantBuffers\GradientOverloadBuffer.h" />
+    <ClInclude Include="Engine\Objects\Systems\FontSystem.h" />
     <ClInclude Include="Loaders\models\OBJGeometryData.h" />
     <ClInclude Include="Loaders\OBJLoader\IOBJLoader.h" />
     <ClInclude Include="Loaders\OBJLoader\OBJBinaryLoader.h" />

@@ -23,4 +23,6 @@ public:
 
 	void Update(XMFLOAT2 position, Box bitmapSize) const;
 	void Render() const;
+
+	Texture* GetTexture();
 };

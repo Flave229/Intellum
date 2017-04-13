@@ -11,10 +11,9 @@ private:
 
 public:
 	DirectX3D* _direct3D;
-	Camera* _camera;
 	ShaderController* _shaderController;
 
-	UISystem(DirectX3D* direct3D, ShaderController* shaderController, HWND hwnd, Camera* camera, Box screenSize);
+	UISystem(DirectX3D* direct3D, ShaderController* shaderController, HWND hwnd, Box screenSize);
 	~UISystem() override = default;
 
 	void Shutdown() override;
