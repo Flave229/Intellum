@@ -22,11 +22,12 @@ private:
 	ShaderController* _shaderController;
 
 	int _renderCount;
-	
+
+	static ShaderResources BuildShaderResources(AppearanceComponent* appearance, TransformComponent* transform);
 	void BuildBufferInformation(Entity* entity, AppearanceComponent* appearance) const;
 	static vector<ID3D11ShaderResourceView*> ExtractResourceViewsFrom(vector<Texture*> textures);
 
-	bool CheckIfInsideFrustrum(Entity* entity, TransformComponent* transform, AppearanceComponent* appearance);
+	bool CheckIfInsideFrustrum(Entity* entity, TransformComponent* transform, AppearanceComponent* appearance) const;
 public:
 	RenderSystem(DirectX3D* direct3D, ShaderController* shaderController, HWND hwnd, Camera* camera);
 	~RenderSystem() override = default;

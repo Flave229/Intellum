@@ -38,29 +38,7 @@ void RenderSystem::Render(vector<Entity*> entities)
 
 		BuildBufferInformation(entity, appearance);
 
-		ShaderResources shaderResources = ShaderResources();
-		shaderResources.ColorParameters = appearance->Color;
-		shaderResources.GradientParameters = appearance->Gradient;
-		if (appearance->Gradient.Enabled)
-		{
-			shaderResources.GradientParameters.CenterYCordinates = transform->Position.y;
-			shaderResources.GradientParameters.Height = (appearance->Model.Size.y / 2) * transform->Scale.y;
-		}
-
-		if (appearance->Textures.size() > 0)
-			shaderResources.TextureParameters.TextureArray = ExtractResourceViewsFrom(appearance->Textures);
-
-		if (appearance->BumpMap != nullptr)
-		{
-			shaderResources.TextureParameters.BumpMap = appearance->BumpMap->GetTexture();
-			shaderResources.TextureParameters.BumpMapEnabled = true;
-		}
-
-		if (appearance->LightMap != nullptr)
-		{
-			shaderResources.TextureParameters.LightMap = appearance->LightMap->GetTexture();
-			shaderResources.TextureParameters.LightMapEnabled = true;
-		}
+		ShaderResources shaderResources = BuildShaderResources(appearance, transform);
 
 		IShaderType* shader = _shaderController->GetShader(appearance->ShaderType);
 		switch(appearance->ShaderType)
@@ -79,7 +57,7 @@ void RenderSystem::Render(vector<Entity*> entities)
 	}
 }
 
-bool RenderSystem::CheckIfInsideFrustrum(Entity* entity, TransformComponent* transform, AppearanceComponent* appearance)
+bool RenderSystem::CheckIfInsideFrustrum(Entity* entity, TransformComponent* transform, AppearanceComponent* appearance) const
 {
 	IComponent* component = entity->GetComponent(FRUSTRUM_CULLING);
 
@@ -105,6 +83,35 @@ bool RenderSystem::CheckIfInsideFrustrum(Entity* entity, TransformComponent* tra
 	default: 
 		return true;
 	}
+}
+
+ShaderResources RenderSystem::BuildShaderResources(AppearanceComponent* appearance, TransformComponent* transform)
+{
+	ShaderResources shaderResources = ShaderResources();
+	shaderResources.ColorParameters = appearance->Color;
+	shaderResources.GradientParameters = appearance->Gradient;
+	if (appearance->Gradient.Enabled)
+	{
+		shaderResources.GradientParameters.CenterYCordinates = transform->Position.y;
+		shaderResources.GradientParameters.Height = (appearance->Model.Size.y / 2) * transform->Scale.y;
+	}
+
+	if (appearance->Textures.size() > 0)
+		shaderResources.TextureParameters.TextureArray = ExtractResourceViewsFrom(appearance->Textures);
+
+	if (appearance->BumpMap != nullptr)
+	{
+		shaderResources.TextureParameters.BumpMap = appearance->BumpMap->GetTexture();
+		shaderResources.TextureParameters.BumpMapEnabled = true;
+	}
+
+	if (appearance->LightMap != nullptr)
+	{
+		shaderResources.TextureParameters.LightMap = appearance->LightMap->GetTexture();
+		shaderResources.TextureParameters.LightMapEnabled = true;
+	}
+
+	return shaderResources;
 }
 
 void RenderSystem::BuildBufferInformation(Entity* entity, AppearanceComponent* appearance) const
