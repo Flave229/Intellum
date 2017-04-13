@@ -223,26 +223,16 @@ void DefaultShader::SetShaderParameters(ShaderResources shaderResources, XMMATRI
 		_lightBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructDefaultBufferParameters(3));
 		_gradientBuffer->SetShaderParameters(5, shaderResources);
 
-		bool lightMapEnabled = false;
-		if (shaderResources.TextureParameters.LightMap != nullptr)
-			lightMapEnabled = true;
-
-		bool bumpMapEnabled = false;
-		if (shaderResources.TextureParameters.BumpMap != nullptr)
-			bumpMapEnabled = true;
-
 		int textureCount = static_cast<int>(shaderResources.TextureParameters.TextureArray.size());
-		_textureBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructTextureBufferParameters(2, textureCount, lightMapEnabled, bumpMapEnabled));
+		_textureBuffer->SetShaderParameters(2, shaderResources);
 
 		if (textureCount > 0)
-		{
 			_direct3D->GetDeviceContext()->PSSetShaderResources(0, textureCount, &shaderResources.TextureParameters.TextureArray.at(0));
-		}
 
-		if (lightMapEnabled)
+		if (shaderResources.TextureParameters.LightMapEnabled)
 			_direct3D->GetDeviceContext()->PSSetShaderResources(10, 1, &shaderResources.TextureParameters.LightMap);
 		
-		if (bumpMapEnabled)
+		if (shaderResources.TextureParameters.BumpMapEnabled)
 			_direct3D->GetDeviceContext()->PSSetShaderResources(11, 1, &shaderResources.TextureParameters.BumpMap);
 	}
 	catch(Exception& exception)
