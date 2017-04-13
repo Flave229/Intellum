@@ -221,7 +221,7 @@ void DefaultShader::SetShaderParameters(ShaderResources shaderResources, XMMATRI
 		_cameraBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructDefaultBufferParameters(1));
 		_colorBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructColorOverloadBufferParameters(4, shaderResources.ColorOverload));
 		_lightBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructDefaultBufferParameters(3));
-		_gradientBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructGradientOverloadBufferParameters(5, shaderResources.GradientOverload));
+		_gradientBuffer->SetShaderParameters(5, shaderResources);
 
 		bool lightMapEnabled = false;
 		if (shaderResources.LightMap != nullptr)

@@ -23,4 +23,5 @@ public:
 	~GradientOverloadBuffer() override = default;
 	void Shutdown() override;
 	void SetShaderParameters(ShaderParameters parameters) override;
+	void SetShaderParameters(int bufferIndex, ShaderResources shaderResources) override;
 };

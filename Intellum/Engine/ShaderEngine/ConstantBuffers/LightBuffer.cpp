@@ -44,3 +44,7 @@ void LightBuffer::SetShaderParameters(ShaderParameters parameters)
 	_direct3D->GetDeviceContext()->Unmap(_buffer, 0);
 	_direct3D->GetDeviceContext()->PSSetConstantBuffers(parameters.BufferIndex, 1, &_buffer);
 }
+
+void LightBuffer::SetShaderParameters(int bufferIndex, ShaderResources shaderResources)
+{
+}

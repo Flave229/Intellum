@@ -46,3 +46,7 @@ void MatrixBuffer::SetShaderParameters(ShaderParameters parameters)
 	_direct3D->GetDeviceContext()->Unmap(_buffer, 0);
 	_direct3D->GetDeviceContext()->VSSetConstantBuffers(parameters.BufferIndex, 1, &_buffer);
 }
+
+void MatrixBuffer::SetShaderParameters(int bufferIndex, ShaderResources shaderResources)
+{
+}

@@ -49,3 +49,26 @@ void GradientOverloadBuffer::SetShaderParameters(ShaderParameters parameters)
 	_direct3D->GetDeviceContext()->Unmap(_buffer, 0);
 	_direct3D->GetDeviceContext()->PSSetConstantBuffers(parameters.BufferIndex, 1, &_buffer);
 }
+
+void GradientOverloadBuffer::SetShaderParameters(int bufferIndex, ShaderResources shaderResources)
+{
+	GradientOverload gradientOverload = shaderResources.GradientOverload;
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	HRESULT result = _direct3D->GetDeviceContext()->Map(_buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	if (FAILED(result)) throw Exception("Failed to map gradient buffer to the Device Context.");
+
+	Buffer* gradientDataPointer = static_cast<Buffer*>(mappedResource.pData);
+
+	if (gradientOverload.Overload)
+		gradientDataPointer->gradientOverloadEnabled = 1.0f;
+	else
+		gradientDataPointer->gradientOverloadEnabled = 0.0f;
+
+	gradientDataPointer->apexColor = gradientOverload.ApexColor;
+	gradientDataPointer->apexPosition = gradientOverload.Height;
+	gradientDataPointer->centerColor = gradientOverload.CenterColor;
+	gradientDataPointer->centerPosition = gradientOverload.CenterYCordinates;
+
+	_direct3D->GetDeviceContext()->Unmap(_buffer, 0);
+	_direct3D->GetDeviceContext()->PSSetConstantBuffers(bufferIndex, 1, &_buffer);
+}

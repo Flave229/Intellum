@@ -1,6 +1,7 @@
 #pragma once
 #include "../../DirectX3D.h"
 #include "../ShaderParameters/ShaderParameters.h"
+#include "../ShaderResources.h"
 
 class IShaderBuffer
 {
@@ -15,4 +16,5 @@ public:
 	virtual void Shutdown() = 0;
 
 	virtual void SetShaderParameters(ShaderParameters parameters) = 0;
+	virtual void SetShaderParameters(int bufferIndex, ShaderResources shaderResources) = 0;
 };
