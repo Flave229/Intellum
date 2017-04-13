@@ -219,7 +219,7 @@ void DefaultShader::SetShaderParameters(ShaderResources shaderResources, XMMATRI
 	{
 		_matrixBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructMatrixBufferParameters(0, worldMatrix, projectionMatrix, _camera->GetViewMatrix()));
 		_cameraBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructDefaultBufferParameters(1));
-		_colorBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructColorOverloadBufferParameters(4, shaderResources.ColorOverload));
+		_colorBuffer->SetShaderParameters(4, shaderResources);
 		_lightBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructDefaultBufferParameters(3));
 		_gradientBuffer->SetShaderParameters(5, shaderResources);
 
