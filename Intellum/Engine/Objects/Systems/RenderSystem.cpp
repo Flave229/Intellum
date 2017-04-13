@@ -47,11 +47,20 @@ void RenderSystem::Render(vector<Entity*> entities)
 			shaderResources.GradientParameters.Height = (appearance->Model.Size.y / 2) * transform->Scale.y;
 		}
 
-		shaderResources.TextureParameters.TextureArray = ExtractResourceViewsFrom(appearance->Textures);
+		if (appearance->Textures.size() > 0)
+			shaderResources.TextureParameters.TextureArray = ExtractResourceViewsFrom(appearance->Textures);
+
 		if (appearance->BumpMap != nullptr)
+		{
 			shaderResources.TextureParameters.BumpMap = appearance->BumpMap->GetTexture();
+			shaderResources.TextureParameters.BumpMapEnabled = true;
+		}
+
 		if (appearance->LightMap != nullptr)
+		{
 			shaderResources.TextureParameters.LightMap = appearance->LightMap->GetTexture();
+			shaderResources.TextureParameters.LightMapEnabled = true;
+		}
 
 		IShaderType* shader = _shaderController->GetShader(appearance->ShaderType);
 		switch(appearance->ShaderType)
