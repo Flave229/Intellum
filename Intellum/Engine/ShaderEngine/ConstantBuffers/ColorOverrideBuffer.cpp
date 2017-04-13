@@ -50,7 +50,7 @@ void ColorOverrideBuffer::SetShaderParameters(ShaderParameters parameters)
 
 void ColorOverrideBuffer::SetShaderParameters(int bufferIndex, ShaderResources shaderResources)
 {
-	ColorShaderParameters colorOverload = shaderResources.ColorOverload;
+	ColorShaderParameters colorOverload = shaderResources.ColorParameters;
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
 	HRESULT result = _direct3D->GetDeviceContext()->Map(_buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	if (FAILED(result)) throw Exception("Failed to map color buffer to the Device Context.");

@@ -27,8 +27,8 @@ void Bitmap::Render() const
 	_appearance->Render();
 
 	ShaderResources shaderResources;
-	shaderResources.TextureArray = _appearance->GetTextures();
-	shaderResources.LightMap = _appearance->GetLightMap();
+	shaderResources.TextureParameters.TextureArray = _appearance->GetTextures();
+	shaderResources.TextureParameters.LightMap = _appearance->GetLightMap();
 
 	_shader->Render(_appearance->GetIndexCount(), shaderResources, _direct3D->GetWorldMatrix(), _direct3D->GetOrthoMatrix());
 }

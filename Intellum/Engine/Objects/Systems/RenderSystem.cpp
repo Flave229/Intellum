@@ -39,15 +39,15 @@ void RenderSystem::Render(vector<Entity*> entities)
 		BuildBufferInformation(entity, appearance);
 
 		ShaderResources shaderResources = ShaderResources();
-		shaderResources.ColorOverload = appearance->Color;
-		shaderResources.GradientOverload = appearance->Gradient;
-		shaderResources.GradientOverload.CenterYCordinates = transform->Position.y;
-		shaderResources.GradientOverload.Height = (appearance->Model.Size.y / 2) * transform->Scale.y;
-		shaderResources.TextureArray = ExtractResourceViewsFrom(appearance->Textures);
+		shaderResources.ColorParameters = appearance->Color;
+		shaderResources.GradientParameters = appearance->Gradient;
+		shaderResources.GradientParameters.CenterYCordinates = transform->Position.y;
+		shaderResources.GradientParameters.Height = (appearance->Model.Size.y / 2) * transform->Scale.y;
+		shaderResources.TextureParameters.TextureArray = ExtractResourceViewsFrom(appearance->Textures);
 		if (appearance->BumpMap != nullptr)
-			shaderResources.BumpMap = appearance->BumpMap->GetTexture();
+			shaderResources.TextureParameters.BumpMap = appearance->BumpMap->GetTexture();
 		if (appearance->LightMap != nullptr)
-			shaderResources.LightMap = appearance->LightMap->GetTexture();
+			shaderResources.TextureParameters.LightMap = appearance->LightMap->GetTexture();
 
 		IShaderType* shader = _shaderController->GetShader(appearance->ShaderType);
 		switch(appearance->ShaderType)

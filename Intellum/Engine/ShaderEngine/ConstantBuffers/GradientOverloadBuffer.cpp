@@ -52,7 +52,7 @@ void GradientOverloadBuffer::SetShaderParameters(ShaderParameters parameters)
 
 void GradientOverloadBuffer::SetShaderParameters(int bufferIndex, ShaderResources shaderResources)
 {
-	GradientShaderParameters gradientOverload = shaderResources.GradientOverload;
+	GradientShaderParameters gradientOverload = shaderResources.GradientParameters;
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
 	HRESULT result = _direct3D->GetDeviceContext()->Map(_buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	if (FAILED(result)) throw Exception("Failed to map gradient buffer to the Device Context.");

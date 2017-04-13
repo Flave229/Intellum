@@ -405,6 +405,9 @@
     <ClInclude Include="Engine\ShaderEngine\ShaderParameters\GradientShaderParameters.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\ShaderEngine\ShaderParameters\TextureShaderParameters.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="shaders\PixelShader.hlsl">

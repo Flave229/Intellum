@@ -189,20 +189,20 @@ void FontShader::SetShaderParameters(ShaderResources shaderResources, XMMATRIX w
 		_colorBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructColorOverloadBufferParameters(0, colorOverload));
 
 		bool lightMapEnabled = false;
-		if (shaderResources.LightMap != nullptr)
+		if (shaderResources.TextureParameters.LightMap != nullptr)
 			lightMapEnabled = true;
 
 		bool bumpMapEnabled = false;
-		if (shaderResources.BumpMap != nullptr)
+		if (shaderResources.TextureParameters.BumpMap != nullptr)
 			bumpMapEnabled = true;
 
-		int textureCount = static_cast<int>(shaderResources.TextureArray.size());
+		int textureCount = static_cast<int>(shaderResources.TextureParameters.TextureArray.size());
 		_textureBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructTextureBufferParameters(1, textureCount, lightMapEnabled, bumpMapEnabled));
 
-		_direct3D->GetDeviceContext()->PSSetShaderResources(0, textureCount, &shaderResources.TextureArray.at(0));
+		_direct3D->GetDeviceContext()->PSSetShaderResources(0, textureCount, &shaderResources.TextureParameters.TextureArray.at(0));
 
 		if (lightMapEnabled)
-			_direct3D->GetDeviceContext()->PSSetShaderResources(10, 1, &shaderResources.LightMap);
+			_direct3D->GetDeviceContext()->PSSetShaderResources(10, 1, &shaderResources.TextureParameters.LightMap);
 	}
 	catch (Exception& exception)
 	{
