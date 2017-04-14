@@ -4,6 +4,7 @@
 #include "../../ShaderEngine/ShaderController.h"
 #include "../Components/TextComponent.h"
 #include "../../FontEngine/FontEngine.h"
+#include "UISystem.h"
 
 class FontSystem : public ISystem
 {
@@ -11,8 +12,7 @@ private:
 	DirectX3D* _direct3D;
 	ShaderController* _shaderController;
 	FontEngine* _fontEngine;
-	HWND _hwnd;
-	Box _screenSize;
+	UISystem _uiSystem;
 	void RenderCharacters(vector<Entity*> entities); 
 	void BuildBufferInformation(Entity* entity, AppearanceComponent* appearance) const; 
 	ShaderResources BuildShaderResources(AppearanceComponent* appearance, TransformComponent* transform) const;

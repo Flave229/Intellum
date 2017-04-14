@@ -1,7 +1,7 @@
 #include "FontSystem.h"
 #include "UISystem.h"
 
-FontSystem::FontSystem(DirectX3D* direct3D, ShaderController* shaderController, FontEngine* fontEngine, HWND hwnd, Box screenSize) : _direct3D(direct3D), _shaderController(shaderController), _fontEngine(fontEngine), _hwnd(hwnd), _screenSize(screenSize)
+FontSystem::FontSystem(DirectX3D* direct3D, ShaderController* shaderController, FontEngine* fontEngine, HWND hwnd, Box screenSize) : _direct3D(direct3D), _shaderController(shaderController), _fontEngine(fontEngine), _uiSystem(direct3D, shaderController, hwnd, screenSize)
 {
 }
 
@@ -31,8 +31,7 @@ void FontSystem::Render(vector<Entity*> entities)
 
 		vector<Entity*> characters = _fontEngine->ConvertTextToEntities(text->FontPosition, "Impact", text->Text, text->Color, text->FontSize);
 
-		UISystem uiSystem = UISystem(_direct3D, _shaderController, _hwnd, _screenSize);
-		uiSystem.Update(characters, 0);
+		_uiSystem.Update(characters, 0);
 
 		RenderCharacters(characters);
 	}
