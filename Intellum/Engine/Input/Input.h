@@ -10,10 +10,12 @@
 #include "../../ErrorHandling/Exception.h"
 #include "../../common/Box.h"
 #include "ControlMappings.h"
+#include "../Observer/IObserver.h"
+#include "../Observer/Observable.h"
 
 using namespace DirectX;
 
-class Input
+class Input : public Observable
 {
 private:
 	IDirectInput8* _directInput;
@@ -46,6 +48,7 @@ public:
 	bool ProcessMouseControl(InputControl input);
 
 	void MapMouseLocationInto(XMFLOAT2& point) const;
+	void AddObserver(IObserver* observer) override;
 };
 
 #endif

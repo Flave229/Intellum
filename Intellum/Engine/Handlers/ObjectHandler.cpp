@@ -1,8 +1,8 @@
 #include "ObjectHandler.h"
 
-ObjectHandler::ObjectHandler(DirectX3D* direct3D, ShaderController* shaderController, FontEngine* fontEngine, HWND hwnd, Camera* camera, Light* light)
+ObjectHandler::ObjectHandler(DirectX3D* direct3D, ShaderController* shaderController, FontEngine* fontEngine, HWND hwnd, Camera* camera, Light* light, Input* input)
 {
-	InitialiseObjects(direct3D, shaderController, fontEngine, hwnd, camera, light);
+	InitialiseObjects(direct3D, shaderController, fontEngine, hwnd, camera, light, input);
 }
 
 ObjectHandler::~ObjectHandler()
@@ -30,7 +30,7 @@ void ObjectHandler::Shutdown()
 	_systemList.clear();
 }
 
-void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* shaderController, FontEngine* fontEngine, HWND hwnd, Camera* camera, Light* light)
+void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* shaderController, FontEngine* fontEngine, HWND hwnd, Camera* camera, Light* light, Input* input)
 {
 	srand(static_cast<unsigned int>(time(nullptr)));
 
@@ -120,6 +120,7 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	text->AddComponent(textComponent);
 
 	_entityList.push_back(text);
+	input->AddObserver(textComponent);
 }
 
 void ObjectHandler::Update(float delta)

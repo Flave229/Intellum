@@ -209,6 +209,10 @@
   <ItemGroup>
     <ClInclude Include="Engine\Camera\FrustrumCullingType.h" />
     <ClInclude Include="Engine\Objects\Components\TextComponent.h" />
+    <ClInclude Include="Engine\Observer\EventType.h" />
+    <ClInclude Include="Engine\Observer\IObserver.h" />
+    <ClInclude Include="Engine\Observer\Observable.h" />
+    <ClInclude Include="Engine\Observer\ObserverEvent.h" />
     <ClInclude Include="Engine\ShaderEngine\ShaderParameters\ColorShaderParameters.h" />
     <ClInclude Include="Engine\ShaderEngine\ShaderParameters\GradientShaderParameters.h" />
     <ClInclude Include="Engine\Objects\Components\AppearanceComponent.h" />

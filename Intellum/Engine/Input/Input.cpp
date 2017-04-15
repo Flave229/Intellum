@@ -154,4 +154,20 @@ void Input::ProcessInput()
 
 	_mousePosition.x += _mouseState.lX;
 	_mousePosition.y += _mouseState.lY;
+
+	if (_previousMousePosition.x != _mousePosition.x || _previousMousePosition.y != _mousePosition.y)
+	{
+		for (int i = 0; i < Observers.size(); i++)
+		{
+			ObserverEvent<XMFLOAT2> observerEvent = ObserverEvent<XMFLOAT2>();
+			observerEvent.EventType = MOVED_MOUSE;
+			observerEvent.SetObservableData(new XMFLOAT2(_mousePosition.x, _mousePosition.y));
+			Observers.at(i)->Notify(observerEvent);
+		}
+	}
+}
+
+void Input::AddObserver(IObserver* observer)
+{
+	Observers.push_back(observer);
 }
