@@ -1,6 +1,6 @@
 #include "Graphics.h"
 
-Graphics::Graphics(Input* input, Box screenSize, HWND hwnd, FramesPerSecond* framesPerSecond, Cpu* cpu) : _direct3D(nullptr), _fontEngine(nullptr), _cpu(cpu), _shaderController(nullptr), _objectHandler(nullptr), _camera(nullptr), _light(nullptr)
+Graphics::Graphics(Input* input, Box screenSize, HWND hwnd, FramesPerSecond* framesPerSecond, Cpu* cpu) : _direct3D(nullptr), _fontEngine(nullptr), _shaderController(nullptr), _objectHandler(nullptr), _camera(nullptr), _light(nullptr)
 {
 	Initialise(input, framesPerSecond, cpu, screenSize, hwnd);
 }

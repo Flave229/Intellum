@@ -19,7 +19,6 @@ private:
 	DirectX3D* _direct3D;
 
 	FontEngine* _fontEngine;
-	Cpu* _cpu;
 
 	ShaderController* _shaderController;
 	ObjectHandler* _objectHandler;
