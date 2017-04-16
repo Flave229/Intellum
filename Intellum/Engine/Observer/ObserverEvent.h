@@ -1,19 +1,22 @@
 #pragma once
+#include "d3d11.h"
 #include "EventType.h"
 
-template<typename T>
 class ObserverEvent
 {
 private:
-	T* ObservableData;
+	void* ObservableData;
+
 public:
 	EventType EventType;
 
+	template<typename T>
 	void SetObservableData(T* data)
 	{
-		static_cast<T*>(ObservableData) = data;
+		ObservableData = data;
 	}
 
+	template<typename T>
 	T* GetObservableData()
 	{
 		return static_cast<T*>(ObservableData);

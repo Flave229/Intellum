@@ -6,5 +6,5 @@ class IObserver
 public:
 	virtual ~IObserver() { }
 
-	virtual void Notify(ObserverEvent<DirectX::XMFLOAT2> event) = 0;
+	virtual void Notify(ObserverEvent event) = 0;
 };

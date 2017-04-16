@@ -17,11 +17,11 @@ public:
 	~TextComponent() override = default;
 	void Shutdown() override {}
 
-	void Notify(ObserverEvent<XMFLOAT2> observerEvent) override
+	void Notify(ObserverEvent observerEvent) override
 	{
 		if (observerEvent.EventType == MOVED_MOUSE)
 		{
-			XMFLOAT2* mousePosition = observerEvent.GetObservableData();
+			XMFLOAT2* mousePosition = observerEvent.GetObservableData<XMFLOAT2>();
 			Text = "Mouse X: " + to_string(static_cast<int>(mousePosition->x)) + "    " + "Mouse Y: " + to_string(static_cast<int>(mousePosition->y));
 		}
 	}
