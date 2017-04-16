@@ -2,14 +2,14 @@
 
 Graphics::Graphics(Input* input, Box screenSize, HWND hwnd, FramesPerSecond* framesPerSecond, Cpu* cpu) : _direct3D(nullptr), _fontEngine(nullptr), _cpu(cpu), _shaderController(nullptr), _objectHandler(nullptr), _camera(nullptr), _light(nullptr)
 {
-	Initialise(input, framesPerSecond, screenSize, hwnd);
+	Initialise(input, framesPerSecond, cpu, screenSize, hwnd);
 }
 
 Graphics::~Graphics()
 {
 }
 
-void Graphics::Initialise(Input* input, FramesPerSecond* framesPerSecond, Box screenSize, HWND hwnd)
+void Graphics::Initialise(Input* input, FramesPerSecond* framesPerSecond, Cpu* cpu, Box screenSize, HWND hwnd)
 {
 	try
 	{
@@ -39,7 +39,7 @@ void Graphics::Initialise(Input* input, FramesPerSecond* framesPerSecond, Box sc
 		_fontEngine = new FontEngine(_direct3D, _direct3D->GetDevice(), _direct3D->GetDeviceContext(), _shaderController->GetShader(SHADER_UI));
 		if (!_fontEngine) throw Exception("Failed to create the Font Engine.");
 		
-		_objectHandler = new ObjectHandler(_direct3D, _shaderController, _fontEngine, hwnd, _camera, _light, input, framesPerSecond);
+		_objectHandler = new ObjectHandler(_direct3D, _shaderController, _fontEngine, hwnd, _camera, _light, input, framesPerSecond, cpu);
 		if (!_objectHandler) throw Exception("Failed to create the object handler.");
 
 		result = _fontEngine->SearchForAvaliableFonts(screenSize);
@@ -119,7 +119,6 @@ void Graphics::Render() const
 
 		_direct3D->TurnZBufferOff();
 
-		_fontEngine->Update(XMFLOAT2(10, 60), "Impact", "Cpu: " + to_string(_cpu->GetCpuPercentage()) + "%", XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 20);
 		_fontEngine->Update(XMFLOAT2(10, 85), "Impact", "Rendered: " + to_string(_objectHandler->GetRenderedModelCount()), XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 20);
 
 		_direct3D->TurnZBufferOn();

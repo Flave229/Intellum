@@ -2,8 +2,9 @@
 #pragma comment(lib, "pdh.lib")
 
 #include <pdh.h>
+#include "../Observer/Observable.h"
 
-class Cpu
+class Cpu : public Observable
 {
 private:
 	bool _canReadCpu;
@@ -24,4 +25,5 @@ public:
 
 	void Frame();
 	int GetCpuPercentage();
+	void AddObserver(IObserver* observer) override;
 };

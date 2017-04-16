@@ -62,6 +62,14 @@ void Cpu::Frame()
 			PdhGetFormattedCounterValue(_counterHandle, PDH_FMT_LONG, nullptr, &value);
 
 			_cpuUsage = value.longValue;
+
+			for(int i = 0; i < Observers.size(); i++)
+			{
+				ObserverEvent observerEvent;
+				observerEvent.EventType = CPU_USAGE;
+				observerEvent.SetObservableData(&_cpuUsage);
+				Observers.at(i)->Notify(observerEvent);
+			}
 		}
 	}
 }
@@ -69,4 +77,9 @@ void Cpu::Frame()
 int Cpu::GetCpuPercentage()
 {
 	return _canReadCpu ? static_cast<int>(_cpuUsage) : 0;
+}
+
+void Cpu::AddObserver(IObserver* observer)
+{
+	Observers.push_back(observer);
 }

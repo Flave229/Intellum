@@ -1,8 +1,8 @@
 #include "ObjectHandler.h"
 
-ObjectHandler::ObjectHandler(DirectX3D* direct3D, ShaderController* shaderController, FontEngine* fontEngine, HWND hwnd, Camera* camera, Light* light, Input* input, FramesPerSecond* framesPerSecond)
+ObjectHandler::ObjectHandler(DirectX3D* direct3D, ShaderController* shaderController, FontEngine* fontEngine, HWND hwnd, Camera* camera, Light* light, Input* input, FramesPerSecond* framesPerSecond, Cpu* cpu)
 {
-	InitialiseObjects(direct3D, shaderController, fontEngine, hwnd, camera, light, input, framesPerSecond);
+	InitialiseObjects(direct3D, shaderController, fontEngine, hwnd, camera, light, input, framesPerSecond, cpu);
 }
 
 ObjectHandler::~ObjectHandler()
@@ -30,7 +30,7 @@ void ObjectHandler::Shutdown()
 	_systemList.clear();
 }
 
-void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* shaderController, FontEngine* fontEngine, HWND hwnd, Camera* camera, Light* light, Input* input, FramesPerSecond* framesPerSecond)
+void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* shaderController, FontEngine* fontEngine, HWND hwnd, Camera* camera, Light* light, Input* input, FramesPerSecond* framesPerSecond, Cpu* cpu)
 {
 	srand(static_cast<unsigned int>(time(nullptr)));
 
@@ -142,6 +142,17 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 
 	_entityList.push_back(text3);
 	framesPerSecond->AddObserver(textComponent3);
+
+	Entity* text4 = new Entity();
+	TextComponent* textComponent4 = new TextComponent();
+	textComponent4->Text = "CPU: 0%";
+	textComponent4->FontSize = 20;
+	textComponent4->FontPosition = XMFLOAT2(10, 60);
+	textComponent4->Color = XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f);
+	text4->AddComponent(textComponent4);
+
+	_entityList.push_back(text4);
+	cpu->AddObserver(textComponent4);
 }
 
 void ObjectHandler::Update(float delta)

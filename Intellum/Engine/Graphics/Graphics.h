@@ -28,7 +28,7 @@ private:
 	Light* _light;
 
 private:
-	void Initialise(Input* input, FramesPerSecond* framesPerSecond, Box screenSize, HWND hwnd);
+	void Initialise(Input* input, FramesPerSecond* framesPerSecond, Cpu* cpu, Box screenSize, HWND hwnd);
 public:
 	Graphics(Input* input, Box screenSize, HWND hwnd, FramesPerSecond* framesPerSecond, Cpu* cpu);
 	~Graphics();

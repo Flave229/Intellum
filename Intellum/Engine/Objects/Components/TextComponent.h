@@ -29,5 +29,10 @@ public:
 			int* framesPerSecond = observerEvent.GetObservableData<int>();
 			Text = "FPS: " + to_string(*framesPerSecond);
 		}
+		else if (observerEvent.EventType == CPU_USAGE)
+		{
+			int* cpuUsage = observerEvent.GetObservableData<int>();
+			Text = "CPU: " + to_string(*cpuUsage) + "%";
+		}
 	}
 };

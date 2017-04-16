@@ -22,6 +22,7 @@
 #include "../FontEngine/FontEngine.h"
 #include "../Objects/Systems/FontSystem.h"
 #include "../SystemMetrics/FramesPerSecond.h"
+#include "../SystemMetrics/Cpu.h"
 
 using namespace DirectX;
 using namespace std;
@@ -33,9 +34,9 @@ private:
 
 	vector<Entity*> _entityList;
 	map<SystemType, ISystem*> _systemList;
-	void InitialiseObjects(DirectX3D* direct3D, ShaderController* shaderController, FontEngine* fontEngine, HWND hwnd, Camera* camera, Light* light, Input* input, FramesPerSecond* framesPerSecond);
+	void InitialiseObjects(DirectX3D* direct3D, ShaderController* shaderController, FontEngine* fontEngine, HWND hwnd, Camera* camera, Light* light, Input* input, FramesPerSecond* framesPerSecond, Cpu* cpu);
 public:
-	ObjectHandler(DirectX3D* direct3D, ShaderController* shaderController, FontEngine* fontEngine, HWND hwnd, Camera* camera, Light* light, Input* input, FramesPerSecond* framesPerSecond);
+	ObjectHandler(DirectX3D* direct3D, ShaderController* shaderController, FontEngine* fontEngine, HWND hwnd, Camera* camera, Light* light, Input* input, FramesPerSecond* framesPerSecond, Cpu* cpu);
 	~ObjectHandler();
 
 	void Shutdown();
