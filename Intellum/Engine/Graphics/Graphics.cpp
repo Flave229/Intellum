@@ -1,15 +1,15 @@
 #include "Graphics.h"
 
-Graphics::Graphics(Input* input, Box screenSize, HWND hwnd, FramesPerSecond* framesPerSecond, Cpu* cpu) : _direct3D(nullptr), _fontEngine(nullptr), _framesPerSecond(framesPerSecond), _cpu(cpu), _shaderController(nullptr), _objectHandler(nullptr), _camera(nullptr), _light(nullptr)
+Graphics::Graphics(Input* input, Box screenSize, HWND hwnd, FramesPerSecond* framesPerSecond, Cpu* cpu) : _direct3D(nullptr), _fontEngine(nullptr), _cpu(cpu), _shaderController(nullptr), _objectHandler(nullptr), _camera(nullptr), _light(nullptr)
 {
-	Initialise(input, screenSize, hwnd);
+	Initialise(input, framesPerSecond, screenSize, hwnd);
 }
 
 Graphics::~Graphics()
 {
 }
 
-void Graphics::Initialise(Input* input, Box screenSize, HWND hwnd)
+void Graphics::Initialise(Input* input, FramesPerSecond* framesPerSecond, Box screenSize, HWND hwnd)
 {
 	try
 	{
@@ -39,7 +39,7 @@ void Graphics::Initialise(Input* input, Box screenSize, HWND hwnd)
 		_fontEngine = new FontEngine(_direct3D, _direct3D->GetDevice(), _direct3D->GetDeviceContext(), _shaderController->GetShader(SHADER_UI));
 		if (!_fontEngine) throw Exception("Failed to create the Font Engine.");
 		
-		_objectHandler = new ObjectHandler(_direct3D, _shaderController, _fontEngine, hwnd, _camera, _light, input, _framesPerSecond);
+		_objectHandler = new ObjectHandler(_direct3D, _shaderController, _fontEngine, hwnd, _camera, _light, input, framesPerSecond);
 		if (!_objectHandler) throw Exception("Failed to create the object handler.");
 
 		result = _fontEngine->SearchForAvaliableFonts(screenSize);
