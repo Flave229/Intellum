@@ -20,7 +20,7 @@ void FontShader::InitialiseShader(HWND hwnd, WCHAR* vsFilename, WCHAR* psFilenam
 		ID3D10Blob* errorMessage = nullptr;
 
 		ID3D10Blob* vertexShaderBuffer = nullptr;
-		HRESULT result = D3DCompileFromFile(vsFilename, nullptr, nullptr, "FontVertexShader", "vs_5_0", D3D10_SHADER_ENABLE_STRICTNESS, 0, &vertexShaderBuffer, &errorMessage);
+		HRESULT result = D3DCompileFromFile(vsFilename, nullptr, nullptr, "FontVertexShader", "vs_5_0", D3D10_SHADER_DEBUG, 0, &vertexShaderBuffer, &errorMessage);
 		if (FAILED(result))
 		{
 			if (errorMessage)
@@ -36,7 +36,7 @@ void FontShader::InitialiseShader(HWND hwnd, WCHAR* vsFilename, WCHAR* psFilenam
 		}
 
 		ID3D10Blob* pixelShaderBuffer = nullptr;
-		result = D3DCompileFromFile(psFilename, nullptr, nullptr, "FontPixelShader", "ps_5_0", D3D10_SHADER_ENABLE_STRICTNESS, 0, &pixelShaderBuffer, &errorMessage);
+		result = D3DCompileFromFile(psFilename, nullptr, nullptr, "FontPixelShader", "ps_5_0", D3D10_SHADER_DEBUG, 0, &pixelShaderBuffer, &errorMessage);
 
 		if (FAILED(result))
 		{
@@ -184,9 +184,7 @@ void FontShader::SetShaderParameters(ShaderResources shaderResources, XMMATRIX w
 	{
 		_matrixBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructMatrixBufferParameters(0, worldMatrix, projectionMatrix, _viewMatrix));
 		_cameraBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructDefaultBufferParameters(1));
-		ColorShaderParameters colorOverload = ColorShaderParameters(_colorOverload);
-		colorOverload.Enabled = _colorOverloadEnabled;
-		_colorBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructColorOverloadBufferParameters(0, colorOverload));
+		_colorBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructColorOverloadBufferParameters(2, shaderResources.ColorParameters));
 
 		bool lightMapEnabled = false;
 		if (shaderResources.TextureParameters.LightMap != nullptr)
@@ -197,7 +195,7 @@ void FontShader::SetShaderParameters(ShaderResources shaderResources, XMMATRIX w
 			bumpMapEnabled = true;
 
 		int textureCount = static_cast<int>(shaderResources.TextureParameters.TextureArray.size());
-		_textureBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructTextureBufferParameters(1, textureCount, lightMapEnabled, bumpMapEnabled));
+		_textureBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructTextureBufferParameters(3, textureCount, lightMapEnabled, bumpMapEnabled));
 
 		_direct3D->GetDeviceContext()->PSSetShaderResources(0, textureCount, &shaderResources.TextureParameters.TextureArray.at(0));
 

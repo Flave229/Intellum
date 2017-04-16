@@ -34,5 +34,10 @@ public:
 			int* cpuUsage = observerEvent.GetObservableData<int>();
 			Text = "CPU: " + to_string(*cpuUsage) + "%";
 		}
+		else if (observerEvent.EventType == RENDER_COUNT)
+		{
+			int* renderCount = observerEvent.GetObservableData<int>();
+			Text = "Rendered: " + to_string(*renderCount);
+		}
 	}
 };

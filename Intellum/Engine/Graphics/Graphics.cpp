@@ -115,14 +115,7 @@ void Graphics::Render() const
 	try
 	{
 		_direct3D->BeginScene(XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f));
-		_objectHandler->Render();
-
-		_direct3D->TurnZBufferOff();
-
-		_fontEngine->Update(XMFLOAT2(10, 85), "Impact", "Rendered: " + to_string(_objectHandler->GetRenderedModelCount()), XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 20);
-
-		_direct3D->TurnZBufferOn();
-		 
+		_objectHandler->Render();		 
 		_direct3D->EndScene();
 	}
 	catch(Exception& exception)

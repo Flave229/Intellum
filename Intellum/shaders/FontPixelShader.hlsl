@@ -2,14 +2,14 @@ Texture2D shaderTexture[10];
 Texture2D lightMap;
 SamplerState SampleType;
 
-cbuffer ColorBuffer
+cbuffer ColorBuffer : register(b2)
 {
     float colorOverloadEnabled;
     float3 padding;
 	float4 colorOverload;
 };
 
-cbuffer TextureBuffer
+cbuffer TextureBuffer : register(b3)
 {
     float textureCount;
     float lightMapEnabled;

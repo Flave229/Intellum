@@ -14,7 +14,7 @@
 #include <fstream>
 #include "../../ShaderEngine/ShaderController.h"
 
-class RenderSystem : public ISystem
+class RenderSystem : public ISystem, public Observable
 {
 private:
 	DirectX3D* _direct3D;
@@ -36,5 +36,5 @@ public:
 	void Update(vector<Entity*> entities, float delta) override;
 	void Render(vector<Entity*> entities) override;
 
-	int RenderCount() const;
+	void AddObserver(IObserver* observer) override;
 };

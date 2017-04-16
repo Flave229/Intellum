@@ -92,25 +92,6 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 
 	_entityList.push_back(skyBox);
 
-	Entity* ui = new Entity();
-
-	AppearanceComponent* uiAppearance = new AppearanceComponent();
-	uiAppearance->ShaderType = SHADER_UI;
-	uiAppearance->Model = geometryBuilder.ForUI();
-	uiAppearance->Textures = CreateTexture::ListFrom(direct3D, { "data/images/dirt.tga", "data/images/josh.tga", "data/images/stone.tga" });
-	uiAppearance->LightMap = CreateTexture::From(direct3D, "data/images/basic_light_map.tga");
-	ui->AddComponent(uiAppearance);
-
-	TransformComponent* uiTransform = new TransformComponent();
-	uiTransform->Position = XMFLOAT3(50, 150, 0);
-	ui->AddComponent(uiTransform);
-
-	UIComponent* uiComponent = new UIComponent();
-	uiComponent->BitmapSize = XMFLOAT2(256, 256);
-	ui->AddComponent(uiComponent);
-	
-	_entityList.push_back(ui);
-
 	Entity* text1 = new Entity();
 	TextComponent* textComponent1 = new TextComponent();
 	textComponent1->Text = "Victoria Grump";
@@ -153,6 +134,36 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 
 	_entityList.push_back(text4);
 	cpu->AddObserver(textComponent4);
+
+	Entity* text5 = new Entity();
+	TextComponent* textComponent5 = new TextComponent();
+	textComponent5->Text = "Rendered: 0";
+	textComponent5->FontSize = 20;
+	textComponent5->FontPosition = XMFLOAT2(10, 85);
+	textComponent5->Color = XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f);
+	text5->AddComponent(textComponent5);
+
+	_entityList.push_back(text5);
+	static_cast<RenderSystem*>(_systemList[RENDER_SYSTEM])->AddObserver(textComponent5);
+
+	Entity* ui = new Entity();
+
+	AppearanceComponent* uiAppearance = new AppearanceComponent();
+	uiAppearance->ShaderType = SHADER_UI;
+	uiAppearance->Model = geometryBuilder.ForUI();
+	uiAppearance->Textures = CreateTexture::ListFrom(direct3D, { "data/images/dirt.tga", "data/images/josh.tga", "data/images/stone.tga" });
+	uiAppearance->LightMap = CreateTexture::From(direct3D, "data/images/basic_light_map.tga");
+	ui->AddComponent(uiAppearance);
+
+	TransformComponent* uiTransform = new TransformComponent();
+	uiTransform->Position = XMFLOAT3(50, 150, 0);
+	ui->AddComponent(uiTransform);
+
+	UIComponent* uiComponent = new UIComponent();
+	uiComponent->BitmapSize = XMFLOAT2(256, 256);
+	ui->AddComponent(uiComponent);
+
+	_entityList.push_back(ui);
 }
 
 void ObjectHandler::Update(float delta)
@@ -171,9 +182,4 @@ void ObjectHandler::Render()
 	{
 		iterator->second->Render(_entityList);
 	}
-}
-
-int ObjectHandler::GetRenderedModelCount()
-{
-	return static_cast<RenderSystem*>(_systemList[RENDER_SYSTEM])->RenderCount();
 }

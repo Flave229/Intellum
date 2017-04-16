@@ -55,6 +55,14 @@ void RenderSystem::Render(vector<Entity*> entities)
 		
 		_renderCount++;
 	}
+
+	for (int i = 0; i < Observers.size(); i++)
+	{
+		ObserverEvent observerEvent;
+		observerEvent.EventType = RENDER_COUNT;
+		observerEvent.SetObservableData(&_renderCount);
+		Observers.at(i)->Notify(observerEvent);
+	}
 }
 
 bool RenderSystem::CheckIfInsideFrustrum(Entity* entity, TransformComponent* transform, AppearanceComponent* appearance) const
@@ -166,7 +174,7 @@ vector<ID3D11ShaderResourceView*> RenderSystem::ExtractResourceViewsFrom(vector<
 	return textureViews;
 }
 
-int RenderSystem::RenderCount() const
+void RenderSystem::AddObserver(IObserver* observer)
 {
-	return _renderCount;
+	Observers.push_back(observer);
 }

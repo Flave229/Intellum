@@ -43,6 +43,4 @@ public:
 
 	void Update(float delta);
 	void Render();
-
-	int GetRenderedModelCount();
 };
