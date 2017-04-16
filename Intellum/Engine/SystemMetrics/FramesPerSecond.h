@@ -3,8 +3,9 @@
 
 #include <windows.h>
 #include <mmsystem.h>
+#include "../Observer/Observable.h"
 
-class FramesPerSecond
+class FramesPerSecond : public Observable
 {
 private:
 	int _framesPerSecond;
@@ -18,4 +19,5 @@ public:
 
 	void Frame(float delta);
 	int GetFramesPerSeond() const;
+	void AddObserver(IObserver* observer) override;
 };

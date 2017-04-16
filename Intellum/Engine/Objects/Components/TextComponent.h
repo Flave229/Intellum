@@ -24,5 +24,10 @@ public:
 			XMFLOAT2* mousePosition = observerEvent.GetObservableData<XMFLOAT2>();
 			Text = "Mouse X: " + to_string(static_cast<int>(mousePosition->x)) + "    " + "Mouse Y: " + to_string(static_cast<int>(mousePosition->y));
 		}
+		else if (observerEvent.EventType == FRAMES_PER_SECOND)
+		{
+			int* framesPerSecond = observerEvent.GetObservableData<int>();
+			Text = "FPS: " + to_string(*framesPerSecond);
+		}
 	}
 };

@@ -39,7 +39,7 @@ void Graphics::Initialise(Input* input, Box screenSize, HWND hwnd)
 		_fontEngine = new FontEngine(_direct3D, _direct3D->GetDevice(), _direct3D->GetDeviceContext(), _shaderController->GetShader(SHADER_UI));
 		if (!_fontEngine) throw Exception("Failed to create the Font Engine.");
 		
-		_objectHandler = new ObjectHandler(_direct3D, _shaderController, _fontEngine, hwnd, _camera, _light, input);
+		_objectHandler = new ObjectHandler(_direct3D, _shaderController, _fontEngine, hwnd, _camera, _light, input, _framesPerSecond);
 		if (!_objectHandler) throw Exception("Failed to create the object handler.");
 
 		result = _fontEngine->SearchForAvaliableFonts(screenSize);
@@ -118,10 +118,7 @@ void Graphics::Render(XMFLOAT2 mousePoint) const
 		_objectHandler->Render();
 
 		_direct3D->TurnZBufferOff();
-		
-		//_fontEngine->Update(XMFLOAT2(50, 600), "Impact", "Victoria Grump", XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 30);
-		//_fontEngine->Update(XMFLOAT2(10, 10), "Impact", "Mouse X: " + to_string(static_cast<int>(mousePoint.x)) + "    " + "Mouse Y: " + to_string(static_cast<int>(mousePoint.y)), XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 20);
-		_fontEngine->Update(XMFLOAT2(10, 35), "Impact", "FPS: " + to_string(_framesPerSecond->GetFramesPerSeond()), XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 20);
+
 		_fontEngine->Update(XMFLOAT2(10, 60), "Impact", "Cpu: " + to_string(_cpu->GetCpuPercentage()) + "%", XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 20);
 		_fontEngine->Update(XMFLOAT2(10, 85), "Impact", "Rendered: " + to_string(_objectHandler->GetRenderedModelCount()), XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f), 20);
 

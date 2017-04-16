@@ -2,5 +2,6 @@
 
 enum EventType
 {
-	MOVED_MOUSE
+	MOVED_MOUSE,
+	FRAMES_PER_SECOND
 };
