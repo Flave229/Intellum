@@ -34,37 +34,6 @@ bool FontEngine::SearchForAvaliableFonts(Box screenSize)
 	}
 }
 
-void FontEngine::Update(XMFLOAT2 position, string font, string input, XMFLOAT4 textColor, int fontSize)
-{
-	try
-	{
-		((FontShader*)_shader)->SetColorOverload(true, textColor);
-		bool result = CheckFontExists(font);
-		if (!result)
-		{
-			font = "Default";
-		}
-
-		vector<Character*> stringAsTexture = StringToCharacterTextureList(font, input);
-
-		for (int i = 0; i < stringAsTexture.size(); i++)
-		{
-			stringAsTexture.at(i)->BitmapTexture->Update(XMFLOAT2(position.x + (fontSize * i), position.y), Box(fontSize, fontSize * 2));
-			stringAsTexture.at(i)->BitmapTexture->Render();
-		}
-		
-		((FontShader*)_shader)->SetColorOverload(false);
-	}
-	catch (Exception& exception)
-	{
-		throw Exception("The Font Engine failed to render the requested text: \"" + input + "\"", exception);
-	}
-	catch (...)
-	{
-		throw Exception("The Font Engine failed to render the requested text: \"" + input + "\"");
-	}
-}
-
 vector<Entity*> FontEngine::ConvertTextToEntities(XMFLOAT2 position, string font, string input, XMFLOAT4 textColor, int fontSize)
 {
 	try
