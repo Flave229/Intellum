@@ -47,7 +47,6 @@ public:
 	bool IsControlPressed(Controls control);
 	bool ProcessMouseControl(InputControl input);
 
-	void MapMouseLocationInto(XMFLOAT2& point) const;
 	void AddObserver(IObserver* observer) override;
 };
 

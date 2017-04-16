@@ -110,7 +110,7 @@ void Graphics::Update(float delta) const
 	}
 }
 
-void Graphics::Render(XMFLOAT2 mousePoint) const
+void Graphics::Render() const
 {
 	try
 	{

@@ -124,10 +124,7 @@ bool DXSystem::Frame(float delta) const
 		
 		_graphics->Update(delta);
 
-		XMFLOAT2 mousePoint;
-		_input->MapMouseLocationInto(mousePoint);
-
-		_graphics->Render(mousePoint);
+		_graphics->Render();
 
 		return true;
 	}

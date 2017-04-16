@@ -113,11 +113,6 @@ bool Input::ProcessMouseControl(InputControl input)
 	return false;
 }
 
-void Input::MapMouseLocationInto(XMFLOAT2& point) const
-{
-	point = _mousePosition;
-}
-
 bool Input::ReadKeyboard()
 {
 	HRESULT result = _keyboard->GetDeviceState(sizeof _keyboardState, static_cast<LPVOID>(&_keyboardState));

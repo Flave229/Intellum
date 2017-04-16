@@ -37,5 +37,5 @@ public:
 
 	void Shutdown();
 	void Update(float delta) const;
-	void Render(XMFLOAT2 mousePoint) const;
+	void Render() const;
 };
