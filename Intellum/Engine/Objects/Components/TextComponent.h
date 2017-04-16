@@ -22,7 +22,7 @@ public:
 		if (observerEvent.EventType == MOVED_MOUSE)
 		{
 			XMFLOAT2* mousePosition = observerEvent.GetObservableData();
-			Text = "Victoria Grump: X: " + to_string(static_cast<int>(mousePosition->x)) + " Y: " + to_string(static_cast<int>(mousePosition->y));
+			Text = "Mouse X: " + to_string(static_cast<int>(mousePosition->x)) + "    " + "Mouse Y: " + to_string(static_cast<int>(mousePosition->y));
 		}
 	}
 };

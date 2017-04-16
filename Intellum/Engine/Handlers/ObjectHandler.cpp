@@ -111,16 +111,26 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	
 	_entityList.push_back(ui);
 
-	Entity* text = new Entity();
-	TextComponent* textComponent = new TextComponent();
-	textComponent->Text = "Victoria Grump";
-	textComponent->FontSize = 30;
-	textComponent->FontPosition = XMFLOAT2(50, 600);
-	textComponent->Color = XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f);
-	text->AddComponent(textComponent);
+	Entity* text1 = new Entity();
+	TextComponent* textComponent1 = new TextComponent();
+	textComponent1->Text = "Victoria Grump";
+	textComponent1->FontSize = 30;
+	textComponent1->FontPosition = XMFLOAT2(50, 600);
+	textComponent1->Color = XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f);
+	text1->AddComponent(textComponent1);
 
-	_entityList.push_back(text);
-	input->AddObserver(textComponent);
+	_entityList.push_back(text1);
+
+	Entity* text2 = new Entity();
+	TextComponent* textComponent2 = new TextComponent();
+	textComponent2->Text = "Mouse X:    Mouse Y: ";
+	textComponent2->FontSize = 20;
+	textComponent2->FontPosition = XMFLOAT2(10, 10);
+	textComponent2->Color = XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f);
+	text2->AddComponent(textComponent2);
+
+	_entityList.push_back(text2);
+	input->AddObserver(textComponent2);
 }
 
 void ObjectHandler::Update(float delta)
