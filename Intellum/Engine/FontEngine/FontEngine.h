@@ -9,12 +9,12 @@
 #include "../ShaderEngine/IShaderType.h"
 #include "../ShaderEngine/FontShader.h"
 #include "../DirectX3D.h"
-#include "../Objects/Appearance/UIAppearance.h"
 #include "../Objects/Entity.h"
 #include "../Objects/Components/AppearanceComponent.h"
 #include "../Objects/Components/TransformComponent.h"
 #include "../Objects/Components/UIComponent.h"
 #include "../Objects/Geometry/GeometryBuilder.h"
+#include "../Objects/Texture/CreateTexture.h"
 
 using namespace std;
 

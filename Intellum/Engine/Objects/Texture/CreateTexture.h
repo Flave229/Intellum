@@ -1,9 +1,9 @@
 #pragma once
 #include "Texture.h"
-#include "../../../DirectX3D.h"
+#include "../../DirectX3D.h"
 #include <string>
-#include "../../../../ErrorHandling/Exception.h"
-#include "../../../DirectX3D.h"
+#include "../../../ErrorHandling/Exception.h"
+#include "../../DirectX3D.h"
 
 class CreateTexture
 {

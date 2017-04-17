@@ -148,15 +148,6 @@
     <ClCompile Include="Loaders\OBJLoader\OBJBinaryLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Objects\Appearance\Texture\CreateTexture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Objects\Appearance\Texture\Texture.cpp">
-      <Filter>Source Files\ObjectData</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Objects\Appearance\UIAppearance.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Objects\Transform\Transform.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -186,6 +177,12 @@
     </ClCompile>
     <ClCompile Include="Engine\Objects\Systems\FontSystem.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Objects\Texture\CreateTexture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Objects\Texture\Texture.cpp">
+      <Filter>Source Files\ObjectData</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -321,18 +318,6 @@
     <ClInclude Include="Loaders\models\OBJGeometryData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Objects\Appearance\Texture\CreateTexture.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Objects\Appearance\Texture\Texture.h">
-      <Filter>Header Files\ObjectData</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Objects\Appearance\IAppearance.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Objects\Appearance\UIAppearance.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Objects\Transform\Transform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -425,6 +410,12 @@
     </ClInclude>
     <ClInclude Include="Engine\Observer\Observable.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Objects\Texture\CreateTexture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Objects\Texture\Texture.h">
+      <Filter>Header Files\ObjectData</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

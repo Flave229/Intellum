@@ -1,8 +1,8 @@
 #pragma once
 #include "../Geometry/Geometry.h"
-#include "../Appearance/Texture/Texture.h"
 #include "IComponent.h"
 #include "../../ShaderEngine/ShaderController.h"
+#include "../Texture/Texture.h"
 
 class AppearanceComponent : public IComponent
 {

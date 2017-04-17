@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include "../Objects/Appearance/Texture/Texture.h"
+#include "../Objects/Texture/Texture.h"
 
 using namespace std;
 

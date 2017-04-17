@@ -155,7 +155,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Engine\Objects\Appearance\Texture\CreateTexture.cpp" />
+    <ClCompile Include="Engine\Objects\Texture\CreateTexture.cpp" />
     <ClCompile Include="Engine\ShaderEngine\ConstantBuffers\ColorOverrideBuffer.cpp" />
     <ClCompile Include="Engine\Camera\Camera.cpp" />
     <ClCompile Include="Engine\ShaderEngine\ConstantBuffers\CameraBuffer.cpp" />
@@ -194,13 +194,12 @@
     <ClCompile Include="Engine\ShaderEngine\ShaderController.cpp" />
     <ClCompile Include="DXSystem.cpp" />
     <ClCompile Include="loaders\TargaLoader.cpp" />
-    <ClCompile Include="Engine\Objects\Appearance\Texture\Texture.cpp" />
+    <ClCompile Include="Engine\Objects\Texture\Texture.cpp" />
     <ClCompile Include="Engine\FontEngine\UnicodeDictionary.cpp" />
     <ClCompile Include="Engine\Handlers\ObjectHandler.cpp" />
     <ClCompile Include="Engine\Objects\Transform\Transform.cpp" />
     <ClCompile Include="Engine\ShaderEngine\ConstantBuffers\MatrixBuffer.cpp" />
     <ClCompile Include="Engine\ShaderEngine\ShaderParameters\ShaderParameterConstructor.cpp" />
-    <ClCompile Include="Engine\Objects\Appearance\UIAppearance.cpp" />
     <ClCompile Include="Engine\Objects\Systems\TransformSystem.cpp" />
     <ClCompile Include="Engine\Objects\Systems\RenderSystem.cpp" />
     <ClCompile Include="Engine\Objects\Systems\UISystem.cpp" />
@@ -215,8 +214,7 @@
     <ClInclude Include="Engine\ShaderEngine\ShaderParameters\ColorShaderParameters.h" />
     <ClInclude Include="Engine\ShaderEngine\ShaderParameters\GradientShaderParameters.h" />
     <ClInclude Include="Engine\Objects\Components\AppearanceComponent.h" />
-    <ClInclude Include="Engine\Objects\Appearance\Texture\CreateTexture.h" />
-    <ClInclude Include="Engine\Objects\Appearance\IAppearance.h" />
+    <ClInclude Include="Engine\Objects\Texture\CreateTexture.h" />
     <ClInclude Include="Engine\Objects\Components\FurstrumCullingComponent.h" />
     <ClInclude Include="Engine\Objects\Components\IComponent.h" />
     <ClInclude Include="Engine\Objects\Components\RasterizerComponent.h" />
@@ -272,13 +270,12 @@
     <ClInclude Include="Engine\ShaderEngine\ShaderController.h" />
     <ClInclude Include="DXSystem.h" />
     <ClInclude Include="loaders\TargaLoader.h" />
-    <ClInclude Include="Engine\Objects\Appearance\Texture\Texture.h" />
+    <ClInclude Include="Engine\Objects\Texture\Texture.h" />
     <ClInclude Include="Engine\FontEngine\UnicodeDictionary.h" />
     <ClInclude Include="Engine\Handlers\ObjectHandler.h" />
     <ClInclude Include="Engine\Objects\Transform\Transform.h" />
     <ClInclude Include="Engine\ShaderEngine\ConstantBuffers\MatrixBuffer.h" />
     <ClInclude Include="Engine\ShaderEngine\ShaderParameters\ShaderParameterConstructor.h" />
-    <ClInclude Include="Engine\Objects\Appearance\UIAppearance.h" />
     <ClInclude Include="Engine\ShaderEngine\ShaderResources.h" />
     <ClInclude Include="Loaders\OBJLoader\OBJFileLoader.h" />
     <ClInclude Include="Engine\Objects\Components\TransformComponent.h" />

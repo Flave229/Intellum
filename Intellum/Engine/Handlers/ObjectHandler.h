@@ -14,7 +14,7 @@
 #include "../Objects/Systems/RenderSystem.h"
 #include "../Objects/Geometry/GeometryBuilder.h"
 #include "../Objects/Components/RasterizerComponent.h"
-#include "../Objects/Appearance/Texture/CreateTexture.h"
+#include "../Objects/Texture/CreateTexture.h"
 #include "../Objects/Systems/SystemType.h"
 #include "../Objects/Components/FurstrumCullingComponent.h"
 #include "../Objects/Systems/UISystem.h"
