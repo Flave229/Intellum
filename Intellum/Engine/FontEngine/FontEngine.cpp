@@ -55,7 +55,7 @@ vector<Entity*> FontEngine::ConvertTextToEntities(XMFLOAT2 position, string font
 			AppearanceComponent* uiAppearance = new AppearanceComponent();
 			uiAppearance->ShaderType = SHADER_UI;
 			uiAppearance->Model = geometryBuilder.ForUI();
-			uiAppearance->Textures = vector<Texture*> { stringAsTexture.at(i)->Texture };
+			uiAppearance->Textures = vector<Texture*> { stringAsTexture.at(i)->TextTexture };
 			uiAppearance->Color = ColorShaderParameters(textColor);
 			character->AddComponent(uiAppearance);
 
@@ -240,8 +240,7 @@ Character* FontEngine::CreateCharacterFromFontFolder(string filePath, string nam
 {
 	try
 	{
-		UIAppearance* uiAppearance = new UIAppearance(_direct3D, screenSize, Box(64, 128), vector<char*> { &(filePath + "/" + unicode + ".tga")[0u] }, "");
-		Bitmap* texture = new Bitmap(_direct3D, _shader, uiAppearance);
+		Texture* texture = CreateTexture::From(_direct3D, &(filePath + "/" + unicode + ".tga")[0u]);
 		if (!texture) throw Exception("Failed to create the letter " + name + " for the font located at: " + filePath + ".");
 
 		Character* character = new Character(name, unicode, texture);

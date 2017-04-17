@@ -13,7 +13,7 @@ Character* Font::GetCharacterByName(string name)
 {
 	for (int i = 0; i < _characters.size(); i++)
 	{
-		if (_characters.at(i)->_name != name)
+		if (_characters.at(i)->Name != name)
 			continue;
 
 		return _characters.at(i);
@@ -26,7 +26,7 @@ Character* Font::GetCharacterByUnicode(string unicode)
 {
 	for (int i = 0; i < _characters.size(); i++)
 	{
-		if (_characters.at(i)->_unicode != unicode)
+		if (_characters.at(i)->Unicode != unicode)
 			continue;
 
 		return _characters.at(i);

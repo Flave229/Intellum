@@ -1,19 +1,17 @@
 #pragma once
 #include <string>
-
-#include "../Graphics/Bitmap.h"
+#include "../Objects/Appearance/Texture/Texture.h"
 
 using namespace std;
 
 class Character
 {
 public:
-	string _name;
-	string _unicode;
-	Bitmap* BitmapTexture;
-	Texture* Texture;
+	string Name;
+	string Unicode;
+	Texture* TextTexture;
 public:
-	Character(string unicode, Bitmap* texture);
-	Character(string name, string unicode, Bitmap* texture);
+	Character(string unicode, Texture* texture);
+	Character(string name, string unicode, Texture* texture);
 	~Character();
 };

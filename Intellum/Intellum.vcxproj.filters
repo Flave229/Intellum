@@ -100,9 +100,6 @@
     <ClCompile Include="loaders\TargaLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Graphics\Bitmap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Graphics\Graphics.cpp">
       <Filter>Source Files\Application</Filter>
     </ClCompile>
@@ -250,9 +247,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="common\Vertex.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Graphics\Bitmap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Graphics\Graphics.h">

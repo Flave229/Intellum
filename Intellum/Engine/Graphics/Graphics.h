@@ -5,7 +5,6 @@
 #include "../ShaderEngine/IShaderType.h"
 #include "../ShaderEngine/DefaultShader.h"
 #include "Light.h"
-#include "Bitmap.h"
 #include "../../ErrorHandling/Exception.h"
 #include "../DirectX3D.h"
 #include "../FontEngine/FontEngine.h"

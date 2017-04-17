@@ -157,7 +157,6 @@
   <ItemGroup>
     <ClCompile Include="Engine\Objects\Appearance\Texture\CreateTexture.cpp" />
     <ClCompile Include="Engine\ShaderEngine\ConstantBuffers\ColorOverrideBuffer.cpp" />
-    <ClCompile Include="Engine\Graphics\Bitmap.cpp" />
     <ClCompile Include="Engine\Camera\Camera.cpp" />
     <ClCompile Include="Engine\ShaderEngine\ConstantBuffers\CameraBuffer.cpp" />
     <ClCompile Include="Engine\ShaderEngine\ConstantBuffers\LightBuffer.cpp" />
@@ -227,7 +226,6 @@
     <ClInclude Include="Engine\Objects\Systems\SystemType.h" />
     <ClInclude Include="Engine\ShaderEngine\ConstantBuffers\ColorOverrideBuffer.h" />
     <ClInclude Include="Common\Constants.h" />
-    <ClInclude Include="Engine\Graphics\Bitmap.h" />
     <ClInclude Include="Engine\Camera\Camera.h" />
     <ClInclude Include="common\Box.h" />
     <ClInclude Include="common\Vertex.h" />
