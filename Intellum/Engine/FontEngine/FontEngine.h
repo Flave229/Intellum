@@ -40,7 +40,7 @@ private:
 	bool CheckCharacterExists(string filePath);
 	Character* CreateCharacterFromFontFolder(string filePath, string name, string unicode, Box screenSize);
 
-	vector<Character*> StringToCharacterTextureList(string font, string input);
+	vector<Texture*> StringToCharacterTextureList(string font, string input);
 public:
 	FontEngine(DirectX3D* direct3D, ID3D11Device* device, ID3D11DeviceContext* deviceContext, IShaderType* shader);
 	~FontEngine();

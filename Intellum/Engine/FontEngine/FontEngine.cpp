@@ -44,7 +44,7 @@ vector<Entity*> FontEngine::ConvertTextToEntities(XMFLOAT2 position, string font
 			font = "Default";
 		}
 
-		vector<Character*> stringAsTexture = StringToCharacterTextureList(font, input);
+		vector<Texture*> stringAsTexture = StringToCharacterTextureList(font, input);
 		vector<Entity*> stringAsEntities;
 		GeometryBuilder geometryBuilder = GeometryBuilder(_direct3D->GetDevice());
 
@@ -55,7 +55,7 @@ vector<Entity*> FontEngine::ConvertTextToEntities(XMFLOAT2 position, string font
 			AppearanceComponent* uiAppearance = new AppearanceComponent();
 			uiAppearance->ShaderType = SHADER_UI;
 			uiAppearance->Model = geometryBuilder.ForUI();
-			uiAppearance->Textures = vector<Texture*> { stringAsTexture.at(i)->TextTexture };
+			uiAppearance->Textures = vector<Texture*> { stringAsTexture.at(i) };
 			uiAppearance->Color = ColorShaderParameters(textColor);
 			character->AddComponent(uiAppearance);
 
@@ -253,7 +253,7 @@ Character* FontEngine::CreateCharacterFromFontFolder(string filePath, string nam
 	}
 }
 
-vector<Character*> FontEngine::StringToCharacterTextureList(string font, string input)
+vector<Texture*> FontEngine::StringToCharacterTextureList(string font, string input)
 {
 	try
 	{
@@ -264,11 +264,11 @@ vector<Character*> FontEngine::StringToCharacterTextureList(string font, string 
 		else
 			chosenFont = defaultFont;
 
-		vector<Character*> characterList;
+		vector<Texture*> characterList;
 
 		for (int i = 0; i < input.size(); i++)
 		{
-			characterList.push_back(chosenFont->GetCharacterByName(string(1, input.at(i))));
+			characterList.push_back(chosenFont->GetCharacterByName(string(1, input.at(i)))->TextTexture);
 		}
 
 		return characterList;
