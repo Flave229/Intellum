@@ -330,9 +330,6 @@
     <ClInclude Include="Engine\Objects\Entity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Objects\ISceneObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Objects\Components\IComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
