@@ -60,8 +60,9 @@ void RenderSystem::Render(vector<Entity*> entities)
 	{
 		ObserverEvent observerEvent;
 		observerEvent.EventType = RENDER_COUNT;
-		observerEvent.SetObservableData(&_renderCount);
+		observerEvent.SetObservableData(_renderCount);
 		Observers.at(i)->Notify(observerEvent);
+		observerEvent.Shutdown<int>();
 	}
 }
 

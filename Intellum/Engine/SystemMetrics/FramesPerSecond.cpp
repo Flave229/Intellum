@@ -28,8 +28,9 @@ void FramesPerSecond::Frame(float delta)
 		{
 			ObserverEvent observerEvent = ObserverEvent();
 			observerEvent.EventType = FRAMES_PER_SECOND;
-			observerEvent.SetObservableData<int>(&_framesPerSecond);
-			Observers.at(i)->Notify(observerEvent);
+			observerEvent.SetObservableData<int>(_framesPerSecond);
+			Observers.at(i)->Notify(observerEvent); 
+			observerEvent.Shutdown<int>();
 		}
 	}
 }

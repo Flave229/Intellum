@@ -10,15 +10,28 @@ private:
 public:
 	EventType EventType;
 
+	ObserverEvent() : ObservableData(nullptr), EventType() { }
+
+	~ObserverEvent() { }
+
 	template<typename T>
-	void SetObservableData(T* data)
+	void Shutdown()
 	{
-		ObservableData = data;
+		if (ObservableData)
+		{
+			delete ObservableData;
+		}
 	}
 
 	template<typename T>
-	T* GetObservableData()
+	void SetObservableData(T data)
 	{
-		return static_cast<T*>(ObservableData);
+		ObservableData = new T(data);
+	}
+
+	template<typename T>
+	T GetObservableData()
+	{
+		return *static_cast<T*>(ObservableData);
 	}
 };

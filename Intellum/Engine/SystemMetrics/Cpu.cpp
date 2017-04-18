@@ -67,8 +67,9 @@ void Cpu::Frame()
 			{
 				ObserverEvent observerEvent;
 				observerEvent.EventType = CPU_USAGE;
-				observerEvent.SetObservableData(&_cpuUsage);
+				observerEvent.SetObservableData(_cpuUsage);
 				Observers.at(i)->Notify(observerEvent);
+				observerEvent.Shutdown<long>();
 			}
 		}
 	}
