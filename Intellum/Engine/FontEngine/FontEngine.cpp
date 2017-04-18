@@ -80,8 +80,6 @@ vector<Entity*> FontEngine::ConvertTextToEntities(XMFLOAT2 position, string font
 	{
 		throw Exception("The Font Engine failed to render the requested text: \"" + input + "\"");
 	}
-
-	return vector<Entity*>();
 }
 
 Font* FontEngine::GetFont(string font)
@@ -257,12 +255,11 @@ vector<Texture*> FontEngine::StringToCharacterTextureList(string font, string in
 {
 	try
 	{
-		Font* defaultFont = GetFont("Default");
 		Font* chosenFont;
 		if (font != "Default")
 			chosenFont = GetFont(font);
 		else
-			chosenFont = defaultFont;
+			chosenFont = GetFont("Default");
 
 		vector<Texture*> characterList;
 
