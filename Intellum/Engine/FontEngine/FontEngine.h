@@ -1,7 +1,6 @@
 #pragma once
 #include <vector>
 #include <Windows.h>
-#include <dirent.h>
 
 #include "../../ErrorHandling/Exception.h"
 #include "Font.h"
@@ -31,10 +30,6 @@ private:
 	char* _defaultSearchPath = "../../fonts/";
 	vector<Font*> _avaliableFonts;
 private:
-	bool FindFontsFolder();
-	vector<string> GetPotentialFonts();
-	vector<string> ValidatePotentialFonts(vector<string> potentialFonts);
-
 	bool CreateFonts(vector<string> fontFiles, Box screenSize);
 	vector<Character*> GetCharactersFromFontFolder(string filePath, Box screenSize);
 	bool CheckCharacterExists(string filePath);

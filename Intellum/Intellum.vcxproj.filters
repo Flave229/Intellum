@@ -184,6 +184,9 @@
     <ClCompile Include="Engine\Objects\Texture\Texture.cpp">
       <Filter>Source Files\ObjectData</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\FontEngine\FontRetriever.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DXSystem.h">
@@ -413,6 +416,9 @@
     </ClInclude>
     <ClInclude Include="Engine\Objects\Texture\Texture.h">
       <Filter>Header Files\ObjectData</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\FontEngine\FontRetriever.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

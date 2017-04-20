@@ -1,4 +1,5 @@
 ﻿#include "FontEngine.h"
+#include "FontRetriever.h"
 
 FontEngine::FontEngine(DirectX3D* direct3D, ID3D11Device* device, ID3D11DeviceContext* deviceContext, IShaderType* shader) : _direct3D(direct3D), _device(device), _deviceContext(deviceContext), _shader(shader)
 {
@@ -14,14 +15,8 @@ bool FontEngine::SearchForAvaliableFonts(Box screenSize)
 	{
 		bool result;
 
-		result = FindFontsFolder();
-		if (!result) return false;
-
-		vector<string> potentialFonts = GetPotentialFonts();
-		if (potentialFonts.size() <= 0) return false;
-
-		vector<string> fonts = ValidatePotentialFonts(potentialFonts);
-		if (fonts.size() <= 0) return false;
+		FontRetriever fontRetriever = FontRetriever();
+		vector<string> fonts = FontRetriever::RetrieveAvaliableFontNames();;
 
 		result = CreateFonts(fonts, screenSize);
 		if (!result) return false;
@@ -104,73 +99,6 @@ bool FontEngine::CheckFontExists(string font)
 	}
 
 	return false;
-}
-
-bool FontEngine::FindFontsFolder()
-{
-	DIR* directory = opendir(".");
-	struct dirent* entry = readdir(directory);
-	bool fontsFolderFound = false;
-
-	while (entry != nullptr)
-	{
-		if (entry->d_type == DT_DIR)
-		{
-			string subDirectory = (string)entry->d_name;
-
-			if (subDirectory.find("Fonts") != string::npos)
-			{
-				closedir(directory);
-				return true;
-			}
-		}
-
-		entry = readdir(directory);
-	}
-
-	closedir(directory);
-	return false;
-}
-
-vector<string> FontEngine::GetPotentialFonts()
-{
-	vector<string> fonts = vector<string>();
-
-	DIR* directory = opendir("./fonts");
-
-	struct dirent* entry = readdir(directory);
-	bool fontsFolderFound = false;
-
-	while (entry != nullptr)
-	{
-		if (entry->d_type == DT_DIR)
-		{
-			string subDirectory = (string)entry->d_name;
-
-			fonts.push_back(subDirectory);
-		}
-
-		entry = readdir(directory);
-	}
-	
-	closedir(directory);
-
-	return fonts;
-}
-
-vector<string> FontEngine::ValidatePotentialFonts(vector<string> potentialFonts)
-{
-	vector<string> validatedFonts = vector<string>();
-
-	for (int i = 0; i < potentialFonts.size(); i++)
-	{
-		if (potentialFonts.at(i) == "." || potentialFonts.at(i) == "..")
-			continue;
-		
-		validatedFonts.push_back(potentialFonts.at(i));
-	}
-
-	return validatedFonts;
 }
 
 bool FontEngine::CreateFonts(vector<string> fontFiles, Box screenSize)
