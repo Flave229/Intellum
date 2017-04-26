@@ -15,7 +15,22 @@ void FontSystem::Shutdown()
 
 void FontSystem::Update(vector<Entity*> entities, float delta)
 {
+	for (Entity* entity : entities)
+	{
+		IComponent* component = entity->GetComponent(TEXT);
 
+		if (component == nullptr)
+			continue;
+
+		TextComponent* text = static_cast<TextComponent*>(component);
+
+		if (text->Text == text->PreviousText)
+			continue;
+
+		text->TextEntity = _fontEngine->ConvertTextToEntities(text->FontPosition, "Impact", text->Text, text->Color, text->FontSize);
+
+		_uiSystem.Update(text->TextEntity, 0);
+	}
 }
 
 void FontSystem::Render(vector<Entity*> entities)
@@ -29,11 +44,14 @@ void FontSystem::Render(vector<Entity*> entities)
 
 		TextComponent* text = static_cast<TextComponent*>(component);
 
-		vector<Entity*> characters = _fontEngine->ConvertTextToEntities(text->FontPosition, "Impact", text->Text, text->Color, text->FontSize);
+		RenderCharacters(text->TextEntity);
 
-		_uiSystem.Update(characters, 0);
-
-		RenderCharacters(characters);
+		for (unsigned long long i = text->TextEntity.size(); i > 0; i--)
+		{
+			text->TextEntity.back()->Shutdown();
+			delete text->TextEntity.back();
+			text->TextEntity.pop_back();
+		}
 	}
 }
 
