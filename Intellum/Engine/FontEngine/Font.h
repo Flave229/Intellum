@@ -12,11 +12,11 @@ class Font
 {
 public:
 	string _fontName;
-	vector<Character*> _characters;
+	vector<Character> _characters;
 public:
 	Font();
 	~Font();
 
-	Character* GetCharacterByName(string name);
-	Character* GetCharacterByUnicode(string unicode);
+	Texture* GetCharacterTextureByName(string name);
+	Texture* GetCharacterTextureByUnicode(string unicode);
 };

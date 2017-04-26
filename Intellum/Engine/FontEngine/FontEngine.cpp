@@ -110,7 +110,7 @@ bool FontEngine::CreateFonts(vector<string> fontFiles, Box screenSize)
 			Font* font = new Font();
 			font->_fontName = fontFiles.at(i);
 
-			vector<Character*> characters = GetCharactersFromFontFolder("fonts/" + fontFiles.at(i), screenSize);
+			vector<Character> characters = GetCharactersFromFontFolder("fonts/" + fontFiles.at(i), screenSize);
 
 			font->_characters = characters;
 
@@ -125,11 +125,11 @@ bool FontEngine::CreateFonts(vector<string> fontFiles, Box screenSize)
 	}
 }
 
-vector<Character*> FontEngine::GetCharactersFromFontFolder(string filePath, Box screenSize)
+vector<Character> FontEngine::GetCharactersFromFontFolder(string filePath, Box screenSize)
 {
 	try
 	{
-		vector<Character*> characters = vector<Character*>();
+		vector<Character> characters = vector<Character>();
 
 		UnicodeDictionary unicodeDictionary = UnicodeDictionary();
 		vector<string> unicodes = unicodeDictionary.GetSupportedUnicodeList();
@@ -162,14 +162,14 @@ bool FontEngine::CheckCharacterExists(string filePath)
 	return true;
 }
 
-Character* FontEngine::CreateCharacterFromFontFolder(string filePath, string name, string unicode, Box screenSize)
+Character FontEngine::CreateCharacterFromFontFolder(string filePath, string name, string unicode, Box screenSize)
 {
 	try
 	{
 		Texture* texture = CreateTexture::From(_direct3D, &(filePath + "/" + unicode + ".tga")[0u]);
 		if (!texture) throw Exception("Failed to create the letter " + name + " for the font located at: " + filePath + ".");
 
-		Character* character = new Character(name, unicode, texture);
+		Character character = Character(name, unicode, texture);
 
 		return character;
 	}
@@ -193,7 +193,7 @@ vector<Texture*> FontEngine::StringToCharacterTextureList(string font, string in
 
 		for (int i = 0; i < input.size(); i++)
 		{
-			characterList.push_back(chosenFont->GetCharacterByName(string(1, input.at(i)))->TextTexture);
+			characterList.push_back(chosenFont->GetCharacterTextureByName(string(1, input.at(i))));
 		}
 
 		return characterList;

@@ -31,9 +31,9 @@ private:
 	vector<Font*> _avaliableFonts;
 private:
 	bool CreateFonts(vector<string> fontFiles, Box screenSize);
-	vector<Character*> GetCharactersFromFontFolder(string filePath, Box screenSize);
+	vector<Character> GetCharactersFromFontFolder(string filePath, Box screenSize);
 	bool CheckCharacterExists(string filePath);
-	Character* CreateCharacterFromFontFolder(string filePath, string name, string unicode, Box screenSize);
+	Character CreateCharacterFromFontFolder(string filePath, string name, string unicode, Box screenSize);
 
 	vector<Texture*> StringToCharacterTextureList(string font, string input);
 public:

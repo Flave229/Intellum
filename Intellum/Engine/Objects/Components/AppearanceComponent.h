@@ -39,12 +39,12 @@ public:
 			BumpMap = nullptr;
 		}
 
-		for (unsigned long long i = Textures.size(); i > 0; i--)
-		{
-			Textures.back()->Shutdown();
-			Textures.pop_back();
-		}
+		//for (unsigned long long i = Textures.size(); i > 0; i--)
+		//{
+		//	Textures.back()->Shutdown();
+		//	Textures.pop_back();
+		//}
 
-		Textures.clear();
+		//Textures.clear();
 	}
 };
