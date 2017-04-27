@@ -24,8 +24,12 @@ void FontSystem::Update(vector<Entity*> entities, float delta)
 
 		TextComponent* text = static_cast<TextComponent*>(component);
 
-		text->TextEntity = _fontEngine->ConvertTextToEntities(text->FontPosition, "Impact", text->Text, text->Color, text->FontSize);
+		if (text->Text == text->PreviousText)
+			continue;
 
+		text->PreviousText = text->Text;
+		text->TextEntity = _fontEngine->ConvertTextToEntities(text->FontPosition, "Impact", text->Text, text->Color, text->FontSize);
+		
 		for (TextTexture characterTexture : text->TextEntity)
 			UpdateAppearance(characterTexture);
 	}

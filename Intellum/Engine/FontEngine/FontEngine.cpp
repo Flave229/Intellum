@@ -50,7 +50,6 @@ vector<TextTexture> FontEngine::ConvertTextToEntities(XMFLOAT2 position, string 
 			character.Model = geometryBuilder.ForUI();
 			character.Position = XMFLOAT2(position.x + (fontSize * i), position.y);
 			character.Size = fontSize;
-			UIComponent* uiComponent = new UIComponent();
 
 			textTextures.push_back(character);
 		}
