@@ -1,19 +1,19 @@
-#include "FontSystem.h"
+#include "TextSystem.h"
 #include "UISystem.h"
 
-FontSystem::FontSystem(DirectX3D* direct3D, ShaderController* shaderController, FontEngine* fontEngine, HWND hwnd, Box screenSize) : _direct3D(direct3D), _shaderController(shaderController), _fontEngine(fontEngine), _screenSize(screenSize)
+TextSystem::TextSystem(DirectX3D* direct3D, ShaderController* shaderController, FontEngine* fontEngine, HWND hwnd, Box screenSize) : _direct3D(direct3D), _shaderController(shaderController), _fontEngine(fontEngine), _screenSize(screenSize)
 {
 }
 
-FontSystem::~FontSystem()
+TextSystem::~TextSystem()
 {
 }
 
-void FontSystem::Shutdown()
+void TextSystem::Shutdown()
 {
 }
 
-void FontSystem::Update(vector<Entity*> entities, float delta)
+void TextSystem::Update(vector<Entity*> entities, float delta)
 {
 	for (Entity* entity : entities)
 	{
@@ -28,14 +28,13 @@ void FontSystem::Update(vector<Entity*> entities, float delta)
 			continue;
 
 		UpdateTextEntity(text);
-		//text->TextEntity = _fontEngine->ConvertTextToTextEntity(text->FontPosition, "Impact", text->Text, text->Color, text->FontSize);
 		
 		for (TextTexture characterTexture : text->TextEntity)
 			UpdateAppearance(characterTexture);
 	}
 }
 
-void FontSystem::UpdateTextEntity(TextComponent* textComponent)
+void TextSystem::UpdateTextEntity(TextComponent* textComponent)
 {
 	try
 	{
@@ -76,7 +75,7 @@ void FontSystem::UpdateTextEntity(TextComponent* textComponent)
 	}
 }
 
-void FontSystem::UpdateAppearance(TextTexture texture)
+void TextSystem::UpdateAppearance(TextTexture texture)
 {
 	if ((texture.Position.x == static_cast<int>(texture.PreviousPosition.x)) && (texture.Position.y == static_cast<int>(texture.PreviousPosition.y))
 		&& (texture.Size == texture.PreviousSize))
@@ -128,7 +127,7 @@ void FontSystem::UpdateAppearance(TextTexture texture)
 	vertices = nullptr;
 }
 
-void FontSystem::Render(vector<Entity*> entities)
+void TextSystem::Render(vector<Entity*> entities)
 {
 	for (Entity* entity : entities)
 	{
@@ -143,7 +142,7 @@ void FontSystem::Render(vector<Entity*> entities)
 	}
 }
 
-void FontSystem::RenderCharacters(vector<TextTexture> characters)
+void TextSystem::RenderCharacters(vector<TextTexture> characters)
 {
 	for (TextTexture character : characters)
 	{
@@ -156,7 +155,7 @@ void FontSystem::RenderCharacters(vector<TextTexture> characters)
 	}
 }
 
-void FontSystem::BuildBufferInformation(TextTexture character) const
+void TextSystem::BuildBufferInformation(TextTexture character) const
 {
 	_direct3D->GetRasterizer()->SetRasterizerCullMode(D3D11_CULL_BACK);
 	_direct3D->TurnZBufferOff();
@@ -167,7 +166,7 @@ void FontSystem::BuildBufferInformation(TextTexture character) const
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 
-ShaderResources FontSystem::BuildShaderResources(TextTexture character) const
+ShaderResources TextSystem::BuildShaderResources(TextTexture character) const
 {
 	ShaderResources shaderResources = ShaderResources();
 	shaderResources.MatrixParameters.WorldMatrix = _direct3D->GetWorldMatrix();
@@ -181,7 +180,7 @@ ShaderResources FontSystem::BuildShaderResources(TextTexture character) const
 	return shaderResources;
 }
 
-ID3D11ShaderResourceView* FontSystem::ExtractResourceViewsFrom(Texture* texture)
+ID3D11ShaderResourceView* TextSystem::ExtractResourceViewsFrom(Texture* texture)
 {
 	return texture->GetTexture();
 }

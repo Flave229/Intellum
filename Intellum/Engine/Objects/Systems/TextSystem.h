@@ -6,7 +6,7 @@
 #include "../../FontEngine/FontEngine.h"
 #include "UISystem.h"
 
-class FontSystem : public ISystem
+class TextSystem : public ISystem
 {
 private:
 	DirectX3D* _direct3D;
@@ -19,11 +19,11 @@ private:
 	void RenderCharacters(vector<TextTexture> entities);
 	void BuildBufferInformation(TextTexture character) const;
 	ShaderResources BuildShaderResources(TextTexture character) const;
-	static ID3D11ShaderResourceView* FontSystem::ExtractResourceViewsFrom(Texture* texture);
+	static ID3D11ShaderResourceView* TextSystem::ExtractResourceViewsFrom(Texture* texture);
 
 public:
-	FontSystem(DirectX3D* direct3D, ShaderController* shaderController, FontEngine* fontEngine, HWND hwnd, Box screenSize);
-	~FontSystem();
+	TextSystem(DirectX3D* direct3D, ShaderController* shaderController, FontEngine* fontEngine, HWND hwnd, Box screenSize);
+	~TextSystem();
 	void Shutdown() override;
 
 	void Update(vector<Entity*> entities, float delta) override;

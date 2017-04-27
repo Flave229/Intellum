@@ -39,7 +39,7 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	_systemList[TRANSFORM_SYSTEM] = new TransformSystem(direct3D);
 	_systemList[UI_RENDER_SYSTEM] = new UISystem(direct3D, shaderController, hwnd, Box(1280, 720));
 	_systemList[RENDER_SYSTEM] = new RenderSystem(direct3D, shaderController, hwnd, camera);
-	_systemList[FONT_SYSTEM] = new FontSystem(direct3D, shaderController, fontEngine, hwnd, Box(1280, 720));
+	_systemList[FONT_SYSTEM] = new TextSystem(direct3D, shaderController, fontEngine, hwnd, Box(1280, 720));
 
 	for(int i = 0; i < 25; i++)
 	{

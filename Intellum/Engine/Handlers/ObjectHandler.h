@@ -20,7 +20,7 @@
 #include "../Objects/Systems/UISystem.h"
 #include "../Objects/Components/TextComponent.h"
 #include "../FontEngine/FontEngine.h"
-#include "../Objects/Systems/FontSystem.h"
+#include "../Objects/Systems/TextSystem.h"
 #include "../SystemMetrics/FramesPerSecond.h"
 #include "../SystemMetrics/Cpu.h"
 

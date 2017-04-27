@@ -184,7 +184,7 @@
     <ClCompile Include="Engine\Objects\Geometry\GeometryBuilder.cpp" />
     <ClCompile Include="Engine\Objects\Geometry\GridBuilder.cpp" />
     <ClCompile Include="Engine\ShaderEngine\ConstantBuffers\GradientOverloadBuffer.cpp" />
-    <ClCompile Include="Engine\Objects\Systems\FontSystem.cpp" />
+    <ClCompile Include="Engine\Objects\Systems\TextSystem.cpp" />
     <ClCompile Include="Engine\FontEngine\FontRetriever.cpp">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</CompileAsManaged>
     </ClCompile>
@@ -261,7 +261,7 @@
     <ClInclude Include="Engine\Objects\Geometry\GeometryBuilder.h" />
     <ClInclude Include="Engine\Objects\Geometry\GridBuilder.h" />
     <ClInclude Include="Engine\ShaderEngine\ConstantBuffers\GradientOverloadBuffer.h" />
-    <ClInclude Include="Engine\Objects\Systems\FontSystem.h" />
+    <ClInclude Include="Engine\Objects\Systems\TextSystem.h" />
     <ClInclude Include="Engine\FontEngine\FontRetriever.h" />
     <ClInclude Include="Loaders\models\OBJGeometryData.h" />
     <ClInclude Include="Loaders\OBJLoader\IOBJLoader.h" />
