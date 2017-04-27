@@ -178,7 +178,6 @@
     <ClCompile Include="Engine\DxComponents\HardwareDescription.cpp" />
     <ClCompile Include="Engine\Camera\Frustrum.cpp" />
     <ClCompile Include="Engine\Input\Input.cpp" />
-    <ClCompile Include="Engine\FontEngine\Character.cpp" />
     <ClCompile Include="Engine\Graphics\Light.cpp" />
     <ClCompile Include="Engine\Input\ControlMappings.cpp" />
     <ClCompile Include="Engine\Input\InputControl.cpp" />
@@ -285,6 +284,7 @@
     <ClInclude Include="Engine\Objects\Systems\TransformSystem.h" />
     <ClInclude Include="Engine\Objects\Systems\RenderSystem.h" />
     <ClInclude Include="Engine\Objects\Systems\UISystem.h" />
+    <ClInclude Include="Engine\FontEngine\TextTexture.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="data\models\Cube.txt">

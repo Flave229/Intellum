@@ -12,11 +12,13 @@ private:
 	DirectX3D* _direct3D;
 	ShaderController* _shaderController;
 	FontEngine* _fontEngine;
-	UISystem _uiSystem;
-	void RenderCharacters(vector<Entity*> entities); 
-	void BuildBufferInformation(Entity* entity, AppearanceComponent* appearance) const; 
-	ShaderResources BuildShaderResources(AppearanceComponent* appearance, TransformComponent* transform) const;
-	static vector<ID3D11ShaderResourceView*> FontSystem::ExtractResourceViewsFrom(vector<Texture*> textures);
+	Box _screenSize;
+
+	void UpdateAppearance(TextTexture texture);
+	void RenderCharacters(vector<TextTexture> entities);
+	void BuildBufferInformation(TextTexture character) const;
+	ShaderResources BuildShaderResources(TextTexture character) const;
+	static ID3D11ShaderResourceView* FontSystem::ExtractResourceViewsFrom(Texture* texture);
 
 public:
 	FontSystem(DirectX3D* direct3D, ShaderController* shaderController, FontEngine* fontEngine, HWND hwnd, Box screenSize);

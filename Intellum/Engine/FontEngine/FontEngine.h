@@ -14,6 +14,7 @@
 #include "../Objects/Components/UIComponent.h"
 #include "../Objects/Geometry/GeometryBuilder.h"
 #include "../Objects/Texture/CreateTexture.h"
+#include "TextTexture.h"
 
 using namespace std;
 
@@ -40,7 +41,7 @@ public:
 	FontEngine(DirectX3D* direct3D, ID3D11Device* device, ID3D11DeviceContext* deviceContext, IShaderType* shader);
 	~FontEngine();
 
-	vector<Entity*> ConvertTextToEntities(XMFLOAT2 position, string font, string input, XMFLOAT4 textColor, int fontSize);
+	vector<TextTexture> ConvertTextToEntities(XMFLOAT2 position, string font, string input, XMFLOAT4 textColor, int fontSize);
 	
 	bool SearchForAvaliableFonts(Box screenSize);
 

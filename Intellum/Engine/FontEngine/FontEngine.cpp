@@ -29,7 +29,7 @@ bool FontEngine::SearchForAvaliableFonts(Box screenSize)
 	}
 }
 
-vector<Entity*> FontEngine::ConvertTextToEntities(XMFLOAT2 position, string font, string input, XMFLOAT4 textColor, int fontSize)
+vector<TextTexture> FontEngine::ConvertTextToEntities(XMFLOAT2 position, string font, string input, XMFLOAT4 textColor, int fontSize)
 {
 	try
 	{
@@ -39,33 +39,23 @@ vector<Entity*> FontEngine::ConvertTextToEntities(XMFLOAT2 position, string font
 			font = "Default";
 		}
 
+		vector<TextTexture> textTextures = vector<TextTexture>();
 		vector<Texture*> stringAsTexture = StringToCharacterTextureList(font, input);
-		vector<Entity*> stringAsEntities;
 		GeometryBuilder geometryBuilder = GeometryBuilder(_direct3D->GetDevice());
 
 		for (int i = 0; i < stringAsTexture.size(); i++)
 		{
-			Entity* character = new Entity();
-
-			AppearanceComponent* uiAppearance = new AppearanceComponent();
-			uiAppearance->ShaderType = SHADER_UI;
-			uiAppearance->Model = geometryBuilder.ForUI();
-			uiAppearance->Textures = vector<Texture*> { stringAsTexture.at(i) };
-			uiAppearance->Color = ColorShaderParameters(textColor);
-			character->AddComponent(uiAppearance);
-
-			TransformComponent* uiTransform = new TransformComponent();
-			uiTransform->Position = XMFLOAT3(position.x + (fontSize * i), position.y, 0);
-			character->AddComponent(uiTransform);
-
+			TextTexture character = TextTexture(stringAsTexture.at(i));
+			character.Color = ColorShaderParameters(textColor);
+			character.Model = geometryBuilder.ForUI();
+			character.Position = XMFLOAT2(position.x + (fontSize * i), position.y);
+			character.Size = fontSize;
 			UIComponent* uiComponent = new UIComponent();
-			uiComponent->BitmapSize = XMFLOAT2(fontSize, fontSize * 2);
-			character->AddComponent(uiComponent);
 
-			stringAsEntities.push_back(character);
+			textTextures.push_back(character);
 		}
 
-		return stringAsEntities;
+		return textTextures;
 	}
 	catch (Exception& exception)
 	{
