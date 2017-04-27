@@ -14,6 +14,7 @@ private:
 	FontEngine* _fontEngine;
 	Box _screenSize;
 
+	void UpdateTextEntity(TextComponent* textComponent);
 	void UpdateAppearance(TextTexture texture);
 	void RenderCharacters(vector<TextTexture> entities);
 	void BuildBufferInformation(TextTexture character) const;

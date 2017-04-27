@@ -20,4 +20,9 @@ public:
 	{}
 
 	~TextTexture() {}
+
+	void Shutdown()
+	{
+		Model.Shutdown();
+	}
 };

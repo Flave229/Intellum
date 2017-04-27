@@ -29,7 +29,7 @@ bool FontEngine::SearchForAvaliableFonts(Box screenSize)
 	}
 }
 
-vector<TextTexture> FontEngine::ConvertTextToEntities(XMFLOAT2 position, string font, string input, XMFLOAT4 textColor, int fontSize)
+vector<TextTexture> FontEngine::ConvertTextToTextEntity(XMFLOAT2 position, string font, string input, XMFLOAT4 textColor, int fontSize)
 {
 	try
 	{
@@ -63,6 +63,28 @@ vector<TextTexture> FontEngine::ConvertTextToEntities(XMFLOAT2 position, string 
 	catch (...)
 	{
 		throw Exception("The Font Engine failed to render the requested text: \"" + input + "\"");
+	}
+}
+
+Texture* FontEngine::ConvertCharacterToTexture(string font, string character)
+{
+	try
+	{
+		bool result = CheckFontExists(font);
+		if (!result)
+		{
+			font = "Default";
+		}
+
+		return StringToCharacterTextureList(font, character).at(0);
+	}
+	catch (Exception& exception)
+	{
+		throw Exception("The Font Engine failed to render the requested text: \"" + character + "\"", exception);
+	}
+	catch (...)
+	{
+		throw Exception("The Font Engine failed to render the requested text: \"" + character + "\"");
 	}
 }
 

@@ -27,11 +27,52 @@ void FontSystem::Update(vector<Entity*> entities, float delta)
 		if (text->Text == text->PreviousText)
 			continue;
 
-		text->PreviousText = text->Text;
-		text->TextEntity = _fontEngine->ConvertTextToEntities(text->FontPosition, "Impact", text->Text, text->Color, text->FontSize);
+		UpdateTextEntity(text);
+		//text->TextEntity = _fontEngine->ConvertTextToTextEntity(text->FontPosition, "Impact", text->Text, text->Color, text->FontSize);
 		
 		for (TextTexture characterTexture : text->TextEntity)
 			UpdateAppearance(characterTexture);
+	}
+}
+
+void FontSystem::UpdateTextEntity(TextComponent* textComponent)
+{
+	try
+	{
+		vector<TextTexture>& textTextures = textComponent->TextEntity;
+		string& currentText = textComponent->Text;
+		string& previousText = textComponent->PreviousText;
+		int textSizeDifference = currentText.size() - previousText.size();
+
+		if (textSizeDifference > 0)
+		{
+			string additionalCharacters = string(currentText.end() - textSizeDifference, currentText.end());
+			XMFLOAT2 adjustedPosition = XMFLOAT2(textComponent->FontPosition.x + (previousText.size() * textComponent->FontSize), textComponent->FontPosition.y);
+			vector<TextTexture> additionalTextures = _fontEngine->ConvertTextToTextEntity(adjustedPosition, "Impact", additionalCharacters, textComponent->Color, textComponent->FontSize);
+			textTextures.insert(textTextures.end(), additionalTextures.begin(), additionalTextures.end());
+		}
+		else if (textSizeDifference < 0)
+		{
+			for (int i = 0; i < textSizeDifference * -1; i++)
+			{
+				textTextures.at(textTextures.size() - 1).Shutdown();
+				textTextures.pop_back();
+			}
+		}
+
+		for (int i = 0; i < currentText.size() - textSizeDifference && i < textTextures.size(); i++)
+		{
+			if (currentText.at(i) == previousText.at(i))
+				continue;
+
+			textTextures.at(i).CharacterTexture = _fontEngine->ConvertCharacterToTexture("Impact", string(1, currentText.at(i)));
+		}
+
+		textComponent->PreviousText = textComponent->Text;
+	}
+	catch (...)
+	{
+		throw Exception("A porblem occured updating the text \"" + textComponent->Text + "\". The previous frame displayed the text \"" + textComponent->PreviousText + "\".");
 	}
 }
 

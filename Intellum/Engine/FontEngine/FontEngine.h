@@ -41,7 +41,8 @@ public:
 	FontEngine(DirectX3D* direct3D, ID3D11Device* device, ID3D11DeviceContext* deviceContext, IShaderType* shader);
 	~FontEngine();
 
-	vector<TextTexture> ConvertTextToEntities(XMFLOAT2 position, string font, string input, XMFLOAT4 textColor, int fontSize);
+	vector<TextTexture> ConvertTextToTextEntity(XMFLOAT2 position, string font, string input, XMFLOAT4 textColor, int fontSize);
+	Texture* ConvertCharacterToTexture(string font, string character);
 	
 	bool SearchForAvaliableFonts(Box screenSize);
 
