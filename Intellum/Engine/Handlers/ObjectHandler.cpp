@@ -1,8 +1,8 @@
 #include "ObjectHandler.h"
 
-ObjectHandler::ObjectHandler(DirectX3D* direct3D, ShaderController* shaderController, FontEngine* fontEngine, HWND hwnd, Camera* camera, Light* light, Input* input, FramesPerSecond* framesPerSecond, Cpu* cpu)
+ObjectHandler::ObjectHandler(DirectX3D* direct3D, ShaderController* shaderController, FontEngine* fontEngine, HWND hwnd, Camera* camera, Input* input, FramesPerSecond* framesPerSecond, Cpu* cpu, Box screenSize)
 {
-	InitialiseObjects(direct3D, shaderController, fontEngine, hwnd, camera, light, input, framesPerSecond, cpu);
+	InitialiseObjects(direct3D, shaderController, fontEngine, hwnd, camera, input, framesPerSecond, cpu, screenSize);
 }
 
 ObjectHandler::~ObjectHandler()
@@ -30,16 +30,16 @@ void ObjectHandler::Shutdown()
 	_systemList.clear();
 }
 
-void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* shaderController, FontEngine* fontEngine, HWND hwnd, Camera* camera, Light* light, Input* input, FramesPerSecond* framesPerSecond, Cpu* cpu)
+void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* shaderController, FontEngine* fontEngine, HWND hwnd, Camera* camera, Input* input, FramesPerSecond* framesPerSecond, Cpu* cpu, Box screenSize)
 {
 	srand(static_cast<unsigned int>(time(nullptr)));
 
 	GeometryBuilder geometryBuilder = GeometryBuilder(direct3D->GetDevice());
 
 	_systemList[TRANSFORM_SYSTEM] = new TransformSystem(direct3D);
-	_systemList[UI_RENDER_SYSTEM] = new UISystem(direct3D, shaderController, hwnd, Box(1280, 720));
+	_systemList[UI_RENDER_SYSTEM] = new UISystem(direct3D, shaderController, hwnd, screenSize);
 	_systemList[RENDER_SYSTEM] = new RenderSystem(direct3D, shaderController, hwnd, camera);
-	_systemList[FONT_SYSTEM] = new TextSystem(direct3D, shaderController, fontEngine, hwnd, Box(1280, 720));
+	_systemList[FONT_SYSTEM] = new TextSystem(direct3D, shaderController, fontEngine, hwnd, screenSize);
 
 	for(int i = 0; i < 25; i++)
 	{

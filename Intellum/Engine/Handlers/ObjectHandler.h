@@ -34,9 +34,9 @@ private:
 
 	vector<Entity*> _entityList;
 	map<SystemType, ISystem*> _systemList;
-	void InitialiseObjects(DirectX3D* direct3D, ShaderController* shaderController, FontEngine* fontEngine, HWND hwnd, Camera* camera, Light* light, Input* input, FramesPerSecond* framesPerSecond, Cpu* cpu);
+	void InitialiseObjects(DirectX3D* direct3D, ShaderController* shaderController, FontEngine* fontEngine, HWND hwnd, Camera* camera, Input* input, FramesPerSecond* framesPerSecond, Cpu* cpu, Box screenSize);
 public:
-	ObjectHandler(DirectX3D* direct3D, ShaderController* shaderController, FontEngine* fontEngine, HWND hwnd, Camera* camera, Light* light, Input* input, FramesPerSecond* framesPerSecond, Cpu* cpu);
+	ObjectHandler(DirectX3D* direct3D, ShaderController* shaderController, FontEngine* fontEngine, HWND hwnd, Camera* camera, Input* input, FramesPerSecond* framesPerSecond, Cpu* cpu, Box screenSize);
 	~ObjectHandler();
 
 	void Shutdown();

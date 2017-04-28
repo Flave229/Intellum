@@ -39,7 +39,7 @@ void Graphics::Initialise(Input* input, FramesPerSecond* framesPerSecond, Cpu* c
 		_fontEngine = new FontEngine(_direct3D, _direct3D->GetDevice(), _direct3D->GetDeviceContext(), _shaderController->GetShader(SHADER_UI));
 		if (!_fontEngine) throw Exception("Failed to create the Font Engine.");
 		
-		_objectHandler = new ObjectHandler(_direct3D, _shaderController, _fontEngine, hwnd, _camera, _light, input, framesPerSecond, cpu);
+		_objectHandler = new ObjectHandler(_direct3D, _shaderController, _fontEngine, hwnd, _camera, input, framesPerSecond, cpu, screenSize);
 		if (!_objectHandler) throw Exception("Failed to create the object handler.");
 
 		result = _fontEngine->SearchForAvaliableFonts(screenSize);
