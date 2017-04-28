@@ -1,5 +1,4 @@
-#ifndef _TEXTURE_H_
-#define _TEXTURE_H_
+#pragma once
 
 #include <d3d11.h>
 #include <stdio.h>
@@ -22,16 +21,13 @@ class Texture
 	};
 
 private:
-	ID3D11Device* _device;
-	ID3D11DeviceContext* _deviceContext;
-
 	ID3D11Texture2D* _texture;
 	ID3D11ShaderResourceView* _textureView;
 
 private:
-	void Initialise(char* filename);
+	void Initialise(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* filename);
 
-	D3D11_TEXTURE2D_DESC SetupAndReturnDX11TextureDescription(Box textureBox);
+	D3D11_TEXTURE2D_DESC SetupAndReturnDX11TextureDescription(ID3D11Device* device, Box textureBox);
 	static D3D11_SHADER_RESOURCE_VIEW_DESC SetupDX11ShaderResourceViewDescription(D3D11_TEXTURE2D_DESC textureDescription);
 
 public:
@@ -42,5 +38,3 @@ public:
 
 	ID3D11ShaderResourceView* GetTexture() const;
 };
-
-#endif

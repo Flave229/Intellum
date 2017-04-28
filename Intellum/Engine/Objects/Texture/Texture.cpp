@@ -1,35 +1,35 @@
 #include "Texture.h"
 
-Texture::Texture(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* filename): _device(device), _deviceContext(deviceContext), _texture(nullptr), _textureView(nullptr)
+Texture::Texture(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* filename): _texture(nullptr), _textureView(nullptr)
 {
-	Initialise(filename);
+	Initialise(device, deviceContext, filename);
 }
 
 Texture::~Texture()
 {
 }
 
-void Texture::Initialise(char* filename)
+void Texture::Initialise(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* filename)
 {
 	TargaData targaData = TargaLoader::LoadTarga(filename);
-	D3D11_TEXTURE2D_DESC textureDescription = SetupAndReturnDX11TextureDescription(targaData.ImageSize);
+	D3D11_TEXTURE2D_DESC textureDescription = SetupAndReturnDX11TextureDescription(device, targaData.ImageSize);
 
 	unsigned int rowPitch = static_cast<unsigned int>(targaData.ImageSize.Width * 4 * sizeof(unsigned char));
-	_deviceContext->UpdateSubresource(_texture, 0, nullptr, targaData.ImageData, rowPitch, 0);
+	deviceContext->UpdateSubresource(_texture, 0, nullptr, targaData.ImageData, rowPitch, 0);
 		
 	D3D11_SHADER_RESOURCE_VIEW_DESC shaderDescription = SetupDX11ShaderResourceViewDescription(textureDescription);
-	HRESULT hResult = _device->CreateShaderResourceView(_texture, &shaderDescription, &_textureView);
+	HRESULT hResult = device->CreateShaderResourceView(_texture, &shaderDescription, &_textureView);
 
 	if (FAILED(hResult))
 		throw Exception("Failed to create the Shader Resource View");
 
-	_deviceContext->GenerateMips(_textureView);
+	deviceContext->GenerateMips(_textureView);
 
 	delete[] targaData.ImageData;
 	targaData.ImageData = nullptr;
 }
 
-D3D11_TEXTURE2D_DESC Texture::SetupAndReturnDX11TextureDescription(Box textureBox)
+D3D11_TEXTURE2D_DESC Texture::SetupAndReturnDX11TextureDescription(ID3D11Device* device, Box textureBox)
 {
 	D3D11_TEXTURE2D_DESC textureDescription;
 	textureDescription.Height = static_cast<UINT>(textureBox.Height);
@@ -44,7 +44,7 @@ D3D11_TEXTURE2D_DESC Texture::SetupAndReturnDX11TextureDescription(Box textureBo
 	textureDescription.CPUAccessFlags = 0;
 	textureDescription.MiscFlags = D3D11_RESOURCE_MISC_GENERATE_MIPS;
 
-	HRESULT hResult = _device->CreateTexture2D(&textureDescription, nullptr, &_texture);
+	HRESULT hResult = device->CreateTexture2D(&textureDescription, nullptr, &_texture);
 
 	if (FAILED(hResult))
 		throw Exception("Failed to create texture description");
