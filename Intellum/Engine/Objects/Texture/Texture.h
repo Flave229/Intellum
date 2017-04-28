@@ -6,6 +6,7 @@
 #include "../../../ErrorHandling/Exception.h"
 #include "../../../Loaders/TargaLoader.h"
 #include "../../../common/Box.h"
+#include "../../DirectX3D.h"
 
 using namespace std;
 
@@ -25,13 +26,13 @@ private:
 	ID3D11ShaderResourceView* _textureView;
 
 private:
-	void Initialise(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* filename);
+	void Initialise(DirectX3D* direct3d, char* filename);
 
 	D3D11_TEXTURE2D_DESC SetupAndReturnDX11TextureDescription(ID3D11Device* device, Box textureBox);
 	static D3D11_SHADER_RESOURCE_VIEW_DESC SetupDX11ShaderResourceViewDescription(D3D11_TEXTURE2D_DESC textureDescription);
 
 public:
-	Texture(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* filename);
+	Texture(DirectX3D* direct3d, char* filename);
 	~Texture();
 
 	void Shutdown();

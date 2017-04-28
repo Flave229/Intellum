@@ -1,16 +1,19 @@
 #include "Texture.h"
 
-Texture::Texture(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* filename): _texture(nullptr), _textureView(nullptr)
+Texture::Texture(DirectX3D* direct3d, char* filename): _texture(nullptr), _textureView(nullptr)
 {
-	Initialise(device, deviceContext, filename);
+	Initialise(direct3d, filename);
 }
 
 Texture::~Texture()
 {
 }
 
-void Texture::Initialise(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* filename)
+void Texture::Initialise(DirectX3D* direct3d, char* filename)
 {
+	ID3D11Device* device = direct3d->GetDevice();
+	ID3D11DeviceContext* deviceContext = direct3d->GetDeviceContext();
+
 	TargaData targaData = TargaLoader::LoadTarga(filename);
 	D3D11_TEXTURE2D_DESC textureDescription = SetupAndReturnDX11TextureDescription(device, targaData.ImageSize);
 
