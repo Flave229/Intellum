@@ -13,7 +13,6 @@
 #include "ConstantBuffers/LightBuffer.h"
 #include "ConstantBuffers/ColorOverrideBuffer.h"
 #include "ConstantBuffers/TextureBuffer.h"
-#include "ShaderParameters/ShaderParameterConstructor.h"
 #include "ShaderResources.h"
 
 using namespace DirectX;

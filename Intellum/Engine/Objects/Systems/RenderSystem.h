@@ -9,7 +9,6 @@
 #include "../../ShaderEngine/ConstantBuffers/CameraBuffer.h"
 #include "../../ShaderEngine/ConstantBuffers/LightBuffer.h"
 #include "../../ShaderEngine/ConstantBuffers/TextureBuffer.h"
-#include "../../ShaderEngine/ShaderParameters/ShaderParameterConstructor.h"
 #include <d3dcompiler.h>
 #include <fstream>
 #include "../../ShaderEngine/ShaderController.h"
