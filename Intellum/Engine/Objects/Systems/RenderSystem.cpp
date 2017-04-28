@@ -41,17 +41,7 @@ void RenderSystem::Render(vector<Entity*> entities)
 		ShaderResources shaderResources = BuildShaderResources(appearance, transform);
 
 		IShaderType* shader = _shaderController->GetShader(appearance->ShaderType);
-		switch(appearance->ShaderType)
-		{
-		case SHADER_DEFAULT:
-			shader->Render(appearance->Model.IndexCount, shaderResources);
-			break;
-		case SHADER_UI:
-			shader->Render(appearance->Model.IndexCount, shaderResources);
-			break;
-		default:
-			shader->Render(appearance->Model.IndexCount, shaderResources);
-		}
+		shader->Render(appearance->Model.IndexCount, shaderResources);
 		
 		_renderCount++;
 	}
