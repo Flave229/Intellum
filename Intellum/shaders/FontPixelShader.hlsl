@@ -23,17 +23,29 @@ struct PixelInputType
 	float3 viewDirection : TEXCOORD1;
 };
 
-float4 FontPixelShader(PixelInputType input) : SV_TARGET
+float4 CalculateTextureColor(float2 inputTextureCordinates)
 {
-    float4 color = shaderTexture[0].Sample(SampleType, input.tex);
+    float4 textureColor = float4(0, 0, 0, 0);
+
+    if (textureCount <= 0)
+        return textureColor;
+
+    textureColor = shaderTexture[0].Sample(SampleType, inputTextureCordinates);
 
     for (int i = 1; i < textureCount; i++)
     {
-        color *= shaderTexture[i].Sample(SampleType, input.tex) * 2.0f;
+        textureColor *= shaderTexture[i].Sample(SampleType, inputTextureCordinates) * 2.0f;
     }
 
     if (lightMapEnabled == 1.0f)
-        color *= lightMap.Sample(SampleType, input.tex);
+        textureColor *= lightMap.Sample(SampleType, inputTextureCordinates);
+
+    return textureColor;
+}
+
+float4 FontPixelShader(PixelInputType input) : SV_TARGET
+{
+    float4 color = CalculateTextureColor(input.tex);
     
     if (colorOverloadEnabled == 1.0f)
     {

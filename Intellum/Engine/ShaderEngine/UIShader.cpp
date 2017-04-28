@@ -182,9 +182,10 @@ void UIShader::SetShaderParameters(ShaderResources shaderResources, XMMATRIX wor
 {
 	try
 	{
-		_matrixBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructMatrixBufferParameters(0, worldMatrix, projectionMatrix, _viewMatrix));
-		_cameraBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructDefaultBufferParameters(1));
-		_colorBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructColorOverloadBufferParameters(2, shaderResources.ColorParameters));
+		shaderResources.MatrixParameters.ViewMatrix = _viewMatrix;
+		_matrixBuffer->SetShaderParameters(0, shaderResources);
+		_cameraBuffer->SetShaderParameters(1, shaderResources);
+		_colorBuffer->SetShaderParameters(2, shaderResources);
 
 		bool lightMapEnabled = false;
 		if (shaderResources.TextureParameters.LightMap != nullptr)
@@ -195,9 +196,10 @@ void UIShader::SetShaderParameters(ShaderResources shaderResources, XMMATRIX wor
 			bumpMapEnabled = true;
 
 		int textureCount = static_cast<int>(shaderResources.TextureParameters.TextureArray.size());
-		_textureBuffer->SetShaderParameters(ShaderParameterConstructor::ConstructTextureBufferParameters(3, textureCount, lightMapEnabled, bumpMapEnabled));
+		_textureBuffer->SetShaderParameters(3, shaderResources);
 
-		_direct3D->GetDeviceContext()->PSSetShaderResources(0, textureCount, &shaderResources.TextureParameters.TextureArray.at(0));
+		if (textureCount > 0)
+			_direct3D->GetDeviceContext()->PSSetShaderResources(0, textureCount, &shaderResources.TextureParameters.TextureArray.at(0));
 
 		if (lightMapEnabled)
 			_direct3D->GetDeviceContext()->PSSetShaderResources(10, 1, &shaderResources.TextureParameters.LightMap);
