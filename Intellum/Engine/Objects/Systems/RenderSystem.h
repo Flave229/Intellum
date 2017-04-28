@@ -20,6 +20,7 @@ private:
 	Camera* _camera;
 	ShaderController* _shaderController;
 
+	XMMATRIX _defaultViewMatrix;
 	int _renderCount;
 
 	ShaderResources BuildShaderResources(AppearanceComponent* appearance, TransformComponent* transform) const;

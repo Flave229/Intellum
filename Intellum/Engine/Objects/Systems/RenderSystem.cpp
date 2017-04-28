@@ -4,6 +4,7 @@
 
 RenderSystem::RenderSystem(DirectX3D* direct3D, ShaderController* shaderController, HWND hwnd, Camera* camera) : _direct3D(direct3D), _camera(camera), _shaderController(shaderController), _renderCount(0)
 {
+	_defaultViewMatrix = camera->GetViewMatrix();
 }
 
 void RenderSystem::Shutdown()
@@ -91,14 +92,18 @@ ShaderResources RenderSystem::BuildShaderResources(AppearanceComponent* appearan
 	switch (appearance->ShaderType)
 	{
 	case SHADER_DEFAULT:
+		shaderResources.MatrixParameters.ViewMatrix = _camera->GetViewMatrix();
 		shaderResources.MatrixParameters.WorldMatrix = transform->Transformation;
 		shaderResources.MatrixParameters.ProjectionMatrix = _direct3D->GetProjectionMatrix();
 		break;
 	case SHADER_UI:
+	case SHADER_FONT:
+		shaderResources.MatrixParameters.ViewMatrix = _defaultViewMatrix;
 		shaderResources.MatrixParameters.WorldMatrix = _direct3D->GetWorldMatrix();
 		shaderResources.MatrixParameters.ProjectionMatrix = _direct3D->GetOrthoMatrix();
 		break;
 	default:
+		shaderResources.MatrixParameters.ViewMatrix = _camera->GetViewMatrix();
 		shaderResources.MatrixParameters.WorldMatrix = transform->Transformation;
 		shaderResources.MatrixParameters.ProjectionMatrix = _direct3D->GetProjectionMatrix();
 	}
@@ -140,7 +145,7 @@ void RenderSystem::BuildBufferInformation(Entity* entity, AppearanceComponent* a
 
 	switch (appearance->ShaderType)
 	{
-	case SHADER_UI:
+	case SHADER_FONT:
 		_direct3D->TurnZBufferOff();
 		break;
 	default:

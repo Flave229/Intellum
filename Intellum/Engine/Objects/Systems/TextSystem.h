@@ -13,6 +13,7 @@ private:
 	ShaderController* _shaderController;
 	FontEngine* _fontEngine;
 	Box _screenSize;
+	XMMATRIX _viewMatrix;
 
 	void UpdateTextEntity(TextComponent* textComponent);
 	void UpdateAppearance(TextTexture texture);
@@ -22,7 +23,7 @@ private:
 	static ID3D11ShaderResourceView* TextSystem::ExtractResourceViewsFrom(Texture* texture);
 
 public:
-	TextSystem(DirectX3D* direct3D, ShaderController* shaderController, FontEngine* fontEngine, HWND hwnd, Box screenSize);
+	TextSystem(DirectX3D* direct3D, ShaderController* shaderController, FontEngine* fontEngine, XMMATRIX viewMatrix, Box screenSize);
 	~TextSystem();
 	void Shutdown() override;
 

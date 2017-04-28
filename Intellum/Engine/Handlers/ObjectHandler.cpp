@@ -39,7 +39,7 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	_systemList[TRANSFORM_SYSTEM] = new TransformSystem(direct3D);
 	_systemList[UI_RENDER_SYSTEM] = new UISystem(direct3D, shaderController, hwnd, screenSize);
 	_systemList[RENDER_SYSTEM] = new RenderSystem(direct3D, shaderController, hwnd, camera);
-	_systemList[FONT_SYSTEM] = new TextSystem(direct3D, shaderController, fontEngine, hwnd, screenSize);
+	_systemList[FONT_SYSTEM] = new TextSystem(direct3D, shaderController, fontEngine, camera->GetViewMatrix(), screenSize);
 
 	for(int i = 0; i < 25; i++)
 	{
@@ -164,6 +164,24 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	ui->AddComponent(uiComponent);
 
 	_entityList.push_back(ui);
+
+	Entity* navigationBar = new Entity();
+
+	AppearanceComponent* navigationBarAppearance = new AppearanceComponent();
+	navigationBarAppearance->ShaderType = SHADER_UI;
+	navigationBarAppearance->Model = geometryBuilder.ForUI();
+	navigationBarAppearance->Color = ColorShaderParameters(XMFLOAT4(0.5, 0.5, 0.5, 1));
+	navigationBar->AddComponent(navigationBarAppearance);
+
+	TransformComponent* navigationBarTransform = new TransformComponent();
+	navigationBarTransform->Position = XMFLOAT3(0, 0, 0);
+	navigationBar->AddComponent(navigationBarTransform);
+
+	UIComponent* navigationBarComponent = new UIComponent();
+	navigationBarComponent->BitmapSize = XMFLOAT2(screenSize.Width, 20);
+	navigationBar->AddComponent(navigationBarComponent);
+
+	_entityList.push_back(navigationBar);
 }
 
 void ObjectHandler::Update(float delta)

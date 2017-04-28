@@ -18,6 +18,7 @@ using namespace std;
 enum ShaderType
 {
 	SHADER_DEFAULT,
+	SHADER_FONT, 
 	SHADER_UI
 };
 

@@ -1,7 +1,7 @@
 #include "TextSystem.h"
 #include "UISystem.h"
 
-TextSystem::TextSystem(DirectX3D* direct3D, ShaderController* shaderController, FontEngine* fontEngine, HWND hwnd, Box screenSize) : _direct3D(direct3D), _shaderController(shaderController), _fontEngine(fontEngine), _screenSize(screenSize)
+TextSystem::TextSystem(DirectX3D* direct3D, ShaderController* shaderController, FontEngine* fontEngine, XMMATRIX viewMatrix, Box screenSize) : _direct3D(direct3D), _shaderController(shaderController), _fontEngine(fontEngine), _screenSize(screenSize), _viewMatrix(viewMatrix)
 {
 }
 
@@ -149,7 +149,7 @@ void TextSystem::RenderCharacters(vector<TextTexture> characters)
 		BuildBufferInformation(character);
 		ShaderResources shaderResources = BuildShaderResources(character);
 
-		IShaderType* shader = _shaderController->GetShader(SHADER_UI);
+		IShaderType* shader = _shaderController->GetShader(SHADER_FONT);
 		shader->Render(character.Model.IndexCount, shaderResources);
 	}
 }
@@ -168,6 +168,7 @@ void TextSystem::BuildBufferInformation(TextTexture character) const
 ShaderResources TextSystem::BuildShaderResources(TextTexture character) const
 {
 	ShaderResources shaderResources = ShaderResources();
+	shaderResources.MatrixParameters.ViewMatrix = _viewMatrix;
 	shaderResources.MatrixParameters.WorldMatrix = _direct3D->GetWorldMatrix();
 	shaderResources.MatrixParameters.ProjectionMatrix = _direct3D->GetOrthoMatrix();
 

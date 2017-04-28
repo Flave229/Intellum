@@ -15,11 +15,15 @@ bool ShaderController::Initialise(HWND hwnd, Camera* camera, Light* light)
 
 	_shaders[SHADER_DEFAULT]->Initialise(hwnd);
 
-	_shaders[SHADER_UI] = new UIShader(_direct3D, camera, light);
+	_shaders[SHADER_FONT] = new UIShader(_direct3D, camera, light);
+	if (!_shaders[SHADER_FONT]) throw Exception("Failed to create the font shader.");
+
+	_shaders[SHADER_FONT]->Initialise(hwnd);
+
+	_shaders[SHADER_UI] = new DefaultShader(_direct3D, camera, light);
 	if (!_shaders[SHADER_UI]) throw Exception("Failed to create the ui shader.");
 
 	_shaders[SHADER_UI]->Initialise(hwnd);
-
 	return true;
 }
 
@@ -28,9 +32,12 @@ void ShaderController::Shutdown()
 	map<ShaderType, IShaderType*>::iterator iterator;
 	for (iterator = _shaders.begin(); iterator != _shaders.end(); ++iterator)
 	{
-		iterator->second->Shutdown();
-		delete iterator->second;
-		iterator->second = nullptr;
+		if(iterator->second != nullptr)
+		{
+			iterator->second->Shutdown();
+			delete iterator->second;
+			iterator->second = nullptr;
+		}
 	}
 
 	_shaders.clear();

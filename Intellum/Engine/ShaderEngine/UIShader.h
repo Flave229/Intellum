@@ -6,9 +6,6 @@ using namespace std;
 
 class UIShader : public IShaderType
 {
-private:
-	XMMATRIX _viewMatrix;
-
 public:
 	UIShader(DirectX3D* direct3D, Camera* camera, Light* light);
 	~UIShader();

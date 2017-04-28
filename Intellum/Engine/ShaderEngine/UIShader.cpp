@@ -113,8 +113,6 @@ void UIShader::InitialiseShader(HWND hwnd, WCHAR* vsFilename, WCHAR* psFilename)
 
 		result = _direct3D->GetDevice()->CreateSamplerState(&samplerDesc, &_sampleState);
 		if (FAILED(result)) throw Exception("Failed to create the sampler state");
-		
-		_viewMatrix = _camera->GetViewMatrix();
 	}
 	catch (Exception& exception)
 	{
@@ -182,7 +180,6 @@ void UIShader::SetShaderParameters(ShaderResources shaderResources)
 {
 	try
 	{
-		shaderResources.MatrixParameters.ViewMatrix = _viewMatrix;
 		_matrixBuffer->SetShaderParameters(0, shaderResources);
 		_cameraBuffer->SetShaderParameters(1, shaderResources);
 		_colorBuffer->SetShaderParameters(2, shaderResources);
