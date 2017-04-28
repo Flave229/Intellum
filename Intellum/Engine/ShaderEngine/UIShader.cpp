@@ -1,6 +1,6 @@
 #include "UIShader.h"
 
-UIShader::UIShader(DirectX3D* direct3D, Camera* camera, Light* light) : IShaderType(direct3D, camera, light), _colorOverloadEnabled(false)
+UIShader::UIShader(DirectX3D* direct3D, Camera* camera, Light* light) : IShaderType(direct3D, camera, light)
 {
 }
 
@@ -246,10 +246,4 @@ void UIShader::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, WCH
 	errorMessage = nullptr;
 
 	MessageBox(hwnd, L"Error compiling shader. Check shader-error.txt for message.", shaderFileName, MB_OK);
-}
-
-void UIShader::SetColorOverload(bool state, XMFLOAT4 color)
-{
-	_colorOverloadEnabled = state;
-	_colorOverload = color;
 }
