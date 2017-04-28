@@ -149,7 +149,7 @@ void TextSystem::RenderCharacters(vector<TextTexture> characters)
 		BuildBufferInformation(character);
 		ShaderResources shaderResources = BuildShaderResources(character);
 
-		FontShader* shader = static_cast<FontShader*>(_shaderController->GetShader(SHADER_UI));
+		UIShader* shader = static_cast<UIShader*>(_shaderController->GetShader(SHADER_UI));
 		shader->SetColorOverload(true, shaderResources.ColorParameters.Color);
 		shader->Render(character.Model.IndexCount, shaderResources, _direct3D->GetWorldMatrix(), _direct3D->GetOrthoMatrix());
 	}

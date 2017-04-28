@@ -15,7 +15,7 @@ bool ShaderController::Initialise(HWND hwnd, Camera* camera, Light* light)
 
 	_shaders[SHADER_DEFAULT]->Initialise(hwnd);
 
-	_shaders[SHADER_UI] = new FontShader(_direct3D, camera, light);
+	_shaders[SHADER_UI] = new UIShader(_direct3D, camera, light);
 	if (!_shaders[SHADER_UI]) throw Exception("Failed to create the font shader.");
 
 	_shaders[SHADER_UI]->Initialise(hwnd);

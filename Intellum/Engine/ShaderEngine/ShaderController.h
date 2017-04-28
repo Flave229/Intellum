@@ -9,7 +9,7 @@
 #include "../../ErrorHandling/Exception.h"
 #include "../DirectX3D.h"
 #include "DefaultShader.h"
-#include "FontShader.h"
+#include "UIShader.h"
 #include "IShaderType.h"
 
 using namespace DirectX;

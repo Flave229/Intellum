@@ -6,7 +6,7 @@
 #include "Font.h"
 #include "Character.h"
 #include "../ShaderEngine/IShaderType.h"
-#include "../ShaderEngine/FontShader.h"
+#include "../ShaderEngine/UIShader.h"
 #include "../DirectX3D.h"
 #include "../Objects/Entity.h"
 #include "../Objects/Components/AppearanceComponent.h"

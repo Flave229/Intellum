@@ -76,9 +76,6 @@
     <ClCompile Include="Engine\ShaderEngine\DefaultShader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\ShaderEngine\FontShader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\ShaderEngine\ShaderController.cpp">
       <Filter>Source Files\Application</Filter>
     </ClCompile>
@@ -184,6 +181,9 @@
     <ClCompile Include="Engine\Objects\Systems\TextSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\ShaderEngine\UIShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DXSystem.h">
@@ -214,9 +214,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\ShaderEngine\DefaultShader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\ShaderEngine\FontShader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\ShaderEngine\IShaderType.h">
@@ -418,6 +415,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Objects\Systems\TextSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ShaderEngine\UIShader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -172,7 +172,7 @@
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsManaged>
     </ClCompile>
     <ClCompile Include="Engine\FontEngine\Font.cpp" />
-    <ClCompile Include="Engine\ShaderEngine\FontShader.cpp" />
+    <ClCompile Include="Engine\ShaderEngine\UIShader.cpp" />
     <ClCompile Include="Engine\SystemMetrics\FramesPerSecond.cpp" />
     <ClCompile Include="Engine\Graphics\Graphics.cpp" />
     <ClCompile Include="Engine\DxComponents\HardwareDescription.cpp" />
@@ -246,7 +246,7 @@
     <ClInclude Include="ErrorHandling\Exception.h" />
     <ClInclude Include="Engine\FontEngine\FontEngine.h" />
     <ClInclude Include="Engine\FontEngine\Font.h" />
-    <ClInclude Include="Engine\ShaderEngine\FontShader.h" />
+    <ClInclude Include="Engine\ShaderEngine\UIShader.h" />
     <ClInclude Include="Engine\SystemMetrics\FramesPerSecond.h" />
     <ClInclude Include="Engine\Graphics\Graphics.h" />
     <ClInclude Include="Engine\DxComponents\HardwareDescription.h" />

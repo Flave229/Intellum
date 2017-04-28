@@ -1,19 +1,19 @@
-#include "FontShader.h"
+#include "UIShader.h"
 
-FontShader::FontShader(DirectX3D* direct3D, Camera* camera, Light* light) : IShaderType(direct3D, camera, light), _colorOverloadEnabled(false)
+UIShader::UIShader(DirectX3D* direct3D, Camera* camera, Light* light) : IShaderType(direct3D, camera, light), _colorOverloadEnabled(false)
 {
 }
 
-FontShader::~FontShader()
+UIShader::~UIShader()
 {
 }
 
-void FontShader::Initialise(HWND hwnd)
+void UIShader::Initialise(HWND hwnd)
 {
 	InitialiseShader(hwnd, L"shaders/FontVertexShader.hlsl", L"shaders/FontPixelShader.hlsl");
 }
 
-void FontShader::InitialiseShader(HWND hwnd, WCHAR* vsFilename, WCHAR* psFilename)
+void UIShader::InitialiseShader(HWND hwnd, WCHAR* vsFilename, WCHAR* psFilename)
 {
 	try
 	{
@@ -126,7 +126,7 @@ void FontShader::InitialiseShader(HWND hwnd, WCHAR* vsFilename, WCHAR* psFilenam
 	}
 }
 
-void FontShader::Shutdown()
+void UIShader::Shutdown()
 {
 	if (_matrixBuffer)
 	{
@@ -171,14 +171,14 @@ void FontShader::Shutdown()
 	}
 }
 
-void FontShader::Render(int indexCount, ShaderResources shaderResources, XMMATRIX worldMatrix, XMMATRIX projectionMatrix)
+void UIShader::Render(int indexCount, ShaderResources shaderResources, XMMATRIX worldMatrix, XMMATRIX projectionMatrix)
 {
 	SetShaderParameters(shaderResources, worldMatrix, projectionMatrix);
 
 	RenderShader(indexCount);
 }
 
-void FontShader::SetShaderParameters(ShaderResources shaderResources, XMMATRIX worldMatrix, XMMATRIX projectionMatrix)
+void UIShader::SetShaderParameters(ShaderResources shaderResources, XMMATRIX worldMatrix, XMMATRIX projectionMatrix)
 {
 	try
 	{
@@ -212,7 +212,7 @@ void FontShader::SetShaderParameters(ShaderResources shaderResources, XMMATRIX w
 	}
 }
 
-void FontShader::RenderShader(int indexCount)
+void UIShader::RenderShader(int indexCount)
 {
 	_direct3D->GetDeviceContext()->IASetInputLayout(_layout);
 
@@ -223,7 +223,7 @@ void FontShader::RenderShader(int indexCount)
 	_direct3D->GetDeviceContext()->DrawIndexed(indexCount, 0, 0);
 }
 
-void FontShader::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, WCHAR* shaderFileName)
+void UIShader::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, WCHAR* shaderFileName)
 {
 	char* compileErrors;
 	unsigned long long bufferSize;
@@ -248,7 +248,7 @@ void FontShader::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, W
 	MessageBox(hwnd, L"Error compiling shader. Check shader-error.txt for message.", shaderFileName, MB_OK);
 }
 
-void FontShader::SetColorOverload(bool state, XMFLOAT4 color)
+void UIShader::SetColorOverload(bool state, XMFLOAT4 color)
 {
 	_colorOverloadEnabled = state;
 	_colorOverload = color;
