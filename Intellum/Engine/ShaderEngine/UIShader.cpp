@@ -171,14 +171,14 @@ void UIShader::Shutdown()
 	}
 }
 
-void UIShader::Render(int indexCount, ShaderResources shaderResources, XMMATRIX worldMatrix, XMMATRIX projectionMatrix)
+void UIShader::Render(int indexCount, ShaderResources shaderResources)
 {
-	SetShaderParameters(shaderResources, worldMatrix, projectionMatrix);
+	SetShaderParameters(shaderResources);
 
 	RenderShader(indexCount);
 }
 
-void UIShader::SetShaderParameters(ShaderResources shaderResources, XMMATRIX worldMatrix, XMMATRIX projectionMatrix)
+void UIShader::SetShaderParameters(ShaderResources shaderResources)
 {
 	try
 	{

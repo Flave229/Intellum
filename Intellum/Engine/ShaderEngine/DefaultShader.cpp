@@ -207,13 +207,13 @@ void DefaultShader::Shutdown()
 	}
 }
 
-void DefaultShader::Render(int indexCount, ShaderResources shaderResources, XMMATRIX worldMatrix, XMMATRIX projectionMatrix)
+void DefaultShader::Render(int indexCount, ShaderResources shaderResources)
 {
-	SetShaderParameters(shaderResources, worldMatrix, projectionMatrix);
+	SetShaderParameters(shaderResources);
 	RenderShader(indexCount);
 }
 
-void DefaultShader::SetShaderParameters(ShaderResources shaderResources, XMMATRIX worldMatrix, XMMATRIX projectionMatrix)
+void DefaultShader::SetShaderParameters(ShaderResources shaderResources)
 {
 	try
 	{

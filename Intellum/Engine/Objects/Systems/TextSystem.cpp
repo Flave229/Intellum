@@ -150,7 +150,7 @@ void TextSystem::RenderCharacters(vector<TextTexture> characters)
 		ShaderResources shaderResources = BuildShaderResources(character);
 
 		IShaderType* shader = _shaderController->GetShader(SHADER_UI);
-		shader->Render(character.Model.IndexCount, shaderResources, _direct3D->GetWorldMatrix(), _direct3D->GetOrthoMatrix());
+		shader->Render(character.Model.IndexCount, shaderResources);
 	}
 }
 

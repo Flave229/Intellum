@@ -44,13 +44,13 @@ void RenderSystem::Render(vector<Entity*> entities)
 		switch(appearance->ShaderType)
 		{
 		case SHADER_DEFAULT:
-			shader->Render(appearance->Model.IndexCount, shaderResources, transform->Transformation, _direct3D->GetProjectionMatrix());
+			shader->Render(appearance->Model.IndexCount, shaderResources);
 			break;
 		case SHADER_UI:
-			shader->Render(appearance->Model.IndexCount, shaderResources, _direct3D->GetWorldMatrix(), _direct3D->GetOrthoMatrix());
+			shader->Render(appearance->Model.IndexCount, shaderResources);
 			break;
 		default:
-			shader->Render(appearance->Model.IndexCount, shaderResources, transform->Transformation, _direct3D->GetProjectionMatrix());
+			shader->Render(appearance->Model.IndexCount, shaderResources);
 		}
 		
 		_renderCount++;

@@ -17,9 +17,9 @@ public:
 	void InitialiseShader(HWND hwnd, WCHAR* vsFilename, WCHAR* psFilename) override;
 	void Shutdown() override;
 
-	void SetShaderParameters(ShaderResources shaderResources, XMMATRIX worldMatrix, XMMATRIX projectionMatrix) override;
+	void SetShaderParameters(ShaderResources shaderResources) override;
 
-	void Render(int indexCount, ShaderResources shaderResources, XMMATRIX worldMatrix, XMMATRIX projectionMatrix) override;
+	void Render(int indexCount, ShaderResources shaderResources) override;
 	void RenderShader(int indexCount) override;
 
 	void OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, WCHAR* shaderFileName) override;

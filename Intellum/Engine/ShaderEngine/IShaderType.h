@@ -45,9 +45,9 @@ public:
 	virtual void InitialiseShader(HWND hwnd, WCHAR* vsFilename, WCHAR* psFilename) = 0;
 	virtual void Shutdown() = 0;
 
-	virtual void SetShaderParameters(ShaderResources shaderResources, XMMATRIX worldMatrix, XMMATRIX projectionMatrix) = 0;
+	virtual void SetShaderParameters(ShaderResources shaderResources) = 0;
 
-	virtual void Render(int indexCount, ShaderResources shaderResources, XMMATRIX worldMatrix, XMMATRIX projectionMatrix) = 0;
+	virtual void Render(int indexCount, ShaderResources shaderResources) = 0;
 
 	virtual void RenderShader(int indexCount) = 0;
 	
