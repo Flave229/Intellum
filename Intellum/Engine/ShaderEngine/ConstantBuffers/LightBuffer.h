@@ -10,6 +10,8 @@ class LightBuffer : public IShaderBuffer
 private:
 	struct Buffer
 	{
+		float lightEnabled;
+		XMFLOAT3 padding;
 		XMFLOAT4 ambientColor;
 		XMFLOAT4 diffuseColor;
 		XMFLOAT3 lightDirection;

@@ -14,4 +14,5 @@ public:
 	TextureShaderParameters TextureParameters;
 	ColorShaderParameters ColorParameters;
 	GradientShaderParameters GradientParameters;
+	bool LightEnabled;
 };
