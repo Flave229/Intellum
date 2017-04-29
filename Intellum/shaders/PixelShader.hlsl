@@ -102,8 +102,6 @@ float4 CalculateGradientColor(float4 position)
 
 float4 DefaultPixelShader(PixelInputType input) : SV_TARGET
 {
-    float4 textureColor = CalculateTextureColor(input.tex);
-
     float3 bumpNormal = CalculateBumpNormal(input.tex, input.tangent, input.binormal, input.normal);
 
 	float3 lightDir = -lightDirection;
@@ -113,24 +111,36 @@ float4 DefaultPixelShader(PixelInputType input) : SV_TARGET
         lightIntensity = saturate(dot(bumpNormal, lightDir));
     else
         lightIntensity = saturate(dot(input.normal, lightDir));
+    
+    float4 color = float4(0.0f, 0.0f, 0.0f, 1.0f);
+    float4 specular = float4(0.0f, 0.0f, 0.0f, 0.0f);
 
-	float4 color = ambientColor;
-
-	float4 specular = float4(0.0f, 0.0f, 0.0f, 0.0f);
+    if (lightEnabled == 1.0f)
+	    color = ambientColor;
 	
-	if (lightIntensity > 0.0f)
+	if (lightEnabled == 1.0f && lightIntensity > 0.0f)
 	{
 		color += (diffuseColor * lightIntensity);
 		color = saturate(color);
-
         specular = CalculateSpecularLight(input.normal, input.viewDirection, lightDir, lightIntensity);
     }
     
     if (textureCount > 0)
-        color *= textureColor;
-
+    {
+        float4 textureColor = CalculateTextureColor(input.tex);
+        if (lightEnabled == 1.0f)
+            color *= textureColor;
+        else
+            color = textureColor;
+    }
+    
     if (colorOverloadEnabled)
-        color *= colorOverload;
+    {
+        if (lightEnabled == 1.0f || textureCount > 0)
+            color *= colorOverload;
+        else
+            color = colorOverload;
+    }
 
     if (gradientOverloadEnabled)
         color = CalculateGradientColor(input.worldPosition);

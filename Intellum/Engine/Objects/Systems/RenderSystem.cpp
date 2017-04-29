@@ -92,17 +92,25 @@ ShaderResources RenderSystem::BuildShaderResources(AppearanceComponent* appearan
 	switch (appearance->ShaderType)
 	{
 	case SHADER_DEFAULT:
+		shaderResources.LightEnabled = true;
 		shaderResources.MatrixParameters.ViewMatrix = _camera->GetViewMatrix();
 		shaderResources.MatrixParameters.WorldMatrix = transform->Transformation;
 		shaderResources.MatrixParameters.ProjectionMatrix = _direct3D->GetProjectionMatrix();
 		break;
 	case SHADER_UI:
+		shaderResources.LightEnabled = false;
+		shaderResources.MatrixParameters.ViewMatrix = _defaultViewMatrix;
+		shaderResources.MatrixParameters.WorldMatrix = _direct3D->GetWorldMatrix();
+		shaderResources.MatrixParameters.ProjectionMatrix = _direct3D->GetOrthoMatrix();
+		break;
 	case SHADER_FONT:
+		shaderResources.LightEnabled = true;
 		shaderResources.MatrixParameters.ViewMatrix = _defaultViewMatrix;
 		shaderResources.MatrixParameters.WorldMatrix = _direct3D->GetWorldMatrix();
 		shaderResources.MatrixParameters.ProjectionMatrix = _direct3D->GetOrthoMatrix();
 		break;
 	default:
+		shaderResources.LightEnabled = true;
 		shaderResources.MatrixParameters.ViewMatrix = _camera->GetViewMatrix();
 		shaderResources.MatrixParameters.WorldMatrix = transform->Transformation;
 		shaderResources.MatrixParameters.ProjectionMatrix = _direct3D->GetProjectionMatrix();
