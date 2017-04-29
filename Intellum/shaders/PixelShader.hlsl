@@ -100,6 +100,46 @@ float4 CalculateGradientColor(float4 position)
     return lerp(centerColor, apexColor, normalizedHeight);
 }
 
+float4 CalculateFinalPixelColor(float2 textureCoordinates, float4 worldPosition)
+{
+    bool colorInitialised = false;
+    float4 color = float4(0.0f, 0.0f, 0.0f, 1.0f);
+
+    if (textureCount > 0)
+    {
+        float4 textureColor = CalculateTextureColor(textureCoordinates);
+        if (colorInitialised)
+            color *= textureColor;
+        else
+            color = textureColor;
+
+        colorInitialised = true;
+    }
+    
+    if (colorOverloadEnabled)
+    {
+        if (colorInitialised)
+            color *= colorOverload;
+        else
+            color = colorOverload;
+
+        colorInitialised = true;
+    }
+
+    if (gradientOverloadEnabled)
+    {
+        float4 gradientColor = CalculateGradientColor(worldPosition);
+        if (colorInitialised)
+            color *= gradientColor;
+        else
+            color = gradientColor;
+
+        colorInitialised = true;
+    }
+
+    return color;
+}
+
 float4 DefaultPixelShader(PixelInputType input) : SV_TARGET
 {
     float3 bumpNormal = CalculateBumpNormal(input.tex, input.tangent, input.binormal, input.normal);
@@ -124,27 +164,8 @@ float4 DefaultPixelShader(PixelInputType input) : SV_TARGET
 		color = saturate(color);
         specular = CalculateSpecularLight(input.normal, input.viewDirection, lightDir, lightIntensity);
     }
-    
-    if (textureCount > 0)
-    {
-        float4 textureColor = CalculateTextureColor(input.tex);
-        if (lightEnabled == 1.0f)
-            color *= textureColor;
-        else
-            color = textureColor;
-    }
-    
-    if (colorOverloadEnabled)
-    {
-        if (lightEnabled == 1.0f || textureCount > 0)
-            color *= colorOverload;
-        else
-            color = colorOverload;
-    }
 
-    if (gradientOverloadEnabled)
-        color = CalculateGradientColor(input.worldPosition);
-
+    color = CalculateFinalPixelColor(input.tex, input.worldPosition);
 	color = saturate(color + specular);
 
 	return color;
