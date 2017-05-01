@@ -106,7 +106,7 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	TextComponent* textComponent2 = new TextComponent();
 	textComponent2->Text = "Mouse X:    Mouse Y: ";
 	textComponent2->FontSize = 20;
-	textComponent2->FontPosition = XMFLOAT2(10, 10);
+	textComponent2->FontPosition = XMFLOAT2(10, 40);
 	textComponent2->Color = XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f);
 	text2->AddComponent(textComponent2);
 
@@ -117,7 +117,7 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	TextComponent* textComponent3 = new TextComponent();
 	textComponent3->Text = "FPS: 0";
 	textComponent3->FontSize = 20;
-	textComponent3->FontPosition = XMFLOAT2(10, 35);
+	textComponent3->FontPosition = XMFLOAT2(10, 65);
 	textComponent3->Color = XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f);
 	text3->AddComponent(textComponent3);
 
@@ -128,7 +128,7 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	TextComponent* textComponent4 = new TextComponent();
 	textComponent4->Text = "CPU: 0%";
 	textComponent4->FontSize = 20;
-	textComponent4->FontPosition = XMFLOAT2(10, 60);
+	textComponent4->FontPosition = XMFLOAT2(10, 90);
 	textComponent4->Color = XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f);
 	text4->AddComponent(textComponent4);
 
@@ -139,7 +139,7 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	TextComponent* textComponent5 = new TextComponent();
 	textComponent5->Text = "Rendered: 0";
 	textComponent5->FontSize = 20;
-	textComponent5->FontPosition = XMFLOAT2(10, 85);
+	textComponent5->FontPosition = XMFLOAT2(10, 115);
 	textComponent5->Color = XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f);
 	text5->AddComponent(textComponent5);
 
@@ -156,7 +156,7 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	ui->AddComponent(uiAppearance);
 
 	TransformComponent* uiTransform = new TransformComponent();
-	uiTransform->Position = XMFLOAT3(50, 150, 0);
+	uiTransform->Position = XMFLOAT3(10, 150, 0);
 	ui->AddComponent(uiTransform);
 
 	UIComponent* uiComponent = new UIComponent();
@@ -174,7 +174,7 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	navigationBar->AddComponent(navigationBarAppearance);
 
 	TransformComponent* navigationBarTransform = new TransformComponent();
-	navigationBarTransform->Position = XMFLOAT3(0, 0, 1);
+	navigationBarTransform->Position = XMFLOAT3(0, 0, 2);
 	navigationBar->AddComponent(navigationBarTransform);
 
 	UIComponent* navigationBarComponent = new UIComponent();
@@ -192,17 +192,17 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	button1->AddComponent(button1Appearance);
 
 	TransformComponent* button1Transform = new TransformComponent();
-	button1Transform->Position = XMFLOAT3(0, 0, 0);
+	button1Transform->Position = XMFLOAT3(0, 0, 1);
 	button1->AddComponent(button1Transform);
 
 	UIComponent* button1Component = new UIComponent();
-	button1Component->BitmapSize = XMFLOAT2(50, 40);
+	button1Component->BitmapSize = XMFLOAT2(170, 30);
 	button1->AddComponent(button1Component);
 
 	TextComponent* button1Text = new TextComponent();
 	button1Text->Text = "Graphics";
-	button1Text->FontSize = 50;
-	button1Text->FontPosition = XMFLOAT2(0, 0);
+	button1Text->FontSize = 20;
+	button1Text->FontPosition = XMFLOAT2(0, 3);
 	button1Text->Color = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
 	button1->AddComponent(button1Text);
 
