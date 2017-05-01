@@ -51,25 +51,27 @@ void UISystem::Update(vector<Entity*>& entities, float delta)
 		float top = (_screenSize.Height / 2) - transform->Position.y;
 		float bottom = top - ui->BitmapSize.y;
 
+		float zBuffer = transform->Position.z;
+
 		Vertex* vertices = new Vertex[appearance->Model.VertexCount];
 		if (!vertices) throw Exception("Failed to initialise vertices for bitmap");
 
-		vertices[0].position = XMFLOAT3(left, top, 0.0f);
+		vertices[0].position = XMFLOAT3(left, top, zBuffer);
 		vertices[0].texture = XMFLOAT2(0.0f, 0.0f);
 
-		vertices[1].position = XMFLOAT3(right, bottom, 0.0f);
+		vertices[1].position = XMFLOAT3(right, bottom, zBuffer);
 		vertices[1].texture = XMFLOAT2(1.0f, 1.0f);
 
-		vertices[2].position = XMFLOAT3(left, bottom, 0.0f);
+		vertices[2].position = XMFLOAT3(left, bottom, zBuffer);
 		vertices[2].texture = XMFLOAT2(0.0f, 1.0f);
 
-		vertices[3].position = XMFLOAT3(left, top, 0.0f);
+		vertices[3].position = XMFLOAT3(left, top, zBuffer);
 		vertices[3].texture = XMFLOAT2(0.0f, 0.0f);
 
-		vertices[4].position = XMFLOAT3(right, top, 0.0f);
+		vertices[4].position = XMFLOAT3(right, top, zBuffer);
 		vertices[4].texture = XMFLOAT2(1.0f, 0.0f);
 
-		vertices[5].position = XMFLOAT3(right, bottom, 0.0f);
+		vertices[5].position = XMFLOAT3(right, bottom, zBuffer);
 		vertices[5].texture = XMFLOAT2(1.0f, 1.0f);
 
 		D3D11_MAPPED_SUBRESOURCE mappedResource;

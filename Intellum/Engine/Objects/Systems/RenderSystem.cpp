@@ -98,15 +98,10 @@ ShaderResources RenderSystem::BuildShaderResources(AppearanceComponent* appearan
 		shaderResources.MatrixParameters.ProjectionMatrix = _direct3D->GetProjectionMatrix();
 		break;
 	case SHADER_UI:
+	case SHADER_FONT:
 		shaderResources.LightEnabled = false;
 		shaderResources.MatrixParameters.ViewMatrix = _defaultViewMatrix;
-		shaderResources.MatrixParameters.WorldMatrix = _direct3D->GetWorldMatrix();
-		shaderResources.MatrixParameters.ProjectionMatrix = _direct3D->GetOrthoMatrix();
-		break;
-	case SHADER_FONT:
-		shaderResources.LightEnabled = true;
-		shaderResources.MatrixParameters.ViewMatrix = _defaultViewMatrix;
-		shaderResources.MatrixParameters.WorldMatrix = _direct3D->GetWorldMatrix();
+		shaderResources.MatrixParameters.WorldMatrix = XMMatrixTranslation(0, 0, 0);
 		shaderResources.MatrixParameters.ProjectionMatrix = _direct3D->GetOrthoMatrix();
 		break;
 	default:
@@ -151,14 +146,7 @@ void RenderSystem::BuildBufferInformation(Entity* entity, AppearanceComponent* a
 	else
 		_direct3D->GetRasterizer()->SetRasterizerCullMode(static_cast<RasterizerComponent*>(component)->CullMode);
 
-	switch (appearance->ShaderType)
-	{
-	case SHADER_FONT:
-		_direct3D->TurnZBufferOff();
-		break;
-	default:
-		_direct3D->TurnZBufferOn();
-	}
+	_direct3D->TurnZBufferOn();
 
 	ID3D11DeviceContext* deviceContext = _direct3D->GetDeviceContext();
 	deviceContext->IASetVertexBuffers(0, 1, &appearance->Model.VertexBuffer, &appearance->Model.VBStride, &appearance->Model.VBOffset);

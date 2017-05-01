@@ -174,14 +174,39 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	navigationBar->AddComponent(navigationBarAppearance);
 
 	TransformComponent* navigationBarTransform = new TransformComponent();
-	navigationBarTransform->Position = XMFLOAT3(0, 0, 0);
+	navigationBarTransform->Position = XMFLOAT3(0, 0, 1);
 	navigationBar->AddComponent(navigationBarTransform);
 
 	UIComponent* navigationBarComponent = new UIComponent();
-	navigationBarComponent->BitmapSize = XMFLOAT2(screenSize.Width, 20);
+	navigationBarComponent->BitmapSize = XMFLOAT2(screenSize.Width, 30);
 	navigationBar->AddComponent(navigationBarComponent);
 
-	_entityList.push_back(navigationBar);
+	_entityList.push_back(navigationBar); 
+	
+	Entity* button1 = new Entity();
+
+	AppearanceComponent* button1Appearance = new AppearanceComponent();
+	button1Appearance->ShaderType = SHADER_UI;
+	button1Appearance->Model = geometryBuilder.ForUI();
+	button1Appearance->Color = ColorShaderParameters(XMFLOAT4(0.4, 0.4, 0.4, 1));
+	button1->AddComponent(button1Appearance);
+
+	TransformComponent* button1Transform = new TransformComponent();
+	button1Transform->Position = XMFLOAT3(0, 0, 0);
+	button1->AddComponent(button1Transform);
+
+	UIComponent* button1Component = new UIComponent();
+	button1Component->BitmapSize = XMFLOAT2(50, 40);
+	button1->AddComponent(button1Component);
+
+	TextComponent* button1Text = new TextComponent();
+	button1Text->Text = "Graphics";
+	button1Text->FontSize = 50;
+	button1Text->FontPosition = XMFLOAT2(0, 0);
+	button1Text->Color = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
+	button1->AddComponent(button1Text);
+
+	_entityList.push_back(button1);
 }
 
 void ObjectHandler::Update(float delta)
