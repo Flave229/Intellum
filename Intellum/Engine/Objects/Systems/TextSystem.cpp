@@ -13,7 +13,7 @@ void TextSystem::Shutdown()
 {
 }
 
-void TextSystem::Update(vector<Entity*> entities, float delta)
+void TextSystem::Update(vector<Entity*>& entities, float delta)
 {
 	for (Entity* entity : entities)
 	{
@@ -75,7 +75,7 @@ void TextSystem::UpdateTextEntity(TextComponent* textComponent)
 	}
 }
 
-void TextSystem::UpdateAppearance(TextTexture texture)
+void TextSystem::UpdateAppearance(TextTexture& texture)
 {
 	if ((texture.Position.x == static_cast<int>(texture.PreviousPosition.x)) && (texture.Position.y == static_cast<int>(texture.PreviousPosition.y))
 		&& (texture.Size == texture.PreviousSize))
@@ -127,7 +127,7 @@ void TextSystem::UpdateAppearance(TextTexture texture)
 	vertices = nullptr;
 }
 
-void TextSystem::Render(vector<Entity*> entities)
+void TextSystem::Render(vector<Entity*>& entities)
 {
 	for (Entity* entity : entities)
 	{
@@ -142,7 +142,7 @@ void TextSystem::Render(vector<Entity*> entities)
 	}
 }
 
-void TextSystem::RenderCharacters(vector<TextTexture> characters)
+void TextSystem::RenderCharacters(vector<TextTexture>& characters)
 {
 	for (TextTexture character : characters)
 	{
@@ -154,7 +154,7 @@ void TextSystem::RenderCharacters(vector<TextTexture> characters)
 	}
 }
 
-void TextSystem::BuildBufferInformation(TextTexture character) const
+void TextSystem::BuildBufferInformation(TextTexture& character) const
 {
 	_direct3D->GetRasterizer()->SetRasterizerCullMode(D3D11_CULL_BACK);
 	_direct3D->TurnZBufferOff();
@@ -165,7 +165,7 @@ void TextSystem::BuildBufferInformation(TextTexture character) const
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 
-ShaderResources TextSystem::BuildShaderResources(TextTexture character) const
+ShaderResources TextSystem::BuildShaderResources(TextTexture& character) const
 {
 	ShaderResources shaderResources = ShaderResources();
 	shaderResources.MatrixParameters.ViewMatrix = _viewMatrix;

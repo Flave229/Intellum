@@ -16,10 +16,10 @@ private:
 	XMMATRIX _viewMatrix;
 
 	void UpdateTextEntity(TextComponent* textComponent);
-	void UpdateAppearance(TextTexture texture);
-	void RenderCharacters(vector<TextTexture> entities);
-	void BuildBufferInformation(TextTexture character) const;
-	ShaderResources BuildShaderResources(TextTexture character) const;
+	void UpdateAppearance(TextTexture& texture);
+	void RenderCharacters(vector<TextTexture>& entities);
+	void BuildBufferInformation(TextTexture& character) const;
+	ShaderResources BuildShaderResources(TextTexture& character) const;
 	static ID3D11ShaderResourceView* TextSystem::ExtractResourceViewsFrom(Texture* texture);
 
 public:
@@ -27,6 +27,6 @@ public:
 	~TextSystem();
 	void Shutdown() override;
 
-	void Update(vector<Entity*> entities, float delta) override;
-	void Render(vector<Entity*> entities) override;
+	void Update(vector<Entity*>& entities, float delta) override;
+	void Render(vector<Entity*>& entities) override;
 };

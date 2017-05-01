@@ -9,7 +9,7 @@ void TransformSystem::Shutdown()
 {
 }
 
-void TransformSystem::Update(vector<Entity*> entities, float delta)
+void TransformSystem::Update(vector<Entity*>& entities, float delta)
 {
 	for (Entity* entity : entities)
 	{
@@ -32,7 +32,7 @@ void TransformSystem::Update(vector<Entity*> entities, float delta)
 	}
 }
 
-void TransformSystem::Render(vector<Entity*> entities)
+void TransformSystem::Render(vector<Entity*>& entities)
 {
 }
 

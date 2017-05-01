@@ -11,12 +11,12 @@ void RenderSystem::Shutdown()
 {
 }
 
-void RenderSystem::Update(vector<Entity*> entities, float delta)
+void RenderSystem::Update(vector<Entity*>& entities, float delta)
 {
 	_renderCount = 0;
 }
 
-void RenderSystem::Render(vector<Entity*> entities)
+void RenderSystem::Render(vector<Entity*>& entities)
 {
 	for (Entity* entity : entities)
 	{

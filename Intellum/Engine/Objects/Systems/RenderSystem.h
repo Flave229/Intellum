@@ -33,8 +33,8 @@ public:
 	~RenderSystem() override = default;
 	void Shutdown() override;
 
-	void Update(vector<Entity*> entities, float delta) override;
-	void Render(vector<Entity*> entities) override;
+	void Update(vector<Entity*>& entities, float delta) override;
+	void Render(vector<Entity*>& entities) override;
 
 	void AddObserver(IObserver* observer) override;
 };

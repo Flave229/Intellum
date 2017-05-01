@@ -11,7 +11,7 @@ void UISystem::Shutdown()
 {
 }
 
-void UISystem::Update(vector<Entity*> entities, float delta)
+void UISystem::Update(vector<Entity*>& entities, float delta)
 {
 	for (Entity* entity : entities)
 	{
@@ -87,6 +87,6 @@ void UISystem::Update(vector<Entity*> entities, float delta)
 	}
 }
 
-void UISystem::Render(vector<Entity*> entities)
+void UISystem::Render(vector<Entity*>& entities)
 {
 }
