@@ -64,7 +64,8 @@ float4 CalculateTextureColor(float2 inputTextureCordinates)
 
     if (lightMapEnabled == 1.0f)
         textureColor *= lightMap.Sample(SampleType, inputTextureCordinates);
-
+    
+    clip(textureColor.a - 0.25f);
     return textureColor;
 }
 
