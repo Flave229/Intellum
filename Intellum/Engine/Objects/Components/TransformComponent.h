@@ -5,7 +5,7 @@
 using namespace std;
 using namespace DirectX;
 
-class TransformComponent : public IComponent
+class TransformComponent : public IComponent, public IObserver
 {
 public:
 	XMMATRIX Transformation;
@@ -23,4 +23,12 @@ public:
 	~TransformComponent() override = default;
 
 	void Shutdown() override {}
+	void Notify(ObserverEvent event) override 
+	{
+		if (event.EventType == MOVED_MOUSE)
+		{
+			XMFLOAT2 mousePosition = event.GetObservableData<XMFLOAT2>();
+			Position = XMFLOAT3(mousePosition.x, mousePosition.y, 0);
+		}
+	}
 };

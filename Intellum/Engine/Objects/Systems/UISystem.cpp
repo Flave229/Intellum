@@ -13,8 +13,9 @@ void UISystem::Shutdown()
 
 void UISystem::Update(vector<Entity*>& entities, float delta)
 {
-	for (Entity* entity : entities)
+	for(int i = 0; i < entities.size(); i++)
 	{
+		Entity* entity = entities.at(i);
 		IComponent* component = entity->GetComponent(APPEARANCE);
 
 		if (component == nullptr)
@@ -39,7 +40,7 @@ void UISystem::Update(vector<Entity*>& entities, float delta)
 		if ((transform->Position.x == static_cast<int>(ui->PreviousPosition.x)) && (transform->Position.y == static_cast<int>(ui->PreviousPosition.y))
 			&& (ui->BitmapSize.x == ui->PreviousBitmapSize.x) && (ui->BitmapSize.y == ui->PreviousBitmapSize.y))
 		{
-			return;
+			continue;
 		}
 
 		ui->PreviousPosition = XMFLOAT2(transform->Position.x, transform->Position.y);

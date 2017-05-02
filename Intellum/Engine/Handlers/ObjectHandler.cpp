@@ -207,6 +207,25 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	button1->AddComponent(button1Text);
 
 	_entityList.push_back(button1);
+
+	Entity* cursor = new Entity();
+
+	AppearanceComponent* cursorAppearance = new AppearanceComponent();
+	cursorAppearance->ShaderType = SHADER_UI;
+	cursorAppearance->Model = geometryBuilder.ForUI();
+	cursorAppearance->Textures = CreateTexture::ListFrom(direct3D, { "data/images/cursor.tga" });
+	cursor->AddComponent(cursorAppearance);
+
+	TransformComponent* cursorTransform = new TransformComponent();
+	cursorTransform->Position = XMFLOAT3(400, 400, 0);
+	cursor->AddComponent(cursorTransform);
+
+	UIComponent* cursorComponent = new UIComponent();
+	cursorComponent->BitmapSize = XMFLOAT2(24, 24);
+	cursor->AddComponent(cursorComponent);
+
+	_entityList.push_back(cursor);
+	input->AddObserver(cursorTransform);
 }
 
 void ObjectHandler::Update(float delta)
