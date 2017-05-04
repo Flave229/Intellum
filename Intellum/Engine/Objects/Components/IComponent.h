@@ -8,9 +8,9 @@ enum ComponentType
 	TRANSFORM,
 	RASTERIZER,
 	FRUSTRUM_CULLING,
-	UI_APPEARANCE,
 	USER_INTERFACE,
-	TEXT
+	TEXT,
+	BUTTON
 };
 
 class IComponent

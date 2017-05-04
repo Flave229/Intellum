@@ -1,4 +1,6 @@
 #include "ObjectHandler.h"
+#include "../Objects/Components/ButtonComponent.h"
+#include "../Objects/Systems/ButtonSystem.h"
 
 ObjectHandler::ObjectHandler(DirectX3D* direct3D, ShaderController* shaderController, FontEngine* fontEngine, HWND hwnd, Camera* camera, Input* input, FramesPerSecond* framesPerSecond, Cpu* cpu, Box screenSize)
 {
@@ -36,10 +38,14 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 
 	GeometryBuilder geometryBuilder = GeometryBuilder(direct3D->GetDevice());
 
+	ButtonSystem* buttonSystem = new ButtonSystem();
+	input->AddObserver(buttonSystem);
+
 	_systemList[TRANSFORM_SYSTEM] = new TransformSystem(direct3D);
 	_systemList[UI_RENDER_SYSTEM] = new UISystem(direct3D, shaderController, hwnd, screenSize);
 	_systemList[RENDER_SYSTEM] = new RenderSystem(direct3D, shaderController, hwnd, camera);
 	_systemList[FONT_SYSTEM] = new TextSystem(direct3D, shaderController, fontEngine, camera->GetViewMatrix(), screenSize);
+	_systemList[BUTTON_SYSTEM] = buttonSystem;
 
 	for(int i = 0; i < 25; i++)
 	{
@@ -205,6 +211,9 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	button1Text->FontPosition = XMFLOAT2(0, 3);
 	button1Text->Color = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
 	button1->AddComponent(button1Text);
+
+	ButtonComponent* button1Button = new ButtonComponent();
+	button1->AddComponent(button1Button);
 
 	_entityList.push_back(button1);
 

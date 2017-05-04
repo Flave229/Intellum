@@ -155,6 +155,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Objects\Systems\ButtonSystem.cpp" />
     <ClCompile Include="Engine\Objects\Texture\CreateTexture.cpp" />
     <ClCompile Include="Engine\ShaderEngine\ConstantBuffers\ColorOverrideBuffer.cpp" />
     <ClCompile Include="Engine\Camera\Camera.cpp" />
@@ -206,7 +207,9 @@
     <ClCompile Include="Engine\Objects\Systems\UISystem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Objects\Systems\ButtonSystem.h" />
     <ClInclude Include="Engine\Camera\FrustrumCullingType.h" />
+    <ClInclude Include="Engine\Objects\Components\ButtonComponent.h" />
     <ClInclude Include="Engine\Objects\Components\TextComponent.h" />
     <ClInclude Include="Engine\Observer\EventType.h" />
     <ClInclude Include="Engine\Observer\IObserver.h" />
