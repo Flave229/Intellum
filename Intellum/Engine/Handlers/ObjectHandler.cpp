@@ -100,7 +100,7 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 
 	Entity* text1 = new Entity();
 	TextComponent* textComponent1 = new TextComponent();
-	textComponent1->Text = "Victoria Grump";
+	textComponent1->Text = "Victoria Grump xxx";
 	textComponent1->FontSize = 30;
 	textComponent1->FontPosition = XMFLOAT2(50, 600);
 	textComponent1->Color = XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f);
@@ -216,6 +216,34 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	button1->AddComponent(button1Button);
 
 	_entityList.push_back(button1);
+
+	Entity* button2 = new Entity();
+
+	AppearanceComponent* button2Appearance = new AppearanceComponent();
+	button2Appearance->ShaderType = SHADER_UI;
+	button2Appearance->Model = geometryBuilder.ForUI();
+	button2Appearance->Color = ColorShaderParameters(XMFLOAT4(0.4, 0.4, 0.4, 1));
+	button2->AddComponent(button2Appearance);
+
+	TransformComponent* button2Transform = new TransformComponent();
+	button2Transform->Position = XMFLOAT3(175, 0, 1);
+	button2->AddComponent(button2Transform);
+
+	UIComponent* button2Component = new UIComponent();
+	button2Component->BitmapSize = XMFLOAT2(170, 30);
+	button2->AddComponent(button2Component);
+
+	TextComponent* button2Text = new TextComponent();
+	button2Text->Text = "Exit";
+	button2Text->FontSize = 20;
+	button2Text->FontPosition = XMFLOAT2(175, 3);
+	button2Text->Color = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
+	button2->AddComponent(button2Text);
+
+	ButtonComponent* button2Button = new ButtonComponent();
+	button2->AddComponent(button2Button);
+
+	_entityList.push_back(button2);
 
 	Entity* cursor = new Entity();
 
