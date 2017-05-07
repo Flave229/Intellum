@@ -1,6 +1,8 @@
 #include "DXSystem.h"
 #include "ErrorHandling/Exception.h"
 
+bool DXSystem::_shutdownQueued = false;
+
 DXSystem::DXSystem(): _applicationName(nullptr), _hInstance(nullptr), _hwnd(nullptr), _framesPerSecond(nullptr), _cpu(nullptr), _timer(nullptr), _input(nullptr), _graphics(nullptr)
 {
 	Initialise();
@@ -106,11 +108,16 @@ void DXSystem::Run()
 			done = true;
 		}
 
-		if (_input->IsControlPressed(ESCAPE))
+		if (_shutdownQueued)
 		{
 			done = true;
 		}
 	}
+}
+
+void DXSystem::ShutdownApplication()
+{
+	_shutdownQueued = true;
 }
 
 bool DXSystem::Frame(float delta) const

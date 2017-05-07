@@ -22,7 +22,7 @@ private:
 
 	Input* _input;
 	Graphics* _graphics;
-
+	static bool _shutdownQueued;
 private:
 	void Initialise();
 	void InitialiseWindows(Box& screenSize);
@@ -36,7 +36,7 @@ public:
 
 	void Shutdown();
 	void Run();
-
+	static void ShutdownApplication();
 	static LRESULT CALLBACK MessageHandler(HWND hwnd, UINT umsg, WPARAM wparam, LPARAM lparam);
 };
 
