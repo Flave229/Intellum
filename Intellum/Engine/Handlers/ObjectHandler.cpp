@@ -1,7 +1,7 @@
 #include "ObjectHandler.h"
 #include "../Objects/Components/ButtonComponent.h"
 #include "../Objects/Systems/ButtonSystem.h"
-#include "../Objects/Commands/ExitApplication.h"
+#include "../Objects/Commands/ExitApplicationCommand.h"
 
 ObjectHandler::ObjectHandler(DirectX3D* direct3D, ShaderController* shaderController, FontEngine* fontEngine, HWND hwnd, Camera* camera, Input* input, FramesPerSecond* framesPerSecond, Cpu* cpu, Box screenSize)
 {
@@ -241,7 +241,7 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	button2->AddComponent(button2Text);
 
 	ButtonComponent* button2Button = new ButtonComponent();
-	button2Button->OnClickCommand = new ExitApplication();
+	button2Button->OnClickCommand = new ExitApplicationCommand();
 	button2->AddComponent(button2Button);
 
 	_entityList.push_back(button2);

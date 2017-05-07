@@ -1,15 +1,15 @@
-#include "ExitApplication.h"
+#include "ExitApplicationCommand.h"
 #include "../../../DXSystem.h"
 
-ExitApplication::ExitApplication()
+ExitApplicationCommand::ExitApplicationCommand()
 {
 }
 
-void ExitApplication::Shutdown()
+void ExitApplicationCommand::Shutdown()
 {
 }
 
-void ExitApplication::Execute()
+void ExitApplicationCommand::Execute()
 {
 	DXSystem::ShutdownApplication();
 }

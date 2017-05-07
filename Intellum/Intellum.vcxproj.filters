@@ -184,7 +184,10 @@
     <ClCompile Include="Engine\Objects\Systems\ButtonSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Objects\Commands\ExitApplication.cpp">
+    <ClCompile Include="Engine\Objects\Commands\ExitApplicationCommand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Objects\Commands\NullCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -429,7 +432,10 @@
     <ClInclude Include="Engine\Objects\Commands\ICommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Objects\Commands\ExitApplication.h">
+    <ClInclude Include="Engine\Objects\Commands\ExitApplicationCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Objects\Commands\NullCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

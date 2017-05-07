@@ -189,7 +189,7 @@
     <ClCompile Include="Engine\FontEngine\FontRetriever.cpp">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</CompileAsManaged>
     </ClCompile>
-    <ClCompile Include="Engine\Objects\Commands\ExitApplication.cpp" />
+    <ClCompile Include="Engine\Objects\Commands\ExitApplicationCommand.cpp" />
     <ClCompile Include="Loaders\OBJLoader\OBJBinaryLoader.cpp" />
     <ClCompile Include="loaders\OBJLoader.cpp" />
     <ClCompile Include="Loaders\OBJLoader\OBJFileLoader.cpp" />
@@ -206,6 +206,7 @@
     <ClCompile Include="Engine\Objects\Systems\TransformSystem.cpp" />
     <ClCompile Include="Engine\Objects\Systems\RenderSystem.cpp" />
     <ClCompile Include="Engine\Objects\Systems\UISystem.cpp" />
+    <ClCompile Include="Engine\Objects\Commands\NullCommand.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Objects\Commands\ICommand.h" />
@@ -267,7 +268,7 @@
     <ClInclude Include="Engine\ShaderEngine\ConstantBuffers\GradientOverloadBuffer.h" />
     <ClInclude Include="Engine\Objects\Systems\TextSystem.h" />
     <ClInclude Include="Engine\FontEngine\FontRetriever.h" />
-    <ClInclude Include="Engine\Objects\Commands\ExitApplication.h" />
+    <ClInclude Include="Engine\Objects\Commands\ExitApplicationCommand.h" />
     <ClInclude Include="Loaders\models\OBJGeometryData.h" />
     <ClInclude Include="Loaders\OBJLoader\IOBJLoader.h" />
     <ClInclude Include="Loaders\OBJLoader\OBJBinaryLoader.h" />
@@ -289,6 +290,7 @@
     <ClInclude Include="Engine\Objects\Systems\RenderSystem.h" />
     <ClInclude Include="Engine\Objects\Systems\UISystem.h" />
     <ClInclude Include="Engine\FontEngine\TextTexture.h" />
+    <ClInclude Include="Engine\Objects\Commands\NullCommand.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="data\models\Cube.txt">
