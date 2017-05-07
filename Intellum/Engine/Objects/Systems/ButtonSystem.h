@@ -2,17 +2,16 @@
 #include "ISystem.h"
 #include "../../Input/Input.h"
 
-class ButtonSystem : public ISystem, public IObserver
+class ButtonSystem : public ISystem
 {
 private:
-	XMFLOAT2 _mousePosition;
+	Input* _input;
 
 public:
-	ButtonSystem();
+	ButtonSystem(Input* input);
 	~ButtonSystem() override = default;
 	void Shutdown() override;
 
 	void Update(vector<Entity*>& entities, float delta) override;
 	void Render(vector<Entity*>& entities) override;
-	void Notify(ObserverEvent observerEvent) override;
 };

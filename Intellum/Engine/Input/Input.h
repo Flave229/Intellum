@@ -27,8 +27,7 @@ private:
 
 	Box _screen;
 	XMFLOAT2 _previousMousePosition;
-	XMFLOAT2 _mousePosition;
-
+	
 	ControlMappings _keyboardMappings;
 private:
 	void Initialise(HINSTANCE hInstance, HWND hwnd, Box screenSize);
@@ -38,6 +37,8 @@ private:
 	void ProcessInput();
 
 public:
+	XMFLOAT2 MousePosition;
+
 	Input(HINSTANCE hInstance, HWND hwnd, Box screenSize);
 	Input(const Input& other);
 	~Input();

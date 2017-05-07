@@ -39,8 +39,7 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 
 	GeometryBuilder geometryBuilder = GeometryBuilder(direct3D->GetDevice());
 
-	ButtonSystem* buttonSystem = new ButtonSystem();
-	input->AddObserver(buttonSystem);
+	ButtonSystem* buttonSystem = new ButtonSystem(input);
 
 	_systemList[TRANSFORM_SYSTEM] = new TransformSystem(direct3D);
 	_systemList[UI_RENDER_SYSTEM] = new UISystem(direct3D, shaderController, hwnd, screenSize);

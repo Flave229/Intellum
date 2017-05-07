@@ -17,7 +17,7 @@ void Input::Initialise(HINSTANCE hInstance, HWND hwnd, Box screenSize)
 {
 	_screen = screenSize;
 	_previousMousePosition = XMFLOAT2(0, 0);
-	_mousePosition = XMFLOAT2(0, 0);
+	MousePosition = XMFLOAT2(0, 0);
 	
 	HRESULT result = DirectInput8Create(hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8, reinterpret_cast<void**>(&_directInput), nullptr);
 	if (FAILED(result)) throw Exception("Failed to create DirectInput.");
@@ -98,16 +98,19 @@ bool Input::IsControlPressed(Controls control)
 
 bool Input::ProcessMouseControl(InputControl input)
 {
-	if (input.GetInput() == MOUSE_LEFT && _previousMousePosition.x > _mousePosition.x)
+	if (input.GetInput() == MOUSE_LEFT && _previousMousePosition.x > MousePosition.x)
 		return true;
 
-	if (input.GetInput() == MOUSE_RIGHT && _previousMousePosition.x < _mousePosition.x)
+	if (input.GetInput() == MOUSE_RIGHT && _previousMousePosition.x < MousePosition.x)
 		return true;
 
-	if (input.GetInput() == MOUSE_UP && _previousMousePosition.y < _mousePosition.y)
+	if (input.GetInput() == MOUSE_UP && _previousMousePosition.y < MousePosition.y)
 		return true;
 
-	if (input.GetInput() == MOUSE_DOWN && _previousMousePosition.y > _mousePosition.y)
+	if (input.GetInput() == MOUSE_DOWN && _previousMousePosition.y > MousePosition.y)
+		return true;
+
+	if (input.GetInput() == MOUSE_LEFT_CLICK && _mouseState.rgbButtons[0] & 0x80)
 		return true;
 
 	return false;
@@ -131,6 +134,7 @@ bool Input::ReadKeyboard()
 bool Input::ReadMouse()
 {
 	HRESULT result = _mouse->GetDeviceState(sizeof(DIMOUSESTATE), static_cast<LPVOID>(&_mouseState));
+	
 	if (FAILED(result))
 	{
 		if (result == DIERR_INPUTLOST || result == DIERR_NOTACQUIRED)
@@ -144,19 +148,19 @@ bool Input::ReadMouse()
 
 void Input::ProcessInput()
 {
-	_previousMousePosition.x = _mousePosition.x;
-	_previousMousePosition.y = _mousePosition.y;
+	_previousMousePosition.x = MousePosition.x;
+	_previousMousePosition.y = MousePosition.y;
 
-	_mousePosition.x += _mouseState.lX;
-	_mousePosition.y += _mouseState.lY;
-
-	if (_previousMousePosition.x != _mousePosition.x || _previousMousePosition.y != _mousePosition.y)
+	MousePosition.x += _mouseState.lX;
+	MousePosition.y += _mouseState.lY;
+	
+	if (_previousMousePosition.x != MousePosition.x || _previousMousePosition.y != MousePosition.y)
 	{
 		for (int i = 0; i < Observers.size(); i++)
 		{
 			ObserverEvent observerEvent = ObserverEvent();
 			observerEvent.EventType = MOVED_MOUSE;
-			observerEvent.SetObservableData<XMFLOAT2>(XMFLOAT2(_mousePosition.x, _mousePosition.y));
+			observerEvent.SetObservableData<XMFLOAT2>(XMFLOAT2(MousePosition.x, MousePosition.y));
 			Observers.at(i)->Notify(observerEvent);
 			observerEvent.Shutdown<XMFLOAT2>();
 		}

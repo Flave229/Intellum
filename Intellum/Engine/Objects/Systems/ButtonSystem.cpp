@@ -4,7 +4,7 @@
 #include "../Components/ButtonComponent.h"
 #include "../Components/TransformComponent.h"
 
-ButtonSystem::ButtonSystem() : _mousePosition(0, 0)
+ButtonSystem::ButtonSystem(Input* input) : _input(input)
 {
 }
 
@@ -33,12 +33,17 @@ void ButtonSystem::Update(vector<Entity*>& entities, float delta)
 		if (component == nullptr) continue;
 		TransformComponent* transform = static_cast<TransformComponent*>(component);
 
-		if (_mousePosition.x > transform->Position.x
-			&& _mousePosition.x < transform->Position.x + ui->BitmapSize.x
-			&& _mousePosition.y > transform->Position.y
-			&& _mousePosition.y < transform->Position.y + ui->BitmapSize.y)
+		XMFLOAT2 mousePosition = _input->MousePosition;
+
+		if (mousePosition.x > transform->Position.x
+			&& mousePosition.x < transform->Position.x + ui->BitmapSize.x
+			&& mousePosition.y > transform->Position.y
+			&& mousePosition.y < transform->Position.y + ui->BitmapSize.y)
 		{
 			appearance->Color.Color = XMFLOAT4(0.35f, 0.35f, 0.35f, 1.0f);
+
+			if (_input->IsControlPressed(LEFT_CLICK))
+				button->OnClickCommand->Execute();
 		}
 		else
 			appearance->Color.Color = XMFLOAT4(0.4f, 0.4f, 0.4f, 1.0f);
@@ -47,12 +52,4 @@ void ButtonSystem::Update(vector<Entity*>& entities, float delta)
 
 void ButtonSystem::Render(vector<Entity*>& entities)
 {
-}
-
-void ButtonSystem::Notify(ObserverEvent observerEvent)
-{
-	if (observerEvent.EventType != MOVED_MOUSE)
-		return;
-
-	_mousePosition = observerEvent.GetObservableData<XMFLOAT2>();
 }
