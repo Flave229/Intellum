@@ -27,6 +27,9 @@ void RenderSystem::Render(vector<Entity*>& entities)
 
 		AppearanceComponent* appearance = static_cast<AppearanceComponent*>(component);
 
+		if (appearance->RenderEnabled == false)
+			continue;
+
 		component = entity->GetComponent(TRANSFORM);
 
 		if (component == nullptr)

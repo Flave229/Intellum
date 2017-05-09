@@ -2,6 +2,9 @@
 #include "../Objects/Components/ButtonComponent.h"
 #include "../Objects/Systems/ButtonSystem.h"
 #include "../Objects/Commands/ExitApplicationCommand.h"
+#include "../Objects/Components/InputComponent.h"
+#include "../Objects/Commands/ToggleVisibleCommand.h"
+#include "../Objects/Systems/InputSystem.h"
 
 ObjectHandler::ObjectHandler(DirectX3D* direct3D, ShaderController* shaderController, FontEngine* fontEngine, HWND hwnd, Camera* camera, Input* input, FramesPerSecond* framesPerSecond, Cpu* cpu, Box screenSize)
 {
@@ -46,6 +49,7 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	_systemList[RENDER_SYSTEM] = new RenderSystem(direct3D, shaderController, hwnd, camera);
 	_systemList[FONT_SYSTEM] = new TextSystem(direct3D, shaderController, fontEngine, camera->GetViewMatrix(), screenSize);
 	_systemList[BUTTON_SYSTEM] = buttonSystem;
+	_systemList[INPUT_SYSTEM] = new InputSystem(input);
 
 	for(int i = 0; i < 25; i++)
 	{
@@ -187,6 +191,10 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	navigationBarComponent->BitmapSize = XMFLOAT2(screenSize.Width, 30);
 	navigationBar->AddComponent(navigationBarComponent);
 
+	InputComponent* navigationBarInput = new InputComponent();
+	navigationBarInput->ControlCommands[ESCAPE] = new ToggleVisibleCommand(navigationBarAppearance);
+	navigationBar->AddComponent(navigationBarInput);
+
 	_entityList.push_back(navigationBar); 
 	
 	Entity* button1 = new Entity();
@@ -214,6 +222,10 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 
 	ButtonComponent* button1Button = new ButtonComponent();
 	button1->AddComponent(button1Button);
+
+	InputComponent* button1Input = new InputComponent();
+	button1Input->ControlCommands[ESCAPE] = new ToggleVisibleCommand(button1Appearance);
+	button1->AddComponent(button1Input);
 
 	_entityList.push_back(button1);
 
@@ -244,6 +256,10 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	button2Button->OnClickCommand = new ExitApplicationCommand();
 	button2->AddComponent(button2Button);
 
+	InputComponent* button2Input = new InputComponent();
+	button2Input->ControlCommands[ESCAPE] = new ToggleVisibleCommand(button2Appearance);
+	button2->AddComponent(button2Input);
+
 	_entityList.push_back(button2);
 
 	Entity* cursor = new Entity();
@@ -261,6 +277,10 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	UIComponent* cursorComponent = new UIComponent();
 	cursorComponent->BitmapSize = XMFLOAT2(24, 24);
 	cursor->AddComponent(cursorComponent);
+
+	InputComponent* cursorInput = new InputComponent();
+	cursorInput->ControlCommands[ESCAPE] = new ToggleVisibleCommand(cursorAppearance);
+	cursor->AddComponent(cursorInput);
 
 	_entityList.push_back(cursor);
 	input->AddObserver(cursorTransform);

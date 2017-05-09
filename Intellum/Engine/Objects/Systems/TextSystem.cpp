@@ -18,10 +18,7 @@ void TextSystem::Update(vector<Entity*>& entities, float delta)
 	for (Entity* entity : entities)
 	{
 		IComponent* component = entity->GetComponent(TEXT);
-
-		if (component == nullptr)
-			continue;
-
+		if (component == nullptr) continue;
 		TextComponent* text = static_cast<TextComponent*>(component);
 
 		if (text->Text == text->PreviousText)
@@ -131,11 +128,16 @@ void TextSystem::Render(vector<Entity*>& entities)
 {
 	for (Entity* entity : entities)
 	{
-		IComponent* component = entity->GetComponent(TEXT);
+		IComponent* component = entity->GetComponent(APPEARANCE);
 
-		if (component == nullptr)
-			continue;
+		if (component != nullptr)
+		{
+			AppearanceComponent* appearance = static_cast<AppearanceComponent*>(component);
+			if (appearance->RenderEnabled == false) continue;
+		}
 
+		component = entity->GetComponent(TEXT);
+		if (component == nullptr) continue;
 		TextComponent* text = static_cast<TextComponent*>(component);
 
 		RenderCharacters(text->TextEntity);

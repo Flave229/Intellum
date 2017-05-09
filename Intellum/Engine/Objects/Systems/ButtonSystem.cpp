@@ -24,6 +24,7 @@ void ButtonSystem::Update(vector<Entity*>& entities, float delta)
 		component = entity->GetComponent(APPEARANCE);
 		if (component == nullptr) continue;
 		AppearanceComponent* appearance = static_cast<AppearanceComponent*>(component);
+		if (appearance->RenderEnabled == false) continue;
 
 		component = entity->GetComponent(USER_INTERFACE);
 		if (component == nullptr) continue;

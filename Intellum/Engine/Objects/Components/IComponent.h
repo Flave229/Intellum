@@ -10,7 +10,8 @@ enum ComponentType
 	FRUSTRUM_CULLING,
 	USER_INTERFACE,
 	TEXT,
-	BUTTON
+	BUTTON,
+	INPUT_COMPONENT
 };
 
 class IComponent
