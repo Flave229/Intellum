@@ -1,15 +1,13 @@
 #pragma once
 #include "IComponent.h"
-#include <map>
-#include "../../Input/Controls.h"
-#include "../Commands/ICommand.h"
+#include "../../Input/ControlCommand.h"
 
 using namespace std;
 
 class InputComponent : public IComponent
 {
 public:
-	map<Controls, ICommand*> ControlCommands;
+	vector<ControlCommand> ControlCommands;
 
 	InputComponent() : IComponent(INPUT_COMPONENT) {}
 	~InputComponent() override = default;

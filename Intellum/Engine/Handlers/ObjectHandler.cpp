@@ -192,7 +192,11 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	navigationBar->AddComponent(navigationBarComponent);
 
 	InputComponent* navigationBarInput = new InputComponent();
-	navigationBarInput->ControlCommands[ESCAPE] = new ToggleVisibleCommand(navigationBarAppearance);
+	ControlCommand control;
+	control.Control = ESCAPE;
+	control.Command = new ToggleVisibleCommand(navigationBarAppearance);
+	control.Cooldown = 0.2f;
+	navigationBarInput->ControlCommands.push_back(control);
 	navigationBar->AddComponent(navigationBarInput);
 
 	_entityList.push_back(navigationBar); 
@@ -224,7 +228,10 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	button1->AddComponent(button1Button);
 
 	InputComponent* button1Input = new InputComponent();
-	button1Input->ControlCommands[ESCAPE] = new ToggleVisibleCommand(button1Appearance);
+	control.Control = ESCAPE;
+	control.Command = new ToggleVisibleCommand(button1Appearance);
+	control.Cooldown = 0.2f;
+	button1Input->ControlCommands.push_back(control);
 	button1->AddComponent(button1Input);
 
 	_entityList.push_back(button1);
@@ -257,7 +264,10 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	button2->AddComponent(button2Button);
 
 	InputComponent* button2Input = new InputComponent();
-	button2Input->ControlCommands[ESCAPE] = new ToggleVisibleCommand(button2Appearance);
+	control.Control = ESCAPE;
+	control.Command = new ToggleVisibleCommand(button2Appearance);
+	control.Cooldown = 0.2f;
+	button2Input->ControlCommands.push_back(control);
 	button2->AddComponent(button2Input);
 
 	_entityList.push_back(button2);
@@ -279,7 +289,10 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	cursor->AddComponent(cursorComponent);
 
 	InputComponent* cursorInput = new InputComponent();
-	cursorInput->ControlCommands[ESCAPE] = new ToggleVisibleCommand(cursorAppearance);
+	control.Control = ESCAPE;
+	control.Command = new ToggleVisibleCommand(cursorAppearance);
+	control.Cooldown = 0.2f;
+	cursorInput->ControlCommands.push_back(control);
 	cursor->AddComponent(cursorInput);
 
 	_entityList.push_back(cursor);

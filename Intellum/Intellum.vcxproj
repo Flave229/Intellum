@@ -211,6 +211,7 @@
     <ClCompile Include="Engine\Objects\Commands\NullCommand.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Input\ControlCommand.h" />
     <ClInclude Include="Engine\Objects\Commands\ToggleVisibleCommand.h" />
     <ClInclude Include="Engine\Objects\Commands\ICommand.h" />
     <ClInclude Include="Engine\Objects\Components\InputComponent.h" />

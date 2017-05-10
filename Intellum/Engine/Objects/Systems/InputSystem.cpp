@@ -1,5 +1,6 @@
 #include "InputSystem.h"
 #include "../Components/InputComponent.h"
+#include "../../Input/ControlCommand.h"
 
 InputSystem::InputSystem(Input* input) : _input(input)
 {
@@ -16,12 +17,20 @@ void InputSystem::Update(vector<Entity*>& entities, float delta)
 		IComponent* component = entity->GetComponent(INPUT_COMPONENT);
 		if (component == nullptr) continue;
 		InputComponent* input = static_cast<InputComponent*>(component);
-		
-		map<Controls, ICommand*>::iterator iterator;
-		for (iterator = input->ControlCommands.begin(); iterator != input->ControlCommands.end(); ++iterator)
+
+		for (ControlCommand& controlCommand : input->ControlCommands)
 		{
-			if (_input->IsControlPressed(iterator->first))
-				iterator->second->Execute();
+			if (controlCommand.CurrentCooldown < controlCommand.Cooldown)
+			{
+				controlCommand.CurrentCooldown += delta;
+				continue;
+			}
+
+			if (_input->IsControlPressed(controlCommand.Control))
+			{
+				controlCommand.Command->Execute();
+				controlCommand.CurrentCooldown = 0;
+			}
 		}
 	}
 }
