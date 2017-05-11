@@ -1,15 +1,19 @@
 #include "Input.h"
 
-Input::Input(HINSTANCE hInstance, HWND hwnd, Box& screenSize) : _directInput(nullptr), _keyboard(nullptr), _mouse(nullptr), _screenSize(screenSize)
+Input::Input(HINSTANCE hInstance, HWND hwnd, Box screenSize) : _directInput(nullptr), _keyboard(nullptr), _mouse(nullptr)
 {
 	Initialise(hInstance, hwnd, screenSize);
+}
+
+Input::Input(const Input& other): _directInput(other._directInput), _keyboard(other._keyboard), _mouse(other._mouse)
+{
 }
 
 Input::~Input()
 {
 }
 
-void Input::Initialise(HINSTANCE hInstance, HWND hwnd, Box& screenSize)
+void Input::Initialise(HINSTANCE hInstance, HWND hwnd, Box screenSize)
 {
 	_screen = screenSize;
 	_previousMousePosition = XMFLOAT2(0, 0);
@@ -149,17 +153,7 @@ void Input::ProcessInput()
 
 	MousePosition.x += _mouseState.lX;
 	MousePosition.y += _mouseState.lY;
-
-	if (MousePosition.x < 0)
-		MousePosition.x = 0;
-	else if (MousePosition.x > _screenSize.Width)
-		MousePosition.x = _screenSize.Width;
 	
-	if (MousePosition.y < 0)
-		MousePosition.y = 0;
-	else if (MousePosition.y > _screenSize.Height)
-		MousePosition.y = _screenSize.Height;
-
 	if (_previousMousePosition.x != MousePosition.x || _previousMousePosition.y != MousePosition.y)
 	{
 		for (int i = 0; i < Observers.size(); i++)
