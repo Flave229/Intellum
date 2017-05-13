@@ -30,11 +30,11 @@ void Graphics::Initialise(Input* input, FramesPerSecond* framesPerSecond, Cpu* c
 		bool result = _shaderController->Initialise(hwnd, _camera, _light);
 		if (!_shaderController) throw Exception("Failed to create the shader controller.");
 
-		_light->SetAmbientColor(XMFLOAT4(0.15f, 0.15f, 0.15f, 1.0f));
-		_light->SetDiffuseColor(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
-		_light->SetSpecularColor(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
-		_light->SetDirection(XMFLOAT3(0.8f, -1.0f, 0.2f));
-		_light->SetSpecularPower(32.0f);
+		_light->AmbientColor = XMFLOAT4(0.15f, 0.15f, 0.15f, 1.0f);
+		_light->DiffuseColor = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+		_light->SpecularColor = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+		_light->Direction = XMFLOAT3(0.8f, -1.0f, 0.2f);
+		_light->SpecularPower = 32.0f;
 
 		_fontEngine = new FontEngine(_direct3D, _direct3D->GetDevice(), _direct3D->GetDeviceContext(), _shaderController->GetShader(SHADER_FONT));
 		if (!_fontEngine) throw Exception("Failed to create the Font Engine.");

@@ -35,11 +35,11 @@ void LightBuffer::SetShaderParameters(ShaderParameters parameters)
 	if (FAILED(result)) throw Exception("Failed to map light buffer to the Device Context.");
 
 	Buffer* lightDataPtr = static_cast<Buffer*>(mappedResource.pData);
-	lightDataPtr->ambientColor = _light->GetAmbientColor();
-	lightDataPtr->diffuseColor = _light->GetDiffuseColor();
-	lightDataPtr->lightDirection = _light->GetDirection();
-	lightDataPtr->specularColor = _light->GetSpecularColor();
-	lightDataPtr->specularPower = _light->GetSpecularPower();
+	lightDataPtr->ambientColor = _light->AmbientColor;
+	lightDataPtr->diffuseColor = _light->DiffuseColor;
+	lightDataPtr->lightDirection = _light->Direction;
+	lightDataPtr->specularColor = _light->SpecularColor;
+	lightDataPtr->specularPower = _light->SpecularPower;
 
 	_direct3D->GetDeviceContext()->Unmap(_buffer, 0);
 	_direct3D->GetDeviceContext()->PSSetConstantBuffers(parameters.BufferIndex, 1, &_buffer);
@@ -55,11 +55,11 @@ void LightBuffer::SetShaderParameters(int bufferIndex, ShaderResources shaderRes
 	lightDataPtr->lightEnabled = shaderResources.LightEnabled;
 	if (shaderResources.LightEnabled)
 	{
-		lightDataPtr->ambientColor = _light->GetAmbientColor();
-		lightDataPtr->diffuseColor = _light->GetDiffuseColor();
-		lightDataPtr->lightDirection = _light->GetDirection();
-		lightDataPtr->specularColor = _light->GetSpecularColor();
-		lightDataPtr->specularPower = _light->GetSpecularPower();
+		lightDataPtr->ambientColor = _light->AmbientColor;
+		lightDataPtr->diffuseColor = _light->DiffuseColor;
+		lightDataPtr->lightDirection = _light->Direction;
+		lightDataPtr->specularColor = _light->SpecularColor;
+		lightDataPtr->specularPower = _light->SpecularPower;
 	}
 
 	_direct3D->GetDeviceContext()->Unmap(_buffer, 0);
