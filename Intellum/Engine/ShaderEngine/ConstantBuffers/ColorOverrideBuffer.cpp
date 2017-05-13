@@ -28,26 +28,6 @@ void ColorOverrideBuffer::Initialise()
 	if (FAILED(result)) throw Exception("Failed to create the buffer for the color description");
 }
 
-void ColorOverrideBuffer::SetShaderParameters(ShaderParameters parameters)
-{
-	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	HRESULT result = _direct3D->GetDeviceContext()->Map(_buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-	if (FAILED(result)) throw Exception("Failed to map color buffer to the Device Context.");
-
-	Buffer* colorDataPtr = static_cast<Buffer*>(mappedResource.pData);
-
-	if (parameters.ColorOverloadEnabled)
-		colorDataPtr->colorOverloadEnabled = 1.0f;
-	else
-		colorDataPtr->colorOverloadEnabled = 0.0f;
-
-	colorDataPtr->colorOverload = parameters.ColorOverload;
-	colorDataPtr->padding = XMFLOAT3(0.0f, 0.0f, 0.0f);
-
-	_direct3D->GetDeviceContext()->Unmap(_buffer, 0);
-	_direct3D->GetDeviceContext()->PSSetConstantBuffers(parameters.BufferIndex, 1, &_buffer);
-}
-
 void ColorOverrideBuffer::SetShaderParameters(int bufferIndex, ShaderResources shaderResources)
 {
 	ColorShaderParameters colorOverload = shaderResources.ColorParameters;

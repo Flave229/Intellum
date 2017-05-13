@@ -28,23 +28,6 @@ void LightBuffer::Initialise()
 	if (FAILED(result)) throw Exception("Failed to create the buffer for the light description");
 }
 
-void LightBuffer::SetShaderParameters(ShaderParameters parameters)
-{
-	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	HRESULT result = _direct3D->GetDeviceContext()->Map(_buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-	if (FAILED(result)) throw Exception("Failed to map light buffer to the Device Context.");
-
-	Buffer* lightDataPtr = static_cast<Buffer*>(mappedResource.pData);
-	lightDataPtr->ambientColor = _light->AmbientColor;
-	lightDataPtr->diffuseColor = _light->DiffuseColor;
-	lightDataPtr->lightDirection = _light->Direction;
-	lightDataPtr->specularColor = _light->SpecularColor;
-	lightDataPtr->specularPower = _light->SpecularPower;
-
-	_direct3D->GetDeviceContext()->Unmap(_buffer, 0);
-	_direct3D->GetDeviceContext()->PSSetConstantBuffers(parameters.BufferIndex, 1, &_buffer);
-}
-
 void LightBuffer::SetShaderParameters(int bufferIndex, ShaderResources shaderResources)
 {
 	D3D11_MAPPED_SUBRESOURCE mappedResource;

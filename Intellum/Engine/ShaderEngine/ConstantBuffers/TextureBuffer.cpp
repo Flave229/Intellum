@@ -28,25 +28,6 @@ void TextureBuffer::Initialise()
 	if (FAILED(result)) throw Exception("Failed to create the buffer for the texture description");
 }
 
-void TextureBuffer::SetShaderParameters(ShaderParameters parameters)
-{
-	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	HRESULT result = _direct3D->GetDeviceContext()->Map(_buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-	if (FAILED(result)) throw Exception("Failed to map texture buffer to the Device Context.");
-
-	Buffer* textureData = static_cast<Buffer*>(mappedResource.pData);
-
-	textureData->texturesIncluded = static_cast<float>(parameters.TextureCount);
-
-	if (parameters.LightMapEnabled)
-		textureData->lightMapEnabled = 1.0f;
-	else
-		textureData->lightMapEnabled = 0.0f;
-
-	_direct3D->GetDeviceContext()->Unmap(_buffer, 0);
-	_direct3D->GetDeviceContext()->PSSetConstantBuffers(parameters.BufferIndex, 1, &_buffer);
-}
-
 void TextureBuffer::SetShaderParameters(int bufferIndex, ShaderResources shaderResources)
 {
 	TextureShaderParameters textureParameters = shaderResources.TextureParameters;

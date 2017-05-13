@@ -15,6 +15,5 @@ public:
 	virtual void Initialise() = 0;
 	virtual void Shutdown() = 0;
 
-	virtual void SetShaderParameters(ShaderParameters parameters) = 0;
 	virtual void SetShaderParameters(int bufferIndex, ShaderResources shaderResources) = 0;
 };
