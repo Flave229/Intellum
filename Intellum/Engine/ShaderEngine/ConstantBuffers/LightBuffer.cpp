@@ -40,7 +40,7 @@ void LightBuffer::SetShaderParameters(int bufferIndex, ShaderResources shaderRes
 	{
 		lightDataPtr->ambientColor = _light->AmbientColor;
 		lightDataPtr->diffuseColor = _light->DiffuseColor;
-		lightDataPtr->lightDirection = _light->Direction;
+		lightDataPtr->lightDirection = _light->GetDirection(shaderResources.MatrixParameters.WorldMatrix);
 		lightDataPtr->specularColor = _light->SpecularColor;
 		lightDataPtr->specularPower = _light->SpecularPower;
 	}
