@@ -1,16 +1,16 @@
 #pragma once
-#include <dirent.h>
 #include <string>
 #include <vector>
+#include <filesystem>
 
 using namespace std;
+using namespace experimental::filesystem;
 
 class FontRetriever
 {
 private:
 	static bool FindFontsFolder();
-	static vector<string> GetPotentialFonts();
-	static vector<string> ValidatePotentialFonts(vector<string> potentialFonts);
+	static vector<string> GetAllFonts();
 public:
 	FontRetriever();
 	~FontRetriever();

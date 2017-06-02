@@ -1,4 +1,6 @@
 #include "Exception.h"
+#include <windows.h>
+//#include <DbgHelp.h>
 
 Exception::Exception(): _innerException(nullptr), _message("")
 {
@@ -45,7 +47,8 @@ string Exception::PrintFullMessage()
 
 string Exception::PrintStackTrace()
 {
-	SymSetOptions(SYMOPT_DEFERRED_LOADS | SYMOPT_INCLUDE_32BIT_MODULES | SYMOPT_UNDNAME);
+	return "";
+	/*SymSetOptions(SYMOPT_DEFERRED_LOADS | SYMOPT_INCLUDE_32BIT_MODULES | SYMOPT_UNDNAME);
 	if (!SymInitialize(GetCurrentProcess(), "http://msdl.microsoft.com/download/symbols", TRUE)) return "";
 
 	string stackTrace = "";
@@ -65,5 +68,5 @@ string Exception::PrintStackTrace()
 		}
 	}
 
-	return stackTrace;
+	return stackTrace;*/
 }

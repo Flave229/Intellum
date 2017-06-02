@@ -458,21 +458,13 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="shaders\PixelShader.hlsl">
-      <Filter>Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="shaders\VertexShader.hlsl">
-      <Filter>Shaders</Filter>
-    </FxCompile>
+    <Text Include="data\models\Cube.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="data\models\Cube.txt">
-      <Filter>Data\Models</Filter>
-    </Text>
-  </ItemGroup>
-  <ItemGroup>
-    <Object Include="data\models\sphere.obj">
-      <Filter>Data\Models</Filter>
-    </Object>
+    <Image Include="Data\Images\basic_light_map.tga" />
+    <Image Include="Data\Images\Cursor.tga" />
+    <Image Include="Data\Images\dirt.tga" />
+    <Image Include="Data\Images\josh.tga" />
+    <Image Include="Data\Images\stone.tga" />
   </ItemGroup>
 </Project>
