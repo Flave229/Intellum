@@ -28,7 +28,7 @@ bool FontRetriever::FindFontsFolder()
 {
 	struct stat info;
 
-	if (stat("Fonts/", &info) != 0)
+	if (stat("Content/Fonts/", &info) != 0)
 		return false;
 
 	return true;
@@ -38,11 +38,11 @@ vector<string> FontRetriever::GetAllFonts()
 {
 	vector<string> fonts = vector<string>();
 
-	string path = "Fonts/";
+	string path = "Content/Fonts/";
 	for (directory_entry p : directory_iterator(path))
 	{
 		string fontSubDirectory = p.path().generic_string();
-		string fontName = fontSubDirectory.erase(0, 6);
+		string fontName = fontSubDirectory.erase(0, path.size());
 		fonts.push_back(fontName);
 	}
 

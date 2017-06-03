@@ -121,7 +121,7 @@ bool FontEngine::CreateFonts(vector<string> fontFiles, Box screenSize)
 			Font* font = new Font();
 			font->_fontName = fontFiles.at(i);
 
-			vector<Character> characters = GetCharactersFromFontFolder("fonts/" + fontFiles.at(i), screenSize);
+			vector<Character> characters = GetCharactersFromFontFolder("Content/Fonts/" + fontFiles.at(i), screenSize);
 
 			font->_characters = characters;
 
@@ -152,7 +152,7 @@ vector<Character> FontEngine::GetCharactersFromFontFolder(string filePath, Box s
 		}
 
 		// Always reserve unicode 0000 in EVERY font to display the default error character in Fonts/Default
-		characters.push_back(CreateCharacterFromFontFolder("Fonts/Default", unicodeDictionary.GetCharacterForUnicode("0000"), "0000", screenSize));
+		characters.push_back(CreateCharacterFromFontFolder("Content/Fonts/Default", unicodeDictionary.GetCharacterForUnicode("0000"), "0000", screenSize));
 
 		return characters;
 	}

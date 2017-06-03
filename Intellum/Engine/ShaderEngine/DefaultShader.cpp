@@ -11,7 +11,7 @@ DefaultShader::~DefaultShader()
 
 void DefaultShader::Initialise(HWND hwnd)
 {
-	InitialiseShader(hwnd, L"shaders/VertexShader.hlsl", L"shaders/PixelShader.hlsl");
+	InitialiseShader(hwnd, L"Content/Shaders/VertexShader.hlsl", L"Content/Shaders/PixelShader.hlsl");
 }
 
 void DefaultShader::InitialiseShader(HWND hwnd, WCHAR* vsFilename, WCHAR* psFilename)

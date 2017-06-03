@@ -10,7 +10,7 @@ UIShader::~UIShader()
 
 void UIShader::Initialise(HWND hwnd)
 {
-	InitialiseShader(hwnd, L"shaders/FontVertexShader.hlsl", L"shaders/FontPixelShader.hlsl");
+	InitialiseShader(hwnd, L"Content/Shaders/FontVertexShader.hlsl", L"Content/Shaders/FontPixelShader.hlsl");
 }
 
 void UIShader::InitialiseShader(HWND hwnd, WCHAR* vsFilename, WCHAR* psFilename)

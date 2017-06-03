@@ -28,7 +28,6 @@ private:
 
 	IShaderType* _shader;
 
-	char* _defaultSearchPath = "../../fonts/";
 	vector<Font*> _avaliableFonts;
 private:
 	bool CreateFonts(vector<string> fontFiles, Box screenSize);

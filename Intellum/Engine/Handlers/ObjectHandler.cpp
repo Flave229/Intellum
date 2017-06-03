@@ -60,8 +60,8 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 		entity->AddComponent(transformComponent);
 
 		AppearanceComponent* appearanceComponent = new AppearanceComponent();
-		appearanceComponent->Model = geometryBuilder.FromFile("data/models/sphere.obj");
-		appearanceComponent->Textures = CreateTexture::ListFrom(direct3D, { "data/images/stone.tga", "data/images/dirt.tga" });
+		appearanceComponent->Model = geometryBuilder.FromFile("Content/Models/sphere.obj");
+		appearanceComponent->Textures = CreateTexture::ListFrom(direct3D, { "Content/Images/stone.tga", "Content/Images/dirt.tga" });
 		entity->AddComponent(appearanceComponent);
 
 		FrustrumCullingComponent* frustrum = new FrustrumCullingComponent();
@@ -76,7 +76,7 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 
 	AppearanceComponent* appearanceComponent = new AppearanceComponent();
 	appearanceComponent->Model = geometryBuilder.ForGrid(Box(100, 100), XMFLOAT2(10, 10));
-	appearanceComponent->Textures = CreateTexture::ListFrom(direct3D, { "data/images/stone.tga", "data/images/dirt.tga" });
+	appearanceComponent->Textures = CreateTexture::ListFrom(direct3D, { "Content/Images/stone.tga", "Content/Images/dirt.tga" });
 	entity->AddComponent(appearanceComponent);
 
 	FrustrumCullingComponent* frustrum = new FrustrumCullingComponent();
@@ -96,7 +96,7 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	skyBox->AddComponent(rasterizer);
 
 	AppearanceComponent* skyBoxAppearance = new AppearanceComponent();
-	skyBoxAppearance->Model = geometryBuilder.FromFile("data/models/sphere.obj");
+	skyBoxAppearance->Model = geometryBuilder.FromFile("Content/Models/sphere.obj");
 	skyBoxAppearance->Gradient = GradientShaderParameters(XMFLOAT4(0.49f, 0.75f, 0.93f, 1.0f), XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), 0, 0);
 	skyBox->AddComponent(skyBoxAppearance);
 
@@ -161,8 +161,8 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	AppearanceComponent* uiAppearance = new AppearanceComponent();
 	uiAppearance->ShaderType = SHADER_UI;
 	uiAppearance->Model = geometryBuilder.ForUI();
-	uiAppearance->Textures = CreateTexture::ListFrom(direct3D, { "data/images/dirt.tga", "data/images/josh.tga", "data/images/stone.tga" });
-	uiAppearance->LightMap = CreateTexture::From(direct3D, "data/images/basic_light_map.tga");
+	uiAppearance->Textures = CreateTexture::ListFrom(direct3D, { "Content/Images/dirt.tga", "Content/Images/josh.tga", "Content/Images/stone.tga" });
+	uiAppearance->LightMap = CreateTexture::From(direct3D, "Content/Images/basic_light_map.tga");
 	ui->AddComponent(uiAppearance);
 
 	TransformComponent* uiTransform = new TransformComponent();
@@ -277,7 +277,7 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	AppearanceComponent* cursorAppearance = new AppearanceComponent();
 	cursorAppearance->ShaderType = SHADER_UI;
 	cursorAppearance->Model = geometryBuilder.ForUI();
-	cursorAppearance->Textures = CreateTexture::ListFrom(direct3D, { "data/images/cursor.tga" });
+	cursorAppearance->Textures = CreateTexture::ListFrom(direct3D, { "Content/Images/cursor.tga" });
 	cursor->AddComponent(cursorAppearance);
 
 	TransformComponent* cursorTransform = new TransformComponent();
