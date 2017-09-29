@@ -111,31 +111,31 @@ bool Frustrum::CheckPointInsideFrustrum(XMFLOAT3 point, float minDistanceFromPla
 
 bool Frustrum::CheckCubeInsideFrustrum(XMFLOAT3 center, float radius) const
 {
-	if (CheckPointInsideFrustrum(XMFLOAT3(center.x - radius, center.y - radius, center.z - radius), 0.0f) == false)
-		return false;
+	if (CheckPointInsideFrustrum(XMFLOAT3(center.x - radius, center.y - radius, center.z - radius), 0.0f))
+		return true;
 
-	if (CheckPointInsideFrustrum(XMFLOAT3(center.x + radius, center.y - radius, center.z - radius), 0.0f) == false)
-		return false;
+	if (CheckPointInsideFrustrum(XMFLOAT3(center.x + radius, center.y - radius, center.z - radius), 0.0f))
+		return true;
 
-	if (CheckPointInsideFrustrum(XMFLOAT3(center.x - radius, center.y + radius, center.z - radius), 0.0f) == false)
-		return false;
+	if (CheckPointInsideFrustrum(XMFLOAT3(center.x - radius, center.y + radius, center.z - radius), 0.0f))
+		return true;
 
-	if (CheckPointInsideFrustrum(XMFLOAT3(center.x + radius, center.y + radius, center.z - radius), 0.0f) == false)
-		return false;
+	if (CheckPointInsideFrustrum(XMFLOAT3(center.x + radius, center.y + radius, center.z - radius), 0.0f))
+		return true;
 
-	if (CheckPointInsideFrustrum(XMFLOAT3(center.x - radius, center.y - radius, center.z + radius), 0.0f) == false)
-		return false;
+	if (CheckPointInsideFrustrum(XMFLOAT3(center.x - radius, center.y - radius, center.z + radius), 0.0f))
+		return true;
 
-	if (CheckPointInsideFrustrum(XMFLOAT3(center.x + radius, center.y - radius, center.z + radius), 0.0f) == false)
-		return false;
+	if (CheckPointInsideFrustrum(XMFLOAT3(center.x + radius, center.y - radius, center.z + radius), 0.0f))
+		return true;
 
-	if (CheckPointInsideFrustrum(XMFLOAT3(center.x - radius, center.y + radius, center.z + radius), 0.0f) == false)
-		return false;
+	if (CheckPointInsideFrustrum(XMFLOAT3(center.x - radius, center.y + radius, center.z + radius), 0.0f))
+		return true;
 
-	if (CheckPointInsideFrustrum(XMFLOAT3(center.x + radius, center.y + radius, center.z + radius), 0.0f) == false)
-		return false;
+	if (CheckPointInsideFrustrum(XMFLOAT3(center.x + radius, center.y + radius, center.z + radius), 0.0f))
+		return true;
 
-	return true;
+	return false;
 }
 
 bool Frustrum::CheckSphereInsideFrustrum(XMFLOAT3 center, float radius) const
