@@ -220,11 +220,13 @@
     <ClCompile Include="Engine\Objects\Systems\RenderSystem.cpp" />
     <ClCompile Include="Engine\Objects\Systems\UISystem.cpp" />
     <ClCompile Include="Engine\Objects\Commands\NullCommand.cpp" />
+    <ClCompile Include="Engine\Objects\Commands\ToggleTransformCommand.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Input\ControlCommand.h" />
     <ClInclude Include="Engine\Objects\Commands\ToggleVisibleCommand.h" />
     <ClInclude Include="Engine\Objects\Commands\ICommand.h" />
+    <ClInclude Include="Engine\Objects\Components\CollisionComponent.h" />
     <ClInclude Include="Engine\Objects\Components\InputComponent.h" />
     <ClInclude Include="Engine\Objects\Systems\ButtonSystem.h" />
     <ClInclude Include="Engine\Camera\FrustrumCullingType.h" />
@@ -308,6 +310,7 @@
     <ClInclude Include="Engine\Objects\Systems\UISystem.h" />
     <ClInclude Include="Engine\FontEngine\TextTexture.h" />
     <ClInclude Include="Engine\Objects\Commands\NullCommand.h" />
+    <ClInclude Include="Engine\Objects\Commands\ToggleTransformCommand.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="data\models\Cube.txt">

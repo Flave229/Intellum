@@ -11,7 +11,8 @@ enum ComponentType
 	USER_INTERFACE,
 	TEXT,
 	BUTTON,
-	INPUT_COMPONENT
+	INPUT_COMPONENT,
+	COLLISION
 };
 
 class IComponent

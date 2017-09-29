@@ -5,6 +5,8 @@
 #include "../Objects/Components/InputComponent.h"
 #include "../Objects/Commands/ToggleVisibleCommand.h"
 #include "../Objects/Systems/InputSystem.h"
+#include "../Objects/Commands/ToggleTransformCommand.h"
+#include "../Objects/Components/CollisionComponent.h"
 
 ObjectHandler::ObjectHandler(DirectX3D* direct3D, ShaderController* shaderController, FontEngine* fontEngine, HWND hwnd, Camera* camera, Input* input, FramesPerSecond* framesPerSecond, Cpu* cpu, Box screenSize)
 {
@@ -162,6 +164,7 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	uiAppearance->Model = geometryBuilder.ForUI();
 	uiAppearance->Textures = CreateTexture::ListFrom(direct3D, { "Content/Images/dirt.tga", "Content/Images/josh.tga", "Content/Images/stone.tga" });
 	uiAppearance->LightMap = CreateTexture::From(direct3D, "Content/Images/basic_light_map.tga");
+	uiAppearance->RenderEnabled = false;
 	ui->AddComponent(uiAppearance);
 
 	TransformComponent* uiTransform = new TransformComponent();
@@ -180,6 +183,7 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	navigationBarAppearance->ShaderType = SHADER_UI;
 	navigationBarAppearance->Model = geometryBuilder.ForUI();
 	navigationBarAppearance->Color = ColorShaderParameters(XMFLOAT4(0.5, 0.5, 0.5, 1));
+	navigationBarAppearance->RenderEnabled = false;
 	navigationBar->AddComponent(navigationBarAppearance);
 
 	TransformComponent* navigationBarTransform = new TransformComponent();
@@ -206,6 +210,7 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	button1Appearance->ShaderType = SHADER_UI;
 	button1Appearance->Model = geometryBuilder.ForUI();
 	button1Appearance->Color = ColorShaderParameters(XMFLOAT4(0.4, 0.4, 0.4, 1));
+	button1Appearance->RenderEnabled = false;
 	button1->AddComponent(button1Appearance);
 
 	TransformComponent* button1Transform = new TransformComponent();
@@ -241,6 +246,7 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	button2Appearance->ShaderType = SHADER_UI;
 	button2Appearance->Model = geometryBuilder.ForUI();
 	button2Appearance->Color = ColorShaderParameters(XMFLOAT4(0.4, 0.4, 0.4, 1));
+	button2Appearance->RenderEnabled = false;
 	button2->AddComponent(button2Appearance);
 
 	TransformComponent* button2Transform = new TransformComponent();
@@ -277,10 +283,12 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	cursorAppearance->ShaderType = SHADER_UI;
 	cursorAppearance->Model = geometryBuilder.ForUI();
 	cursorAppearance->Textures = CreateTexture::ListFrom(direct3D, { "Content/Images/cursor.tga" });
+	cursorAppearance->RenderEnabled = false;
 	cursor->AddComponent(cursorAppearance);
 
 	TransformComponent* cursorTransform = new TransformComponent();
 	cursorTransform->Position = XMFLOAT3(400, 400, 0);
+	cursorTransform->TransformEnabled = false;
 	cursor->AddComponent(cursorTransform);
 
 	UIComponent* cursorComponent = new UIComponent();
@@ -292,7 +300,16 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	control.Command = new ToggleVisibleCommand(cursorAppearance);
 	control.Cooldown = 0.2f;
 	cursorInput->ControlCommands.push_back(control);
+
+	control.Control = ESCAPE;
+	control.Command = new ToggleTransformCommand(cursorTransform);
+	control.Cooldown = 0.2f;
+	cursorInput->ControlCommands.push_back(control);
 	cursor->AddComponent(cursorInput);
+
+	CollisionComponent* cursorCollision = new CollisionComponent();
+	cursorCollision->CollisionType = CURSOR;
+	cursor->AddComponent(cursorCollision);
 
 	_entityList.push_back(cursor);
 	input->AddObserver(cursorTransform);

@@ -18,6 +18,10 @@ void TransformSystem::Update(vector<Entity*>& entities, float delta)
 		if (component != nullptr)
 		{
 			TransformComponent* transformComponent = static_cast<TransformComponent*>(component);
+
+			if (transformComponent->TransformEnabled == false)
+				continue;
+
 			XMMATRIX transformation = _direct3D->GetWorldMatrix();
 
 			UpdatePosition(transformComponent->Position, transformComponent->Velocity, delta);

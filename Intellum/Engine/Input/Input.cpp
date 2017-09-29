@@ -160,7 +160,7 @@ void Input::ProcessInput()
 		{
 			ObserverEvent observerEvent = ObserverEvent();
 			observerEvent.EventType = MOVED_MOUSE;
-			observerEvent.SetObservableData<XMFLOAT2>(XMFLOAT2(MousePosition.x, MousePosition.y));
+			observerEvent.SetObservableData<XMFLOAT2>(XMFLOAT2(_mouseState.lX, _mouseState.lY));
 			Observers.at(i)->Notify(observerEvent);
 			observerEvent.Shutdown<XMFLOAT2>();
 		}

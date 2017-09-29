@@ -37,6 +37,9 @@ void UISystem::Update(vector<Entity*>& entities, float delta)
 
 		TransformComponent* transform = static_cast<TransformComponent*>(component);
 
+		if (transform->TransformEnabled == false)
+			continue;
+
 		if ((transform->Position.x == static_cast<int>(ui->PreviousPosition.x)) && (transform->Position.y == static_cast<int>(ui->PreviousPosition.y))
 			&& (ui->BitmapSize.x == ui->PreviousBitmapSize.x) && (ui->BitmapSize.y == ui->PreviousBitmapSize.y))
 		{
