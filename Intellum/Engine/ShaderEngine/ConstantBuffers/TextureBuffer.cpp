@@ -44,6 +44,11 @@ void TextureBuffer::SetShaderParameters(int bufferIndex, ShaderResources shaderR
 	else
 		textureData->lightMapEnabled = 0.0f;
 
+	if (textureParameters.BumpMapEnabled)
+		textureData->bumpMapEnabled = 1.0f;
+	else
+		textureData->bumpMapEnabled = 0.0f;
+
 	_direct3D->GetDeviceContext()->Unmap(_buffer, 0);
 	_direct3D->GetDeviceContext()->PSSetConstantBuffers(bufferIndex, 1, &_buffer);
 }

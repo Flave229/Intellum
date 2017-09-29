@@ -11,7 +11,8 @@ private:
 	{
 		float texturesIncluded;
 		float lightMapEnabled;
-		XMFLOAT2 padding;
+		float bumpMapEnabled;
+		float padding;
 	};
 
 	ID3D11Buffer* _buffer;

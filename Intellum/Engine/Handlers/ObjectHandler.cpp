@@ -63,6 +63,7 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 		AppearanceComponent* appearanceComponent = new AppearanceComponent();
 		appearanceComponent->Model = geometryBuilder.FromFile("Content/Models/sphere.obj");
 		appearanceComponent->Textures = CreateTexture::ListFrom(direct3D, { "Content/Images/stone.tga", "Content/Images/dirt.tga" });
+		appearanceComponent->BumpMap = CreateTexture::From(direct3D, "Content/Images/stone_bump_map.tga");
 		entity->AddComponent(appearanceComponent);
 
 		FrustrumCullingComponent* frustrum = new FrustrumCullingComponent();

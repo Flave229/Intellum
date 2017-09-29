@@ -143,13 +143,14 @@ float4 CalculateFinalPixelColor(float2 textureCoordinates, float4 worldPosition)
 
 float4 DefaultPixelShader(PixelInputType input) : SV_TARGET
 {
-    float3 bumpNormal = CalculateBumpNormal(input.tex, input.tangent, input.binormal, input.normal);
-
 	float3 lightDir = -lightDirection;
     float lightIntensity = 0.0f;
 
-    if (bumpMapEnabled == 1.0f)
-        lightIntensity = saturate(dot(bumpNormal, lightDir));
+	if (bumpMapEnabled == 1.0f)
+	{
+		float3 bumpNormal = CalculateBumpNormal(input.tex, input.tangent, input.binormal, input.normal);
+		lightIntensity = saturate(dot(bumpNormal, lightDir));
+	}
     else
         lightIntensity = saturate(dot(input.normal, lightDir));
     
@@ -162,7 +163,7 @@ float4 DefaultPixelShader(PixelInputType input) : SV_TARGET
 	if (lightEnabled == 1.0f && lightIntensity > 0.0f)
 	{
 		color += (diffuseColor * lightIntensity);
-		color = saturate(color);
+		//color = saturate(color);
         specular = CalculateSpecularLight(input.normal, input.viewDirection, lightDir, lightIntensity);
     }
 
