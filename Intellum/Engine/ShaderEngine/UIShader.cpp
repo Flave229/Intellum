@@ -172,7 +172,6 @@ void UIShader::Shutdown()
 void UIShader::Render(int indexCount, ShaderResources shaderResources)
 {
 	SetShaderParameters(shaderResources);
-
 	RenderShader(indexCount);
 }
 
@@ -224,13 +223,9 @@ void UIShader::RenderShader(int indexCount)
 
 void UIShader::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, WCHAR* shaderFileName)
 {
-	char* compileErrors;
-	unsigned long long bufferSize;
 	ofstream fout;
-
-	compileErrors = static_cast<char*>(errorMessage->GetBufferPointer());
-
-	bufferSize = errorMessage->GetBufferSize();
+	char * compileErrors = static_cast<char*>(errorMessage->GetBufferPointer());
+	const unsigned long long bufferSize = errorMessage->GetBufferSize();
 
 	fout.open("shader-error.txt");
 

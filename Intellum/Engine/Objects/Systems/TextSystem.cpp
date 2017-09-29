@@ -1,8 +1,18 @@
 #include "TextSystem.h"
 #include "UISystem.h"
 
-TextSystem::TextSystem(DirectX3D* direct3D, ShaderController* shaderController, FontEngine* fontEngine, XMMATRIX viewMatrix, Box screenSize) : _direct3D(direct3D), _shaderController(shaderController), _fontEngine(fontEngine), _screenSize(screenSize), _viewMatrix(viewMatrix)
+TextSystem::TextSystem(DirectX3D* direct3D, ShaderController* shaderController, FontEngine* fontEngine, Box screenSize) : _direct3D(direct3D), _shaderController(shaderController), _fontEngine(fontEngine), _screenSize(screenSize)
 {
+	XMFLOAT3 up = XMFLOAT3(0.0f, 1.0f, 0.0f);
+	XMVECTOR upVector = XMLoadFloat3(&up);
+
+	XMFLOAT3 lookAt = XMFLOAT3(0.0f, 0.0f, 1.0f);
+	XMVECTOR lookAtVector = XMLoadFloat3(&lookAt);
+
+	XMStoreFloat3(&lookAt, lookAtVector);
+	XMStoreFloat3(&up, upVector);
+
+	_viewMatrix = XMMatrixLookAtLH(XMLoadFloat3(new XMFLOAT3(0, 0, -1)), lookAtVector, upVector);
 }
 
 TextSystem::~TextSystem()
@@ -68,7 +78,7 @@ void TextSystem::UpdateTextEntity(TextComponent* textComponent)
 	}
 	catch (...)
 	{
-		throw Exception("A porblem occured updating the text \"" + textComponent->Text + "\". The previous frame displayed the text \"" + textComponent->PreviousText + "\".");
+		throw Exception("A problem occured updating the text \"" + textComponent->Text + "\". The previous frame displayed the text \"" + textComponent->PreviousText + "\".");
 	}
 }
 

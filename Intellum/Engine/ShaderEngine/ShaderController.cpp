@@ -29,8 +29,7 @@ bool ShaderController::Initialise(HWND hwnd, Camera* camera, Light* light)
 
 void ShaderController::Shutdown()
 {
-	map<ShaderType, IShaderType*>::iterator iterator;
-	for (iterator = _shaders.begin(); iterator != _shaders.end(); ++iterator)
+	for (map<ShaderType, IShaderType*>::iterator iterator = _shaders.begin(); iterator != _shaders.end(); ++iterator)
 	{
 		if(iterator->second != nullptr)
 		{

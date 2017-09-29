@@ -25,8 +25,7 @@ void ObjectHandler::Shutdown()
 
 	_entityList.clear();
 
-	map<SystemType, ISystem*>::iterator iterator;
-	for (iterator = _systemList.begin(); iterator != _systemList.end(); ++iterator)
+	for (map<SystemType, ISystem*>::iterator iterator = _systemList.begin(); iterator != _systemList.end(); ++iterator)
 	{
 		iterator->second->Shutdown();
 		delete iterator->second;
@@ -47,7 +46,7 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	_systemList[TRANSFORM_SYSTEM] = new TransformSystem(direct3D);
 	_systemList[UI_RENDER_SYSTEM] = new UISystem(direct3D, shaderController, hwnd, screenSize);
 	_systemList[RENDER_SYSTEM] = new RenderSystem(direct3D, shaderController, hwnd, camera);
-	_systemList[FONT_SYSTEM] = new TextSystem(direct3D, shaderController, fontEngine, camera->GetViewMatrix(), screenSize);
+	_systemList[FONT_SYSTEM] = new TextSystem(direct3D, shaderController, fontEngine, screenSize);
 	_systemList[BUTTON_SYSTEM] = buttonSystem;
 	_systemList[INPUT_SYSTEM] = new InputSystem(input);
 
@@ -104,7 +103,7 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 
 	Entity* text1 = new Entity();
 	TextComponent* textComponent1 = new TextComponent();
-	textComponent1->Text = "Victoria Grump xxx";
+	textComponent1->Text = "Test Application";
 	textComponent1->FontSize = 30;
 	textComponent1->FontPosition = XMFLOAT2(50, 600);
 	textComponent1->Color = XMFLOAT4(0.6f, 0.0f, 0.6f, 1.0f);
@@ -301,8 +300,7 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 
 void ObjectHandler::Update(float delta)
 {
-	map<SystemType, ISystem*>::iterator iterator;
-	for (iterator = _systemList.begin(); iterator != _systemList.end(); ++iterator)
+	for (map<SystemType, ISystem*>::iterator iterator = _systemList.begin(); iterator != _systemList.end(); ++iterator)
 	{
 		iterator->second->Update(_entityList, delta);
 	}
@@ -310,8 +308,7 @@ void ObjectHandler::Update(float delta)
 
 void ObjectHandler::Render()
 {
-	map<SystemType, ISystem*>::iterator iterator;
-	for (iterator = _systemList.begin(); iterator != _systemList.end(); ++iterator)
+	for (map<SystemType, ISystem*>::iterator iterator = _systemList.begin(); iterator != _systemList.end(); ++iterator)
 	{
 		iterator->second->Render(_entityList);
 	}

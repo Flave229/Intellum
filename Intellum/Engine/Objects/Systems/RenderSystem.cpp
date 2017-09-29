@@ -4,7 +4,16 @@
 
 RenderSystem::RenderSystem(DirectX3D* direct3D, ShaderController* shaderController, HWND hwnd, Camera* camera) : _direct3D(direct3D), _camera(camera), _shaderController(shaderController), _renderCount(0)
 {
-	_defaultViewMatrix = camera->GetViewMatrix();
+	XMFLOAT3 up = XMFLOAT3(0.0f, 1.0f, 0.0f);
+	XMVECTOR upVector = XMLoadFloat3(&up);
+
+	XMFLOAT3 lookAt = XMFLOAT3(0.0f, 0.0f, 1.0f);
+	XMVECTOR lookAtVector = XMLoadFloat3(&lookAt);
+
+	XMStoreFloat3(&lookAt, lookAtVector);
+	XMStoreFloat3(&up, upVector);
+
+	_defaultViewMatrix = XMMatrixLookAtLH(XMLoadFloat3(new XMFLOAT3(0, 0, -1)), lookAtVector, upVector);
 }
 
 void RenderSystem::Shutdown()

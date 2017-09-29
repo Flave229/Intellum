@@ -23,7 +23,7 @@ private:
 	static ID3D11ShaderResourceView* TextSystem::ExtractResourceViewsFrom(Texture* texture);
 
 public:
-	TextSystem(DirectX3D* direct3D, ShaderController* shaderController, FontEngine* fontEngine, XMMATRIX viewMatrix, Box screenSize);
+	TextSystem(DirectX3D* direct3D, ShaderController* shaderController, FontEngine* fontEngine, Box screenSize);
 	~TextSystem();
 	void Shutdown() override;
 

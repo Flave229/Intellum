@@ -16,10 +16,10 @@ void Graphics::Initialise(Input* input, FramesPerSecond* framesPerSecond, Cpu* c
 		_direct3D = new DirectX3D(input, screenSize, VSYNC_ENABLED, hwnd, FULL_SCREEN, SCREEN_DEPTH, SCREEN_NEAR);
 		if (!_direct3D) throw Exception("Failed to create a DirectX3D object.");
 		
-		_camera = new Camera(new Frustrum(_direct3D), new Transform(_direct3D), input);
+		Transform* cameraTransform = new Transform(_direct3D);
+		cameraTransform->SetPosition(XMFLOAT3(0.0f, 5.0f, -5.0f));
+		_camera = new Camera(new Frustrum(_direct3D), cameraTransform, input);
 		if (!_camera) throw Exception("Failed to create a camera object.");
-
-		_camera->GetTransform()->SetPosition(XMFLOAT3(0.0f, 0.0f, -5.0f));
 
 		_shaderController = new ShaderController(_direct3D);
 		if (!_shaderController) throw Exception("Failed to create the shader controller.");

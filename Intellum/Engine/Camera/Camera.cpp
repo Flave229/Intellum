@@ -2,8 +2,6 @@
 
 Camera::Camera(Frustrum* frustrum, Transform* transform, Input* input): _input(input), _frustrum(frustrum), _transform(transform)
 {
-	_transform->SetPosition(XMFLOAT3(0.0f, 0.0f, -1.0f));
-	Update(0.0f);
 }
 
 Camera::~Camera()
