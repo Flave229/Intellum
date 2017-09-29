@@ -52,6 +52,26 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	_systemList[BUTTON_SYSTEM] = buttonSystem;
 	_systemList[INPUT_SYSTEM] = new InputSystem(input);
 
+	for(int i = 0; i < 10; i++)
+	{
+		Entity* entity = new Entity();
+		TransformComponent* transformComponent = new TransformComponent();
+		transformComponent->Position = XMFLOAT3((i * 2) - 5.0f, 1.0f, -10.0f);
+		entity->AddComponent(transformComponent);
+
+		AppearanceComponent* appearanceComponent = new AppearanceComponent();
+		appearanceComponent->Model = geometryBuilder.FromFile("Content/Models/Cube.obj");
+		appearanceComponent->Textures = CreateTexture::ListFrom(direct3D, { "Content/Images/stone.tga", "Content/Images/dirt.tga" });
+		appearanceComponent->BumpMap = CreateTexture::From(direct3D, "Content/Images/stone_bump_map.tga");
+		entity->AddComponent(appearanceComponent);
+
+		FrustrumCullingComponent* frustrum = new FrustrumCullingComponent();
+		frustrum->CullingType = FRUSTRUM_CULL_SQUARE;
+		entity->AddComponent(frustrum);
+
+		_entityList.push_back(entity);
+	}
+
 	for(int i = 0; i < 25; i++)
 	{
 		Entity* entity = new Entity();

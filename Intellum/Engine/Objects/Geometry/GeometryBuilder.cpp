@@ -10,7 +10,7 @@ GeometryBuilder::~GeometryBuilder()
 
 Geometry GeometryBuilder::FromFile(char* string) const
 {
-	return OBJLoader::Load("Content/Models/sphere.obj", _device);
+	return OBJLoader::Load(string, _device);
 }
 
 Geometry GeometryBuilder::ForGrid(Box gridSize, XMFLOAT2 cellCount) const
