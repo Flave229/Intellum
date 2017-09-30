@@ -38,7 +38,7 @@ void Graphics::Initialise(Input* input, FramesPerSecond* framesPerSecond, Cpu* c
 		_light->DiffuseColor = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 		_light->SpecularColor = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 		//_light->Direction = XMFLOAT3(0.8f, -1.0f, 0.2f);
-		_light->SpecularPower = 32.0f;
+		_light->SpecularPower = 10.0f;
 
 		_fontEngine = new FontEngine(_direct3D, _direct3D->GetDevice(), _direct3D->GetDeviceContext(), _shaderController->GetShader(SHADER_FONT));
 		if (!_fontEngine) throw Exception("Failed to create the Font Engine.");

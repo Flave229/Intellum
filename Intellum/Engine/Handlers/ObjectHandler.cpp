@@ -56,11 +56,12 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	{
 		Entity* entity = new Entity();
 		TransformComponent* transformComponent = new TransformComponent();
-		transformComponent->Position = XMFLOAT3((i * 2) - 5.0f, 1.0f, -10.0f);
+		transformComponent->Position = XMFLOAT3((i * 4) - 5.0f, 1.0f, 10.0f);
+		transformComponent->AngularVelocity = XMFLOAT3(0.0f, 1.5f, 0.0f);
 		entity->AddComponent(transformComponent);
 
 		AppearanceComponent* appearanceComponent = new AppearanceComponent();
-		appearanceComponent->Model = geometryBuilder.FromFile("Content/Models/Cube.obj");
+		appearanceComponent->Model = geometryBuilder.Cube();
 		appearanceComponent->Textures = CreateTexture::ListFrom(direct3D, { "Content/Images/stone.tga", "Content/Images/dirt.tga" });
 		appearanceComponent->BumpMap = CreateTexture::From(direct3D, "Content/Images/stone_bump_map.tga");
 		entity->AddComponent(appearanceComponent);
@@ -76,7 +77,7 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 	{
 		Entity* entity = new Entity();
 		TransformComponent* transformComponent = new TransformComponent();
-		transformComponent->Position = XMFLOAT3(((static_cast<float>(rand()) / RAND_MAX) * 30.0f) - 15.0f, ((static_cast<float>(rand()) / RAND_MAX) * 10.0f) - 5.0f, ((static_cast<float>(rand()) / RAND_MAX) * 30.0f) - 15.0f);
+		transformComponent->Position = XMFLOAT3(((static_cast<float>(rand()) / RAND_MAX) * 30.0f) - 15.0f, ((static_cast<float>(rand()) / RAND_MAX) * 5.0f) + 3.0f, ((static_cast<float>(rand()) / RAND_MAX) * 30.0f) - 15.0f);
 		transformComponent->AngularVelocity = XMFLOAT3(0.0f, (static_cast<float>(rand()) / RAND_MAX * 5.0f - 2.5f) * static_cast<float>(XM_PI), 0.0f);
 		entity->AddComponent(transformComponent);
 
