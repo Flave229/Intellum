@@ -66,6 +66,15 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 		appearanceComponent->BumpMap = CreateTexture::From(direct3D, "Content/Images/stone_bump_map.tga");
 		entity->AddComponent(appearanceComponent);
 
+		InputComponent* input = new InputComponent();
+
+		ControlCommand control;
+		control.Control = ESCAPE;
+		control.Command = new ToggleTransformCommand(transformComponent);
+		control.Cooldown = 0.2f;
+		input->ControlCommands.push_back(control);
+		entity->AddComponent(input);
+
 		FrustrumCullingComponent* frustrum = new FrustrumCullingComponent();
 		frustrum->CullingType = FRUSTRUM_CULL_SQUARE;
 		entity->AddComponent(frustrum);
@@ -86,6 +95,14 @@ void ObjectHandler::InitialiseObjects(DirectX3D* direct3D, ShaderController* sha
 		appearanceComponent->Textures = CreateTexture::ListFrom(direct3D, { "Content/Images/stone.tga", "Content/Images/dirt.tga" });
 		appearanceComponent->BumpMap = CreateTexture::From(direct3D, "Content/Images/stone_bump_map.tga");
 		entity->AddComponent(appearanceComponent);
+
+		InputComponent* input = new InputComponent();
+		ControlCommand control;
+		control.Control = ESCAPE;
+		control.Command = new ToggleTransformCommand(transformComponent);
+		control.Cooldown = 0.2f;
+		input->ControlCommands.push_back(control);
+		entity->AddComponent(input);
 
 		FrustrumCullingComponent* frustrum = new FrustrumCullingComponent();
 		frustrum->CullingType = FRUSTRUM_CULL_SPHERE;

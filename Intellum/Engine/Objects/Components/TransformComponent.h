@@ -20,7 +20,7 @@ public:
 	bool TransformEnabled;
 
 	TransformComponent() 
-		: IComponent(TRANSFORM), Position(0, 0, 0), Rotation(0, 0, 0), Scale(1, 1, 1), Velocity(0, 0, 0), AngularVelocity(0, 0, 0) {}
+		: IComponent(TRANSFORM), Position(0, 0, 0), Rotation(0, 0, 0), Scale(1, 1, 1), Velocity(0, 0, 0), AngularVelocity(0, 0, 0), TransformEnabled(true) {}
 
 	~TransformComponent() override = default;
 
